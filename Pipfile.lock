@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8df26fdc55e007bb231b5bde879bf9122d47efc996470b66c5b87c8bd389b591"
+            "sha256": "bf965ba060650995e414d237af2262b6d9b58a58182316f20373df94c6e6b725"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,13 @@
         ]
     },
     "default": {
+        "pylightxl": {
+            "hashes": [
+                "sha256:0d50f9032945e741c221996f49a5bafc09669d87e2ce550cab582cb360c5ef29"
+            ],
+            "index": "pypi",
+            "version": "==1.55"
+        },
         "python-dotenv": {
             "hashes": [
                 "sha256:00aa34e92d992e9f8383730816359647f358f4a3be1ba45e5a5cefd27ee91544",

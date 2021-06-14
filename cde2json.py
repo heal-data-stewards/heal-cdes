@@ -1,3 +1,11 @@
+# Python libraries
+import json
+import datetime
+
+# For accessing Excel files.
+import pylightxl
+
+# Add logging support
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -21,7 +29,23 @@ if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 logging.debug(f'Output directory: {output_dir}')
 
+# Code to convert an XLSX file to JSON.
 def convert_xlsx_to_json(input_filename):
+    basename = os.path.basename(input_filename)
+    if basename.startswith('~$'):
+        # Temporary file, skip.
+        return
+
+    try:
+        db = pylightxl.readxl(fn=input_filename)
+    except TypeError as ex:
+        logging.error(f'Could not read {input_filename} as XLSX: {ex}')
+        return
+
+    if len(db.ws_names) > 1:
+        logging.error(f'Skipping {input_filename}: too many sheets ({db.ws_names})')
+        return
+
     rel_input_filename = os.path.relpath(input_filename, input_dir)
     output_filename = os.path.join(output_dir, os.path.splitext(rel_input_filename)[0] + '.json')
     dirname = os.path.dirname(output_filename)
@@ -29,8 +53,31 @@ def convert_xlsx_to_json(input_filename):
         os.makedirs(dirname)
     logging.info(f'Writing {input_filename} to {output_filename}')
 
+    sheet1 = db.ws_names[0]
+    cols = None
+    rows = []
+    for row in db.ws(sheet1).rows:
+        if cols is None:
+            cols = row
+        else:
+            data = dict(zip(cols, row))
+            cde_name = data.get('CDE Name')
+            if cde_name is not None and cde_name != '':
+                rows.append(data)
 
-for root, dirs, files in os.walk(input_dir, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True):
+    # Write the entire thing to JSON for now.
+    # We use this schema: https://cde.nlm.nih.gov/schema/form
+    with open(output_filename, 'w') as f:
+        logging.info(f'Wrote {len(rows)} rows to {output_filename}')
+        json.dump({
+            'source': f'Generated from HEAL CDE source file: {rel_input_filename}',
+            'created': datetime.datetime.now().isoformat(),
+            'createdBy': 'cde2json.py',
+            'formElements': rows,
+        }, f, indent=2)
+
+iterator = os.walk(input_dir, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
+for root, dirs, files in iterator:
     logging.debug(f' - Recursing into directory {root}')
     for filename in files:
         if filename.lower().endswith('.xlsx') or filename.lower().endswith('.csv'):

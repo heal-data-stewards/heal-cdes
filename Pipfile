@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 python-dotenv = "*"
+pylightxl = "*"
 
 [dev-packages]
 
