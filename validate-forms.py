@@ -27,7 +27,12 @@ with open(config['FORM_JSON_SCHEMA']) as f:
 jsonschema.Draft7Validator.check_schema(form_json_schema)
 validator = jsonschema.Draft7Validator(form_json_schema)
 
+valid_count = 0
 for filename in glob.iglob(output_dir + '/**/*.json', recursive=True):
+    logging.info(f'Validating {filename}')
     with open(filename) as f:
         data = json.load(f)
-    validator.validate(data)
+        validator.validate(data)
+        valid_count += 1
+
+logging.info(f'Validated {valid_count} JSON files.')

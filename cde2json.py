@@ -1,6 +1,7 @@
 # Python libraries
 import json
 import datetime
+import subprocess
 
 # For accessing Excel files.
 import pylightxl
@@ -17,6 +18,9 @@ config = {
     **dotenv_values(".env"),         # override with user-specific® configuration
     **os.environ,                    # override loaded values with environment variables
 }
+
+# Read this program's "version" from git describe.
+version = subprocess.check_output(["git", "describe", "--all"]).strip()
 
 # We need an input directory -- we recurse through this
 # directory and process all XLSX files in that directory.
@@ -70,11 +74,11 @@ def convert_xlsx_to_json(input_filename):
     with open(output_filename, 'w') as f:
         logging.info(f'Wrote {len(rows)} rows to {output_filename}')
         json.dump({
-            'source': f'Generated from HEAL CDE source file: {rel_input_filename}',
-            'created': datetime.datetime.now().isoformat(),
-            'createdBy': 'cde2json.py',
+            'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {rel_input_filename}',
+            'created': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
             'formElements': rows,
         }, f, indent=2)
+
 
 iterator = os.walk(input_dir, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
 for root, dirs, files in iterator:
