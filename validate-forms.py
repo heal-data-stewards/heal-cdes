@@ -21,6 +21,7 @@ config = {
 }
 output_dir = config['OUTPUT_DIR']
 
+# We use the schema at https://cde.nlm.nih.gov/schema/form
 with open(config['FORM_JSON_SCHEMA']) as f:
     form_json_schema = json.load(f)
 

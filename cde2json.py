@@ -33,6 +33,32 @@ if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 logging.debug(f'Output directory: {output_dir}')
 
+# Translate a question into formElements.
+def convert_question_to_formelement(row):
+    # Fields being dropped:
+    #   - CRF Question #
+    #   - Variable Name
+    #   - Short Description
+    definitions = []
+    if row.get('Definition') is not None and row.get('Definition') != '':
+        definitions.append({
+            'definition': row.get('Definition'),
+        })
+
+    return {
+        'elementType': 'question',
+        'label': row.get('Additional Notes (Question Text)', ''),
+        'question': {
+            'cde': {
+                'name': row.get('CDE Name'),
+                'newCde': {
+                    'definitions': definitions
+                },
+                'datatype': row.get('Data Type')
+            }
+        }
+    }
+
 # Code to convert an XLSX file to JSON.
 def convert_xlsx_to_json(input_filename):
     basename = os.path.basename(input_filename)
@@ -76,7 +102,7 @@ def convert_xlsx_to_json(input_filename):
         json.dump({
             'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {rel_input_filename}',
             'created': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
-            'formElements': rows,
+            'formElements': list(map(convert_question_to_formelement, rows)),
         }, f, indent=2)
 
 
