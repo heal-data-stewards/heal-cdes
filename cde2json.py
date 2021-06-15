@@ -1,6 +1,7 @@
 # Python libraries
 import json
 import datetime
+import re
 import subprocess
 
 # For accessing Excel files.
@@ -33,6 +34,27 @@ if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 logging.debug(f'Output directory: {output_dir}')
 
+def convert_permissible_values(row):
+    values = str(row.get('Permissible Values')).strip()
+    descriptions = str(row.get('PV Description')).strip()
+
+    pvs = []
+
+    if values != '':
+        pv_regex = re.compile(r'\s*;\s*')
+        split_values = pv_regex.split(values)
+        split_descriptions = [None] * len(split_values)
+        if descriptions != '':
+            split_descriptions = pv_regex.split(descriptions)
+
+        for value, description in zip(split_values, split_descriptions):
+            pv = { 'permissibleValue': value }
+            if description is not None:
+                pv['valueMeaningDefinition'] = description
+            pvs.append(pv)
+
+    return pvs
+
 # Translate a question into formElements.
 def convert_question_to_formelement(row):
     # Fields being dropped:
@@ -54,7 +76,8 @@ def convert_question_to_formelement(row):
                 'newCde': {
                     'definitions': definitions
                 },
-                'datatype': row.get('Data Type')
+                'datatype': row.get('Data Type'),
+                'permissibleValues': convert_permissible_values(row)
             }
         }
     }
