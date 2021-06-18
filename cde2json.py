@@ -59,28 +59,58 @@ def convert_permissible_values(row):
 def convert_question_to_formelement(row):
     # Fields being dropped:
     #   - CRF Question #
-    #   - Variable Name
-    #   - Short Description
     definitions = []
     if row.get('Definition') is not None and row.get('Definition') != '':
+        if row.get('Disease Specific References') is not None and row.get('Disease Specific References') != '':
+            definitions.append({
+                'definition': row.get('Definition'),
+                'sources': [
+                    row.get('Disease Specific References')
+                ]
+            })
+        else:
+            definitions.append({
+                'definition': row.get('Definition'),
+            })
+
+    if row.get('Short Description') is not None and row.get('Short Description') != '':
         definitions.append({
-            'definition': row.get('Definition'),
+            'definition': f"Short description: {row.get('Short Description')}",
         })
 
-    return {
+    designations = []
+    if row.get('Variable Name') is not None and row.get('Variable Name') != '':
+        designations.append({
+            'designation': f"Variable name: {row.get('Variable Name')}"
+        })
+    if row.get('Additional Notes (Question Text)') is not None and row.get('Additional Notes (Question Text)') != '':
+        designations.append({
+            'designation': f"Additional notes (question text): {row.get('Additional Notes (Question Text)')}"
+        })
+
+    form_element = {
         'elementType': 'question',
         'label': row.get('Additional Notes (Question Text)', ''),
         'question': {
             'cde': {
                 'name': row.get('CDE Name'),
                 'newCde': {
-                    'definitions': definitions
+                    'definitions': definitions,
+                    'designations': designations
                 },
                 'datatype': row.get('Data Type'),
                 'permissibleValues': convert_permissible_values(row)
             }
         }
     }
+
+    if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
+        form_element['instructions'] = {
+            'value': row.get('Disease Specific Instructions'),
+            'valueFormat': 'text'
+        }
+
+    return form_element
 
 # Code to convert an XLSX file to JSON.
 def convert_xlsx_to_json(input_filename):
@@ -122,11 +152,21 @@ def convert_xlsx_to_json(input_filename):
     # We use this schema: https://cde.nlm.nih.gov/schema/form
     with open(output_filename, 'w') as f:
         logging.info(f'Wrote {len(rows)} rows to {output_filename}')
-        json.dump({
+
+        form_data = {
             'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {rel_input_filename}',
             'created': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
+            'designations': [{
+                'designation': f"Filename: {os.path.basename(output_filename)}",
+            }, {
+                'designation': f"File path: {os.path.dirname(rel_input_filename)}"
+            }],
             'formElements': list(map(convert_question_to_formelement, rows)),
-        }, f, indent=2)
+        }
+
+        form_data['designations'].extend(list(map(lambda name: {'designation': name}, list(set([row['CRF Name'] for row in rows if row['CRF Name'] != ''])))))
+
+        json.dump(form_data, f, indent=2)
 
 
 iterator = os.walk(input_dir, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
