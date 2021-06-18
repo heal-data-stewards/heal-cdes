@@ -88,6 +88,17 @@ def convert_question_to_formelement(row):
             'designation': f"Additional notes (question text): {row.get('Additional Notes (Question Text)')}"
         })
 
+    ids = []
+    if row.get('External Id CDISC') is not None and row.get('External Id CDISC') != '':
+        ids.append({
+            'source': 'NCIT',
+            'id': row.get('External Id CDISC')
+        })
+        ids.append({
+            'source': 'NCIT_URL',
+            'id': f"https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code={row.get('External Id CDISC')}"
+        })
+
     form_element = {
         'elementType': 'question',
         'label': row.get('Additional Notes (Question Text)', ''),
@@ -99,6 +110,7 @@ def convert_question_to_formelement(row):
                     'designations': designations
                 },
                 'datatype': row.get('Data Type'),
+                'ids': ids,
                 'permissibleValues': convert_permissible_values(row)
             }
         }
