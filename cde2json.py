@@ -90,14 +90,16 @@ def convert_question_to_formelement(row):
 
     ids = []
     if row.get('External Id CDISC') is not None and row.get('External Id CDISC') != '':
+        cdisc_id = row.get('External Id CDISC')
         ids.append({
             'source': 'NCIT',
-            'id': row.get('External Id CDISC')
+            'id': cdisc_id
         })
-        ids.append({
-            'source': 'NCIT_URL',
-            'id': f"https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code={row.get('External Id CDISC')}"
-        })
+        if re.compile(r'^C\d+$').match(cdisc_id):
+            ids.append({
+                'source': 'NCIT_URL',
+                'id': f"https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code={cdisc_id}"
+            })
 
     form_element = {
         'elementType': 'question',
