@@ -221,6 +221,9 @@ def convert_xlsx_to_json(input_filename) -> None:
             if cde_name is not None and cde_name != '':
                 rows.append(data)
 
+    if len(rows) == 0:
+        logging.warning(f'No form elements found in {input_filename}')
+
     # Write the entire thing to JSON for now.
     # We use this schema: https://cde.nlm.nih.gov/schema/form
     with open(output_filename, 'w') as f:
