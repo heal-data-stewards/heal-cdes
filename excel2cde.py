@@ -9,7 +9,6 @@ import pylightxl
 
 # Add logging support
 import logging
-logging.basicConfig(level=logging.INFO)
 
 # We read config from `.env`.
 import os
@@ -19,6 +18,9 @@ config = {
     **dotenv_values(".env"),         # override with user-specific® configuration
     **os.environ,                    # override loaded values with environment variables
 }
+
+# Set up logging.
+logging.basicConfig(level=logging.INFO)
 
 # Read this program's "version" from git describe.
 version = subprocess.check_output(["git", "describe", "--all"]).strip()
