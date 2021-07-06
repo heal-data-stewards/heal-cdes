@@ -36,6 +36,30 @@ if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 logging.debug(f'Output directory: {output_dir}')
 
+# Helper method: the Excel files refer to the same columns by different names.
+# We handle the retrieval process here.
+def get_value(row: dict[str, str], key: str) -> str:
+    """
+    Return the value for a particular key in a particular row.
+    Since some files use alternate spellings of a particular name, we test those here.
+
+    :param row: The row from which the value should be retrieved.
+    :param key: The string key value to use to retrieve the value.
+    :return: The value corresponding to that key in the input row.
+    """
+
+    if key in row:
+        return row[key]
+
+    if key == 'External Id CDISC':
+        return row.get('External ID CDISC')
+
+    if key == 'CDE Name':
+        return row.get('Data Element Name')
+
+    return None
+
+
 def convert_permissible_values(row):
     values = str(row.get('Permissible Values')).strip()
     descriptions = str(row.get('PV Description')).strip()
@@ -63,7 +87,7 @@ def convert_question_to_formelement(row):
     #   - CRF Question #
 
     # Skip the CDISC warning line.
-    if row.get('CDE Name').startswith('This CDE detail form is not CDISC compliant.'):
+    if get_value(row, 'CDE Name').startswith('This CDE detail form is not CDISC compliant.'):
         return None
 
     definitions = []
@@ -96,8 +120,9 @@ def convert_question_to_formelement(row):
         })
 
     ids = []
-    if row.get('External Id CDISC') is not None and row.get('External Id CDISC') != '':
-        cdisc_id = row.get('External Id CDISC')
+    external_id_cdisc = get_value(row, 'External Id CDISC')
+    if external_id_cdisc is not None and external_id_cdisc != '':
+        cdisc_id = external_id_cdisc
         ids.append({
             'source': 'NCIT',
             'id': cdisc_id
@@ -113,7 +138,7 @@ def convert_question_to_formelement(row):
         'label': row.get('Additional Notes (Question Text)', ''),
         'question': {
             'cde': {
-                'name': row.get('CDE Name'),
+                'name': get_value(row, 'CDE Name'),
                 'newCde': {
                     'definitions': definitions,
                     'designations': designations
@@ -165,7 +190,7 @@ def convert_xlsx_to_json(input_filename):
             cols = row
         else:
             data = dict(zip(cols, row))
-            cde_name = data.get('CDE Name')
+            cde_name = get_value(data, 'CDE Name')
             if cde_name is not None and cde_name != '':
                 rows.append(data)
 
