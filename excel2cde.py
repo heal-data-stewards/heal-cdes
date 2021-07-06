@@ -36,6 +36,7 @@ if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 logging.debug(f'Output directory: {output_dir}')
 
+
 # Helper method: the Excel files refer to the same columns by different names.
 # We handle the retrieval process here.
 def get_value(row: dict[str, str], key: str):
