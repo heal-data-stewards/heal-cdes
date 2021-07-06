@@ -38,7 +38,7 @@ logging.debug(f'Output directory: {output_dir}')
 
 # Helper method: the Excel files refer to the same columns by different names.
 # We handle the retrieval process here.
-def get_value(row: dict[str, str], key: str) -> str:
+def get_value(row: dict[str, str], key: str):
     """
     Return the value for a particular key in a particular row.
     Since some files use alternate spellings of a particular name, we test those here.
