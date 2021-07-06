@@ -59,6 +59,11 @@ def convert_permissible_values(row):
 def convert_question_to_formelement(row):
     # Fields being dropped:
     #   - CRF Question #
+
+    # Skip the CDISC warning line.
+    if row.get('CDE Name').startswith('This CDE detail form is not CDISC compliant.'):
+        return None
+
     definitions = []
     if row.get('Definition') is not None and row.get('Definition') != '':
         if row.get('Disease Specific References') is not None and row.get('Disease Specific References') != '':
@@ -175,7 +180,7 @@ def convert_xlsx_to_json(input_filename):
             }, {
                 'designation': f"File path: {os.path.dirname(rel_input_filename)}"
             }],
-            'formElements': list(map(convert_question_to_formelement, rows)),
+            'formElements': list(filter(lambda e: e is not None, map(convert_question_to_formelement, rows))),
         }
 
         form_data['designations'].extend(list(map(lambda name: {'designation': name}, list(set([row['CRF Name'] for row in rows if row['CRF Name'] != ''])))))
