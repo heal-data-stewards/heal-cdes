@@ -197,6 +197,12 @@ def convert_xlsx_to_json(input_filename) -> None:
         logging.error(f'Skipping {input_filename}: too many sheets ({db.ws_names})')
         return
 
+    sheet1: pylightxl.pylightxl.Worksheet = db.ws(db.ws_names[0])
+
+    if sheet1.address(address='A1') == 'Locating Supplemental Questionnaires on the NIH Box Account':
+        logging.warning(f'Skipping {input_filename}: this is the list of supplemental questionnaires')
+        return
+
     rel_input_filename = os.path.relpath(input_filename, input_dir)
     output_filename = os.path.join(output_dir, os.path.splitext(rel_input_filename)[0] + '.json')
     dirname = os.path.dirname(output_filename)
@@ -204,10 +210,9 @@ def convert_xlsx_to_json(input_filename) -> None:
         os.makedirs(dirname)
     logging.info(f'Writing {input_filename} to {output_filename}')
 
-    sheet1 = db.ws_names[0]
     cols = None
     rows = []
-    for row in db.ws(sheet1).rows:
+    for row in sheet1.rows:
         if cols is None:
             cols = row
         else:
