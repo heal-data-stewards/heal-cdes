@@ -61,6 +61,12 @@ def get_value(row: dict[str, str], key: str) -> str:
 
 
 def convert_permissible_values(row):
+    """
+    Convert permissible values into a list of permissible values as
+
+    :param row:
+    :return:
+    """
     values = str(row.get('Permissible Values')).strip()
     descriptions = str(row.get('PV Description')).strip()
 
@@ -81,8 +87,16 @@ def convert_permissible_values(row):
 
     return pvs
 
+
 # Translate a question into formElements.
 def convert_question_to_formelement(row):
+    """
+    Convert an individual question to a form element.
+
+    :param row: The row containing the question to be converted.
+    :return: The form element as a dictionary representing this question, or None if none could be converted.
+    """
+
     # Fields being dropped:
     #   - CRF Question #
 
@@ -158,8 +172,16 @@ def convert_question_to_formelement(row):
 
     return form_element
 
+
 # Code to convert an XLSX file to JSON.
-def convert_xlsx_to_json(input_filename):
+def convert_xlsx_to_json(input_filename) -> None:
+    """
+    Convert an XLSX file to a JSON file. We generate the JSON filename based on the command line arguments.
+
+    :param input_filename: The XLSX filename to convert.
+    :return: Nothing.
+    """
+
     basename = os.path.basename(input_filename)
     if basename.startswith('~$'):
         # Temporary file, skip.
