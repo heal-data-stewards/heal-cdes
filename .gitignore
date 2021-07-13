@@ -1,5 +1,6 @@
 .env
 /output
+/resources # External resources.
 
 # from https://github.com/github/gitignore/blob/218a941be92679ce67d0484547e3e142b2f5f6f0/Python.gitignore
 # Byte-compiled / optimized / DLL files
