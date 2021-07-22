@@ -6,6 +6,7 @@
 import click
 import logging
 import json
+import couchdb
 
 # We read config from `.env`.
 import os
@@ -20,7 +21,7 @@ config = {
 logging.basicConfig(level=logging.INFO)
 
 
-#
+# Export a LOINC item.
 def export_item_to_loinc(entry, item, indent=1, group=None):
     item_type = item['type']
     spaces = '  ' * indent
@@ -29,6 +30,7 @@ def export_item_to_loinc(entry, item, indent=1, group=None):
     if item_type == 'group':
         for inner_item in item['item']:
             export_item_to_loinc(entry, inner_item, indent + 1, group)
+
 
 # Export a LOINC JSON file to a CouchDB for querying.
 def export_entries_to_loinc(json_filename):
@@ -62,6 +64,12 @@ def export_entries_to_loinc(json_filename):
 ))
 def main(input):
     input_path = click.format_filename(input)
+
+    # Set up CouchDB access.
+    logging.info('Connecting to CouchDB...')
+    couch = couchdb.Server(config['COUCHDB_URL'])
+    db = couch[config['COUCHDB_DATABASE']]
+    logging.info(f"Connected to CouchDB database: {db}")
 
     if os.path.isfile(input_path):
         export_entries_to_loinc(input_path)

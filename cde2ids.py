@@ -1,15 +1,8 @@
 # So, our goal is as follows:
-#   1. We assume that each file corresponds to a single CRF.
-#   2. We search for the form name on several online repositories:
-#       - caDSR
-#       - LOINC
-#       - (additional if needed)
-#   3. We compare the list of questions we have with the list of questions.
-#       - For now, we make NO further checks, although we'll probably add some eventually.
-#   4. We generate a CSV file indicating:
-#       - Our CRF and number of questions
-#       - The mapped CRF, its identifier, and the number of questions
-#       - The number of questions that are verbatim identical to the ones we have
+#   1. For every CDE in every JSON file, look for a CDE in a local database that are similar to
+#      several input resources.
+#   2.
+#
 
 # Python libraries
 import json
