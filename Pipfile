@@ -9,6 +9,7 @@ pylightxl = "*"
 jsonschema = "*"
 click = "*"
 couchdb = "*"
+nltk = "*"
 
 [dev-packages]
 

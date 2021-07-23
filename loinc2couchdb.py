@@ -5,10 +5,12 @@
 
 import re
 import uuid
-
-import click
 import logging
 import json
+
+import click
+import nltk
+from nltk.corpus import stopwords
 import couchdb
 
 # We read config from `.env`.
@@ -29,6 +31,9 @@ couch = couchdb.Server(config['COUCHDB_URL'])
 db = couch[config['COUCHDB_DATABASE']]
 logging.info(f"Connected to CouchDB database: {db}")
 
+# Set up NLTK
+nltk.download('stopwords')
+
 
 # Retrieve an ID from the code.
 def get_ids(codes):
@@ -48,18 +53,21 @@ def export_item_to_loinc(entry, item, indent=1, group=None):
     spaces = '  ' * indent
     print(f"{spaces} - Item of type {item_type}: \"{item['text']}\"")
 
+    stop_words = stopwords.words('english')
+
     if 'code' in item:
         # Export this item to LOINC.
         doc_id = f"question:{get_ids(item['code'])[0]}"
         print(f"Doc ID: {doc_id}")
 
-        tags = sorted(re.split('\\W+', item['text'].lower()))
+        all_tags = sorted(re.split('\\W+', item['text'].lower()))
+        # tags = list(filter(lambda tag: tag not in stop_words, all_tags))
         db.update([
             couchdb.Document(
                 _id=doc_id,
                 source='loinc',
                 question=item['text'],
-                tags=tags
+                tags=all_tags
             )
         ])
 
