@@ -3,6 +3,9 @@
 # loinc2couchdb.py - A program for loading LOINC data into a CouchDB instance for querying.
 #
 
+import re
+import uuid
+
 import click
 import logging
 import json
@@ -20,12 +23,45 @@ config = {
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 
+# Set up CouchDB
+logging.info('Connecting to CouchDB...')
+couch = couchdb.Server(config['COUCHDB_URL'])
+db = couch[config['COUCHDB_DATABASE']]
+logging.info(f"Connected to CouchDB database: {db}")
+
+
+# Retrieve an ID from the code.
+def get_ids(codes):
+    if codes is None or len(codes) == 0:
+        return [uuid.UUID.hex]
+
+    ids = []
+    for code in codes:
+        ids.append(f"{code['system']}/{code['code']}")
+
+    return ids
+
 
 # Export a LOINC item.
 def export_item_to_loinc(entry, item, indent=1, group=None):
     item_type = item['type']
     spaces = '  ' * indent
     print(f"{spaces} - Item of type {item_type}: \"{item['text']}\"")
+
+    if 'code' in item:
+        # Export this item to LOINC.
+        doc_id = f"question:{get_ids(item['code'])[0]}"
+        print(f"Doc ID: {doc_id}")
+
+        tags = sorted(re.split('\\W+', item['text'].lower()))
+        db.update([
+            couchdb.Document(
+                _id=doc_id,
+                source='loinc',
+                question=item['text'],
+                tags=tags
+            )
+        ])
 
     if item_type == 'group':
         for inner_item in item['item']:
@@ -65,11 +101,13 @@ def export_entries_to_loinc(json_filename):
 def main(input):
     input_path = click.format_filename(input)
 
-    # Set up CouchDB access.
-    logging.info('Connecting to CouchDB...')
-    couch = couchdb.Server(config['COUCHDB_URL'])
-    db = couch[config['COUCHDB_DATABASE']]
-    logging.info(f"Connected to CouchDB database: {db}")
+    founds_docs = db.find({
+        'selector': {
+            'source': 'loinc'
+        }
+    })
+    db.purge(founds_docs)
+    logging.info(f"Deleted {len([founds_docs])} existing LOINC documents in CouchDB")
 
     if os.path.isfile(input_path):
         export_entries_to_loinc(input_path)
