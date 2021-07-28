@@ -6,8 +6,11 @@
 
 # Python libraries
 import json
-import click
 import csv
+import re
+
+import couchdb
+import click
 
 # Add logging support
 import logging
@@ -23,8 +26,64 @@ config = {
 }
 
 
+# Set up CouchDB
+logging.info('Connecting to CouchDB...')
+couch = couchdb.Server(config['COUCHDB_URL'])
+db = couch[config['COUCHDB_DATABASE']]
+logging.info(f"Connected to CouchDB database: {db}")
+
+
 # Search for mappings to a particular CDE
 def find_mappings(cde):
+    """
+    :param cde:
+    :return: Should return either an empty list or a list containing a dict in the shape: {
+        'id': '???',
+        'url': '???',
+        'name': '???',
+        'pvs': [{
+            'name': '???',
+            'id': '???',
+            'url': '???'
+        }, ...]
+    """
+
+    question_text = cde['label']
+
+    # TODO: uniqify this.
+    all_tags = sorted(re.split('\\W+', question_text.lower()))
+
+    # Search for all documents with any of these tags.
+    rows = db.find({
+        "selector": {
+            "tags": {
+                "$or": list(
+                    {
+                        "$elemMatch": {
+                            "$eq": tag_name
+                        }
+                    } for tag_name in all_tags
+                )
+            }
+        },
+        "fields": [
+            "_id",
+            "question",
+            "tags"
+        ]
+    })
+
+    sorted_rows = sorted(rows, key=lambda row: len(list(set(row['tags']) & set(all_tags))), reverse=True)
+
+    if not sorted_rows:
+        print(f"Question {question_text} (tags: {', '.join(all_tags)}) -- no matches found.")
+    else:
+        print(f"Question {question_text} (tags: {', '.join(all_tags)}) -- found matches:")
+        for (index, row) in enumerate(sorted_rows[0:5]):
+            print(f" - {index + 1}. {row['question']} (tags: {', '.join(row['tags'])}) -> {row['_id']}")
+
+    print(f'Searching for matches : {list(rows)}')
+
     return []
 
 # Process input commands
@@ -46,8 +105,9 @@ def main(input_dir, output):
     writer.writerow([
         'filename',
         'filepath',
-        'designation',
-        'num_questions',
+        'form_name'
+        'question_text',
+        'num_values',
         'mapped_cde_id',
         'mapped_cde_url',
         'mapped_cde_name',
@@ -69,34 +129,36 @@ def main(input_dir, output):
                 with open(filepath, 'r') as f:
                     count_files += 1
 
-                    cde = json.load(f)
-                    mappings = find_mappings(cde)
+                    crf = json.load(f)
 
-                    designations = cde['designations']
-                    last_designation = designations[-1]['designation']
-                    form_elements = cde['formElements'] or []
-                    questions = list(filter(lambda fe: fe['elementType'] == 'question', form_elements))
-                    count_elements += len(questions)
+                    for cde in crf['formElements']:
+                        mappings = find_mappings(cde)
 
-                    if len(mappings) == 0:
-                        writer.writerow([
-                            filename,
-                            filepath,
-                            last_designation,
-                            len(questions)
-                        ])
-                    else:
-                        for mapping in mappings:
+                        designations = crf['designations']
+                        last_designation = designations[-1]['designation']
+                        form_elements = crf['formElements'] or []
+                        questions = list(filter(lambda fe: fe['elementType'] == 'question', form_elements))
+                        count_elements += len(questions)
+
+                        if len(mappings) == 0:
                             writer.writerow([
                                 filename,
                                 filepath,
                                 last_designation,
-                                len(questions),
-                                mapping['id'] or '',
-                                mapping['url'] or '',
-                                mapping['name'] or '',
-                                len(mapping['questions']) or ''
+                                len(questions)
                             ])
+                        else:
+                            for mapping in mappings:
+                                writer.writerow([
+                                    filename,
+                                    filepath,
+                                    last_designation,
+                                    len(questions),
+                                    mapping['id'] or '',
+                                    mapping['url'] or '',
+                                    mapping['name'] or '',
+                                    len(mapping['questions']) or ''
+                                ])
 
     output.close()
 
