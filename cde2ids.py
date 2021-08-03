@@ -12,6 +12,8 @@ import re
 import couchdb
 import click
 
+from cdeindexing.tags import Tags
+
 # Add logging support
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -51,7 +53,7 @@ def find_mappings(cde):
     question_text = cde['label']
 
     # TODO: uniqify this.
-    all_tags = sorted(re.split('\\W+', question_text.lower()))
+    all_tags = Tags.question_text_to_tags(question_text)
 
     # Search for all documents with any of these tags.
     rows = db.find({
@@ -73,7 +75,7 @@ def find_mappings(cde):
         ]
     })
 
-    sorted_rows = sorted(rows, key=lambda row: len(list(set(row['tags']) & set(all_tags))), reverse=True)
+    sorted_rows = Tags.sort_search_results(all_tags, rows)
 
     if not sorted_rows:
         print(f"Question {question_text} (tags: {', '.join(all_tags)}) -- no matches found.")

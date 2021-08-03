@@ -16,6 +16,9 @@ import couchdb
 # We read config from `.env`.
 import os
 from dotenv import dotenv_values
+
+from cdeindexing.tags import Tags
+
 config = {
     **dotenv_values(".env.default"), # default configuration
     **dotenv_values(".env"),         # override with user-specific® configuration
@@ -58,9 +61,11 @@ def export_item_to_loinc(entry, item, indent=1, group=None):
     if 'code' in item:
         # Export this item to LOINC.
         doc_id = f"question:{get_ids(item['code'])[0]}"
-        print(f"Doc ID: {doc_id}")
+        # print(f"Doc ID: {doc_id}")
 
-        all_tags = sorted(re.split('\\W+', item['text'].lower()))
+        all_tags = Tags.question_text_to_tags(item['text'])
+        print(f"{spaces}   - Tags: {all_tags}")
+        # all_tags = sorted(re.split('\\W+', item['text'].lower()))
         # tags = list(filter(lambda tag: tag not in stop_words, all_tags))
         db.update([
             couchdb.Document(
