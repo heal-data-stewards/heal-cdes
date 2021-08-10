@@ -36,7 +36,7 @@ logging.info(f"Connected to CouchDB database: {db}")
 
 
 # Search for mappings to a particular CDE
-def find_mappings(cde):
+def find_mappings(all_tags, cde):
     """
     :param cde:
     :return: Should return either an empty list or a list containing a dict in the shape: {
@@ -53,7 +53,7 @@ def find_mappings(cde):
     question_text = cde['label']
 
     # TODO: uniqify this.
-    all_tags = Tags.question_text_to_tags(question_text)
+    question_tags = Tags.question_text_to_tags(question_text)
 
     # Search for all documents with any of these tags.
     rows = db.find({
@@ -64,7 +64,7 @@ def find_mappings(cde):
                         "$elemMatch": {
                             "$eq": tag_name
                         }
-                    } for tag_name in all_tags
+                    } for tag_name in question_tags
                 )
             }
         },
@@ -75,12 +75,12 @@ def find_mappings(cde):
         ]
     })
 
-    sorted_rows = Tags.sort_search_results(all_tags, rows)
+    sorted_rows = Tags.sort_search_results(all_tags, question_tags, rows)
 
     if not sorted_rows:
-        print(f"Question {question_text} (tags: {', '.join(all_tags)}) -- no matches found.")
+        print(f"Question {question_text} (tags: {', '.join(question_tags)}) -- no matches found.")
     else:
-        print(f"Question {question_text} (tags: {', '.join(all_tags)}) -- found matches:")
+        print(f"Question {question_text} (tags: {', '.join(question_tags)}) -- found matches:")
         for (index, row) in enumerate(sorted_rows[0:5]):
             print(f" - {index + 1}. {row['question']} (tags: {', '.join(row['tags'])}) -> {row['_id']}")
 
@@ -101,6 +101,11 @@ def find_mappings(cde):
 ))
 def main(input_dir, output):
     input_path = click.format_filename(input_dir)
+
+    # Load the tags.
+    all_tags = Tags.generate_tag_counts(db, 'question')
+    sorted_tags = dict(sorted(all_tags.items(), key=lambda item: item[1]))
+    logging.info(f"Tags detected: {sorted_tags}")
 
     # Set up the CSV writer.
     writer = csv.writer(output)
@@ -134,7 +139,7 @@ def main(input_dir, output):
                     crf = json.load(f)
 
                     for cde in crf['formElements']:
-                        mappings = find_mappings(cde)
+                        mappings = find_mappings(all_tags, cde)
 
                         designations = crf['designations']
                         last_designation = designations[-1]['designation']
