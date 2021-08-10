@@ -52,7 +52,6 @@ def find_mappings(all_tags, cde):
 
     question_text = cde['label']
 
-    # TODO: uniqify this.
     question_tags = Tags.question_text_to_tags(question_text)
 
     # Search for all documents with any of these tags.
