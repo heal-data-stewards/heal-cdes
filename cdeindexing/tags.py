@@ -3,6 +3,7 @@
 #
 
 import re
+import logging
 
 import couchdb
 
@@ -74,7 +75,7 @@ class Tags:
                 if tag in all_tags:
                     score += all_tags[tag]
 
-            print(f"Overlapping tags: {overlapping_tags} (score: {score})")
+            logging.info(f"Overlapping tags: {overlapping_tags} (score: {score})")
 
             return score
 
@@ -98,7 +99,7 @@ class Tags:
 
         dict_counts = {}
         for result in results:
-            print(result)
+            # print(result)
             tags = result['tags']
             for tag in tags:
                 if tag not in dict_counts:

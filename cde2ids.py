@@ -84,7 +84,7 @@ def find_mappings(all_tags, cde):
         for (index, row) in enumerate(sorted_rows[0:5]):
             print(f" - {index + 1}. {row['question']} (tags: {', '.join(row['tags'])}) -> {row['_id']}")
 
-    print(f'Searching for matches : {list(rows)}')
+    logging.debug(f'Searching for matches : {list(rows)}')
 
     return []
 
