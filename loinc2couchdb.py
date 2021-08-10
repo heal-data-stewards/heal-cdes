@@ -9,8 +9,6 @@ import logging
 import json
 
 import click
-import nltk
-from nltk.corpus import stopwords
 import couchdb
 
 # We read config from `.env`.
@@ -33,9 +31,6 @@ logging.info('Connecting to CouchDB...')
 couch = couchdb.Server(config['COUCHDB_URL'])
 db = couch[config['COUCHDB_DATABASE']]
 logging.info(f"Connected to CouchDB database: {db}")
-
-# Set up NLTK
-nltk.download('stopwords')
 
 
 # Retrieve an ID from the code.
