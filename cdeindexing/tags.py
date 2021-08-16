@@ -6,7 +6,7 @@ import re
 import logging
 
 import couchdb
-import nltk
+
 
 class Tags:
     tags_to_be_deleted = [
@@ -18,7 +18,11 @@ class Tags:
         'on',
         'a',
         'like',
-        'or'
+        'or',
+        'i',
+        'you',
+        'my',
+        'your'
     ]
 
     @staticmethod
