@@ -55,7 +55,7 @@ def find_mappings(all_tags, cde):
     question_tags = Tags.question_text_to_tags(question_text)
 
     # Search for all documents with any of these tags.
-    rows = db.find({
+    query = {
         "selector": {
             "tags": {
                 "$or": list(
@@ -67,21 +67,25 @@ def find_mappings(all_tags, cde):
                 )
             }
         },
+        "limit": 100000,
         "fields": [
             "_id",
             "question",
             "tags"
         ]
-    })
+    }
+    logging.debug(f'Query: {query}')
+    rows = db.find(query)
 
     sorted_rows = Tags.sort_search_results(all_tags, question_tags, rows)
 
     if not sorted_rows:
-        print(f"Question {question_text} (tags: {', '.join(question_tags)}) -- no matches found.")
+        print(f"Question: {question_text} (tags: {', '.join(question_tags)}) -- no matches found.")
     else:
-        print(f"Question {question_text} (tags: {', '.join(question_tags)}) -- found matches:")
-        for (index, row) in enumerate(sorted_rows[0:5]):
-            print(f" - {index + 1}. {row['question']} (tags: {', '.join(row['tags'])}) -> {row['_id']}")
+        print(f"Question: {question_text} (tags: {', '.join(question_tags)}) -- found matches:")
+        for (index, row) in enumerate(sorted_rows[0:10]):
+            print(f" - {index + 1}. {row['question']} (tags: {', '.join(row['tags'])}) with score {row['score']} -> {row['_id']}")
+        print()
 
     logging.debug(f'Searching for matches : {list(rows)}')
 

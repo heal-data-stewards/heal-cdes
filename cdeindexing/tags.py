@@ -6,7 +6,7 @@ import re
 import logging
 
 import couchdb
-
+import nltk
 
 class Tags:
     tags_to_be_deleted = [
@@ -16,7 +16,9 @@ class Tags:
         'to',
         'up',
         'on',
-        'a'
+        'a',
+        'like',
+        'or'
     ]
 
     @staticmethod
@@ -99,7 +101,6 @@ class Tags:
             # Here's how we calculate the score:
             #   1. Every tag counts for UP TO 1 point each, additively.
             #   2. A rare tag gets 1.0 points, a common tag gets 0.0 points.
-            #
 
             # The score depends on how rare the overlapping words is in all_tags.
             score = 0
@@ -113,7 +114,8 @@ class Tags:
             return score
 
         # TODO: prioritize rarer words
-        return sorted(rows, key=score_rows, reverse=True)
+        scored_rows = [dict(row, score=score_rows(row)) for row in rows]
+        return sorted(scored_rows, key=lambda row: row['score'], reverse=True)
 
     @staticmethod
     def generate_tag_counts(db: couchdb.Database, partition: str):
