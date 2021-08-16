@@ -38,6 +38,7 @@ logging.info(f"Connected to CouchDB database: {db}")
 # Search for mappings to a particular CDE
 def find_mappings(all_tags, cde):
     """
+    :param all_tags:
     :param cde:
     :return: Should return either an empty list or a list containing a dict in the shape: {
         'id': '???',
@@ -79,17 +80,29 @@ def find_mappings(all_tags, cde):
 
     sorted_rows = Tags.sort_search_results(all_tags, question_tags, rows)
 
+    results = []
     if not sorted_rows:
-        print(f"Question: {question_text} (tags: {', '.join(question_tags)}) -- no matches found.")
+        logging.debug(f"Question: {question_text} (tags: {', '.join(question_tags)}) -- no matches found.")
     else:
-        print(f"Question: {question_text} (tags: {', '.join(question_tags)}) -- found matches:")
+        logging.debug(f"Question: {question_text} (tags: {', '.join(question_tags)}) -- found matches:")
         for (index, row) in enumerate(sorted_rows[0:10]):
-            print(f" - {index + 1}. {row['question']} (tags: {', '.join(row['tags'])}) with score {row['score']} -> {row['_id']}")
-        print()
+            logging.debug(f" - {index + 1}. {row['question']} (tags: {', '.join(row['tags'])}) with score {row['score']} -> {row['_id']}")
 
-    logging.debug(f'Searching for matches : {list(rows)}')
+            url = str(row['_id'])
+            if url.startswith('question:'):
+                url = url[9:]
 
-    return []
+            # TODO: add the number of permissible values
+            results.append({
+                '@id': url,
+                'question': row['question'],
+                'tags': row['tags'],
+                'score': row['score'],
+            })
+
+        logging.debug('')
+
+    return results
 
 # Process input commands
 @click.command()
@@ -108,21 +121,26 @@ def main(input_dir, output):
     # Load the tags.
     all_tags = Tags.generate_tag_counts(db, 'question')
     sorted_tags = dict(sorted(all_tags.items(), key=lambda item: item[1]))
-    logging.info(f"Tags detected: {sorted_tags}")
+    logging.debug(f"Tags detected: {sorted_tags}")
 
     # Set up the CSV writer.
     writer = csv.writer(output)
-    writer.writerow([
+    header_row = [
         'filename',
         'filepath',
-        'form_name'
+        'form_name',
         'question_text',
-        'num_values',
-        'mapped_cde_id',
-        'mapped_cde_url',
-        'mapped_cde_name',
-        'mapped_cde_num_questions'
-    ])
+        'pv_count'
+    ]
+
+    for index in range(1, 6):
+        header_row.extend([
+            f'match_{index}',
+            f'match_{index}_question',
+            f'match_{index}_pv_count',
+            f'match_{index}_notes'
+        ])
+    writer.writerow(header_row)
 
     count_files = 0
     count_elements = 0
@@ -146,29 +164,34 @@ def main(input_dir, output):
 
                         designations = crf['designations']
                         last_designation = designations[-1]['designation']
-                        form_elements = crf['formElements'] or []
-                        questions = list(filter(lambda fe: fe['elementType'] == 'question', form_elements))
-                        count_elements += len(questions)
+
+                        question = crf['label']
 
                         if len(mappings) == 0:
                             writer.writerow([
                                 filename,
                                 filepath,
                                 last_designation,
-                                len(questions)
+                                question,
+                                0
                             ])
                         else:
-                            for mapping in mappings:
-                                writer.writerow([
-                                    filename,
-                                    filepath,
-                                    last_designation,
-                                    len(questions),
-                                    mapping['id'] or '',
-                                    mapping['url'] or '',
-                                    mapping['name'] or '',
-                                    len(mapping['questions']) or ''
+                            row = [
+                                filename,
+                                filepath,
+                                last_designation,
+                                question,
+                                ''
+                            ]
+                            for mapping in mappings[:6]:
+                                row.extend([
+                                    mapping['@id'] or '',
+                                    mapping['question'] or '',
+                                    '',
+                                    ''
                                 ])
+
+                            writer.writerow(row)
 
     output.close()
 
