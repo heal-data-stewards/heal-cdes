@@ -165,7 +165,7 @@ def main(input_dir, output):
                         designations = crf['designations']
                         last_designation = designations[-1]['designation']
 
-                        question = crf['label']
+                        question = cde['label']
 
                         if len(mappings) == 0:
                             writer.writerow([
