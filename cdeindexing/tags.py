@@ -102,6 +102,11 @@ class Tags:
             set_query_tags = set(query_tags)
             overlapping_tags = list(set_row_tags & set_query_tags)
 
+            # If we only have a single overlapping tag, it can't *possibly* be relevant.
+            # So let's just skip it.
+            if len(overlapping_tags) < 2:
+                return 0
+
             # Here's how we calculate the score:
             #   1. Every tag counts for UP TO 1 point each, additively.
             #   2. A rare tag gets 1.0 points, a common tag gets 0.0 points.
