@@ -30,6 +30,16 @@ config = {
     **os.environ,                    # override loaded values with environment variables
 }
 
+# Look up identifiers
+#{ 'url',
+#        'label',
+#        'definition',
+#        'semantic_type',
+#        'mappings'
+#}
+def get_id_infos(question):
+    return []
+
 # Process input commands
 @click.command()
 @click.option('--output', '-o', type=click.File(
@@ -50,11 +60,13 @@ def main(input_dir, output):
         'filename',
         'filepath',
         'designation',
-        'num_questions',
-        'mapped_cde_id',
-        'mapped_cde_url',
-        'mapped_cde_name',
-        'mapped_cde_num_questions'
+        'question',
+        'pv_count',
+        'url',
+        'label',
+        'definition',
+        'semantic_type',
+        'mappings'
     ])
 
     count_files = 0
@@ -72,34 +84,43 @@ def main(input_dir, output):
                 with open(filepath, 'r') as f:
                     count_files += 1
 
-                    cde = json.load(f)
-                    mappings = [] # TODO Add here.
+                    crf = json.load(f)
 
-                    designations = cde['designations']
+                    designations = crf['designations']
                     last_designation = designations[-1]['designation']
-                    form_elements = cde['formElements'] or []
-                    questions = list(filter(lambda fe: fe['elementType'] == 'question', form_elements))
-                    count_elements += len(questions)
 
-                    if len(mappings) == 0:
-                        writer.writerow([
-                            filename,
-                            filepath,
-                            last_designation,
-                            len(questions)
-                        ])
-                    else:
-                        for mapping in mappings:
+                    for cde in crf['formElements']:
+                        id_infos = get_id_infos(cde)
+
+                        count_elements += 1
+                        question = cde['question'] or {}
+                        innerCde = question['cde'] or {}
+                        pv_count = len(innerCde['permissibleValues'] or [])
+
+                        question = cde['label']
+
+                        if len(id_infos) == 0:
                             writer.writerow([
                                 filename,
                                 filepath,
                                 last_designation,
-                                len(questions),
-                                mapping['id'] or '',
-                                mapping['url'] or '',
-                                mapping['name'] or '',
-                                len(mapping['questions']) or ''
+                                question,
+                                pv_count
                             ])
+                        else:
+                            for id_info in id_infos:
+                                writer.writerow([
+                                    filename,
+                                    filepath,
+                                    last_designation,
+                                    question,
+                                    pv_count,
+                                    id_info['url'] or '',
+                                    id_info['label'] or '',
+                                    id_info['definition'] or '',
+                                    id_info['semantic_type'] or '',
+                                    id_info['mappings_as_str'] or ''
+                                ])
 
     output.close()
 
