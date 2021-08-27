@@ -30,15 +30,37 @@ config = {
     **os.environ,                    # override loaded values with environment variables
 }
 
+# { 'url',
+#        'label',
+#        'definition',
+#        'type',
+#        'mappings_as_str'
+# }
+def get_ncit_info(id):
+    return [{
+        'id': id
+    }]
+
 # Look up identifiers
 #{ 'url',
 #        'label',
 #        'definition',
-#        'semantic_type',
-#        'mappings'
+#        'type',
+#        'mappings_as_str'
 #}
-def get_id_infos(question):
-    return []
+def get_id_infos(element):
+    question = element['question']
+    cde = question['cde']
+    ids = cde['ids']
+
+    results = []
+    for id in ids:
+        if id['source'] == 'NCIT':
+            results.extend(get_ncit_info(id['id']))
+        else:
+            logging.warning(f"No lookup method for ID of type {id['source']}")
+
+    return results
 
 # Process input commands
 @click.command()
@@ -89,22 +111,22 @@ def main(input_dir, output):
                     designations = crf['designations']
                     last_designation = designations[-1]['designation']
 
-                    for cde in crf['formElements']:
-                        id_infos = get_id_infos(cde)
+                    for element in crf['formElements']:
+                        id_infos = get_id_infos(element)
 
                         count_elements += 1
-                        question = cde['question'] or {}
-                        innerCde = question['cde'] or {}
-                        pv_count = len(innerCde['permissibleValues'] or [])
+                        question = element['question']
+                        cde = question['cde']
+                        pv_count = len(cde['permissibleValues'])
 
-                        question = cde['label']
+                        question_text = element['label']
 
                         if len(id_infos) == 0:
                             writer.writerow([
                                 filename,
                                 filepath,
                                 last_designation,
-                                question,
+                                question_text,
                                 pv_count
                             ])
                         else:
@@ -113,13 +135,13 @@ def main(input_dir, output):
                                     filename,
                                     filepath,
                                     last_designation,
-                                    question,
+                                    question_text,
                                     pv_count,
-                                    id_info['url'] or '',
-                                    id_info['label'] or '',
-                                    id_info['definition'] or '',
-                                    id_info['semantic_type'] or '',
-                                    id_info['mappings_as_str'] or ''
+                                    id_info.get('url') or '',
+                                    id_info.get('label') or '',
+                                    id_info.get('definition') or '',
+                                    id_info.get('type') or '',
+                                    id_info.get('mappings_as_str') or ''
                                 ])
 
     output.close()
