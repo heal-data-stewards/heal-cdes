@@ -115,16 +115,18 @@ def main(input_dir, output):
 
                         question_text = element['label']
 
-                        writer.writerow([
-                            filename,
-                            filepath,
-                            last_designation,
-                            question_text,
-                            ''
-                        ])
-
-                        for pv in cde['permissibleValues']:
-                            pv_value = pv['permissibleValue']
+                        pvs = cde['permissibleValues']
+                        if len(pvs) == 0:
+                            writer.writerow([
+                                filename,
+                                filepath,
+                                last_designation,
+                                question_text,
+                                ''
+                            ])
+                        elif len(pvs) == 1:
+                            pv = pvs[0]
+                            pv_definition = pv.get('valueMeaningDefinition') or pv.get('permissibleValue')
                             pv_result = verify_pv(crf, cde, pv)
 
                             writer.writerow([
@@ -132,8 +134,27 @@ def main(input_dir, output):
                                 filepath,
                                 last_designation,
                                 question_text,
-                                pv_value
+                                pv_definition
                             ])
+                        else:
+                            writer.writerow([
+                                filename,
+                                filepath,
+                                last_designation,
+                                question_text,
+                                ''
+                            ])
+
+                            for pv in pvs:
+                                pv_definition = pv.get('valueMeaningDefinition') or pv.get('permissibleValue')
+                                pv_result = verify_pv(crf, cde, pv)
+                                writer.writerow([
+                                    filename,
+                                    filepath,
+                                    last_designation,
+                                    question_text,
+                                    pv_definition
+                                ])
 
     output.close()
 
