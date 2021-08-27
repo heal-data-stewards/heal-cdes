@@ -30,6 +30,21 @@ config = {
     **os.environ,                    # override loaded values with environment variables
 }
 
+
+# Verify a CRF (no need to iterate into CDEs)
+def verify_crf(crf):
+    return []
+
+
+# Verify a CDE (no need to iterate into PVs)
+def verify_element(crf, element):
+    return []
+
+
+# Verify a PV
+def verify_pv(crf, element, pv):
+    return []
+
 # Process input commands
 @click.command()
 @click.option('--output', '-o', type=click.File(
@@ -76,41 +91,49 @@ def main(input_dir, output):
 
                     crf = json.load(f)
 
+                    crf_result = verify_crf(crf)
+
                     designations = crf['designations']
                     last_designation = designations[-1]['designation']
 
+                    writer.writerow([
+                        filename,
+                        filepath,
+                        last_designation,
+                        '',
+                        ''
+                    ])
+
                     for element in crf['formElements']:
+                        element_result = verify_element(crf, element)
+
                         id_infos = [] # get_id_infos(element)
 
                         count_elements += 1
                         question = element['question']
                         cde = question['cde']
-                        pv_count = len(cde['permissibleValues'])
 
                         question_text = element['label']
 
-                        if len(id_infos) == 0:
+                        writer.writerow([
+                            filename,
+                            filepath,
+                            last_designation,
+                            question_text,
+                            ''
+                        ])
+
+                        for pv in cde['permissibleValues']:
+                            pv_value = pv['permissibleValue']
+                            pv_result = verify_pv(crf, cde, pv)
+
                             writer.writerow([
                                 filename,
                                 filepath,
                                 last_designation,
                                 question_text,
-                                pv_count
+                                pv_value
                             ])
-                        else:
-                            for id_info in id_infos:
-                                writer.writerow([
-                                    filename,
-                                    filepath,
-                                    last_designation,
-                                    question_text,
-                                    pv_count,
-                                    id_info.get('url') or '',
-                                    id_info.get('label') or '',
-                                    id_info.get('definition') or '',
-                                    id_info.get('type') or '',
-                                    id_info.get('mappings_as_str') or ''
-                                ])
 
     output.close()
 
