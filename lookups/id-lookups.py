@@ -16,6 +16,8 @@
 import json
 import click
 import csv
+import requests
+import xml.etree.ElementTree as ET
 
 # Add logging support
 import logging
@@ -36,10 +38,29 @@ config = {
 #        'type',
 #        'mappings_as_str'
 # }
-def get_ncit_info(id):
-    return [{
-        'id': id
-    }]
+def get_ncit_info(ncit_id):
+    r = requests.get(f'https://lexevscts2.nci.nih.gov/lexevscts2/codesystem/NCI_Thesaurus/entity/{ncit_id}')
+    logging.debug(f'Request result: {r.text}')
+
+    result = ET.fromstring(r.text)
+    logging.debug(f'Entity: {result}')
+
+    named_entities = result.findall('./EntityDescription')
+    if len(named_entities) == 0:
+        raise RuntimeError(f'Could not find namedEntity in {result}: {r.text}')
+
+    results = []
+    for named_entity in named_entities:
+        logging.info(f'Named entity: {named_entity}')
+        definitions = named_entity.findall('./definition')
+
+        for definition in definitions:
+            results.append({
+                'id': ncit_id,
+                'definition': definition.find('core:value').text
+            })
+
+    return results
 
 # Look up identifiers
 #{ 'url',
