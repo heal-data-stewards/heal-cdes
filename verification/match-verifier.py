@@ -17,6 +17,8 @@ import json
 import click
 import csv
 
+import requests
+
 # Add logging support
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -30,20 +32,73 @@ config = {
     **os.environ,                    # override loaded values with environment variables
 }
 
+# Mapping result format:
+#   mapped_id: The CDE this CRF/CDE/PV was mapped to.
+
+
+# Retrieve info for a LOINC entry.
+def retrieve_data_from_loinc(loinc_id):
+    result = requests.get(
+        f'https://fhir.loinc.org/Questionnaire/?url=http://loinc.org/q/{loinc_id}',
+        auth=(
+            config['LOINC_USERNAME'],
+            config['LOINC_PASSWORD']
+        )
+    )
+
+    questionnaire = result.json()
+    entry = questionnaire['entry'][0]
+    resource = entry['resource']
+
+    return {
+        'mapped_id': entry['fullUrl'],
+        'mapped_text': resource['title'],
+        'mapped_copyright': resource['copyright']
+    }
+
+
+# Retrieve info for a particular URL
+def retrieve_url(url_raw: str):
+    url = url_raw.strip()
+    if url.startswith('https://loinc.org/'):
+        if url.endswith('/'):
+            return retrieve_data_from_loinc(url[18:-1])
+        else:
+            return retrieve_data_from_loinc(url[18:])
+    if url.startswith('http://loinc.org/'):
+        if url.endswith('/'):
+            return retrieve_data_from_loinc(url[17:-1])
+        else:
+            return retrieve_data_from_loinc(url[17:])
+    return {}
+
+
+# Retrieve info for a particular row
+def retrieve_data(mapped_cde):
+    if (mapped_cde.get('Exact match URL') or '') != '':
+        data = retrieve_url(mapped_cde.get('Exact match URL'))
+        if (data.get('mapped_id') or '') != '':
+            return data
+    if (mapped_cde.get('Close match URL') or '') != '':
+        data = retrieve_url(mapped_cde.get('Close match URL'))
+        if (data.get('mapped_id') or '') != '':
+            return data
+    return {}
+
 
 # Verify a CRF (no need to iterate into CDEs)
-def verify_crf(crf):
-    return []
+def verify_crf(mapped_cde, crf):
+    return retrieve_data(mapped_cde)
 
 
 # Verify a CDE (no need to iterate into PVs)
-def verify_element(crf, element):
-    return []
+def verify_element(mapped_cde, crf, element):
+    return {}
 
 
 # Verify a PV
-def verify_pv(crf, element, pv):
-    return []
+def verify_pv(mapped_cde, crf, element, pv):
+    return {}
 
 # Process input commands
 @click.command()
@@ -56,8 +111,21 @@ def verify_pv(crf, element, pv):
     dir_okay=True,
     allow_dash=False
 ))
-def main(input_dir, output):
+@click.argument('cde-mappings-csv', type=click.Path(
+    exists=True,
+    file_okay=True,
+    dir_okay=False,
+    allow_dash=False
+))
+def main(input_dir, output, cde_mappings_csv):
     input_path = click.format_filename(input_dir)
+    csv_table_path = click.format_filename(cde_mappings_csv)
+
+    # Read the CSV table.
+    cde_mappings = {}
+    with open(csv_table_path, 'r') as f:
+        for row in csv.DictReader(f):
+            cde_mappings[row['Filename']] = row
 
     # Set up the CSV writer.
     writer = csv.writer(output)
@@ -66,12 +134,10 @@ def main(input_dir, output):
         'filepath',
         'designation',
         'question',
-        'pv_count',
-        'url',
-        'label',
-        'definition',
-        'semantic_type',
-        'mappings'
+        'permissible_value',
+        'mapped_id',
+        'mapped_text',
+        'mapped_copyright'
     ])
 
     count_files = 0
@@ -91,7 +157,11 @@ def main(input_dir, output):
 
                     crf = json.load(f)
 
-                    crf_result = verify_crf(crf)
+                    mapped_cde = {}
+                    if filename in cde_mappings:
+                        mapped_cde = cde_mappings[filename]
+
+                    crf_result = verify_crf(mapped_cde, crf)
 
                     designations = crf['designations']
                     last_designation = designations[-1]['designation']
@@ -101,11 +171,14 @@ def main(input_dir, output):
                         filepath,
                         last_designation,
                         '',
-                        ''
+                        '',
+                        crf_result.get('mapped_id') or '',
+                        crf_result.get('mapped_text') or '',
+                        crf_result.get('mapped_copyright') or ''
                     ])
 
                     for element in crf['formElements']:
-                        element_result = verify_element(crf, element)
+                        element_result = verify_element(mapped_cde, crf, element)
 
                         id_infos = [] # get_id_infos(element)
 
@@ -122,19 +195,10 @@ def main(input_dir, output):
                                 filepath,
                                 last_designation,
                                 question_text,
-                                ''
-                            ])
-                        elif len(pvs) == 1:
-                            pv = pvs[0]
-                            pv_definition = pv.get('valueMeaningDefinition') or pv.get('permissibleValue')
-                            pv_result = verify_pv(crf, cde, pv)
-
-                            writer.writerow([
-                                filename,
-                                filepath,
-                                last_designation,
-                                question_text,
-                                pv_definition
+                                '',
+                                element_result.get('mapped_id') or '',
+                                element_result.get('mapped_text') or '',
+                                element_result.get('mapped_copyright') or ''
                             ])
                         else:
                             writer.writerow([
@@ -142,18 +206,24 @@ def main(input_dir, output):
                                 filepath,
                                 last_designation,
                                 question_text,
-                                ''
+                                '',
+                                element_result.get('mapped_id') or '',
+                                element_result.get('mapped_text') or '',
+                                element_result.get('mapped_copyright') or ''
                             ])
 
                             for pv in pvs:
                                 pv_definition = pv.get('valueMeaningDefinition') or pv.get('permissibleValue')
-                                pv_result = verify_pv(crf, cde, pv)
+                                pv_result = verify_pv(mapped_cde, crf, cde, pv)
                                 writer.writerow([
                                     filename,
                                     filepath,
                                     last_designation,
                                     question_text,
-                                    pv_definition
+                                    pv_definition,
+                                    pv_result.get('mapped_id') or '',
+                                    pv_result.get('mapped_text') or '',
+                                    pv_result.get('mapped_copyright') or ''
                                 ])
 
     output.close()
