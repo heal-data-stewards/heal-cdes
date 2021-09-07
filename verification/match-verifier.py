@@ -37,7 +37,11 @@ config = {
 
 
 # Retrieve info for a LOINC entry.
+loinc_records = {}
 def retrieve_data_from_loinc(loinc_id):
+    if loinc_id in loinc_records:
+        return loinc_records[loinc_id]
+
     result = requests.get(
         f'https://fhir.loinc.org/Questionnaire/?url=http://loinc.org/q/{loinc_id}',
         auth=(
@@ -46,15 +50,11 @@ def retrieve_data_from_loinc(loinc_id):
         )
     )
 
-    questionnaire = result.json()
-    entry = questionnaire['entry'][0]
-    resource = entry['resource']
+    result_json = result.json()
+    result_json['@id'] = f'LOINC:{loinc_id}'
+    loinc_records[loinc_id] = result_json
 
-    return {
-        'mapped_id': entry['fullUrl'],
-        'mapped_text': resource['title'],
-        'mapped_copyright': resource['copyright']
-    }
+    return result_json
 
 
 # Retrieve info for a particular URL
@@ -77,22 +77,50 @@ def retrieve_url(url_raw: str):
 def retrieve_data(mapped_cde):
     if (mapped_cde.get('Exact match URL') or '') != '':
         data = retrieve_url(mapped_cde.get('Exact match URL'))
-        if (data.get('mapped_id') or '') != '':
+        if (data.get('@id') or '') != '':
             return data
     if (mapped_cde.get('Close match URL') or '') != '':
         data = retrieve_url(mapped_cde.get('Close match URL'))
-        if (data.get('mapped_id') or '') != '':
+        if (data.get('@id') or '') != '':
             return data
     return {}
 
 
 # Verify a CRF (no need to iterate into CDEs)
 def verify_crf(mapped_cde, crf):
-    return retrieve_data(mapped_cde)
+    data = retrieve_data(mapped_cde)
 
+    if (data.get('@id') or '') != '':
+        questionnaire = data
+        entry = questionnaire['entry'][0]
+        resource = entry['resource']
+
+        return {
+            'mapped_id': entry['fullUrl'],
+            'mapped_text': resource['title'],
+            'mapped_copyright': resource['copyright']
+        }
+
+    return {}
 
 # Verify a CDE (no need to iterate into PVs)
 def verify_element(mapped_cde, crf, element):
+    data = retrieve_data(mapped_cde)
+
+    if (data.get('@id') or '') != '':
+        questionnaire = data
+        entry = questionnaire['entry'][0]
+        resource = entry['resource']
+        logging.info(f"Resource: {resource}")
+        items = resource.get('item') or []
+        for item in items:
+            logging.info(f"Comparing \'{item['text']}\' with \'{element['label']}\'")
+            if item['text'] == element['label']:
+                return {
+                    'mapped_id': f"{item['code'][0]['system']}/{item['code'][0]['code']}",
+                    'mapped_text': item['text']
+                }
+
     return {}
 
 
