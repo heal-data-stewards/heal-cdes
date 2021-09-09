@@ -94,11 +94,13 @@ def verify_crf(mapped_cde, crf):
         questionnaire = data
         entry = questionnaire['entry'][0]
         resource = entry['resource']
+        items = resource.get('item') or []
 
         return {
             'mapped_id': entry['fullUrl'],
             'mapped_text': resource['title'],
-            'mapped_copyright': resource['copyright']
+            'mapped_copyright': resource['copyright'],
+            'mapped_child_count': len(items)
         }
 
     return {}
@@ -116,16 +118,43 @@ def verify_element(mapped_cde, crf, element):
         for item in items:
             logging.info(f"Comparing \'{item['text']}\' with \'{element['label']}\'")
             if item['text'] == element['label']:
-                return {
+                result = {
                     'mapped_id': f"{item['code'][0]['system']}/{item['code'][0]['code']}",
                     'mapped_text': item['text']
                 }
+
+                options = item.get('answerOption') or []
+                if len(options) > 0:
+                    result['mapped_child_count'] = len(options)
+
+                return result
 
     return {}
 
 
 # Verify a PV
 def verify_pv(mapped_cde, crf, element, pv):
+    data = retrieve_data(mapped_cde)
+
+    pv_label = pv.get('valueMeaningDefinition') or pv.get('permissibleValue')
+
+    if (data.get('@id') or '') != '':
+        questionnaire = data
+        entry = questionnaire['entry'][0]
+        resource = entry['resource']
+        logging.info(f"Resource: {resource}")
+        items = resource.get('item') or []
+        for item in items:
+            logging.info(f"Comparing \'{item['text']}\' with \'{element['label']}\'")
+            if item['text'] == element['label']:
+                for option in item.get('answerOption'):
+                    vc = option['valueCoding']
+                    if vc['display'] == pv_label:
+                        return {
+                            'mapped_id': f"{vc['system']}/{vc['code']}",
+                            'mapped_text': vc['display']
+                        }
+
     return {}
 
 # Process input commands
@@ -163,9 +192,11 @@ def main(input_dir, output, cde_mappings_csv):
         'designation',
         'question',
         'permissible_value',
+        'child_count',
         'mapped_id',
         'mapped_text',
-        'mapped_copyright'
+        'mapped_copyright',
+        'mapped_child_count'
     ])
 
     count_files = 0
@@ -200,9 +231,11 @@ def main(input_dir, output, cde_mappings_csv):
                         last_designation,
                         '',
                         '',
+                        len(crf.get('formElements') or []),
                         crf_result.get('mapped_id') or '',
                         crf_result.get('mapped_text') or '',
-                        crf_result.get('mapped_copyright') or ''
+                        crf_result.get('mapped_copyright') or '',
+                        crf_result.get('mapped_child_count') or ''
                     ])
 
                     for element in crf['formElements']:
@@ -224,9 +257,11 @@ def main(input_dir, output, cde_mappings_csv):
                                 last_designation,
                                 question_text,
                                 '',
+                                0,
                                 element_result.get('mapped_id') or '',
                                 element_result.get('mapped_text') or '',
-                                element_result.get('mapped_copyright') or ''
+                                element_result.get('mapped_copyright') or '',
+                                element_result.get('mapped_child_count') or ''
                             ])
                         else:
                             writer.writerow([
@@ -235,23 +270,27 @@ def main(input_dir, output, cde_mappings_csv):
                                 last_designation,
                                 question_text,
                                 '',
+                                len(pvs),
                                 element_result.get('mapped_id') or '',
                                 element_result.get('mapped_text') or '',
-                                element_result.get('mapped_copyright') or ''
+                                element_result.get('mapped_copyright') or '',
+                                element_result.get('mapped_child_count') or ''
                             ])
 
                             for pv in pvs:
                                 pv_definition = pv.get('valueMeaningDefinition') or pv.get('permissibleValue')
-                                pv_result = verify_pv(mapped_cde, crf, cde, pv)
+                                pv_result = verify_pv(mapped_cde, crf, element, pv)
                                 writer.writerow([
                                     filename,
                                     filepath,
                                     last_designation,
                                     question_text,
                                     pv_definition,
+                                    '',
                                     pv_result.get('mapped_id') or '',
                                     pv_result.get('mapped_text') or '',
-                                    pv_result.get('mapped_copyright') or ''
+                                    pv_result.get('mapped_copyright') or '',
+                                    pv_result.get('mapped_child_count') or ''
                                 ])
 
     output.close()
