@@ -42,6 +42,12 @@ config = {
 def get_id_for_heal_crf(filename):
     return f'HEALCDE:{urllib.parse.quote(filename)}'
 
+def get_designations(element):
+    if 'designations' in element:
+        return '; '.join(map(lambda d: d['designation'], element['designations']))
+    else:
+        return ''
+
 # Retrieve info for a LOINC entry.
 loinc_records = {}
 def retrieve_data_from_loinc(loinc_id):
@@ -117,7 +123,7 @@ def verify_crf(mapped_cde, crf):
 
 # Add a CRF to KGX
 def add_crf_to_kgx(dataset, filename, mapped_cde, crf, mapped_crf):
-    crf = biolink.model.Publication(get_id_for_heal_crf(filename), crf['designations'], [
+    crf = biolink.model.Publication(get_id_for_heal_crf(filename), get_designations(crf), [
         'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988'
     ])
 
@@ -125,6 +131,8 @@ def add_crf_to_kgx(dataset, filename, mapped_cde, crf, mapped_crf):
         dataset['has_part'] = []
 
     dataset['has_part'].append(crf)
+
+    return crf
 
 
 # Verify a CDE (no need to iterate into PVs)
@@ -155,9 +163,15 @@ def verify_element(mapped_cde, crf, element):
 
 
 # Add an element to KGX
-def add_element_to_kgx(dataset, mapped_cde, crf, element, mapped_element):
-    # TODO
-    pass
+def add_element_to_kgx(biolink_crf, filename, crf_index, mapped_cde, crf, element, mapped_element):
+    cde = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}', element['label'], [
+        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
+    ])
+
+    if 'has_part' not in biolink_crf:
+        biolink_crf['has_part'] = []
+
+    biolink_crf['has_part'].append(cde)
 
 # Verify a PV
 def verify_pv(mapped_cde, crf, element, pv):
@@ -258,8 +272,7 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
                         mapped_cde = cde_mappings[filename]
 
                     crf_result = verify_crf(mapped_cde, crf)
-                    if to_kgx:
-                        add_crf_to_kgx(dataset, filename, mapped_cde, crf, crf_result)
+                    crf_in_biolink = add_crf_to_kgx(dataset, filename, mapped_cde, crf, crf_result)
 
                     designations = crf['designations']
                     last_designation = designations[-1]['designation']
@@ -277,10 +290,10 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
                         crf_result.get('mapped_child_count') or ''
                     ])
 
-                    for element in crf['formElements']:
+                    for (crf_index, element) in enumerate(crf['formElements']):
                         element_result = verify_element(mapped_cde, crf, element)
                         if to_kgx:
-                            add_element_to_kgx(dataset, mapped_cde, crf, element, element_result)
+                            add_element_to_kgx(crf_in_biolink, filename, crf_index, mapped_cde, crf, element, element_result)
 
                         id_infos = [] # get_id_infos(element)
 
