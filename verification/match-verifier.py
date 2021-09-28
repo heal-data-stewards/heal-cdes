@@ -11,11 +11,17 @@
 #       - Separate scores are included for the entity itself (CRF, CDE, PV) and the score for the containing entities.
 #   - Warnings of outdated versions being using.
 #
+# Optionally, it can write out a KGX file with the information from the input.
+#
 
 # Python libraries
 import json
 import click
 import csv
+import urllib
+from kgx.graph.base_graph import BaseGraph
+import biolink.model
+from biolinkml.dumpers import yaml_dumper
 
 import requests
 
@@ -32,9 +38,9 @@ config = {
     **os.environ,                    # override loaded values with environment variables
 }
 
-# Mapping result format:
-#   mapped_id: The CDE this CRF/CDE/PV was mapped to.
-
+# How to get an ID for a HEAL CRF
+def get_id_for_heal_crf(filename):
+    return f'HEALCDE:{urllib.parse.quote(filename)}'
 
 # Retrieve info for a LOINC entry.
 loinc_records = {}
@@ -76,6 +82,7 @@ def retrieve_url(url_raw: str):
         logging.error(f'Could not decode response from URL {url_raw}, skipping: {err}')
         return {}
 
+
 # Retrieve info for a particular row
 def retrieve_data(mapped_cde):
     if (mapped_cde.get('Exact match URL') or '') != '':
@@ -108,6 +115,18 @@ def verify_crf(mapped_cde, crf):
 
     return {}
 
+# Add a CRF to KGX
+def add_crf_to_kgx(dataset, filename, mapped_cde, crf, mapped_crf):
+    crf = biolink.model.Publication(get_id_for_heal_crf(filename), crf['designations'], [
+        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988'
+    ])
+
+    if 'has_part' not in dataset:
+        dataset['has_part'] = []
+
+    dataset['has_part'].append(crf)
+
+
 # Verify a CDE (no need to iterate into PVs)
 def verify_element(mapped_cde, crf, element):
     data = retrieve_data(mapped_cde)
@@ -135,6 +154,11 @@ def verify_element(mapped_cde, crf, element):
     return {}
 
 
+# Add an element to KGX
+def add_element_to_kgx(dataset, mapped_cde, crf, element, mapped_element):
+    # TODO
+    pass
+
 # Verify a PV
 def verify_pv(mapped_cde, crf, element, pv):
     data = retrieve_data(mapped_cde)
@@ -160,6 +184,7 @@ def verify_pv(mapped_cde, crf, element, pv):
 
     return {}
 
+
 # Process input commands
 @click.command()
 @click.option('--output', '-o', type=click.File(
@@ -177,9 +202,18 @@ def verify_pv(mapped_cde, crf, element, pv):
     dir_okay=False,
     allow_dash=False
 ))
-def main(input_dir, output, cde_mappings_csv):
+@click.option('--to-kgx', type=click.Path(
+    file_okay=True,
+    dir_okay=False
+))
+def main(input_dir, output, cde_mappings_csv, to_kgx):
     input_path = click.format_filename(input_dir)
     csv_table_path = click.format_filename(cde_mappings_csv)
+
+    # Set up the top-level
+    dataset = biolink.model.DataSet('heal_cdes', 'HEAL CDEs', [
+        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
+    ])
 
     # Read the CSV table.
     cde_mappings = {}
@@ -224,6 +258,8 @@ def main(input_dir, output, cde_mappings_csv):
                         mapped_cde = cde_mappings[filename]
 
                     crf_result = verify_crf(mapped_cde, crf)
+                    if to_kgx:
+                        add_crf_to_kgx(dataset, filename, mapped_cde, crf, crf_result)
 
                     designations = crf['designations']
                     last_designation = designations[-1]['designation']
@@ -243,6 +279,8 @@ def main(input_dir, output, cde_mappings_csv):
 
                     for element in crf['formElements']:
                         element_result = verify_element(mapped_cde, crf, element)
+                        if to_kgx:
+                            add_element_to_kgx(dataset, mapped_cde, crf, element, element_result)
 
                         id_infos = [] # get_id_infos(element)
 
@@ -297,6 +335,10 @@ def main(input_dir, output, cde_mappings_csv):
                                 ])
 
     output.close()
+
+    if to_kgx:
+        kgx_filename = click.format_filename(to_kgx)
+        yaml_dumper.dump(dataset, kgx_filename)
 
     logging.info(
         f'Found {count_elements} elements in {count_files} files.'
