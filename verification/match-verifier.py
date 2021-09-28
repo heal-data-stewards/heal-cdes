@@ -59,19 +59,22 @@ def retrieve_data_from_loinc(loinc_id):
 
 # Retrieve info for a particular URL
 def retrieve_url(url_raw: str):
-    url = url_raw.strip()
-    if url.startswith('https://loinc.org/'):
-        if url.endswith('/'):
-            return retrieve_data_from_loinc(url[18:-1])
-        else:
-            return retrieve_data_from_loinc(url[18:])
-    if url.startswith('http://loinc.org/'):
-        if url.endswith('/'):
-            return retrieve_data_from_loinc(url[17:-1])
-        else:
-            return retrieve_data_from_loinc(url[17:])
-    return {}
-
+    try:
+        url = url_raw.strip()
+        if url.startswith('https://loinc.org/'):
+            if url.endswith('/'):
+                return retrieve_data_from_loinc(url[18:-1])
+            else:
+                return retrieve_data_from_loinc(url[18:])
+        if url.startswith('http://loinc.org/'):
+            if url.endswith('/'):
+                return retrieve_data_from_loinc(url[17:-1])
+            else:
+                return retrieve_data_from_loinc(url[17:])
+        return {}
+    except json.decoder.JSONDecodeError as err:
+        logging.error(f'Could not decode response from URL {url_raw}, skipping: {err}')
+        return {}
 
 # Retrieve info for a particular row
 def retrieve_data(mapped_cde):
