@@ -68,6 +68,29 @@ def retrieve_data_from_loinc(loinc_id):
 
     return result_json
 
+def retrieve_codesystem_data(system, code):
+    # TODO: add caching
+
+    result = requests.get(
+        f'https://fhir.loinc.org/CodeSystem/$lookup?system={system}&code={code}',
+        auth=(
+            config['LOINC_USERNAME'],
+            config['LOINC_PASSWORD']
+        )
+    )
+
+    result_json = result.json()
+    # raise RuntimeError(f'Looking up codesystem {system}/{code} resulted in: {result.text}')
+
+    codes = []
+    for parameter in result_json['parameter']:
+        if parameter['name'] == 'property':
+            codes.append(parameter)
+
+    # raise RuntimeError(f'Looking up codesystem {system}/{code} resulted in: {codes}')
+
+    return codes
+
 
 # Retrieve info for a particular URL
 def retrieve_url(url_raw: str):
@@ -112,12 +135,32 @@ def verify_crf(mapped_cde, crf):
         resource = entry['resource']
         items = resource.get('item') or []
 
-        return {
+        result = {
             'mapped_id': entry['fullUrl'],
             'mapped_text': resource['title'],
             'mapped_copyright': resource['copyright'],
             'mapped_child_count': len(items)
         }
+
+        codesystem_data = retrieve_codesystem_data('http://loinc.org', resource['id'])
+        result['mapped_related_codes'] = []
+        for related_code in codesystem_data:
+            logging.info(f'Related code: {related_code}')
+            if 'valueCoding' in related_code['part'][1]:
+                result['mapped_related_codes'].append({
+                    'category': related_code['part'][0]['valueCode'],
+                    'code': f"{related_code['part'][1]['valueCoding']['system']}/{related_code['part'][1]['valueCoding']['code']}",
+                    'label': related_code['part'][1]['valueCoding']['display']
+                })
+            elif 'valueString' in related_code['part'][1]:
+                result['mapped_related_codes'].append({
+                    'category': related_code['part'][0]['valueCode'],
+                    'value': related_code['part'][1]['valueString']
+                })
+            else:
+                raise RuntimeError(f'Unable to parse related code: {related_code}')
+
+        return result
 
     return {}
 
@@ -131,6 +174,25 @@ def add_crf_to_kgx(dataset, filename, mapped_cde, crf, mapped_crf):
         dataset['has_part'] = []
 
     dataset['has_part'].append(crf)
+
+    # Additional properties
+    if 'mapped_id' in mapped_crf and mapped_crf['mapped_id'] != '':
+        # We have mappings!
+        if 'related_to' not in crf:
+            crf['related_to'] = []
+
+        publication = biolink.model.Publication(mapped_crf['mapped_id'], mapped_crf['mapped_text'], [
+            'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988',
+            'https://loinc.org/panels/'
+        ])
+        if 'mapped_copyright' in mapped_crf:
+            publication['rights'] = mapped_crf.get('mapped_copyright') or ''
+
+        # Add the related names as keywords
+        if 'mapped_related_codes' in mapped_crf:
+            publication['keywords'] = mapped_crf.get('mapped_related_codes') or []
+
+        crf['related_to'].append(publication)
 
     return crf
 
@@ -153,6 +215,23 @@ def verify_element(mapped_cde, crf, element):
                     'mapped_text': item['text']
                 }
 
+                codesystem_data = retrieve_codesystem_data(item['code'][0]['system'], item['code'][0]['code'])
+                result['mapped_related_codes'] = []
+                for related_code in codesystem_data:
+                    if 'valueCoding' in related_code['part'][1]:
+                        result['mapped_related_codes'].append({
+                            'category': related_code['part'][0]['valueCode'],
+                            'code': f"{related_code['part'][1]['valueCoding']['system']}/{related_code['part'][1]['valueCoding']['code']}",
+                            'label': related_code['part'][1]['valueCoding']['display']
+                        })
+                    elif 'valueString' in related_code['part'][1]:
+                        result['mapped_related_codes'].append({
+                            'category': related_code['part'][0]['valueCode'],
+                            'value': related_code['part'][1]['valueString']
+                        })
+                    else:
+                        raise RuntimeError(f'Unable to parse related code: {related_code}')
+
                 options = item.get('answerOption') or []
                 if len(options) > 0:
                     result['mapped_child_count'] = len(options)
@@ -172,6 +251,24 @@ def add_element_to_kgx(biolink_crf, filename, crf_index, mapped_cde, crf, elemen
         biolink_crf['has_part'] = []
 
     biolink_crf['has_part'].append(cde)
+
+    # Additional properties
+    if 'mapped_id' in mapped_element and mapped_element['mapped_id'] != '':
+        # We have mappings!
+        if 'related_to' not in cde:
+            cde['related_to'] = []
+
+        publication = biolink.model.Publication(mapped_element['mapped_id'], mapped_element['mapped_text'], [
+            'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
+        ])
+        if 'mapped_copyright' in mapped_element:
+            publication['rights'] = mapped_element.get('mapped_copyright') or ''
+
+        # Add the related names as keywords
+        if 'mapped_related_codes' in mapped_element:
+            publication['keywords'] = mapped_element.get('mapped_related_codes') or []
+
+        cde['related_to'].append(publication)
 
     return cde
 
