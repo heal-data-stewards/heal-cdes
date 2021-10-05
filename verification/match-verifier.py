@@ -173,6 +173,21 @@ def add_element_to_kgx(biolink_crf, filename, crf_index, mapped_cde, crf, elemen
 
     biolink_crf['has_part'].append(cde)
 
+    return cde
+
+# Add an element to KGX
+def add_pv_to_kgx(biolink_cde, filename, crf_index, mapped_cde, crf, element, mapped_element, pv_index, pvalue, mapped_pvalue):
+    pv = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}_pv_{pv_index}', pvalue, [
+        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C41109'
+    ])
+
+    if 'has_part' not in biolink_cde:
+        biolink_cde['has_part'] = []
+
+    biolink_cde['has_part'].append(pv)
+
+    return pv
+
 # Verify a PV
 def verify_pv(mapped_cde, crf, element, pv):
     data = retrieve_data(mapped_cde)
@@ -292,8 +307,7 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
 
                     for (crf_index, element) in enumerate(crf['formElements']):
                         element_result = verify_element(mapped_cde, crf, element)
-                        if to_kgx:
-                            add_element_to_kgx(crf_in_biolink, filename, crf_index, mapped_cde, crf, element, element_result)
+                        cde_in_biolink = add_element_to_kgx(crf_in_biolink, filename, crf_index, mapped_cde, crf, element, element_result)
 
                         id_infos = [] # get_id_infos(element)
 
@@ -331,9 +345,13 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
                                 element_result.get('mapped_child_count') or ''
                             ])
 
-                            for pv in pvs:
+                            for (pv_index, pv) in enumerate(pvs):
                                 pv_definition = pv.get('valueMeaningDefinition') or pv.get('permissibleValue')
                                 pv_result = verify_pv(mapped_cde, crf, element, pv)
+
+                                add_pv_to_kgx(cde_in_biolink, filename, crf_index, mapped_cde, crf, element,
+                                    element_result, pv_index, pv_definition, pv_result)
+
                                 writer.writerow([
                                     filename,
                                     filepath,
