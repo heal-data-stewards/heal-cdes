@@ -126,9 +126,9 @@ def process_element(biolink_crf, filename, element):
     :return: None.
     """
 
-    cde = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}', element['label'], [
+    cde = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}', element['label'], type=
         'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
-    ])
+    )
 
     if 'has_part' not in biolink_crf:
         biolink_crf['has_part'] = []
@@ -168,6 +168,10 @@ def process_element(biolink_crf, filename, element):
         (element.get('label') or '') + "\n" + (element.get('definition') or '')
     )
 
+# Number of associations in this file.
+association_count = 0
+named_thing_count = 0
+
 
 def process_crf(dataset, filename, crf):
     """
@@ -179,11 +183,13 @@ def process_crf(dataset, filename, crf):
     :return: None. It modifies dataset and writes outputs to STDOUT. Disgusting!
     """
 
+    crf_id = get_id_for_heal_crf(filename)
     designation = get_designation(crf)
 
-    biolink_crf = biolink.model.Publication(get_id_for_heal_crf(filename), designation, [
-        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988'
-    ])
+    biolink_crf = biolink.model.Publication(crf_id, designation,
+        type='https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988',
+        category=['https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988']
+    )
 
     # Generate text for the entire form in one go.
     crf_text = designation + "\n"
@@ -196,29 +202,46 @@ def process_crf(dataset, filename, crf):
     for token in tokens:
         logging.info(f"Found token: {token}")
 
-    if 0:
-        for (crf_index, element) in enumerate(crf['formElements']):
-            question = element['question']
-            cde = question['cde']
+        if dataset and 'normalized' in token:
+            if 'has_part' not in dataset:
+                dataset['has_part'] = []
 
-        # Additional properties
-        if 'mapped_id' in mapped_crf and mapped_crf['mapped_id'] != '':
-            # We have mappings!
-            if 'related_to' not in crf:
-                crf['related_to'] = []
+            global association_count
+            association_count += 1
+            dataset['has_part'].append(biolink.model.Association(
+                # category='biolink:InformationContentEntityToNamedThingAssociation',
+                id=f'HEALCDE:association_{association_count}',
+                subject=crf_id,
+                predicate='http://purl.obolibrary.org/obo/IAO_0000142', # IAO:mentions
+                object=biolink.model.NamedThing(
+                    id=(token['normalized'].get('id') or {'identifier': 'ERROR'}).get('identifier'),
+                    name=(token['normalized'].get('id') or {'label': 'ERROR'}).get('label'),
+                    category=token['normalized']['type']
+                )
+            ))
 
-            publication = biolink.model.Publication(mapped_crf['mapped_id'], mapped_crf['mapped_text'], [
-                'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988',
-                'https://loinc.org/panels/'
-            ])
-            if 'mapped_copyright' in mapped_crf:
-                publication['rights'] = mapped_crf.get('mapped_copyright') or ''
-
-            # Add the related names as keywords
-            if 'mapped_related_codes' in mapped_crf:
-                publication['keywords'] = mapped_crf.get('mapped_related_codes') or []
-
-            crf['related_to'].append(publication)
+    # for (crf_index, element) in enumerate(crf['formElements']):
+    #     question = element['question']
+    #     cde = question['cde']
+    #
+    #     # Additional properties
+    #     if 'mapped_id' in mapped_crf and mapped_crf['mapped_id'] != '':
+    #         # We have mappings!
+    #         if 'related_to' not in crf:
+    #             crf['related_to'] = []
+    #
+    #         publication = biolink.model.Publication(mapped_crf['mapped_id'], mapped_crf['mapped_text'], [
+    #             'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988',
+    #             'https://loinc.org/panels/'
+    #         ])
+    #         if 'mapped_copyright' in mapped_crf:
+    #             publication['rights'] = mapped_crf.get('mapped_copyright') or ''
+    #
+    #         # Add the related names as keywords
+    #         if 'mapped_related_codes' in mapped_crf:
+    #             publication['keywords'] = mapped_crf.get('mapped_related_codes') or []
+    #
+    #         crf['related_to'].append(publication)
 
     # Add to dataset.
     if dataset:
@@ -254,7 +277,7 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
     csv_table_path = click.format_filename(cde_mappings_csv)
 
     # Set up the top-level
-    dataset = biolink.model.DataSet('heal_cdes', 'HEAL CDEs', [
+    dataset = biolink.model.Dataset('heal_cdes', 'HEALCDE:cdes', [
         'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
     ])
 
