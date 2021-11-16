@@ -30,6 +30,11 @@ config = {
     **os.environ,                     # override loaded values with environment variables
 }
 
+# Set up Requests to retry failed connections.
+session = requests.Session()
+http_adapter = requests.adapters.HTTPAdapter(max_retries=10)
+session.mount('http://', http_adapter)
+
 
 def get_id_for_heal_crf(filename):
     """ Get an ID for a HEAL CRF. """
@@ -237,7 +242,8 @@ def process_crf(dataset, filename, crf):
                     id=(token['normalized'].get('id') or {'identifier': 'ERROR'}).get('identifier'),
                     description=(token['normalized'].get('id') or {'label': 'ERROR'}).get('label'),
                     category=token['normalized']['type']
-                )
+                ),
+                description=f"NER found '{token['text']}' in CRF text '{crf_text}'"
             ))
 
 # Process input commands
