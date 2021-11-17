@@ -8,6 +8,8 @@
 
 # Python libraries
 import json
+from json import JSONDecodeError
+
 import click
 import csv
 import urllib
@@ -65,12 +67,15 @@ def normalize_curie(curie):
         'curies': [curie]
     })
 
-    results = result.json()
-    # logging.info(f"Result: {results}")
-    if curie in results:
-        return results[curie]
-    else:
-        return None
+    try:
+        results = result.json()
+        # logging.info(f"Result: {results}")
+        if curie in results:
+            return results[curie]
+        else:
+            return None
+    except JSONDecodeError as err:
+        logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
 
 
 def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
@@ -95,7 +100,13 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
         'include_numbers': False
     })
 
-    json = result.json()
+    try:
+        json = result.json()
+    except JSONDecodeError as err:
+        logging.error(f"Could not parse Monarch NER POST result for text '{text}': {err}")
+        json = {
+            'spans': []
+        }
 
     tokens = []
     spans = json['spans']
