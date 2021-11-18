@@ -21,6 +21,9 @@ import requests
 
 # Add logging support
 import logging
+
+from urllib3.exceptions import ReadTimeoutError
+
 logging.basicConfig(level=logging.INFO)
 
 # We read config from `.env`.
@@ -36,6 +39,7 @@ config = {
 session = requests.Session()
 http_adapter = requests.adapters.HTTPAdapter(max_retries=10)
 session.mount('http://', http_adapter)
+session.mount('https://', http_adapter)
 
 
 def get_id_for_heal_crf(filename):
@@ -63,9 +67,13 @@ def normalize_curie(curie):
     """
     TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
 
-    result = requests.post(TRANSLATOR_NORMALIZATION_URL, json={
-        'curies': [curie]
-    })
+    try:
+        result = session.post(TRANSLATOR_NORMALIZATION_URL, json={
+            'curies': [curie]
+        })
+    except Exception as err:
+        logging.error(f"Could not read Node Normalization POST result for curie '{curie}': {err}")
+        return None
 
     try:
         results = result.json()
@@ -89,16 +97,20 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     """
 
     MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
-    result = requests.post(MONARCH_API_URI, {
-        'content': text,
-        'include_category': included_categories,
-        'exclude_category': excluded_categories,
-        'min_length': 4,
-        'longest_only': True,
-        'include_abbreviation': False,
-        'include_acronym': False,
-        'include_numbers': False
-    })
+    try:
+        result = session.post(MONARCH_API_URI, {
+            'content': text,
+            'include_category': included_categories,
+            'exclude_category': excluded_categories,
+            'min_length': 4,
+            'longest_only': True,
+            'include_abbreviation': False,
+            'include_acronym': False,
+            'include_numbers': False
+        })
+    except Exception as err:
+        logging.error(f"Could not read Monarch NER POST result for text '{text}': {err}")
+        return []
 
     try:
         json = result.json()
