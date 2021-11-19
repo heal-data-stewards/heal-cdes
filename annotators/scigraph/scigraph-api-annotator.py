@@ -13,16 +13,16 @@ from json import JSONDecodeError
 import click
 import csv
 import urllib
-from kgx.graph.base_graph import BaseGraph
-import biolink.model
-from biolinkml.dumpers import yaml_dumper
+
+from kgx.graph.nx_graph import NxGraph
+from kgx.transformer import Transformer
+from kgx.source import graph_source
+from kgx.sink import jsonl_sink
 
 import requests
 
 # Add logging support
 import logging
-
-from urllib3.exceptions import ReadTimeoutError
 
 logging.basicConfig(level=logging.INFO)
 
@@ -154,14 +154,14 @@ def process_element(biolink_crf, filename, element):
     :return: None.
     """
 
-    cde = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}', element['label'], type=
-        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
-    )
+    # cde = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}', element['label'], type=
+    #     'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
+    # )
 
-    if 'has_part' not in biolink_crf:
-        biolink_crf['has_part'] = []
+    # if 'has_part' not in biolink_crf:
+    #     biolink_crf['has_part'] = []
 
-    biolink_crf['has_part'].append(cde)
+    # biolink_crf['has_part'].append(cde)
 
     # Additional properties
     if 'mapped_id' in mapped_element and mapped_element['mapped_id'] != '':
@@ -169,9 +169,9 @@ def process_element(biolink_crf, filename, element):
         if 'related_to' not in cde:
             cde['related_to'] = []
 
-        publication = biolink.model.Publication(mapped_element['mapped_id'], mapped_element['mapped_text'], [
-            'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
-        ])
+        # publication = biolink.model.Publication(mapped_element['mapped_id'], mapped_element['mapped_text'], [
+        #     'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
+        # ])
         if 'mapped_copyright' in mapped_element:
             publication['rights'] = mapped_element.get('mapped_copyright') or ''
 
@@ -183,12 +183,12 @@ def process_element(biolink_crf, filename, element):
 
     return cde
 
-    pv = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}_pv_{pv_index}', pvalue, [
-        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C41109'
-    ])
+    # pv = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}_pv_{pv_index}', pvalue, [
+    #     'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C41109'
+    # ])
 
-    if 'has_part' not in biolink_cde:
-        biolink_cde['has_part'] = []
+    # if 'has_part' not in biolink_cde:
+    #     biolink_cde['has_part'] = []
 
     biolink_cde['has_part'].append(pv)
 
@@ -233,18 +233,18 @@ def process_crf(dataset, filename, crf):
 
         crf_text += "\n"
 
-    biolink_crf = biolink.model.Publication(crf_id, designation,
-        type='https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988',
-        category=['https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988'],
-        summary=crf_text
-    )
+    # biolink_crf = biolink.model.Publication(crf_id, designation,
+    #     type='https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988',
+    #     category=['https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988'],
+    #     summary=crf_text
+    # )
 
     # Add to dataset.
-    if dataset:
-        if 'has_part' not in dataset:
-            dataset['has_part'] = []
-
-        dataset['has_part'].append(biolink_crf)
+    # if dataset:
+    #     if 'has_part' not in dataset:
+    #         dataset['has_part'] = []
+    #
+    #     dataset['has_part'].append(biolink_crf)
 
     tokens = ner_via_monarch_api(crf_text)
     logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
@@ -252,22 +252,22 @@ def process_crf(dataset, filename, crf):
         logging.info(f"Found token: {token}")
 
         if dataset and 'normalized' in token:
-            if 'has_part' not in dataset:
-                dataset['has_part'] = []
+            # if 'has_part' not in dataset:
+            #     dataset['has_part'] = []
 
             global association_count
             association_count += 1
-            dataset['has_part'].append(biolink.model.InformationContentEntityToNamedThingAssociation(
-                id=f'HEALCDE:association_{association_count}',
-                subject=crf_id,
-                predicate='http://purl.obolibrary.org/obo/IAO_0000142', # IAO:mentions
-                object=biolink.model.NamedThing(
-                    id=(token['normalized'].get('id') or {'identifier': 'ERROR'}).get('identifier'),
-                    description=(token['normalized'].get('id') or {'label': 'ERROR'}).get('label'),
-                    category=token['normalized']['type']
-                ),
-                description=f"NER found '{token['text']}' in CRF text '{crf_text}'"
-            ))
+            # dataset['has_part'].append(biolink.model.InformationContentEntityToNamedThingAssociation(
+            #     id=f'HEALCDE:association_{association_count}',
+            #     subject=crf_id,
+            #     predicate='http://purl.obolibrary.org/obo/IAO_0000142', # IAO:mentions
+            #     object=biolink.model.NamedThing(
+            #         id=(token['normalized'].get('id') or {'identifier': 'ERROR'}).get('identifier'),
+            #         description=(token['normalized'].get('id') or {'label': 'ERROR'}).get('label'),
+            #         category=token['normalized']['type']
+            #     ),
+            #     description=f"NER found '{token['text']}' in CRF text '{crf_text}'"
+            # ))
 
 # Process input commands
 @click.command()
@@ -294,10 +294,8 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
     input_path = click.format_filename(input_dir)
     csv_table_path = click.format_filename(cde_mappings_csv)
 
-    # Set up the top-level
-    dataset = biolink.model.Dataset('heal_cdes', 'HEALCDE:cdes', [
-        'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
-    ])
+    # Set up the KGX graph
+    graph = NxGraph()
 
     # Read the CSV table.
     cde_mappings = {}
@@ -341,13 +339,17 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
                     if filename in cde_mappings:
                         mapped_cde = cde_mappings[filename]
 
-                    process_crf(dataset, filename, crf)
+                    process_crf(graph, filename, crf)
 
     output.close()
 
     if to_kgx:
         kgx_filename = click.format_filename(to_kgx)
-        yaml_dumper.dump(dataset, kgx_filename)
+        t = Transformer()
+        t.process(
+            source=graph_source.GraphSource().parse(graph),
+            sink=jsonl_sink.JsonlSink(kgx_filename)
+        )
 
     logging.info(
         f'Found {count_elements} elements in {count_files} files.'
