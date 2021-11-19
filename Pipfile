@@ -11,6 +11,7 @@ click = "*"
 requests = "*"
 biolink-model = "*"
 openpyxl = "*"
+kgx = "*"
 
 [dev-packages]
 
