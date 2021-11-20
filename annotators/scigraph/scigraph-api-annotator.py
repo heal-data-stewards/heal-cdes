@@ -41,6 +41,9 @@ http_adapter = requests.adapters.HTTPAdapter(max_retries=10)
 session.mount('http://', http_adapter)
 session.mount('https://', http_adapter)
 
+# Some URLs we use.
+TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
+MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
 
 def get_id_for_heal_crf(filename):
     """ Get an ID for a HEAL CRF. """
@@ -65,7 +68,6 @@ def normalize_curie(curie):
     :param curie: The CURIE to be normalized.
     :return: The normalization results, including the normalized curie and categorization information.
     """
-    TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
 
     try:
         result = session.post(TRANSLATOR_NORMALIZATION_URL, json={
@@ -96,7 +98,6 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     :return: The response from the NER service, translated into token definitions.
     """
 
-    MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
     try:
         result = session.post(MONARCH_API_URI, {
             'content': text,
@@ -144,71 +145,20 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     return tokens
 
 
-def process_element(biolink_crf, filename, element):
-    """
-    Process a CDE.
-
-    :param biolink_crf: The BioLink CRF that this element is a part of.
-    :param filename: The filename being processed.
-    :param element: The element being processed.
-    :return: None.
-    """
-
-    # cde = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}', element['label'], type=
-    #     'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
-    # )
-
-    # if 'has_part' not in biolink_crf:
-    #     biolink_crf['has_part'] = []
-
-    # biolink_crf['has_part'].append(cde)
-
-    # Additional properties
-    if 'mapped_id' in mapped_element and mapped_element['mapped_id'] != '':
-        # We have mappings!
-        if 'related_to' not in cde:
-            cde['related_to'] = []
-
-        # publication = biolink.model.Publication(mapped_element['mapped_id'], mapped_element['mapped_text'], [
-        #     'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C19984'
-        # ])
-        if 'mapped_copyright' in mapped_element:
-            publication['rights'] = mapped_element.get('mapped_copyright') or ''
-
-        # Add the related names as keywords
-        if 'mapped_related_codes' in mapped_element:
-            publication['keywords'] = mapped_element.get('mapped_related_codes') or []
-
-        cde['related_to'].append(publication)
-
-    return cde
-
-    # pv = biolink.model.Publication(f'{get_id_for_heal_crf(filename)}#cde_{crf_index}_pv_{pv_index}', pvalue, [
-    #     'https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C41109'
-    # ])
-
-    # if 'has_part' not in biolink_cde:
-    #     biolink_cde['has_part'] = []
-
-    biolink_cde['has_part'].append(pv)
-
-    tokens = ner_via_monarch_api(
-        (element.get('label') or '') + "\n" + (element.get('definition') or '')
-    )
-
 # Number of associations in this file.
 association_count = 0
-named_thing_count = 0
+# Numbers of errors (generally terms without a valid ID).
+error_count = 0
 
 
-def process_crf(dataset, filename, crf):
+def process_crf(graph, filename, crf):
     """
     Process a CRF. We need to recursively process the CDEs as well.
 
-    :param dataset: A BioLink dataset to add the CRF to.
+    :param graph: A KGX graph to add the CRF to.
     :param filename: The filename being processed.
     :param crf: The CRF in JSON format to process.
-    :return: None. It modifies dataset and writes outputs to STDOUT. Disgusting!
+    :return: None. It modifies graph and writes outputs to STDOUT. Disgusting!
     """
 
     crf_id = get_id_for_heal_crf(filename)
@@ -233,41 +183,47 @@ def process_crf(dataset, filename, crf):
 
         crf_text += "\n"
 
-    # biolink_crf = biolink.model.Publication(crf_id, designation,
-    #     type='https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988',
-    #     category=['https://ncithesaurus.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=C40988'],
-    #     summary=crf_text
-    # )
-
-    # Add to dataset.
-    # if dataset:
-    #     if 'has_part' not in dataset:
-    #         dataset['has_part'] = []
-    #
-    #     dataset['has_part'].append(biolink_crf)
+    graph.add_node(crf_id)
+    graph.add_node_attribute(crf_id, 'name', designation)
+    graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
+    graph.add_node_attribute(crf_id, 'summary', crf_text)
 
     tokens = ner_via_monarch_api(crf_text)
     logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
     for token in tokens:
         logging.info(f"Found token: {token}")
 
-        if dataset and 'normalized' in token:
-            # if 'has_part' not in dataset:
-            #     dataset['has_part'] = []
+        if graph and 'normalized' in token:
+            # Create the NamedThing that is the token.
+            if 'id' in token['normalized'] and 'identifier' in token['normalized']['id']:
+                term_id = token['normalized']['id']['identifier']
+            else:
+                global error_count
+                error_count += 1
 
+                term_id = f'ERROR:{error_count}'
+
+            graph.add_node(term_id)
+            graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
+            graph.add_node_attribute(term_id, 'name', (token['normalized'].get('id') or {'label': 'ERROR'}).get('label'))
+            graph.add_node_attribute(term_id, 'provided_by', f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
+
+            # Add an edge/association between the CRF and the term.
             global association_count
             association_count += 1
-            # dataset['has_part'].append(biolink.model.InformationContentEntityToNamedThingAssociation(
-            #     id=f'HEALCDE:association_{association_count}',
-            #     subject=crf_id,
-            #     predicate='http://purl.obolibrary.org/obo/IAO_0000142', # IAO:mentions
-            #     object=biolink.model.NamedThing(
-            #         id=(token['normalized'].get('id') or {'identifier': 'ERROR'}).get('identifier'),
-            #         description=(token['normalized'].get('id') or {'label': 'ERROR'}).get('label'),
-            #         category=token['normalized']['type']
-            #     ),
-            #     description=f"NER found '{token['text']}' in CRF text '{crf_text}'"
-            # ))
+
+            association_id = f'HEALCDE:edge_{association_count}'
+
+            graph.add_edge(crf_id, term_id, association_id)
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'category', ['biolink:InformationContentEntityToNamedThingAssociation'])
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'name', token['text'])
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'knowledge_source',
+                                     f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
+            # graph.add_edge_attribute(crf_id, term_id, association_id, 'description', f"NER found '{token['text']}' in CRF text '{crf_text}'")
+
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'subject', crf_id)
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'predicate', 'IAO:0000142') # http://purl.obolibrary.org/obo/IAO_0000136 "is about"
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
 
 # Process input commands
 @click.command()
@@ -302,21 +258,6 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
     with open(csv_table_path, 'r') as f:
         for row in csv.DictReader(f):
             cde_mappings[row['Filename']] = row
-
-    # Set up the CSV writer.
-    writer = csv.writer(output)
-    writer.writerow([
-        'filename',
-        'filepath',
-        'designation',
-        'question',
-        'permissible_value',
-        'child_count',
-        'mapped_id',
-        'mapped_text',
-        'mapped_copyright',
-        'mapped_child_count'
-    ])
 
     count_files = 0
     count_elements = 0
