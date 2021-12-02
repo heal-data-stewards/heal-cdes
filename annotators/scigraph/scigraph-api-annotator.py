@@ -183,10 +183,13 @@ def process_crf(graph, filename, crf):
 
         crf_text += "\n"
 
+    crf_name = crf['designations'][0]['designation']
+
     graph.add_node(crf_id)
-    graph.add_node_attribute(crf_id, 'name', designation)
+    graph.add_node_attribute(crf_id, 'name', crf_name)
+    graph.add_node_attribute(crf_id, 'summary', designation)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
-    graph.add_node_attribute(crf_id, 'summary', crf_text)
+    # graph.add_node_attribute(crf_id, 'summary', crf_text)
 
     tokens = ner_via_monarch_api(crf_text)
     logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
@@ -217,12 +220,14 @@ def process_crf(graph, filename, crf):
             graph.add_edge(crf_id, term_id, association_id)
             graph.add_edge_attribute(crf_id, term_id, association_id, 'category', ['biolink:InformationContentEntityToNamedThingAssociation'])
             graph.add_edge_attribute(crf_id, term_id, association_id, 'name', token['text'])
-            graph.add_edge_attribute(crf_id, term_id, association_id, 'knowledge_source',
-                                     f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'knowledge_source', 'Monarch NER service + Translator normalization API')
+                                     # f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
             # graph.add_edge_attribute(crf_id, term_id, association_id, 'description', f"NER found '{token['text']}' in CRF text '{crf_text}'")
 
             graph.add_edge_attribute(crf_id, term_id, association_id, 'subject', crf_id)
-            graph.add_edge_attribute(crf_id, term_id, association_id, 'predicate', 'IAO:0000142') # http://purl.obolibrary.org/obo/IAO_0000136 "is about"
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'predicate', 'biolink:mentions') # https://biolink.github.io/biolink-model/docs/mentions.html
+            graph.add_edge_attribute(crf_id, term_id, association_id, 'predicate_label', 'mentions')
+
             graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
 
 # Process input commands
