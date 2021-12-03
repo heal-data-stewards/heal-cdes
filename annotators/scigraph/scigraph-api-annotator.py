@@ -209,7 +209,8 @@ def process_crf(graph, filename, crf):
             graph.add_node(term_id)
             graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
             graph.add_node_attribute(term_id, 'name', (token['normalized'].get('id') or {'label': 'ERROR'}).get('label'))
-            graph.add_node_attribute(term_id, 'provided_by', f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
+            graph.add_node_attribute(term_id, 'provided_by', 'Monarch NER service + Translator normalization API')
+                                     # f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
 
             # Add an edge/association between the CRF and the term.
             global association_count
