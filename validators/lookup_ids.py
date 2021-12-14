@@ -5,6 +5,8 @@ import re
 import click
 import csv
 
+import requests
+
 # Add logging support
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -101,11 +103,24 @@ def main(input_dir, output):
                                 if find_code:
                                     code = find_code[1]
 
+                                result = {}
+                                if source == 'NCIT' and code.startswith('C'):
+                                    url = f"http://www.ebi.ac.uk/ols/api/ontologies/ncit/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_{code}"
+                                    response = requests.get(url)
+                                    if not response.ok:
+                                        logging.error(f'OLS returned an error for {source}:{code}: {response}')
+                                    else:
+                                        result = response.json()
+
                                 diff_from_id = ""
                                 if code != from_id:
                                     diff_from_id = f" (from '{from_id}')"
 
                                 print(f" - {source}: {code}{diff_from_id}")
+                                if result:
+                                    print(f"    - {json.dumps(result, indent=4, sort_keys=True)}")
+
+
 
                         # permissible_values = cde['permissibleValues']
                         # if permissible_values is not None and len(permissible_values) != 0:
