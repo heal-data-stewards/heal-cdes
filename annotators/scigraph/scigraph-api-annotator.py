@@ -42,7 +42,7 @@ session.mount('http://', http_adapter)
 session.mount('https://', http_adapter)
 
 # Ignore certain concepts and categories.
-IGNORED_CONCEPTS = set(
+IGNORED_CONCEPTS = {
     'UBERON:0002542',                   # "scale" -- not a body part!
     'UBERON:0007380',                   # "dermal scale" -- not a body part!
     'MONDO:0019395',                    # "have" is not Hinman syndrome
@@ -89,7 +89,7 @@ IGNORED_CONCEPTS = set(
     'MONDO:0004980',                    # "allergy" is not atopic eczema
     'MONDO:0009994',                    # "arms" are not alveolar rhabdomyosarcoma
     # Stopped at decompression sickness (MONDO:0020797): 5 CRFs
-)
+}
 
 # Some URLs we use.
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
