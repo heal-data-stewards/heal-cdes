@@ -138,7 +138,6 @@ def normalize_curie(curie):
     except JSONDecodeError as err:
         logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
 
-
 def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     """
     Query the Monarch API to do NER on a string via https://api.monarchinitiative.org/api/#operations-nlp/annotate-post_annotate.
@@ -291,14 +290,33 @@ def process_crf(graph, filename, crf):
 
             graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
 
+# Process individual file
+count_files = 0
+
+def process_file(filepath, cde_mappings, graph):
+    filename = os.path.basename(filepath)
+
+    # Load JSON file.
+    with open(filepath, 'r') as f:
+        global count_files
+        count_files += 1
+
+        crf = json.load(f)
+
+        mapped_cde = {}
+        if filename in cde_mappings:
+            mapped_cde = cde_mappings[filename]
+
+        process_crf(graph, filename, crf)
+
 # Process input commands
 @click.command()
 @click.option('--output', '-o', type=click.File(
     mode='w'
 ), default='-')
-@click.argument('input-dir', type=click.Path(
+@click.argument('input', type=click.Path(
     exists=True,
-    file_okay=False,
+    file_okay=True,
     dir_okay=True,
     allow_dash=False
 ))
@@ -312,8 +330,8 @@ def process_crf(graph, filename, crf):
     file_okay=True,
     dir_okay=False
 ))
-def main(input_dir, output, cde_mappings_csv, to_kgx):
-    input_path = click.format_filename(input_dir)
+def main(input, output, cde_mappings_csv, to_kgx):
+    input_path = click.format_filename(input)
     csv_table_path = click.format_filename(cde_mappings_csv)
 
     # Set up the KGX graph
@@ -328,27 +346,20 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
     count_files = 0
     count_elements = 0
 
-    iterator = os.walk(input_path, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
-    for root, dirs, files in iterator:
-        logging.debug(f' - Recursing into directory {root}')
-        for filename in files:
-            if filename.lower().endswith('.json'):
-                filepath = os.path.join(root, filename)
-                logging.debug(f'   - Found {filepath}')
+    if os.path.isfile(input_path):
+        # If the input is a single file, process just that one file.
+        process_file(input_path, cde_mappings, graph)
+    else:
+        # If it is a directory, then recurse through that directory looking for input files.
+        iterator = os.walk(input_path, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
+        for root, dirs, files in iterator:
+            logging.debug(f' - Recursing into directory {root}')
+            for filename in files:
+                if filename.lower().endswith('.json'):
+                    filepath = os.path.join(root, filename)
+                    logging.debug(f'   - Found {filepath}')
 
-                # Load JSON file.
-                with open(filepath, 'r') as f:
-                    count_files += 1
-
-                    crf = json.load(f)
-
-                    mapped_cde = {}
-                    if filename in cde_mappings:
-                        mapped_cde = cde_mappings[filename]
-
-                    process_crf(graph, filename, crf)
-
-    output.close()
+                    process_file(filepath, cde_mappings, graph)
 
     if to_kgx:
         kgx_filename = click.format_filename(to_kgx)
