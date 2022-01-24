@@ -1,3 +1,5 @@
+require 'set'
+
 META_CSV = "HEAL CDEs matching LOINC, NIH CDE or caDSR CDEs - HEAL CDEs mapped to LOINC and caDSR - 2021sep7.csv"
 INPUT_FILES = FileList['output/**/*.json']
 NODES_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X_nodes.jsonl")
@@ -28,14 +30,20 @@ task :scigraph do
 end
 
 task :concat_kgx do
-  File.open(OUTPUT_NODES, "w") do |output|
-    NODES_FILES.each do |node_file|
-      IO.readlines(node_file).each do |line|
-        output.write(line)
-      end
+  # There are duplicates in this file.
+  concepts = Set[]
+  NODES_FILES.each do |node_file|
+    IO.readlines(node_file).each do |line|
+      concepts.add(line)
     end
-   end
+  end
+  File.open(OUTPUT_NODES, "w") do |output|
+    concepts.each do |line|
+      output.write(line)
+    end
+  end
 
+   # Shouldn't be any duplicates in this file.
    File.open(OUTPUT_EDGES, "w") do |output|
     EDGES_FILES.each do |edges_file|
       IO.readlines(edges_file).each do |line|
