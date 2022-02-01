@@ -1,0 +1,5 @@
+PyYAML~=5.4.1
+click~=8.0.1
+python-dotenv~=0.18.0
+pylightxl~=1.55
+jsonschema~=3.2.0

@@ -17,21 +17,63 @@
 
 import os
 import logging
-import json
 import yaml
 
+import pylightxl
 import click
 
 # Set default logging level.
 logging.basicConfig(level=logging.INFO)
 
 
+def set_excel_cell(db: pylightxl.Database, ref: str, value: str, default_ws:str=''):
+    """
+    Modify a cell using an Excel cell reference (e.g. "'Sheet 1'!A1").
+
+    :param db: The PyLightXL database to modify.
+    :param ref: The Excel cell reference (e.g. "'Sheet 1'!A1").
+    :param value: The value to set this cell to.
+    :param default_ws: The default workstreet name to use if one is not included in the cell reference.
+    """
+
+    if '!' in ref:
+        sheet_name = ref[0:ref.index('!')]
+        if sheet_name.startswith("'") and sheet_name.endswith("'"):
+            sheet_name = sheet_name[1:-1]
+        cell_ref = ref[ref.index('!'):]
+    elif default_ws != '':
+        sheet_name = default_ws
+        cell_ref = ref
+    else:
+        raise RuntimeError(f'No sheet name provided to set_excel_cell({db}, {ref}, {value}, {default_ws})')
+
+    db.ws(sheet_name).update_address(cell_ref, value)
+
 # Process individual files
 def translate_file(config_path, input_file, output_path):
-    config = yaml.safe_load(config_path)
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
     logging.info(f"Configuration: {config}")
     logging.info(f"Input file: {input_file}")
     logging.info(f"Output file: {output_path}")
+
+    template_file_path = os.path.join(os.path.dirname(config_path), config['template'])
+    logging.info(f"Template file: {template_file_path}")
+
+    db = pylightxl.readxl(template_file_path)
+    logging.info(f'Database with sheets: {db.ws_names}')
+
+    # Set some values that are common for all inputs
+    values = config['values']
+    for key in values.keys():
+        if key in config['crf']:
+            set_excel_cell(db, config['crf'][key], values[key])
+        else:
+            logging.warning(f"Location '{key}' is not defined in configuratino file.")
+
+    # Create directory and write output
+    os.makedirs(os.path.dirname(os.path.normpath(output_path)), exist_ok=True)
+    pylightxl.writexl(db, output_path)
 
 
 # Process input commands
