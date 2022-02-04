@@ -15,6 +15,8 @@
 #   cde:
 #
 
+import json
+import re
 import os
 import logging
 
@@ -27,7 +29,7 @@ import click
 logging.basicConfig(level=logging.INFO)
 
 
-def set_excel_cell(wb: openpyxl.Workbook, ref: str, value: str, default_ws:str=''):
+def set_excel_cell(wb: openpyxl.Workbook, ref: str, value: str, offset:int=0, default_ws:str=''):
     """
     Modify a cell using an Excel cell reference (e.g. "'Sheet 1'!A1").
 
@@ -48,7 +50,15 @@ def set_excel_cell(wb: openpyxl.Workbook, ref: str, value: str, default_ws:str='
     else:
         raise RuntimeError(f'No sheet name provided to set_excel_cell({wb}, {ref}, {value}, {default_ws})')
 
+    if offset > 0:
+        # What is the row number of the reference?
+        m = re.match('^(\\w+)(\\d+)$', cell_ref)
+        if not m:
+            raise RuntimeError(f"Could not offset cell ref {cell_ref} by {offset}: could not parse cell ref")
+        cell_ref = f"{m.group(1)}{int(m.group(2)) + offset}"
+
     wb.get_sheet_by_name(sheet_name)[cell_ref] = value
+
 
 # Process individual files
 def translate_file(config_path, input_file, output_path):
@@ -65,12 +75,24 @@ def translate_file(config_path, input_file, output_path):
     logging.info(f'Loaded workbook with names: {wb.sheetnames}')
 
     # Set some values that are common for all inputs
-    values = config['values']
+    values = config.get('values', {})
     for key in values.keys():
         if key in config['crf']:
             set_excel_cell(wb, config['crf'][key], values[key])
         else:
             logging.warning(f"Location '{key}' is not defined in configuratino file.")
+
+    # Load input file.
+    with open(input_file, 'r') as f:
+        crf = json.load(f)
+
+    # Read formElements from JSON file into Excel template.
+    for index, element in enumerate(crf['formElements']):
+        question = element['question']
+        cde = question['cde']
+        new_cde = cde['newCde']
+        set_excel_cell(wb, config['cde']['cde_name'], cde['name'], offset=index)
+        set_excel_cell(wb, config['cde']['preferred_question_text'], element['label'], offset=index)
 
     # Create directory and write output
     os.makedirs(os.path.dirname(os.path.normpath(output_path)), exist_ok=True)
