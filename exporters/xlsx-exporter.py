@@ -64,7 +64,7 @@ def set_excel_cell(wb: openpyxl.Workbook, ref: str, value: str, offset:int=0, de
 def translate_file(config_path, input_file, output_path):
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
-    logging.info(f"Configuration: {config}")
+    logging.debug(f"Configuration: {config}")
     logging.info(f"Input file: {input_file}")
     logging.info(f"Output file: {output_path}")
 
@@ -86,13 +86,60 @@ def translate_file(config_path, input_file, output_path):
     with open(input_file, 'r') as f:
         crf = json.load(f)
 
+    # Write some top-level metadata into the file.
+    filename, ext = os.path.splitext(os.path.basename(input_file))
+    set_excel_cell(wb, config['crf']['name_and_version_of_submission_package'], filename)
+
+    filtered_designations = []
+    for designation in crf['designations']:
+        d = designation['designation']
+        if d.startswith('File path: ') or d.startswith('Filename: '):
+            pass
+        else:
+            filtered_designations.append(d)
+
+    set_excel_cell(wb, config['crf']['source'], '|'.join(filtered_designations))
+
     # Read formElements from JSON file into Excel template.
     for index, element in enumerate(crf['formElements']):
         question = element['question']
         cde = question['cde']
         new_cde = cde['newCde']
+
+        # Write to Excel sheets.
         set_excel_cell(wb, config['cde']['cde_name'], cde['name'], offset=index)
         set_excel_cell(wb, config['cde']['preferred_question_text'], element['label'], offset=index)
+
+        # Determine data type
+        data_type_mappings = {
+            'value list': 'Value List',
+            'derived using the tables in the user manual or by using automated software (e.g. healthmeasures or redcap)': 'Value List',
+            'numeric value': 'Number',
+            'numeric  value': 'Number',
+            'numeric values': 'Number',
+            'numerical values': 'Number',
+            'numeric': 'Number',
+            'calculated': 'Number',
+            'numeric - calculated': 'Number',
+            'calculated as the sum of all responses': 'Number',
+            'free-form entry': 'Text',
+            'n/a (descriptive)': 'Text',
+            'text': 'Text',
+            'time': 'Time',
+            'date': 'Date',
+            'datetime': 'Datetime',
+            'date and time': 'Datetime',
+            'date/time': 'Datetime',
+            'alphanumeric': 'Other: alphanumeric',
+            'alphanumeric value': 'Other: alphanumeric',
+            'alphanumeric values': 'Other: alphanumeric',
+            '': 'Text',
+        }
+        datatype = cde['datatype'].lower().strip()
+        if datatype in data_type_mappings:
+            set_excel_cell(wb, config['cde']['cde_data_type'], data_type_mappings[datatype], offset=index)
+        else:
+            raise RuntimeError(f"Unknown data type: '{datatype}'")
 
     # Create directory and write output
     os.makedirs(os.path.dirname(os.path.normpath(output_path)), exist_ok=True)
