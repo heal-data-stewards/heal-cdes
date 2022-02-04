@@ -17,20 +17,21 @@
 
 import os
 import logging
+
+import openpyxl
 import yaml
 
-import pylightxl
 import click
 
 # Set default logging level.
 logging.basicConfig(level=logging.INFO)
 
 
-def set_excel_cell(db: pylightxl.Database, ref: str, value: str, default_ws:str=''):
+def set_excel_cell(wb: openpyxl.Workbook, ref: str, value: str, default_ws:str=''):
     """
     Modify a cell using an Excel cell reference (e.g. "'Sheet 1'!A1").
 
-    :param db: The PyLightXL database to modify.
+    :param wb: The OpenPyXL workbook to modify.
     :param ref: The Excel cell reference (e.g. "'Sheet 1'!A1").
     :param value: The value to set this cell to.
     :param default_ws: The default workstreet name to use if one is not included in the cell reference.
@@ -40,14 +41,14 @@ def set_excel_cell(db: pylightxl.Database, ref: str, value: str, default_ws:str=
         sheet_name = ref[0:ref.index('!')]
         if sheet_name.startswith("'") and sheet_name.endswith("'"):
             sheet_name = sheet_name[1:-1]
-        cell_ref = ref[ref.index('!'):]
+        cell_ref = ref[ref.index('!')+1:]
     elif default_ws != '':
         sheet_name = default_ws
         cell_ref = ref
     else:
-        raise RuntimeError(f'No sheet name provided to set_excel_cell({db}, {ref}, {value}, {default_ws})')
+        raise RuntimeError(f'No sheet name provided to set_excel_cell({wb}, {ref}, {value}, {default_ws})')
 
-    db.ws(sheet_name).update_address(cell_ref, value)
+    wb.get_sheet_by_name(sheet_name)[cell_ref] = value
 
 # Process individual files
 def translate_file(config_path, input_file, output_path):
@@ -60,20 +61,20 @@ def translate_file(config_path, input_file, output_path):
     template_file_path = os.path.join(os.path.dirname(config_path), config['template'])
     logging.info(f"Template file: {template_file_path}")
 
-    db = pylightxl.readxl(template_file_path)
-    logging.info(f'Database with sheets: {db.ws_names}')
+    wb = openpyxl.load_workbook(template_file_path)
+    logging.info(f'Loaded workbook with names: {wb.sheetnames}')
 
     # Set some values that are common for all inputs
     values = config['values']
     for key in values.keys():
         if key in config['crf']:
-            set_excel_cell(db, config['crf'][key], values[key])
+            set_excel_cell(wb, config['crf'][key], values[key])
         else:
             logging.warning(f"Location '{key}' is not defined in configuratino file.")
 
     # Create directory and write output
     os.makedirs(os.path.dirname(os.path.normpath(output_path)), exist_ok=True)
-    pylightxl.writexl(db, output_path)
+    wb.save(output_path)
 
 
 # Process input commands
@@ -114,7 +115,9 @@ def main(input, output, config):
             for filename in files:
                 if filename.lower().endswith('.json'):
                     input_filepath = os.path.join(root, filename)
-                    output_filepath = os.path.join(output_path, os.path.relpath(root, input_path), filename)
+                    output_filepath_json = os.path.join(output_path, os.path.relpath(root, input_path), filename)
+                    output_filepath_base, ext = os.path.splitext(output_filepath_json)
+                    output_filepath = output_filepath_base + '.xlsx'
                     translate_file(config_path, input_filepath, output_filepath)
                     count_files += 1
 
