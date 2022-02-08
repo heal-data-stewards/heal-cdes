@@ -141,6 +141,66 @@ def translate_file(config_path, input_file, output_path):
         else:
             raise RuntimeError(f"Unknown data type: '{datatype}'")
 
+        # Definition
+        definitions = new_cde['definitions']
+        # We only want to the first definition -- this should skip the short description included in the input file.
+        source = filename
+        if len(definitions) == 0:
+            definition = ""
+        else:
+            definition = definitions[0]['definition']
+            sources = definitions[0].get('sources') or []
+            if len(sources) > 0:
+                source = sources[0]
+        set_excel_cell(wb, config['cde']['cde_definition'], definition, offset=index)
+        set_excel_cell(wb, config['cde']['cde_source'], source, offset=index)
+
+        # DEC identifier and terminology source
+        ids = cde['ids']
+        dec_id = ""
+        dec_source = ""
+        for id in ids:
+            if id['source'] == 'NCIT':
+                dec_id = id['id']
+                dec_source = id['source']
+
+        set_excel_cell(wb, config['cde']['dec_identifier'], dec_id, offset=index)
+        set_excel_cell(wb, config['cde']['dec_concept_source'], dec_source, offset=index)
+
+        # NLM Identifier for NIH CDE Repository
+        # Mapping to Other Groups
+        # CDE Type
+        # Name of Composite or Bundle
+
+        # PV labels and definitions
+        pv_labels = []
+        pv_definitions = []
+
+        for pv in cde['permissibleValues']:
+            pv_label = pv['permissibleValue']
+            pv_definition = pv.get('valueMeaningDefinition') or ""
+
+            # PV definitions sometimes start with the values, which we probably don't want to repeat.
+            label_prefix = f"{pv_label} = "
+            if pv_definition.startswith(label_prefix):
+                pv_definition = pv_definition[len(label_prefix):]
+
+            pv_labels.append(pv_label)
+            pv_definitions.append(pv_definition)
+
+        set_excel_cell(wb, config['cde']['pv_labels'], '|'.join(pv_labels), offset=index)
+        set_excel_cell(wb, config['cde']['pv_definitions'], '|'.join(pv_definitions), offset=index)
+
+        # Permissible Value (PV) Concept Identifiers
+        # Permissible Value (PV) Terminology Sources
+        # Codes for Permissible Value
+        # Permissible Value Code Systems
+        # References (only for bundles)
+
+        # License/Copyright Owner
+        # License/Copyright Permission
+
+
     # Create directory and write output
     os.makedirs(os.path.dirname(os.path.normpath(output_path)), exist_ok=True)
     wb.save(output_path)
