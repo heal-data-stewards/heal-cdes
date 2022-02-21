@@ -365,8 +365,8 @@ def main(input, output, cde_mappings_csv, to_kgx):
         kgx_filename = click.format_filename(to_kgx)
         t = Transformer()
         t.process(
-            source=graph_source.GraphSource().parse(graph),
-            sink=jsonl_sink.JsonlSink(kgx_filename)
+            source=graph_source.GraphSource(owner=t).parse(graph),
+            sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_filename)
         )
 
     logging.info(
