@@ -21,7 +21,7 @@ task :scigraph do
       puts "Skipping #{input_file}, job completed"
     else
       puts "Converting #{input_file} to #{output_file}"
-      sh 'pipenv', 'run', 'python', 'annotators/scigraph/scigraph-api-annotator.py',
+      sh 'python', 'annotators/scigraph/scigraph-api-annotator.py',
         input_file, META_CSV,
         '--to-kgx', output_file
       sh 'touch', complete_file
