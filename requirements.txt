@@ -3,3 +3,10 @@ click~=8.0.1
 python-dotenv~=0.18.0
 jsonschema~=3.2.0
 openpyxl
+python-dotenv
+pylightxl
+jsonschema
+click
+requests
+biolink-model
+kgx
