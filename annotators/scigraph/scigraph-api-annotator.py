@@ -41,9 +41,60 @@ http_adapter = requests.adapters.HTTPAdapter(max_retries=10)
 session.mount('http://', http_adapter)
 session.mount('https://', http_adapter)
 
+# Ignore certain concepts and categories.
+IGNORED_CONCEPTS = {
+    'UBERON:0002542',                   # "scale" -- not a body part!
+    'UBERON:0007380',                   # "dermal scale" -- not a body part!
+    'MONDO:0019395',                    # "have" is not Hinman syndrome
+    'UBERON:0006611',                   # "test" is not an exoskeleton
+    'PUBCHEM.COMPOUND:135398658',       # "being" is not folic acid
+    'MONDO:0010472',                    # "being" is not developmental and epileptic encephalopathy
+    'MONDO:0011760',                    # "being" is not Scheie syndrome
+    'MONDO:0008534',                    # "getting" is not generalized essential telangiectasia
+    'UBERON:0004704',                   # "depression" is not bone fossa
+    'UBERON:0000467',                   # "system" is not an anatomical system
+    'MONDO:0017879',                    # "have" is not hantavirus pulmonary syndrome
+    'MONDO:0009271',                    # "going" or "goes" is not geroderma osteodysplastica
+    'MONDO:0017015',                    # "children" is not primary interstitial lung disease specific to childhood
+    'CHEBI:24433',                      # "rested" or "group" aren't a chemical group
+    'MONDO:0010953',                    # "face" is not Fanconi anemia complementation group E
+    'GO:0043336',                       # "rested" is not site-specific telomere resolvase activity
+    'NCBIGene:5978',                    # "rested" is not the gene REST
+    'MONDO:0009176',                    # "ever" is not epidermodysplasia verruciformis
+    'GO:0019013',                       # "core" is not viral nucleocapsid
+    'MONDO:0012833',                    # "could" is not Crouzon syndrome-acanthosis nigricans syndrome (): 18 CRFs
+    'NCBITaxon:6754',                   # "cancer" is not the animal group Cancer
+    'UBERON:0004529',                   # "spine" is not anatomical projection
+    'UBERON:0013496',                   # "spine" is not unbarbed keratin-coated spine
+    'MONDO:0000605',                    # "sensitive" is not hypersensitivity reaction disease
+    'PUBCHEM.COMPOUND:84815',           # "meds" is not D-Methionine
+    'MONDO:0016648',                    # "meds" is not multiple epiphyseal dysplasia (disease)
+    'GO:0044326',                       # "neck" is not dendritic spine neck
+    'UBERON:2002175',                   # "role" is not rostral octaval nerve motor nucleus
+    'MONDO:0002531',                    # "skin" is not skin neoplasm
+    'MONDO:0024457',                    # "plans" is not neurodegeneration with brain iron accumulation 2A
+    'MONDO:0017998',                    # "plans" is not PLA2G6-associated neurodegeneration
+    'UBERON:0004111',                   # "open" is not anatomical conduit
+    'MONDO:0002169',                    # "read" is not rectum adenocarcinoma
+    'UBERON:0007358',                   # "read" is not abomasum
+    'CHEBI:18282',                      # "based" is not nucleobase
+    'UBERON:0035971',                   # "post" is not postsubiculum
+    'GO:0033867',                       # "fast" is not Fas-activated serine/threonine kinase activity
+    'CHEMBL.COMPOUND:CHEMBL224120',     # "same" is not CHEMBL224120
+    'MONDO:0019380',                    # "weed" is not western equine encephalitis
+    'CL:0000968',                       # "cell" is not Be cell
+    'PR:000004978',                     # "calm" is not calmodulin
+    'GO:0008705',                       # "meth" is not methionine synthase activity
+    'UBERON:0001932',                   # "arch" is not arcuate nucleus of hypothalamus
+    'MONDO:0004980',                    # "allergy" is not atopic eczema
+    'MONDO:0009994',                    # "arms" are not alveolar rhabdomyosarcoma
+    # Stopped at decompression sickness (MONDO:0020797): 5 CRFs
+}
+
 # Some URLs we use.
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
 MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
+
 
 def get_id_for_heal_crf(filename):
     """ Get an ID for a HEAL CRF. """
@@ -86,7 +137,6 @@ def normalize_curie(curie):
             return None
     except JSONDecodeError as err:
         logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
-
 
 def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     """
@@ -149,6 +199,8 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
 association_count = 0
 # Numbers of errors (generally terms without a valid ID).
 error_count = 0
+# Terms ignored.
+ignored_count = 0
 
 
 def process_crf(graph, filename, crf):
@@ -206,6 +258,13 @@ def process_crf(graph, filename, crf):
 
                 term_id = f'ERROR:{error_count}'
 
+            if term_id in IGNORED_CONCEPTS:
+                global ignored_count
+                ignored_count += 1
+
+                logging.info(f'Ignoring concept {term_id} as it is on the list of ignored concepts')
+                continue
+
             graph.add_node(term_id)
             graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
             graph.add_node_attribute(term_id, 'name', (token['normalized'].get('id') or {'label': 'ERROR'}).get('label'))
@@ -231,14 +290,33 @@ def process_crf(graph, filename, crf):
 
             graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
 
+# Process individual file
+count_files = 0
+
+def process_file(filepath, cde_mappings, graph):
+    filename = os.path.basename(filepath)
+
+    # Load JSON file.
+    with open(filepath, 'r') as f:
+        global count_files
+        count_files += 1
+
+        crf = json.load(f)
+
+        mapped_cde = {}
+        if filename in cde_mappings:
+            mapped_cde = cde_mappings[filename]
+
+        process_crf(graph, filename, crf)
+
 # Process input commands
 @click.command()
 @click.option('--output', '-o', type=click.File(
     mode='w'
 ), default='-')
-@click.argument('input-dir', type=click.Path(
+@click.argument('input', type=click.Path(
     exists=True,
-    file_okay=False,
+    file_okay=True,
     dir_okay=True,
     allow_dash=False
 ))
@@ -252,8 +330,8 @@ def process_crf(graph, filename, crf):
     file_okay=True,
     dir_okay=False
 ))
-def main(input_dir, output, cde_mappings_csv, to_kgx):
-    input_path = click.format_filename(input_dir)
+def main(input, output, cde_mappings_csv, to_kgx):
+    input_path = click.format_filename(input)
     csv_table_path = click.format_filename(cde_mappings_csv)
 
     # Set up the KGX graph
@@ -268,39 +346,36 @@ def main(input_dir, output, cde_mappings_csv, to_kgx):
     count_files = 0
     count_elements = 0
 
-    iterator = os.walk(input_path, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
-    for root, dirs, files in iterator:
-        logging.debug(f' - Recursing into directory {root}')
-        for filename in files:
-            if filename.lower().endswith('.json'):
-                filepath = os.path.join(root, filename)
-                logging.debug(f'   - Found {filepath}')
+    if os.path.isfile(input_path):
+        # If the input is a single file, process just that one file.
+        process_file(input_path, cde_mappings, graph)
+    else:
+        # If it is a directory, then recurse through that directory looking for input files.
+        iterator = os.walk(input_path, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
+        for root, dirs, files in iterator:
+            logging.debug(f' - Recursing into directory {root}')
+            for filename in files:
+                if filename.lower().endswith('.json'):
+                    filepath = os.path.join(root, filename)
+                    logging.debug(f'   - Found {filepath}')
 
-                # Load JSON file.
-                with open(filepath, 'r') as f:
-                    count_files += 1
-
-                    crf = json.load(f)
-
-                    mapped_cde = {}
-                    if filename in cde_mappings:
-                        mapped_cde = cde_mappings[filename]
-
-                    process_crf(graph, filename, crf)
-
-    output.close()
+                    process_file(filepath, cde_mappings, graph)
 
     if to_kgx:
         kgx_filename = click.format_filename(to_kgx)
         t = Transformer()
         t.process(
-            source=graph_source.GraphSource().parse(graph),
-            sink=jsonl_sink.JsonlSink(kgx_filename)
+            source=graph_source.GraphSource(owner=t).parse(graph),
+            sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_filename)
         )
 
     logging.info(
         f'Found {count_elements} elements in {count_files} files.'
     )
+    if error_count > 0:
+        logging.error(f'Note that {error_count} terms resulted in errors.')
+    if ignored_count > 0:
+        logging.warning(f'Note that {ignored_count} terms were ignored.')
 
 
 if __name__ == '__main__':
