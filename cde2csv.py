@@ -94,7 +94,7 @@ def main(input_dir, output):
                             lambda id: id['id'],
                             filter(lambda id: id['source'] == 'NCIT_URL', cde['ids'])))
 
-                        permissible_values = cde['permissibleValues']
+                        permissible_values = None
                         if permissible_values is None or len(permissible_values) == 0:
                             # Write single row to output.
                             dirname = os.path.relpath(root, input_path)
