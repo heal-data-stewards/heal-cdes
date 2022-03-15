@@ -4,9 +4,11 @@ META_CSV = "HEAL CDEs matching LOINC, NIH CDE or caDSR CDEs - HEAL CDEs mapped t
 INPUT_FILES = FileList['output/**/*.json']
 NODES_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X_nodes.jsonl")
 EDGES_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X_edges.jsonl")
+COMPREHENSIVE_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X_comprehensive.jsonl")
 OUTPUT_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X.complete")
 OUTPUT_NODES = "annotated/output_nodes.jsonl"
 OUTPUT_EDGES = "annotated/output_edges.jsonl"
+OUTPUT_COMPREHENSIVE = "annotated/output_comprehensive.jsonl"
 
 directory "annotated"
 
@@ -43,12 +45,19 @@ task :concat_kgx do
     end
   end
 
-   # Shouldn't be any duplicates in this file.
+   # Shouldn't be any duplicates in these files.
    File.open(OUTPUT_EDGES, "w") do |output|
     EDGES_FILES.each do |edges_file|
       IO.readlines(edges_file).each do |line|
         output.write(line)
       end
     end
+   end
+   File.open(OUTPUT_COMPREHENSIVE, "w") do |output|
+     COMPREHENSIVE_FILES.each do |comprehensive_files|
+       IO.readlines(comprehensive_files).each do |line|
+         output.write(line)
+       end
+     end
    end
 end
