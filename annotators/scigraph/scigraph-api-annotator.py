@@ -89,6 +89,19 @@ IGNORED_CONCEPTS = {
     'MONDO:0004980',                    # "allergy" is not atopic eczema
     'MONDO:0009994',                    # "arms" are not alveolar rhabdomyosarcoma
     # Stopped at decompression sickness (MONDO:0020797): 5 CRFs
+    'PUBCHEM.COMPOUND:5460341',         # "could" is not Calcium: 19 CRFs
+    'GO:0044309',                       # "neuron spine" isn't right -- "spine" should match UBERON:0001130 (and does)
+    'UBERON:0015230',                   # "dorsal vessel heart" isn't as good as "heart" (UBERON:0000948), which we match
+    'KEGG.COMPOUND:C00701',             # "based" is not a base
+    'UBERON:0010230',                   # "eyeball of camera-type eye" is probably too specific
+    'PUBCHEM.COMPOUND:34756',           # "same" is not S-Adenosyl-L-methionine (PUBCHEM.COMPOUND:34756): 8 CRFs
+
+    # TODO:
+    # - chronic obstructive pulmonary disease (MONDO:0005002): 17 CRFs -> matches "cold"
+    # - leg (UBERON:0000978) -> matches "lower extremity"
+    # - Needs more investigation:
+    #   - hindlimb zeugopod (UBERON:0003823): 14 CRFs
+    # Stopped at forelimb stylopod (UBERON:0003822): 10 CRFs
 }
 
 # Some URLs we use.
