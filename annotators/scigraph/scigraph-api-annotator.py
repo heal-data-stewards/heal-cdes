@@ -214,6 +214,16 @@ association_count = 0
 error_count = 0
 # Terms ignored.
 ignored_count = 0
+# Elements processed
+count_elements = 0
+# Tokens identified
+count_tokens = 0
+# Tokens normalized
+count_normalized = 0
+# Tokens that could not be normalized
+count_could_not_normalize = 0
+# Normalized tokens that were ignored as per the ignore list.
+count_ignored = 0
 
 
 def process_crf(graph, filename, crf):
@@ -223,8 +233,14 @@ def process_crf(graph, filename, crf):
     :param graph: A KGX graph to add the CRF to.
     :param filename: The filename being processed.
     :param crf: The CRF in JSON format to process.
-    :return: None. It modifies graph and writes outputs to STDOUT. Disgusting!
+    :return: A 'comprehensive' JSON object representing this file -- this is the input JSON file with
+    the annotations added on. It also modifies graph and writes outputs to STDOUT (Disgusting!).
     """
+    global count_elements
+    global count_tokens
+    global count_normalized
+    global count_could_not_normalize
+    global count_ignored
 
     crf_id = get_id_for_heal_crf(filename)
     designation = get_designation(crf)
@@ -234,6 +250,7 @@ def process_crf(graph, filename, crf):
     for element in crf['formElements']:
         question_text = element['label']
         crf_text += question_text
+        count_elements += 1
 
         if 'question' in element and 'cde' in element['question']:
             crf_text += f" (name: {element['question']['cde']['name']})"
@@ -256,10 +273,24 @@ def process_crf(graph, filename, crf):
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
 
+    crf['_ner'] = {
+        'scigraph': {
+            'crf_name': crf_name,
+            'crf_text': crf_text,
+            'tokens': {
+                'could_not_normalize': [],
+                'ignored': [],
+                'normalized': []
+            }
+        }
+    }
+
     tokens = ner_via_monarch_api(crf_text)
+
     logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
     for token in tokens:
         logging.info(f"Found token: {token}")
+        count_tokens += 1
 
         if graph and 'normalized' in token:
             # Create the NamedThing that is the token.
@@ -276,7 +307,12 @@ def process_crf(graph, filename, crf):
                 ignored_count += 1
 
                 logging.info(f'Ignoring concept {term_id} as it is on the list of ignored concepts')
+                crf['_ner']['scigraph']['tokens']['ignored'].append(token)
+                count_ignored += 1
                 continue
+
+            crf['_ner']['scigraph']['tokens']['normalized'].append(token)
+            count_normalized += 1
 
             graph.add_node(term_id)
             graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
@@ -302,25 +338,28 @@ def process_crf(graph, filename, crf):
             graph.add_edge_attribute(crf_id, term_id, association_id, 'predicate_label', 'mentions')
 
             graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
+        else:
+            crf['_ner']['scigraph']['tokens']['could_not_normalize'].append(token)
+            count_could_not_normalize += 1
 
-# Process individual file
-count_files = 0
+    return crf
+
+
+# Process individual files
+count_elements = 0
 
 def process_file(filepath, cde_mappings, graph):
     filename = os.path.basename(filepath)
 
     # Load JSON file.
     with open(filepath, 'r') as f:
-        global count_files
-        count_files += 1
-
         crf = json.load(f)
 
         mapped_cde = {}
         if filename in cde_mappings:
             mapped_cde = cde_mappings[filename]
 
-        process_crf(graph, filename, crf)
+        return process_crf(graph, filename, crf)
 
 # Process input commands
 @click.command()
@@ -356,12 +395,15 @@ def main(input, output, cde_mappings_csv, to_kgx):
         for row in csv.DictReader(f):
             cde_mappings[row['Filename']] = row
 
+    global count_elements
     count_files = 0
-    count_elements = 0
+
+    comprehensives = []
 
     if os.path.isfile(input_path):
         # If the input is a single file, process just that one file.
-        process_file(input_path, cde_mappings, graph)
+        comprehensives.append(process_file(input_path, cde_mappings, graph))
+        count_files = 1
     else:
         # If it is a directory, then recurse through that directory looking for input files.
         iterator = os.walk(input_path, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
@@ -372,7 +414,8 @@ def main(input, output, cde_mappings_csv, to_kgx):
                     filepath = os.path.join(root, filename)
                     logging.debug(f'   - Found {filepath}')
 
-                    process_file(filepath, cde_mappings, graph)
+                    comprehensives.append(process_file(filepath, cde_mappings, graph))
+                    count_files += 1
 
     if to_kgx:
         kgx_filename = click.format_filename(to_kgx)
@@ -381,9 +424,15 @@ def main(input, output, cde_mappings_csv, to_kgx):
             source=graph_source.GraphSource(owner=t).parse(graph),
             sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_filename)
         )
+        with open(f'{kgx_filename}_comprehensive.jsonl', 'w') as fcomp:
+            for comp in comprehensives:
+                json.dump(comp, fcomp, sort_keys=True)
 
     logging.info(
         f'Found {count_elements} elements in {count_files} files.'
+    )
+    logging.info(
+        f'Of {count_tokens} tokens, normalized {count_normalized} (of which {count_ignored} were ignored) and could not normalize {count_could_not_normalize}'
     )
     if error_count > 0:
         logging.error(f'Note that {error_count} terms resulted in errors.')
