@@ -8,7 +8,7 @@
 
 # Python libraries
 import json
-from json import JSONDecodeError
+from itertools import chain
 
 import click
 import csv
@@ -148,7 +148,7 @@ def normalize_curie(curie):
             return results[curie]
         else:
             return None
-    except JSONDecodeError as err:
+    except json.JSONDecodeError as err:
         logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
 
 def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
@@ -272,6 +272,52 @@ def process_crf(graph, filename, crf):
     graph.add_node_attribute(crf_id, 'summary', designation)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
+
+    # Let's figure out how to categorize this CDE. We'll record two categories:
+    # - 1. Let's create a `cde_categories` attribute that will be a list of all the categories
+    #   we know about. This is the most comprehensive option, but is also likely to lead to
+    #   incomplete categories such as "English", "Adult" and so on.
+    file_paths = filter(lambda d: d['designation'].startswith('File path: '), crf['designations'])
+    # chain.from_iterable() effectively flattens the list.
+    categories = list(chain.from_iterable(map(lambda d: d['designation'][11:].split('/'), file_paths)))
+    logging.info(f"Categories for CDE {crf_name}: {categories}")
+    graph.add_node_attribute(crf_id, 'cde_categories', list(categories))
+    # - 2. Let's create a `cde_category` property that summarizes the longlist of categories into
+    #   the categories created in https://www.jpain.org/article/S1526-5900(21)00321-7/fulltext#tbl0001
+
+    # The top-level category should tell us if it's core or not.
+    core_or_not = categories[0]
+
+    # Is this adult or pediatric?
+    if 'Adult' in categories:
+        adult_or_pediatric = 'Adult'
+    elif 'Pediatric' in categories:
+        adult_or_pediatric = 'Pediatric'
+    else:
+        adult_or_pediatric = 'Adult/Pediatric'
+        logging.error(f"Could not determine if adult or pediatric from categories: {categories}")
+
+    # Is this relating to acute or chronic pain?
+    if 'Acute Pain' in categories:
+        acute_or_chronic_pain = 'Acute Pain'
+    elif 'Chronic Pain' in categories:
+        acute_or_chronic_pain = 'Chronic Pain'
+    else:
+        acute_or_chronic_pain = 'Acute/Chronic Pain'
+        logging.error(f"Could not determine if acute or chronic pain from categories: {categories}")
+
+    # Filter out any final categories that aren't the most specific category.
+    if categories[-1] == 'English' or categories[-1] == 'Spanish':
+        # We're not interested in these.
+        del categories[-1]
+
+    # The last category should now be the most specific category.
+    graph.add_node_attribute(crf_id, 'cde_category', [
+        core_or_not,
+        adult_or_pediatric,
+        acute_or_chronic_pain,
+        categories[-1]
+    ])
 
     crf['_ner'] = {
         'scigraph': {
