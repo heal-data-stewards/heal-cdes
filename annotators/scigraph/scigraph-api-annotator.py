@@ -177,15 +177,15 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
         return []
 
     try:
-        json = result.json()
-    except JSONDecodeError as err:
+        result_json = result.json()
+    except json.JSONDecodeError as err:
         logging.error(f"Could not parse Monarch NER POST result for text '{text}': {err}")
-        json = {
+        result_json = {
             'spans': []
         }
 
     tokens = []
-    spans = json['spans']
+    spans = result_json['spans']
     logging.info(f"Querying Monarch API for '{text}' produced the following tokens:")
     for span in spans:
         for token in span['token']:
@@ -289,19 +289,25 @@ def process_crf(graph, filename, crf):
     core_or_not = categories[0]
 
     # Is this adult or pediatric?
+    flag_has_adult_pediatric = False
     if 'Adult' in categories:
         adult_or_pediatric = 'Adult'
+        flag_has_adult_pediatric = True
     elif 'Pediatric' in categories:
         adult_or_pediatric = 'Pediatric'
+        flag_has_adult_pediatric = True
     else:
         adult_or_pediatric = 'Adult/Pediatric'
         logging.error(f"Could not determine if adult or pediatric from categories: {categories}")
 
     # Is this relating to acute or chronic pain?
+    flag_has_acute_chronic = False
     if 'Acute Pain' in categories:
         acute_or_chronic_pain = 'Acute Pain'
+        flag_has_acute_chronic = True
     elif 'Chronic Pain' in categories:
         acute_or_chronic_pain = 'Chronic Pain'
+        flag_has_acute_chronic = True
     else:
         acute_or_chronic_pain = 'Acute/Chronic Pain'
         logging.error(f"Could not determine if acute or chronic pain from categories: {categories}")
@@ -312,12 +318,28 @@ def process_crf(graph, filename, crf):
         del categories[-1]
 
     # The last category should now be the most specific category.
-    graph.add_node_attribute(crf_id, 'cde_category', [
+    graph.add_node_attribute(crf_id, 'cde_category_extended', [
         core_or_not,
         adult_or_pediatric,
         acute_or_chronic_pain,
         categories[-1]
     ])
+
+    # Let's summarize all of this into a single category (as per
+    # https://github.com/helxplatform/development/issues/868#issuecomment-1072485659)
+    if flag_has_adult_pediatric:
+        if flag_has_acute_chronic:
+            cde_category = f"{acute_or_chronic_pain} ({adult_or_pediatric})"
+        else:
+            cde_category = adult_or_pediatric
+    else:
+        if flag_has_acute_chronic:
+            cde_category = acute_or_chronic_pain
+        else:
+            cde_category = core_or_not
+
+    graph.add_node_attribute(crf_id, 'cde_category', cde_category)
+    logging.info(f"Categorized CRF {crf_name} as {cde_category}")
 
     crf['_ner'] = {
         'scigraph': {
