@@ -56,7 +56,7 @@ task :concat_kgx do
    File.open(OUTPUT_COMPREHENSIVE, "w") do |output|
      COMPREHENSIVE_FILES.each do |comprehensive_files|
        IO.readlines(comprehensive_files).each do |line|
-         output.write(line)
+         output.write(line + "\n")
        end
      end
    end
