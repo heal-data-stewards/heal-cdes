@@ -95,12 +95,18 @@ IGNORED_CONCEPTS = {
     'KEGG.COMPOUND:C00701',             # "based" is not a base
     'UBERON:0010230',                   # "eyeball of camera-type eye" is probably too specific
     'PUBCHEM.COMPOUND:34756',           # "same" is not S-Adenosyl-L-methionine (PUBCHEM.COMPOUND:34756): 8 CRFs
+    'CL:0000000',                       # "cell" never refers to actual cells
+    'CL:0000669',                       # "pericyte cell" never refers to actual cells
+    'PUBCHEM.COMPOUND:5234',            # Both mentions of 'salts' refer to the drug "bath salts" (https://en.wikipedia.org/wiki/Bath_salts)
+    'GO:0031672',                       # The "A band" cellular component doesn't really come up here
+
 
     # TODO:
     # - chronic obstructive pulmonary disease (MONDO:0005002): 17 CRFs -> matches "cold"
     # - leg (UBERON:0000978) -> matches "lower extremity"
     # - Needs more investigation:
     #   - hindlimb zeugopod (UBERON:0003823): 14 CRFs
+    #   - heme (PUBCHEM.COMPOUND:53629486 <- Molecular Mixture)
     # Stopped at forelimb stylopod (UBERON:0003822): 10 CRFs
 }
 
