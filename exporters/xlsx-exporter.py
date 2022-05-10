@@ -176,20 +176,29 @@ def translate_file(config_path, input_file, output_path):
         pv_labels = []
         pv_definitions = []
 
+        flag_has_at_least_one_definition = False
         for pv in cde['permissibleValues']:
             pv_label = pv['permissibleValue']
-            pv_definition = pv.get('valueMeaningDefinition') or ""
+            pv_definition = pv.get('valueMeaningDefinition')
+            if pv_definition:
+                flag_has_at_least_one_definition = True
+            else:
+                pv_definition = ""
 
             # PV definitions sometimes start with the values, which we probably don't want to repeat.
-            label_prefix = f"{pv_label} = "
+            label_prefix = f"{pv_label} ="
             if pv_definition.startswith(label_prefix):
-                pv_definition = pv_definition[len(label_prefix):]
+                pv_definition = pv_definition[len(label_prefix):].strip()
 
             pv_labels.append(pv_label)
             pv_definitions.append(pv_definition)
 
         set_excel_cell(wb, config['cde']['pv_labels'], '|'.join(pv_labels), offset=index)
         set_excel_cell(wb, config['cde']['pv_definitions'], '|'.join(pv_definitions), offset=index)
+
+        if flag_has_at_least_one_definition:
+            # If we have PVs, then the output data type must ALWAYS be 'Value List'
+            set_excel_cell(wb, config['cde']['cde_data_type'], 'Value List', offset=index)
 
         # Permissible Value (PV) Concept Identifiers
         # Permissible Value (PV) Terminology Sources
