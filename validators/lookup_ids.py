@@ -40,6 +40,7 @@ def main(input_dir, output):
     count_not_questions = 0
     count_with_id = 0
     count_without_id = 0
+    codes_that_could_not_be_parsed = set()
     count_by_source = {}
 
     iterator = os.walk(input_path, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
@@ -99,10 +100,14 @@ def main(input_dir, output):
                                     count_by_source[source] = 0
                                 count_by_source[source] += 1
 
-                                find_code = re.search('Code (C\\d+)', code)
-                                if find_code:
-                                    code = find_code[1]
+                                find_code = re.search('(?:Code )?(C\\d+)', code)
+                                if not find_code:
+                                    output.write(f"{last_designation}\t{code}\tCould not identify\t{from_id}\n")
+                                    codes_that_could_not_be_parsed.add(code)
+                                    print(f" - Could not parse code from '{code}'")
+                                    continue
 
+                                code = find_code[1]
                                 result = {}
                                 if source == 'NCIT' and code.startswith('C'):
                                     url = f"http://www.ebi.ac.uk/ols/api/ontologies/ncit/terms/http%253A%252F%252Fpurl.obolibrary.org%252Fobo%252FNCIT_{code}"
@@ -120,7 +125,8 @@ def main(input_dir, output):
                                 if result:
                                     print(f"    - {json.dumps(result, indent=4, sort_keys=True)}")
 
-
+                                if 'iri' in result:
+                                    output.write(f"{last_designation}\t{code}\t{result['iri']}\t{result.get('label', '')}\n")
 
                         # permissible_values = cde['permissibleValues']
                         # if permissible_values is not None and len(permissible_values) != 0:
@@ -134,10 +140,12 @@ def main(input_dir, output):
     logging.info(
         f'Found {count_elements} elements ({count_not_questions} not questions, {count_with_id} with IDs, {count_without_id} without IDs) in {count_files} files.'
     )
+    logging.info("Codes that could not be parsed:")
+    for code in codes_that_could_not_be_parsed:
+        logging.info(f" - {code}")
     logging.info(
         f"Elements by source: {count_by_source}"
     )
-
 
 if __name__ == '__main__':
     main()
