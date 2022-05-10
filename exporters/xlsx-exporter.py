@@ -164,6 +164,11 @@ def translate_file(config_path, input_file, output_path):
                 dec_id = id['id']
                 dec_source = id['source']
 
+                result = re.search('(?:Code )?(C\\d+)', dec_id)
+                if result:
+                    logging.info(f"  - Identified NCIT code {dec_id} in text: {id['id']}")
+                    dec_id = result.group(1)
+
         set_excel_cell(wb, config['cde']['dec_identifier'], dec_id, offset=index)
         set_excel_cell(wb, config['cde']['dec_concept_source'], dec_source, offset=index)
 
