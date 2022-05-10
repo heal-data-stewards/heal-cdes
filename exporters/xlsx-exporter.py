@@ -153,7 +153,8 @@ def translate_file(config_path, input_file, output_path):
             if len(sources) > 0:
                 source = sources[0]
         set_excel_cell(wb, config['cde']['cde_definition'], definition, offset=index)
-        set_excel_cell(wb, config['cde']['cde_source'], source, offset=index)
+        # set_excel_cell(wb, config['cde']['cde_source'], source, offset=index)
+        set_excel_cell(wb, config['cde']['references_for_bundles'], source, offset=index)
 
         # DEC identifier and terminology source
         ids = cde['ids']
