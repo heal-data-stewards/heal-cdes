@@ -271,7 +271,8 @@ def process_crf(graph, filename, crf):
 
         crf_text += "\n"
 
-    crf_name = crf['designations'][0]['designation']
+    # The best CRF name is always the last designation, since we start with the filename and stuff.
+    crf_name = crf['designations'][-1]['designation']
 
     graph.add_node(crf_id)
     graph.add_node_attribute(crf_id, 'name', crf_name)
