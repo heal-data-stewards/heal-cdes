@@ -139,7 +139,9 @@ def translate_file(config_path, input_file, output_path):
         if datatype in data_type_mappings:
             set_excel_cell(wb, config['cde']['cde_data_type'], data_type_mappings[datatype], offset=index)
         else:
-            raise RuntimeError(f"Unknown data type: '{datatype}'")
+            logging.error(f"Unknown datatype {datatype}, using 'Text' instead.")
+            set_excel_cell(wb, config['cde']['cde_data_type'], 'Text', offset=index)
+            # raise RuntimeError(f"Unknown data type: '{datatype}'")
 
         # Definition
         definitions = new_cde['definitions']
