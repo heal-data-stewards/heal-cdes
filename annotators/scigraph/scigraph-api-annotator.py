@@ -198,7 +198,7 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
             token_definition = dict(
                 text=span['text'],
                 id=token['id'],
-                categories=token['category'],
+                categories=token.get('category', []),
                 terms=token['terms']
             )
 

@@ -1,7 +1,7 @@
 require 'set'
 
 META_CSV = "HEAL CDEs matching LOINC, NIH CDE or caDSR CDEs - HEAL CDEs mapped to LOINC and caDSR - 2021sep7.csv"
-INPUT_FILES = FileList['output/**/*.json']
+INPUT_FILES = FileList['output/json/**/*.json']
 NODES_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X_nodes.jsonl")
 EDGES_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X_edges.jsonl")
 COMPREHENSIVE_FILES = INPUT_FILES.pathmap("%{^output/,annotated/}X_comprehensive.jsonl")
@@ -26,6 +26,7 @@ task :scigraph do
       sh 'python', 'annotators/scigraph/scigraph-api-annotator.py',
         input_file, META_CSV,
         '--to-kgx', output_file
+      sh 'sleep', '10'
       sh 'touch', complete_file
     end
   end
