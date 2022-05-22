@@ -217,7 +217,7 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
 # Number of associations in this file.
 association_count = 0
 # Numbers of errors (generally terms without a valid ID).
-error_count = 0
+count_errors = 0
 # Terms ignored.
 ignored_count = 0
 # Elements processed
@@ -372,7 +372,7 @@ def process_crf(graph, filename, crf):
             if 'id' in token['normalized'] and 'identifier' in token['normalized']['id']:
                 term_id = token['normalized']['id']['identifier']
             else:
-                global error_count
+                global count_errors
                 error_count += 1
 
                 term_id = f'ERROR:{error_count}'
@@ -509,8 +509,8 @@ def main(input, output, cde_mappings_csv, to_kgx):
     logging.info(
         f'Of {count_tokens} tokens, normalized {count_normalized} (of which {count_ignored} were ignored) and could not normalize {count_could_not_normalize}'
     )
-    if error_count > 0:
-        logging.error(f'Note that {error_count} terms resulted in errors.')
+    if count_errors > 0:
+        logging.error(f'Note that {count_errors} terms resulted in errors.')
     if ignored_count > 0:
         logging.warning(f'Note that {ignored_count} terms were ignored.')
 
