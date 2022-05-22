@@ -155,10 +155,20 @@ def ner_via_medtype(text, id, entity_linker='scispacy'):
 
 # Number of associations in this file.
 association_count = 0
+# Count files.
+count_files = 0
+# Count elements.
+count_elements = 0
+# Count terms.
+count_tokens = 0
 # Numbers of errors (generally terms without a valid ID).
-error_count = 0
+count_errors = 0
 # Terms ignored.
-ignored_count = 0
+count_ignored = 0
+# Terms normalized.
+count_normalized = 0
+# Terms that were not normalized.
+count_not_normalized = 0
 
 
 def process_crf(graph, filename, crf):
@@ -200,7 +210,6 @@ def process_crf(graph, filename, crf):
     graph.add_node_attribute(crf_id, 'summary', designation)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
-
 
     # Let's figure out how to categorize this CDE. We'll record two categories:
     # - 1. Let's create a `cde_categories` attribute that will be a list of all the categories
@@ -270,9 +279,26 @@ def process_crf(graph, filename, crf):
     graph.add_node_attribute(crf_id, 'cde_category', cde_category)
     logging.info(f"Categorized CRF {crf_name} as {cde_category}")
 
+    crf['_ner'] = {
+        'medtype': {
+            'crf_id': crf_id,
+            'crf_name': crf_name,
+            'crf_text': crf_text,
+            'tokens': {
+                'not_normalized': [],
+                'errors': [],
+                'ignored': [],
+                'normalized': []
+            }
+        }
+    }
+
+    global count_tokens, count_ignored, count_errors, count_normalized, count_not_normalized
+
     tokens = ner_via_medtype(crf_text, crf_id)
     logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
     for token in tokens:
+        count_tokens += 1
         logging.info(f"Found token: {token}")
 
         if graph and 'normalized' in token:
@@ -280,17 +306,18 @@ def process_crf(graph, filename, crf):
             if 'id' in token['normalized'] and 'identifier' in token['normalized']['id']:
                 term_id = token['normalized']['id']['identifier']
             else:
-                global error_count
-                error_count += 1
-
-                term_id = f'ERROR:{error_count}'
+                count_errors += 1
+                crf['_ner']['scigraph']['tokens']['errors'].append(token)
+                term_id = f'ERROR:{count_errors}'
 
             if term_id in IGNORED_CONCEPTS:
-                global ignored_count
-                ignored_count += 1
-
                 logging.info(f'Ignoring concept {term_id} as it is on the list of ignored concepts')
+                crf['_ner']['scigraph']['tokens']['ignored'].append(token)
+                count_ignored += 1
                 continue
+
+            crf['_ner']['scigraph']['tokens']['normalized'].append(token)
+            count_normalized += 1
 
             graph.add_node(term_id)
             graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
@@ -316,9 +343,10 @@ def process_crf(graph, filename, crf):
             graph.add_edge_attribute(crf_id, term_id, association_id, 'predicate_label', 'mentions')
 
             graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
+        else:
+            crf['_ner']['scigraph']['tokens']['not_normalized'].append(token)
+            count_not_normalized += 1
 
-# Process individual file
-count_files = 0
 
 def process_file(filepath, cde_mappings, graph):
     filename = os.path.basename(filepath)
@@ -357,7 +385,7 @@ def process_file(filepath, cde_mappings, graph):
     file_okay=True,
     dir_okay=False
 ))
-def main(input, output, cde_mappings_csv, to_kgx):
+def medtype_annotator(input, cde_mappings_csv, to_kgx):
     input_path = click.format_filename(input)
     csv_table_path = click.format_filename(cde_mappings_csv)
 
@@ -369,9 +397,6 @@ def main(input, output, cde_mappings_csv, to_kgx):
     with open(csv_table_path, 'r') as f:
         for row in csv.DictReader(f):
             cde_mappings[row['Filename']] = row
-
-    count_files = 0
-    count_elements = 0
 
     if os.path.isfile(input_path):
         # If the input is a single file, process just that one file.
@@ -396,14 +421,14 @@ def main(input, output, cde_mappings_csv, to_kgx):
             sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_filename)
         )
 
+    global count_files, count_elements, count_tokens, count_errors, count_ignored, count_normalized, count_not_normalized
     logging.info(
         f'Found {count_elements} elements in {count_files} files.'
     )
-    if error_count > 0:
-        logging.error(f'Note that {error_count} terms resulted in errors.')
-    if ignored_count > 0:
-        logging.warning(f'Note that {ignored_count} terms were ignored.')
+    logging.info(
+        f'Found {count_tokens} tokens, of which {count_errors} were errors, {count_ignored} were ignored, {count_normalized} was normalized and {count_not_normalized} was not normalized.'
+    )
 
 
 if __name__ == '__main__':
-    main()
+    medtype_annotator()
