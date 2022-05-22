@@ -511,8 +511,6 @@ def main(input, output, cde_mappings_csv, to_kgx):
     )
     if count_errors > 0:
         logging.error(f'Note that {count_errors} terms resulted in errors.')
-    if ignored_count > 0:
-        logging.warning(f'Note that {ignored_count} terms were ignored.')
 
 
 if __name__ == '__main__':
