@@ -29,7 +29,27 @@ expected format into JSON files in the output directory (by default, to the
 $ python generators/excel2cde.py [input-directory] [--output output_directory]
 ```
 
+### Annotating JSON files
+
+Annotation generally requires sending the HEAL CDE text content to an
+online annotation process, following by using the Translator [Node Normalization]
+service to filter and standardize the resulting annotations. This reliance
+on online services causes several possible points of failure. To mitigate
+this, the annotation workflow is intended to be run through a [Rakefile].
+The [Rakefile in this repo] contains instructions for building the annotated
+KGX output into the `annotated/` directory.
+
+```shell
+$ rake
+$ python validators/check_annotated.py annotated
+$ mv annotated annotated/year-month-day
+```
+
+
   [HEAL CDEs]: https://heal.nih.gov/data/common-data-elements
   [NIH CDE Repository]: https://cde.nlm.nih.gov/
   [Data Elements]: https://cde.nlm.nih.gov/schema/de
   [Forms]: https://cde.nlm.nih.gov/schema/form
+  [Node Normalization]: nodenormalization-sri.renci.org/
+  [Rakefile]: https://ruby.github.io/rake/doc/rakefile_rdoc.html
+  [Rakefile in this repo]: ./Rakefile
