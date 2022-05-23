@@ -27,9 +27,17 @@ config = {
 }
 
 count_cde_nodes = 0
+count_node_files_without_concepts = 0
+cdes = dict()
+edges_by_cde = dict()
+edges_by_predicate = dict()
+edges_by_concept = dict()
+concepts = dict()
+knowledge_sources = dict()
+
 
 def validate_nodes(filepath):
-    global count_cde_nodes
+    global count_cde_nodes, concepts, cdes, count_node_files_without_concepts
 
     count_cdes = 0
     count_concepts = 0
@@ -40,16 +48,55 @@ def validate_nodes(filepath):
             if "biolink:Publication" in row['category']:
                 count_cdes += 1
                 count_cde_nodes += 1
+
+                if 'name' not in row:
+                    logging.error(f"{filepath} does not contain a name.")
+                elif row['name'].startswith('File path: '):
+                    logging.error(f"{filepath} contains a filepath name: {row['name']}")
+
+                if row['id'] not in cdes:
+                    cdes[row['id']] = 0
+                cdes[row['id']] += 1
             elif "biolink:NamedThing" in row['category']:
                 count_concepts += 1
+
+                if row['id'] not in concepts:
+                    concepts[row['id']] = 0
+                concepts[row['id']] += 1
             else:
                 logging.error(f"Unable to classify node in ${filepath}: ${json.dumps(line, indent=2)}")
 
-    logging.info(f"${filepath} contains ${count_cdes} CDEs and ${count_concepts} concepts.")
+    logging.info(f"{filepath} contains {count_cdes} CDEs and {count_concepts} concepts.")
+    if count_cdes == 0:
+        logging.error(f'{filepath} contains NO CDEs')
+    elif count_concepts == 0:
+        count_node_files_without_concepts += 1
+        logging.error(f'{filepath} contains a CDE but NO concepts')
 
 
 def validate_edges(filepath):
-    pass
+    global count_cde_nodes, concepts, edges_by_cde, edges_by_predicate, edges_by_concept, knowledge_sources
+
+    with open(filepath, 'r') as f:
+        for line in f:
+            row = json.loads(line)
+
+            for ks in row.get('knowledge_source', []):
+                if ks not in knowledge_sources:
+                    knowledge_sources[ks] = 0
+                knowledge_sources[ks] += 1
+
+            if row['subject'] not in edges_by_cde:
+                edges_by_cde[row['subject']] = []
+            edges_by_cde[row['subject']].append(row)
+
+            if row['predicate'] not in edges_by_predicate:
+                edges_by_predicate[row['predicate']] = []
+            edges_by_predicate[row['predicate']].append(row)
+
+            if row['object'] not in edges_by_concept:
+                edges_by_concept[row['object']] = []
+            edges_by_concept[row['object']].append(row)
 
 
 def validate_comprehensive(filepath):
@@ -140,14 +187,25 @@ def main(input_dir):
                 count_unable_to_validate += 1
                 logging.warning(f"Unable to validate '${filepath}': unable to determine file path.")
 
-    global count_cde_nodes
+    global count_cde_nodes, count_node_files_without_concepts
 
     logging.info(f'Checked {count_files} files:')
     logging.info(f' - Node files: {count_node_files} containing {count_cde_nodes} nodes')
+    logging.info(f'   - {count_node_files_without_concepts} contain no concepts')
     logging.info(f' - Edge files: {count_edge_files}')
     logging.info(f' - Comprehensive files: {count_edge_files}')
     logging.info(f' - Unable to classify: {count_unable_to_validate}')
 
+    global concepts
+    logging.info(f'Found {len(concepts.keys())} unique concepts across node files')
+
+    global edges_by_cde, edges_by_predicate, edges_by_concept
+    logging.info(f'Found {len(edges_by_predicate.keys())} predicates: {list(edges_by_predicate.keys())}')
+    logging.info(f'Edges refer to {len(edges_by_cde.keys())} unique CDEs')
+    logging.info(f'Edges refer to {len(edges_by_concept.keys())} unique concepts')
+
+    global knowledge_sources
+    logging.info(f'Found {len(knowledge_sources.keys())} knowledge sources: {knowledge_sources}')
 
 if __name__ == '__main__':
     main()
