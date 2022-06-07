@@ -8,6 +8,9 @@ python-dotenv = "*"
 pylightxl = "*"
 jsonschema = "*"
 click = "*"
+requests = "*"
+biolink-model = "*"
+kgx = "*"
 openpyxl = "*"
 
 [dev-packages]
