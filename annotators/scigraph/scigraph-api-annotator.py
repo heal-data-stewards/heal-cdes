@@ -8,7 +8,7 @@
 
 # Python libraries
 import json
-from json import JSONDecodeError
+from itertools import chain
 
 import click
 import csv
@@ -95,12 +95,18 @@ IGNORED_CONCEPTS = {
     'KEGG.COMPOUND:C00701',             # "based" is not a base
     'UBERON:0010230',                   # "eyeball of camera-type eye" is probably too specific
     'PUBCHEM.COMPOUND:34756',           # "same" is not S-Adenosyl-L-methionine (PUBCHEM.COMPOUND:34756): 8 CRFs
+    'CL:0000000',                       # "cell" never refers to actual cells
+    'CL:0000669',                       # "pericyte cell" never refers to actual cells
+    'PUBCHEM.COMPOUND:5234',            # Both mentions of 'salts' refer to the drug "bath salts" (https://en.wikipedia.org/wiki/Bath_salts)
+    'GO:0031672',                       # The "A band" cellular component doesn't really come up here
+
 
     # TODO:
     # - chronic obstructive pulmonary disease (MONDO:0005002): 17 CRFs -> matches "cold"
     # - leg (UBERON:0000978) -> matches "lower extremity"
     # - Needs more investigation:
     #   - hindlimb zeugopod (UBERON:0003823): 14 CRFs
+    #   - heme (PUBCHEM.COMPOUND:53629486 <- Molecular Mixture)
     # Stopped at forelimb stylopod (UBERON:0003822): 10 CRFs
 }
 
@@ -148,7 +154,7 @@ def normalize_curie(curie):
             return results[curie]
         else:
             return None
-    except JSONDecodeError as err:
+    except json.JSONDecodeError as err:
         logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
 
 def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
@@ -177,15 +183,15 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
         return []
 
     try:
-        json = result.json()
-    except JSONDecodeError as err:
+        result_json = result.json()
+    except json.JSONDecodeError as err:
         logging.error(f"Could not parse Monarch NER POST result for text '{text}': {err}")
-        json = {
+        result_json = {
             'spans': []
         }
 
     tokens = []
-    spans = json['spans']
+    spans = result_json['spans']
     logging.info(f"Querying Monarch API for '{text}' produced the following tokens:")
     for span in spans:
         for token in span['token']:
@@ -272,6 +278,74 @@ def process_crf(graph, filename, crf):
     graph.add_node_attribute(crf_id, 'summary', designation)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
+
+    # Let's figure out how to categorize this CDE. We'll record two categories:
+    # - 1. Let's create a `cde_categories` attribute that will be a list of all the categories
+    #   we know about. This is the most comprehensive option, but is also likely to lead to
+    #   incomplete categories such as "English", "Adult" and so on.
+    file_paths = filter(lambda d: d['designation'].startswith('File path: '), crf['designations'])
+    # chain.from_iterable() effectively flattens the list.
+    categories = list(chain.from_iterable(map(lambda d: d['designation'][11:].split('/'), file_paths)))
+    logging.info(f"Categories for CDE {crf_name}: {categories}")
+    graph.add_node_attribute(crf_id, 'cde_categories', list(categories))
+    # - 2. Let's create a `cde_category` property that summarizes the longlist of categories into
+    #   the categories created in https://www.jpain.org/article/S1526-5900(21)00321-7/fulltext#tbl0001
+
+    # The top-level category should tell us if it's core or not.
+    core_or_not = categories[0]
+
+    # Is this adult or pediatric?
+    flag_has_adult_pediatric = False
+    if 'Adult' in categories:
+        adult_or_pediatric = 'Adult'
+        flag_has_adult_pediatric = True
+    elif 'Pediatric' in categories:
+        adult_or_pediatric = 'Pediatric'
+        flag_has_adult_pediatric = True
+    else:
+        adult_or_pediatric = 'Adult/Pediatric'
+        logging.error(f"Could not determine if adult or pediatric from categories: {categories}")
+
+    # Is this relating to acute or chronic pain?
+    flag_has_acute_chronic = False
+    if 'Acute Pain' in categories:
+        acute_or_chronic_pain = 'Acute Pain'
+        flag_has_acute_chronic = True
+    elif 'Chronic Pain' in categories:
+        acute_or_chronic_pain = 'Chronic Pain'
+        flag_has_acute_chronic = True
+    else:
+        acute_or_chronic_pain = 'Acute/Chronic Pain'
+        logging.error(f"Could not determine if acute or chronic pain from categories: {categories}")
+
+    # Filter out any final categories that aren't the most specific category.
+    if categories[-1] == 'English' or categories[-1] == 'Spanish':
+        # We're not interested in these.
+        del categories[-1]
+
+    # The last category should now be the most specific category.
+    graph.add_node_attribute(crf_id, 'cde_category_extended', [
+        core_or_not,
+        adult_or_pediatric,
+        acute_or_chronic_pain,
+        categories[-1]
+    ])
+
+    # Let's summarize all of this into a single category (as per
+    # https://github.com/helxplatform/development/issues/868#issuecomment-1072485659)
+    if flag_has_adult_pediatric:
+        if flag_has_acute_chronic:
+            cde_category = f"{acute_or_chronic_pain} ({adult_or_pediatric})"
+        else:
+            cde_category = adult_or_pediatric
+    else:
+        if flag_has_acute_chronic:
+            cde_category = acute_or_chronic_pain
+        else:
+            cde_category = core_or_not
+
+    graph.add_node_attribute(crf_id, 'cde_category', cde_category)
+    logging.info(f"Categorized CRF {crf_name} as {cde_category}")
 
     crf['_ner'] = {
         'scigraph': {
