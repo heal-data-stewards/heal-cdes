@@ -139,7 +139,9 @@ def translate_file(config_path, input_file, output_path):
         if datatype in data_type_mappings:
             set_excel_cell(wb, config['cde']['cde_data_type'], data_type_mappings[datatype], offset=index)
         else:
-            raise RuntimeError(f"Unknown data type: '{datatype}'")
+            logging.error(f"Unknown datatype {datatype}, using 'Text' instead.")
+            set_excel_cell(wb, config['cde']['cde_data_type'], 'Text', offset=index)
+            # raise RuntimeError(f"Unknown data type: '{datatype}'")
 
         # Definition
         definitions = new_cde['definitions']
@@ -153,7 +155,8 @@ def translate_file(config_path, input_file, output_path):
             if len(sources) > 0:
                 source = sources[0]
         set_excel_cell(wb, config['cde']['cde_definition'], definition, offset=index)
-        set_excel_cell(wb, config['cde']['cde_source'], source, offset=index)
+        # set_excel_cell(wb, config['cde']['cde_source'], source, offset=index)
+        set_excel_cell(wb, config['cde']['references_for_bundles'], source, offset=index)
 
         # DEC identifier and terminology source
         ids = cde['ids']
@@ -163,6 +166,11 @@ def translate_file(config_path, input_file, output_path):
             if id['source'] == 'NCIT':
                 dec_id = id['id']
                 dec_source = id['source']
+
+                result = re.search('(?:Code )?(C\\d+)', dec_id)
+                if result:
+                    logging.info(f"  - Identified NCIT code {dec_id} in text: {id['id']}")
+                    dec_id = result.group(1)
 
         set_excel_cell(wb, config['cde']['dec_identifier'], dec_id, offset=index)
         set_excel_cell(wb, config['cde']['dec_concept_source'], dec_source, offset=index)
@@ -176,20 +184,29 @@ def translate_file(config_path, input_file, output_path):
         pv_labels = []
         pv_definitions = []
 
+        flag_has_at_least_one_definition = False
         for pv in cde['permissibleValues']:
             pv_label = pv['permissibleValue']
-            pv_definition = pv.get('valueMeaningDefinition') or ""
+            pv_definition = pv.get('valueMeaningDefinition')
+            if pv_definition:
+                flag_has_at_least_one_definition = True
+            else:
+                pv_definition = ""
 
             # PV definitions sometimes start with the values, which we probably don't want to repeat.
-            label_prefix = f"{pv_label} = "
+            label_prefix = f"{pv_label} ="
             if pv_definition.startswith(label_prefix):
-                pv_definition = pv_definition[len(label_prefix):]
+                pv_definition = pv_definition[len(label_prefix):].strip()
 
             pv_labels.append(pv_label)
             pv_definitions.append(pv_definition)
 
         set_excel_cell(wb, config['cde']['pv_labels'], '|'.join(pv_labels), offset=index)
         set_excel_cell(wb, config['cde']['pv_definitions'], '|'.join(pv_definitions), offset=index)
+
+        if flag_has_at_least_one_definition:
+            # If we have PVs, then the output data type must ALWAYS be 'Value List'
+            set_excel_cell(wb, config['cde']['cde_data_type'], 'Value List', offset=index)
 
         # Permissible Value (PV) Concept Identifiers
         # Permissible Value (PV) Terminology Sources
