@@ -158,7 +158,7 @@ def ner_via_oger(text, oger_pipeline, id=""):
             is_synonym=is_synonym,
             categories=[entity.type]
         )
-        normalized = normalize_curie(id)
+        normalized = normalize_curie(entity_id)
         if normalized:
             token_definition['normalized'] = normalized
             logging.debug(
@@ -367,6 +367,8 @@ def process_crf(graph, filename, crf, oger_pipeline):
             crf['_ner']['oger']['tokens']['not_normalized'].append(token)
             count_not_normalized += 1
 
+    return [crf]
+
 
 def process_file(filepath, cde_mappings, graph, oger_pipeline):
     filename = os.path.basename(filepath)
@@ -382,7 +384,7 @@ def process_file(filepath, cde_mappings, graph, oger_pipeline):
         if filename in cde_mappings:
             mapped_cde = cde_mappings[filename]
 
-        process_crf(graph, filename, crf, oger_pipeline)
+        return process_crf(graph, filename, crf, oger_pipeline)
 
 
 # Process input commands
@@ -420,6 +422,9 @@ def oger_annotator(input, cde_mappings_csv, to_kgx, oger_terms):
     )
     oger_pipeline = PipelineServer(conf)
 
+    # Prepare to write comprehensives.
+    comprehensives = []
+
     # Set up the KGX graph
     graph = NxGraph()
 
@@ -431,7 +436,7 @@ def oger_annotator(input, cde_mappings_csv, to_kgx, oger_terms):
 
     if os.path.isfile(input_path):
         # If the input is a single file, process just that one file.
-        process_file(input_path, cde_mappings, graph, oger_pipeline)
+        comprehensives.extend(process_file(input_path, cde_mappings, graph, oger_pipeline))
     else:
         # If it is a directory, then recurse through that directory looking for input files.
         iterator = os.walk(input_path, onerror=lambda err: logging.error(f'Error reading file: {err}'),
@@ -443,7 +448,7 @@ def oger_annotator(input, cde_mappings_csv, to_kgx, oger_terms):
                     filepath = os.path.join(root, filename)
                     logging.debug(f'   - Found {filepath}')
 
-                    process_file(filepath, cde_mappings, graph, oger_pipeline)
+                    comprehensives.extend(process_file(filepath, cde_mappings, graph, oger_pipeline))
 
     if to_kgx:
         kgx_filename = click.format_filename(to_kgx)
@@ -452,6 +457,12 @@ def oger_annotator(input, cde_mappings_csv, to_kgx, oger_terms):
             source=graph_source.GraphSource(owner=t).parse(graph),
             sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_filename)
         )
+
+        # Write out comprehensives.
+        with open(f'{kgx_filename}_comprehensive.jsonl', 'w') as fcomp:
+            for comp in comprehensives:
+                json.dump(comp, fcomp, sort_keys=True)
+                fcomp.write("\n")
 
     global count_files, count_elements, count_tokens, count_errors, count_ignored, count_normalized, count_not_normalized
     logging.info(
