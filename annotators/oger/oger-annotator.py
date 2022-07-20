@@ -10,6 +10,7 @@
 import glob
 import io
 import json
+import re
 from itertools import chain
 from json import JSONDecodeError
 
@@ -52,12 +53,30 @@ session.mount('https://', http_adapter)
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
 
 # Some concepts that are always ignored.
-IGNORED_CONCEPTS = [
+IGNORED_CONCEPTS = {
+    'UBERON:0002542',   # Scale (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0002542, but we mean a numeric scale)
+    'UBERON:0007380',   # Dermal scale (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0007380, but we mean a numeric scale)
+    'UBERON:0003062',   # "organizer" (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0003062), but we mean the person
+    'UBERON:0000473',   # "test" is not "testis" (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0000473)
+    'NCBITaxon:1',      # "root" or "all" is not all of life (https://www.ebi.ac.uk/ols/search?q=NCBITaxon%3A1)
+    'MONDO:0017015',    # "child" is not primary interstitial lung disease specific to childhood (https://www.ebi.ac.uk/ols/search?q=MONDO%3A0017015)
+    'MONDO:0017879',    # "hards" is not hantavirus pulmonary syndrome (https://www.ebi.ac.uk/ols/search?q=MONDO%3A0017879)
+    'CHEBI:24433',      # "groupe" or "rest" is not "group" (CHEBI:24433)
+    'GO:0031975',       # Envelope (refers to letter envelope in the CDE)
+    'GO:0042330',       # Taxis (http://amigo.geneontology.org/amigo/term/GO:0042330, but we mean a car taxi)
+    'GO:0022803',       # Porters (http://purl.obolibrary.org/obo/GO_0022803, but we mean a porter)
 
-]
+    'UBERON:0000468',   # "organism"/"body" is probably correct, but not terribly useful
+
+}
+IGNORED_CATEGORIES = {
+    'biolink:OrganismTaxon', # Some good matches (human, HIV, fishes) but generally not useful.
+
+}
 PREFIXES = {
     'http://www.ebi.ac.uk/efo/EFO_': 'EFO:'
 }
+
 
 # TODO: add language to ID.
 def get_id_for_heal_crf(filename):
@@ -141,12 +160,29 @@ def ner_via_oger(text, oger_pipeline, id=""):
 
         recurse_subelements(doc)
 
+    ids_already_processed = set()
     for entity in doc.iter_entities():
         entity_id = entity.cid
+        if entity_id in ids_already_processed:
+            continue
+        ids_already_processed.add(entity_id)
         is_synonym = False
         if entity_id.endswith('_SYNONYM'):
             entity_id = entity_id[:-8]
             is_synonym = True
+
+        entity_label = entity.pref
+        synonym_of = ''
+        m = re.match('^\\s*(.*)\\s*\\[synonym_of:\\s*(.*)\\s*]$', entity_label)
+        if m:
+            # Remove the synonym_of part of the label
+            entity_label = m.group(1)
+            synonym_of = m.group(2)
+
+        # If the entity label is less than four characters, we're not interested.
+        if len(entity_label) < 4:
+            logging.warning(f"Entity {entity.cid} has preferred label '{entity.pref}' is too short, skipping.")
+            continue
 
         for prefix in PREFIXES.keys():
             if entity_id.startswith(prefix):
@@ -154,8 +190,9 @@ def ner_via_oger(text, oger_pipeline, id=""):
 
         token_definition = dict(
             text=entity.pref,
-            id=entity_id,
+            id=entity_label,
             is_synonym=is_synonym,
+            synonym_of=synonym_of,
             categories=[entity.type]
         )
         normalized = normalize_curie(entity_id)
@@ -213,7 +250,9 @@ def process_crf(graph, filename, crf, oger_pipeline):
                 definitions = element['question']['cde']['newCde'].get('definitions') or []
                 for definition in definitions:
                     if 'sources' in definition:
-                        crf_text += f" (definition: {definition['definition']}, sources: {'; '.join(definition['sources'])})"
+                        # Let's not include this -- this seems very likely to go wrong.
+                        pass
+                        # crf_text += f" (definition: {definition['definition']}, sources: {'; '.join(definition['sources'])})"
                     else:
                         crf_text += f" (definition: {definition['definition']})"
 
@@ -332,14 +371,25 @@ def process_crf(graph, filename, crf, oger_pipeline):
                 count_ignored += 1
                 continue
 
+            categories = token['normalized']['type']
+            in_ignored_category = False
+            for category in categories:
+                if category in IGNORED_CATEGORIES:
+                    in_ignored_category = True
+            if in_ignored_category:
+                logging.info(f'Ignoring concept {term_id} (categories: {categories}) as it is on the list of ignored categories ({IGNORED_CATEGORIES})')
+                crf['_ner']['oger']['tokens']['ignored'].append(token)
+                count_ignored += 1
+                continue
+
             crf['_ner']['oger']['tokens']['normalized'].append(token)
             count_normalized += 1
 
             graph.add_node(term_id)
-            graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
+            graph.add_node_attribute(term_id, 'category', categories)
             graph.add_node_attribute(term_id, 'name',
                                      (token['normalized'].get('id') or {'label': 'ERROR'}).get('label'))
-            graph.add_node_attribute(term_id, 'provided_by', 'MedType NER service + Translator normalization API')
+            graph.add_node_attribute(term_id, 'provided_by', 'OGER NER service + Translator normalization API')
             # f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
 
             # Add an edge/association between the CRF and the term.
@@ -353,7 +403,7 @@ def process_crf(graph, filename, crf, oger_pipeline):
                                      ['biolink:InformationContentEntityToNamedThingAssociation'])
             graph.add_edge_attribute(crf_id, term_id, association_id, 'name', token['text'])
             graph.add_edge_attribute(crf_id, term_id, association_id, 'knowledge_source',
-                                     'MedType NER service + Translator normalization API')
+                                     'OGER NER service + Translator normalization API')
             # f'Monarch NER service ({MONARCH_API_URI}) + Translator normalization API ({TRANSLATOR_NORMALIZATION_URL})')
             # graph.add_edge_attribute(crf_id, term_id, association_id, 'description', f"NER found '{token['text']}' in CRF text '{crf_text}'")
 
@@ -418,7 +468,11 @@ def oger_annotator(input, cde_mappings_csv, to_kgx, oger_terms):
         termlist_path=oger_terms,
         termlist_stopwords='input/oger/stopwords/stopWords.txt',
         termlist_normalize='stem-Porter',
-        postfilter='builtin:remove_overlaps builtin:remove_sametype_overlaps builtin:remove_submatches  builtin:remove_sametype_submatches'
+        postfilter='builtin:remove_overlaps ' \
+                   'builtin:remove_sametype_overlaps ' \
+                   'builtin:remove_submatches ' \
+                   'builtin:remove_sametype_submatches ' \
+                   'builtin:frequentFP'
     )
     oger_pipeline = PipelineServer(conf)
 
