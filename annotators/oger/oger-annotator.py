@@ -53,21 +53,36 @@ session.mount('https://', http_adapter)
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
 
 # Some concepts that are always ignored.
+# TODO: see if we could ignore some of these using parts-of-speech information.
 IGNORED_CONCEPTS = {
     'UBERON:0002542',   # Scale (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0002542, but we mean a numeric scale)
     'UBERON:0007380',   # Dermal scale (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0007380, but we mean a numeric scale)
     'UBERON:0003062',   # "organizer" (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0003062), but we mean the person
     'UBERON:0000473',   # "test" is not "testis" (https://www.ebi.ac.uk/ols/search?q=UBERON%3A0000473)
     'NCBITaxon:1',      # "root" or "all" is not all of life (https://www.ebi.ac.uk/ols/search?q=NCBITaxon%3A1)
+    'MONDO:0017014',    # "child" is not interstitial lung disease specific to childhood (MONDO:0017014)
     'MONDO:0017015',    # "child" is not primary interstitial lung disease specific to childhood (https://www.ebi.ac.uk/ols/search?q=MONDO%3A0017015)
     'MONDO:0017879',    # "hards" is not hantavirus pulmonary syndrome (https://www.ebi.ac.uk/ols/search?q=MONDO%3A0017879)
+    'MONDO:0009176',    # "ever" does not mean epidermodysplasia verruciformis (MONDO:0009176)
+    'MONDO:0010953',    # Fanconi anemia complementation group E (MONDO:0010953)
+    'MONDO:0009196',    # ermine phenotype ("bads")
+    'MONDO:0054866',    # sudden arrhythmia death syndrome (MONDO:0054866)
+    'MONDO:0009994',    # alveolar rhabdomyosarcoma (MONDO:0009994)
+    'MONDO:0000605',    # hypersensitivity reaction disease (MONDO:0000605)
+    'MONDO:0004111',    # anatomical conduit (UBERON:0004111)
+    'UBERON:0035971',   # postsubiculum (UBERON:0035971)
+    'MONDO:0024457',    # neurodegeneration with brain iron accumulation 2A (MONDO:0024457)
+    'MONDO:0017998',    # PLA2G6-associated neurodegeneration (MONDO:0017998)
+    'UBERON:2002175',   # rostral octaval nerve motor nucleus (UBERON:2002175)
+    # Continue here.
     'CHEBI:24433',      # "groupe" or "rest" is not "group" (CHEBI:24433)
     'GO:0031975',       # Envelope (refers to letter envelope in the CDE)
     'GO:0042330',       # Taxis (http://amigo.geneontology.org/amigo/term/GO:0042330, but we mean a car taxi)
     'GO:0022803',       # Porters (http://purl.obolibrary.org/obo/GO_0022803, but we mean a porter)
 
     'UBERON:0000468',   # "organism"/"body" is probably correct, but not terribly useful
-
+    'UMLS:C0013852',    # "electron" isn't being matched correctly here, and wouldn't be useful if it was.
+    'UBERON:0004704',   # "bone fossa" (depressions) is probably being mismatched from "depression"
 }
 IGNORED_CATEGORIES = {
     'biolink:OrganismTaxon', # Some good matches (human, HIV, fishes) but generally not useful.
