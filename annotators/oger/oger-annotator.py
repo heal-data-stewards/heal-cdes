@@ -173,9 +173,10 @@ def ner_via_oger(text, oger_pipeline, id=""):
 
         entity_label = entity.pref
         synonym_of = ''
-        m = re.match('^\\s*(.*)\\s*\\[synonym_of:\\s*(.*)\\s*]$', entity_label)
+        m = re.match('^\\s*(.*)\\s*\\[SYNONYM_OF:\\s*(.*)\\s*]$', entity_label)
         if m:
             # Remove the synonym_of part of the label
+            logging.debug(f"Removed synonym from entity label {entity_label} -> {m.group(1)}; {m.group(2)}")
             entity_label = m.group(1)
             synonym_of = m.group(2)
 
