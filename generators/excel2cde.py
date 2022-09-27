@@ -10,12 +10,15 @@ import pylightxl
 # Add logging support
 import logging
 
+# For command line arguments
+import click
+
 # We read config from `.env`.
 import os
 from dotenv import dotenv_values
 config = {
-    **dotenv_values(".env.default"), # default configuration
-    **dotenv_values(".env"),         # override with user-specific® configuration
+    **dotenv_values("../.env.default"), # default configuration
+    **dotenv_values("../.env"),         # override with user-specific® configuration
     **os.environ,                    # override loaded values with environment variables
 }
 
@@ -24,17 +27,6 @@ logging.basicConfig(level=logging.INFO)
 
 # Read this program's "version" from git describe.
 version = subprocess.check_output(["git", "describe", "--all"]).strip()
-
-# We need an input directory -- we recurse through this
-# directory and process all XLSX files in that directory.
-input_dir = config['INPUT_DIR']
-logging.debug(f'Input directory: {input_dir}')
-
-# Prepare output directory.
-output_dir = config['OUTPUT_DIR']
-if not os.path.exists(output_dir):
-    os.mkdir(output_dir)
-logging.debug(f'Output directory: {output_dir}')
 
 
 # Helper method: the Excel files refer to the same columns by different names.
@@ -175,7 +167,7 @@ def convert_question_to_formelement(row):
 
 
 # Code to convert an XLSX file to JSON.
-def convert_xlsx_to_json(input_filename) -> None:
+def convert_xlsx_to_json(input_filename, input_dir, output_dir) -> None:
     """
     Convert an XLSX file to a JSON file. We generate the JSON filename based on the command line arguments.
 
@@ -246,10 +238,38 @@ def convert_xlsx_to_json(input_filename) -> None:
         json.dump(form_data, f, indent=2)
 
 
-iterator = os.walk(input_dir, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
-for root, dirs, files in iterator:
-    logging.debug(f' - Recursing into directory {root}')
-    for filename in files:
-        if filename.lower().endswith('.xlsx') or filename.lower().endswith('.csv'):
-            filepath = os.path.join(root, filename)
-            convert_xlsx_to_json(filepath)
+# Process input commands
+@click.command()
+@click.argument('input-dir', required=True, type=click.Path(
+    exists=True,
+    file_okay=False,
+    dir_okay=True,
+    allow_dash=False
+))
+@click.option('--output', default='output/json', type=click.Path(
+    exists=False,
+    file_okay=False,
+    dir_okay=True,
+    allow_dash=False
+))
+def excel2cde(input_dir, output):
+    input_dir = click.format_filename(input_dir)
+    output_dir = click.format_filename(output)
+
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+
+    logging.debug(f'Input directory: {input_dir}')
+    logging.debug(f'Output directory: {output_dir}')
+
+    iterator = os.walk(input_dir, onerror=lambda err: logging.error(f'Error reading file: {err}'), followlinks=True)
+    for root, dirs, files in iterator:
+        logging.debug(f' - Recursing into directory {root}')
+        for filename in files:
+            if filename.lower().endswith('.xlsx') or filename.lower().endswith('.csv'):
+                filepath = os.path.join(root, filename)
+                convert_xlsx_to_json(filepath, input_dir, output_dir)
+
+
+if __name__ == '__main__':
+    excel2cde()

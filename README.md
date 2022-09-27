@@ -1,8 +1,17 @@
-# HEAL CDE Tools
+# Scripts for managing HEAL CDEs
 
-## Setting up virtual environment
+This repository contains several scripts for working with [HEAL CDEs].
+Primarily, it converts the Excel representation of these HEAL CDEs into
+a JSON representation based on the data model used by the 
+[NIH CDE Repository] (see JSON Schemas for [Data Elements] and [Forms]),
+and then converting these JSON files into other formats for use in
+downstream tools.
 
-You should run this program in a virtual environment.
+## How to use
+
+### Getting started
+
+We use venv to maintain the list of packages.
 
 ```shell
 $ python -m venv venv
@@ -10,14 +19,14 @@ $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
-## Converting HEAL files from Excel to JSON
+### Generating JSON files
 
-If the HEAL files are in e.g. `/Users/gaurav/Library/CloudStorage/Box-Box/NIH\ HEAL\ Common\ Data\ Elements`,
-then you can convert these files into JSON by running:
+The script generators/excel2cde.py recursively converts Excel files in the
+expected format into JSON files in the output directory (by default, to the
+`output/json` directory).
 
 ```shell
-$ mkdir -p output/json
-$ INPUT_DIR=/Users/gaurav/Library/CloudStorage/Box-Box/NIH\ HEAL\ Common\ Data\ Elements OUTPUT_DIR=output/json python excel2cde.py
+$ python generators/excel2cde.py [input-directory] [--output output_directory]
 ```
 
 ## Converting JSON files to Excel templates
@@ -30,3 +39,27 @@ of the XLSX template (`input/cde-template.xlsx` by default). You should then run
 $ python exporters/xlsx-exporter.py -c input/cde-template-locations.yaml -o output/xlsx output/json
 ```
 
+### Annotating JSON files
+
+Annotation generally requires sending the HEAL CDE text content to an
+online annotation process, following by using the Translator [Node Normalization]
+service to filter and standardize the resulting annotations. This reliance
+on online services causes several possible points of failure. To mitigate
+this, the annotation workflow is intended to be run through a [Rakefile].
+The [Rakefile in this repo] contains instructions for building the annotated
+KGX output into the `annotated/` directory.
+
+```shell
+$ rake
+$ python validators/check_annotated.py annotated
+$ mv annotated annotated/year-month-day
+```
+
+
+  [HEAL CDEs]: https://heal.nih.gov/data/common-data-elements
+  [NIH CDE Repository]: https://cde.nlm.nih.gov/
+  [Data Elements]: https://cde.nlm.nih.gov/schema/de
+  [Forms]: https://cde.nlm.nih.gov/schema/form
+  [Node Normalization]: nodenormalization-sri.renci.org/
+  [Rakefile]: https://ruby.github.io/rake/doc/rakefile_rdoc.html
+  [Rakefile in this repo]: ./Rakefile
