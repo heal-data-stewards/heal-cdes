@@ -46,7 +46,7 @@ session.mount('http://', http_adapter)
 session.mount('https://', http_adapter)
 
 # Some URLs we use.
-TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.2/get_normalized_nodes'
+TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.3/get_normalized_nodes'
 MEDTYPE_API_URI = 'http://localhost:8125/run_linker'
 
 
