@@ -10,6 +10,8 @@ ANNOTATOR = 'annotators/scigraph/scigraph-api-annotator.py'
 OUTPUT_DIR = 'annotated'
 
 # Input/output files
+require 'rake/clean'
+CLEAN.include OUTPUT_DIR
 META_CSV = "HEAL CDEs matching LOINC, NIH CDE or caDSR CDEs - HEAL CDEs mapped to LOINC and caDSR - 2021sep7.csv"
 INPUT_FILES = FileList['output/json/**/*.json']
 NODES_FILES = INPUT_FILES.pathmap("%{^output/,#{OUTPUT_DIR}/}X_nodes.jsonl")
