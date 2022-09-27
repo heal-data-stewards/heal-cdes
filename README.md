@@ -29,6 +29,16 @@ expected format into JSON files in the output directory (by default, to the
 $ python generators/excel2cde.py [input-directory] [--output output_directory]
 ```
 
+## Converting JSON files to Excel templates
+
+Excel template generation can be configured with the `input/cde-template-locations.yaml`
+file. Note particularly the `template` variable, which should be set to the location
+of the XLSX template (`input/cde-template.xlsx` by default). You should then run:
+
+```shell
+$ python exporters/xlsx-exporter.py -c input/cde-template-locations.yaml -o output/xlsx output/json
+```
+
 ### Annotating JSON files
 
 Annotation generally requires sending the HEAL CDE text content to an
