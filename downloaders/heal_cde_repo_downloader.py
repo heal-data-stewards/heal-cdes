@@ -123,12 +123,15 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
     logging.debug(json.dumps(heal_cde_entries, indent=2))
 
     # Set up the output directory.
-    os.makedirs(output)
+    os.makedirs(output, exist_ok=True)
 
     # For each identifier, download the XLSX file if that's an option.
     for crf_id in heal_cde_entries:
         logging.info(f"Processing {crf_id}")
         files = heal_cde_entries[crf_id]
+
+        crf_dir = os.path.join(output, crf_id)
+        os.makedirs(crf_dir, exist_ok=True)
 
         # At the moment we only support a single XLSX file.
         xlsx_files = list(filter(lambda f: f['format'] == 'xlsx', files))
@@ -143,7 +146,19 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         xlsx_file = xlsx_files[0]
         xlsx_file_url = xlsx_file['url']
 
-        logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url}")
+        logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ...")
+        xlsx_file_req = requests.get(xlsx_file_url, stream=True)
+        if not xlsx_file_req.ok:
+            logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
+            continue
+
+        xlsx_file_path = os.path.join(crf_dir, crf_id + '.xlsx')
+        with open(xlsx_file_path, 'wb') as fd:
+            for chunk in xlsx_file_req.iter_content(chunk_size=128):
+                fd.write(chunk)
+
+        logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
+
 
 # Run heal_cde_repo_downloader() if not used as a library.
 if __name__ == "__main__":
