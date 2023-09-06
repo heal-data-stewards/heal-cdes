@@ -106,7 +106,9 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
             'id': id,
             'title': title,
             'description': description,
-            'lang': lang
+            'lang': lang,
+            'url': url,
+            'row': row
         })
 
     logging.info(json.dumps(heal_cde_entries, indent=2))
