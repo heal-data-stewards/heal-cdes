@@ -45,26 +45,12 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         # At some point in the future, we'll have unique HEAL CDE identifiers that we can use to figure out which of the
         # files mentioned in heal_cde_csv refer to the same CDE. Until then, we can generate an "id" ourselves based on the
         # unique stem of filenames.
-        if title.endswith('-crf.docx'):
-            id = title[0:-9]
-        elif title.endswith('-crf.pdf'):
-            id = title[0:-8]
-        elif title.endswith('-spanish-crf.docx'):
+        if title.endswith('-spanish-crf.docx'):
             id = title[0:-17]
         elif title.endswith('-crf-pediatric.docx'):
             id = title[0:-19]
         elif title.endswith('-pediatric-crf.docx'):
             id = title[0:-19]
-        elif title.endswith('-cde.pdf'):
-            id = title[0:-8]
-        elif title.endswith('-cde.xlsx'):
-            id = title[0:-9]
-        elif title.endswith('-cde_.xlsx'):
-            id = title[0:-10]
-        elif title.endswith('-cdes.xlsx'):
-            id = title[0:-10]
-        elif title.endswith('-crf.xlsx'):
-            id = title[0:-9]
         elif title.endswith('-cde-pediatric.xlsx'):
             id = title[0:-19]
         elif title.endswith('-crf-pediatric-spanish.docx'):
@@ -86,6 +72,20 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
             id = title[0:-24]
         elif title.endswith('-copyright-statement-pediatric.docx'):
             id = title[0:-35]
+        elif title.endswith('-crf.docx'):
+            id = title[0:-9]
+        elif title.endswith('-crf.pdf'):
+            id = title[0:-8]
+        elif title.endswith('-cde.pdf'):
+            id = title[0:-8]
+        elif title.endswith('-cde.xlsx'):
+            id = title[0:-9]
+        elif title.endswith('-cde_.xlsx'):
+            id = title[0:-10]
+        elif title.endswith('-cdes.xlsx'):
+            id = title[0:-10]
+        elif title.endswith('-crf.xlsx'):
+            id = title[0:-9]
         else:
             raise RuntimeError(f"Could not generate an ID for CRF titled '{title}'.")
 
@@ -111,7 +111,7 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
             'row': row
         })
 
-    logging.info(json.dumps(heal_cde_entries, indent=2))
+    print(json.dumps(heal_cde_entries, indent=2))
 
 # Run heal_cde_repo_downloader() if not used as a library.
 if __name__ == "__main__":
