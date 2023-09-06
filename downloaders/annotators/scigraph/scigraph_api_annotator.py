@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# scigraph-api-annotator.py <input directory of JSON files>
+# scigraph_api_annotator.py <input directory of JSON files>
 #
 # Given an input directory of JSON files, produces a list of annotations for each CRF and CDE as a CSV.
 # Optionally, it can produce a YAML file that describes the CRF and CDE as a KGX file.
@@ -286,7 +286,7 @@ def process_crf(graph, filename, crf):
     #   incomplete categories such as "English", "Adult" and so on.
     file_paths = filter(lambda d: d['designation'].startswith('File path: '), crf['designations'])
     # chain.from_iterable() effectively flattens the list.
-    categories = list(chain.from_iterable(map(lambda d: d['designation'][11:].split('/'), file_paths)))
+    categories = crf['categories'] # list(chain.from_iterable(map(lambda d: d['designation'][11:].split('/'), file_paths)))
     logging.info(f"Categories for CDE {crf_name}: {categories}")
     graph.add_node_attribute(crf_id, 'cde_categories', list(categories))
     # - 2. Let's create a `cde_category` property that summarizes the longlist of categories into

@@ -15,7 +15,13 @@ import click
 import logging
 import requests
 
+from kgx.graph.nx_graph import NxGraph
+from kgx.transformer import Transformer
+from kgx.source import graph_source
+from kgx.sink import jsonl_sink
+
 from excel2cde import convert_xlsx_to_json
+from annotators.scigraph.scigraph_api_annotator import process_crf
 
 # Configuration
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
@@ -121,11 +127,15 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
             'row': row
         })
 
-    # Confirm the mapping of input rows to identifiers.
-    logging.debug(json.dumps(heal_cde_entries, indent=2))
-
     # Set up the output directory.
     os.makedirs(output, exist_ok=True)
+
+    # Write to outputs.
+    with open(os.path.join(output, 'list.json'), 'w') as f:
+        json.dump(heal_cde_entries, f, indent=2)
+
+    # Confirm the mapping of input rows to identifiers.
+    logging.debug(json.dumps(heal_cde_entries, indent=2))
 
     # For each identifier, download the XLSX file if that's an option.
     for crf_id in heal_cde_entries:
@@ -164,11 +174,29 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
 
         # Step 2. Convert to JSON.
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
-        convert_xlsx_to_json(xlsx_file_path, crf_dir, crf_dir)
-        json_file_path = os.path.join(crf_dir, crf_id + '.json')
-        if not os.path.exists(json_file_path):
-            raise RuntimeError(f"JSON file not generated: {json_file_path}")
-        logging.info(f"  Converting {xlsx_file_path} to {json_file_path}.")
+        json_data = convert_xlsx_to_json(xlsx_file_path)
+
+        # Add additional data
+        categories = set()
+        for f in files:
+            if 'row' in f and 'Core or Supplemental' in f['row']:
+                for cat in f['row']['Core or Supplemental'].split(', '):
+                    categories.add(cat)
+        json_data['categories'] = list(sorted(categories))
+
+        # Step 3. Convert JSON to KGX.
+        # Set up the KGX graph
+        graph = NxGraph()
+        kgx_file_path = os.path.join(crf_dir, crf_id) # Suffixes are added by the KGX tools.
+        comprehensive = process_crf(graph, crf_id, json_data)
+
+        # Step 4. Write KGX files.
+        t = Transformer()
+        t.process(
+            source=graph_source.GraphSource(owner=t).parse(graph),
+            sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_file_path)
+        )
+
 
 
 # Run heal_cde_repo_downloader() if not used as a library.
