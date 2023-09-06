@@ -468,7 +468,9 @@ def main(input, output, cde_mappings_csv, to_kgx):
     cde_mappings = {}
     with open(csv_table_path, 'r') as f:
         for row in csv.DictReader(f):
-            cde_mappings[row['Filename']] = row
+            if row["Doc #"] in cde_mappings:
+                raise RuntimeError(f"Duplicate 'Doc #' found in meta CSV file: ")
+            cde_mappings[row["Doc #"]] = row
 
     global count_elements
     count_files = 0
