@@ -15,6 +15,8 @@ import click
 import logging
 import requests
 
+from excel2cde import convert_xlsx_to_json
+
 # Configuration
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
 
@@ -146,6 +148,7 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         xlsx_file = xlsx_files[0]
         xlsx_file_url = xlsx_file['url']
 
+        # Step 1. Download XLSX file.
         logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ...")
         xlsx_file_req = requests.get(xlsx_file_url, stream=True)
         if not xlsx_file_req.ok:
@@ -158,6 +161,14 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
                 fd.write(chunk)
 
         logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
+
+        # Step 2. Convert to JSON.
+        logging.info(f"  Converting {xlsx_file_path} to JSON ...")
+        convert_xlsx_to_json(xlsx_file_path, crf_dir, crf_dir)
+        json_file_path = os.path.join(crf_dir, crf_id + '.json')
+        if not os.path.exists(json_file_path):
+            raise RuntimeError(f"JSON file not generated: {json_file_path}")
+        logging.info(f"  Converting {xlsx_file_path} to {json_file_path}.")
 
 
 # Run heal_cde_repo_downloader() if not used as a library.
