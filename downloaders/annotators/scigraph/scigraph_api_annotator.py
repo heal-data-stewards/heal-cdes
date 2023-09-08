@@ -232,13 +232,14 @@ count_could_not_normalize = 0
 count_ignored = 0
 
 
-def process_crf(graph, filename, crf):
+def process_crf(graph, crf_id, crf, source):
     """
     Process a CRF. We need to recursively process the CDEs as well.
 
     :param graph: A KGX graph to add the CRF to.
     :param filename: The filename being processed.
     :param crf: The CRF in JSON format to process.
+    :param source: The source of this data as a string.
     :return: A 'comprehensive' JSON object representing this file -- this is the input JSON file with
     the annotations added on. It also modifies graph and writes outputs to STDOUT (Disgusting!).
     """
@@ -248,7 +249,6 @@ def process_crf(graph, filename, crf):
     global count_could_not_normalize
     global count_ignored
 
-    crf_id = get_id_for_heal_crf(filename)
     designation = get_designation(crf)
 
     # Generate text for the entire form in one go.
@@ -280,6 +280,7 @@ def process_crf(graph, filename, crf):
         description = ""
 
     graph.add_node(crf_id)
+    graph.add_node_attribute(crf_id, 'provided_by', source)
     graph.add_node_attribute(crf_id, 'name', crf_name)
     graph.add_node_attribute(crf_id, 'summary', description)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])

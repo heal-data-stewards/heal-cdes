@@ -15,6 +15,8 @@ import click
 import logging
 import requests
 
+import datetime
+
 from kgx.graph.nx_graph import NxGraph
 from kgx.transformer import Transformer
 from kgx.source import graph_source
@@ -37,7 +39,9 @@ logging.basicConfig(level=logging.INFO)
               help='A URL for downloading the CSV version of the HEAL CDE repository')
 def heal_cde_repo_downloader(output, heal_cde_csv_download):
     # Step 1. Download the HEAL CDE CSV file.
-    logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download}.")
+    heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
+    heal_cde_source = f'HEAL CDE Repository, downloaded at {heal_cde_download_time}'
+    logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download} at {heal_cde_download_time}.")
     result = requests.get(heal_cde_csv_download)
     if not result.ok:
         logging.error(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
@@ -193,10 +197,6 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         json_data['titles'] = titles
         json_data['descriptions'] = descriptions
 
-        # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
-        # directly in the graph.
-        json_data['downloads'] = list(map(lambda f: f['url'], files))
-
         # Add categories and topics
         categories = set()
         for f in files:
@@ -213,14 +213,22 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         # Set up the KGX graph
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
-        comprehensive = process_crf(graph, crf_id, json_data)
+        comprehensive = process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source)
 
-        # Create notes for each download.
+        # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
+        # directly in the graph.
+        graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
+
+        # Create nodes for each download.
         for file in files:
             url = file['url']
+
             graph.add_node(url)
-            graph.add_node_attribute(url, 'lang', file['lang'])
-            graph.add_node_attribute(url, 'mime-type', file['mime-type'])
+            graph.add_node_attribute(url, 'category', ['biolink:WebPage'])
+            graph.add_node_attribute(url, 'language', file['lang'])
+            graph.add_node_attribute(url, 'format', file['mime-type'])
+            graph.add_node_attribute(url, 'description', file['description'])
+            graph.add_node_attribute(url, 'provided_by', heal_cde_source)
 
         # Step 4. Write KGX files.
         t = Transformer()
