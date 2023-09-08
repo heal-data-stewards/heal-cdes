@@ -271,12 +271,17 @@ def process_crf(graph, filename, crf):
 
         crf_text += "\n"
 
-    # The best CRF name is always the last designation, since we start with the filename and stuff.
-    crf_name = crf['designations'][-1]['designation']
+    # We expect a title and a description.
+    crf_name = crf['titles'][0]
+    if not crf_name:
+        crf_name = "(untitled)"
+    description = crf['descriptions'][0]
+    if not description:
+        description = ""
 
     graph.add_node(crf_id)
     graph.add_node_attribute(crf_id, 'name', crf_name)
-    graph.add_node_attribute(crf_id, 'summary', designation)
+    graph.add_node_attribute(crf_id, 'summary', description)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
 

@@ -98,7 +98,6 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         else:
             raise RuntimeError(f"Could not generate an ID for CRF titled '{title}'.")
 
-
         description = row['Description']
         if row['File Language'] == 'English':
             lang = 'en'
@@ -142,6 +141,9 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         logging.info(f"Processing {crf_id}")
         files = heal_cde_entries[crf_id]
 
+        titles = list(set(map(lambda f: f['title'], files)))
+        descriptions = list(set(map(lambda f: f['description'], files)))
+
         crf_dir = os.path.join(output, crf_id)
         os.makedirs(crf_dir, exist_ok=True)
 
@@ -176,18 +178,26 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
         json_data = convert_xlsx_to_json(xlsx_file_path)
 
+        # Add titles and descriptions.
+        json_data['titles'] = titles
+        json_data['descriptions'] = descriptions
+
         # Add additional data
         categories = set()
         for f in files:
             if 'row' in f and 'Core or Supplemental' in f['row']:
                 for cat in f['row']['Core or Supplemental'].split(', '):
                     categories.add(cat)
+            if 'row' in f and 'CDE Topics' in f['row']:
+                for topic in f['row']['CDE Topics'].split(', '):
+                    categories.add(topic)
+
         json_data['categories'] = list(sorted(categories))
 
         # Step 3. Convert JSON to KGX.
         # Set up the KGX graph
         graph = NxGraph()
-        kgx_file_path = os.path.join(crf_dir, crf_id) # Suffixes are added by the KGX tools.
+        kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
         comprehensive = process_crf(graph, crf_id, json_data)
 
         # Step 4. Write KGX files.
@@ -196,7 +206,6 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
             source=graph_source.GraphSource(owner=t).parse(graph),
             sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_file_path)
         )
-
 
 
 # Run heal_cde_repo_downloader() if not used as a library.
