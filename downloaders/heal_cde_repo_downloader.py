@@ -114,14 +114,25 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
 
         # The format should still be the last part of the url.
         url_lc_parts = url.lower().split('.')
-        fmt = url_lc_parts[-1]
+        extension = '.' + url_lc_parts[-1]
+        match extension:
+            case '.docx':
+                mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            case '.xlsx':
+                mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            case '.pdf':
+                mime = 'application/pdf'
+            case _:
+                raise RuntimeError(f"Unknown extension: {extension}")
+
 
         heal_cde_entries[crf_id].append({
             'crf_id': crf_id,
             'title': title,
             'description': description,
             'lang': lang,
-            'format': fmt,
+            'extension': extension,
+            'mime-type': mime,
             'url': url,
             'row': row
         })
@@ -148,7 +159,7 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         os.makedirs(crf_dir, exist_ok=True)
 
         # At the moment we only support a single XLSX file.
-        xlsx_files = list(filter(lambda f: f['format'] == 'xlsx', files))
+        xlsx_files = list(filter(lambda f: f['extension'] == '.xlsx', files))
         if len(xlsx_files) == 0:
             logging.warning(f"{crf_id} contains no XLSX files, skipping.")
             continue
@@ -182,7 +193,11 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         json_data['titles'] = titles
         json_data['descriptions'] = descriptions
 
-        # Add additional data
+        # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
+        # directly in the graph.
+        json_data['downloads'] = list(map(lambda f: f['url'], files))
+
+        # Add categories and topics
         categories = set()
         for f in files:
             if 'row' in f and 'Core or Supplemental' in f['row']:
@@ -199,6 +214,13 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
         comprehensive = process_crf(graph, crf_id, json_data)
+
+        # Create notes for each download.
+        for file in files:
+            url = file['url']
+            graph.add_node(url)
+            graph.add_node_attribute(url, 'lang', file['lang'])
+            graph.add_node_attribute(url, 'mime-type', file['mime-type'])
 
         # Step 4. Write KGX files.
         t = Transformer()
