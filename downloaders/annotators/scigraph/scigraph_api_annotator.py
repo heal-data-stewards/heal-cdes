@@ -233,7 +233,7 @@ count_could_not_normalize = 0
 count_ignored = 0
 
 
-def process_crf(graph, crf_id, crf, source):
+def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
     """
     Process a CRF. We need to recursively process the CDEs as well.
 
@@ -280,10 +280,17 @@ def process_crf(graph, crf_id, crf, source):
     if not description:
         description = ""
 
+    if add_cde_count_to_description:
+        if len(description) == 0:
+            description = f"Contains {count_elements} CDEs."
+        else:
+            description = f" Contains {count_elements} CDEs."
+
     graph.add_node(crf_id)
     graph.add_node_attribute(crf_id, 'provided_by', source)
     graph.add_node_attribute(crf_id, 'name', crf_name)
     graph.add_node_attribute(crf_id, 'summary', description)
+    graph.add_node_attribute(crf_id, 'cde_count', count_elements)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
 

@@ -37,8 +37,9 @@ logging.basicConfig(level=logging.INFO)
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
 @click.option('--heal-cde-csv-download', '--url', default=HEAL_CDE_CSV_DOWNLOAD,
               help='A URL for downloading the CSV version of the HEAL CDE repository')
+@click.option('--add-cde-count-to-description', type=bool, default=True)
 @click.option('--export-files-as-nodes', type=bool, default=False)
-def heal_cde_repo_downloader(output, heal_cde_csv_download, export_files_as_nodes):
+def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_description, export_files_as_nodes):
     # Step 1. Download the HEAL CDE CSV file.
     heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
     heal_cde_source = f'HEAL CDE Repository, downloaded at {heal_cde_download_time}'
@@ -214,7 +215,7 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, export_files_as_node
         # Set up the KGX graph
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
-        comprehensive = process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source)
+        comprehensive = process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
 
         # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
         # directly in the graph.
