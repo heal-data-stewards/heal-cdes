@@ -270,10 +270,10 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
         question_text = element['label']
         crf_text += question_text
         count_elements += 1
-        count_cdes += 1
 
         if 'question' in element and 'cde' in element['question']:
             crf_text += f" (name: {element['question']['cde']['name']})"
+            count_cdes += 1
 
             if 'newCde' in element['question']['cde']:
                 definitions = element['question']['cde']['newCde'].get('definitions') or []
