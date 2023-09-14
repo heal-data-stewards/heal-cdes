@@ -377,6 +377,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
     tokens = ner_via_monarch_api(crf_text)
 
     logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
+    existing_term_ids = set()
     for token in tokens:
         logging.info(f"Found token: {token}")
         count_tokens += 1
@@ -387,9 +388,9 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
                 term_id = token['normalized']['id']['identifier']
             else:
                 global count_errors
-                error_count += 1
+                count_errors += 1
 
-                term_id = f'ERROR:{error_count}'
+                term_id = f'ERROR:{count_errors}'
 
             if term_id in IGNORED_CONCEPTS:
                 global ignored_count
@@ -402,6 +403,11 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
 
             crf['_ner']['scigraph']['tokens']['normalized'].append(token)
             count_normalized += 1
+
+            if term_id in existing_term_ids:
+                # Suppress duplicate IDs to save space.
+                continue
+            existing_term_ids.add(term_id)
 
             graph.add_node(term_id)
             graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
