@@ -284,7 +284,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
         if len(description) == 0:
             description = f"Contains {count_elements} CDEs."
         else:
-            description = f" Contains {count_elements} CDEs."
+            description = f"{description} Contains {count_elements} CDEs."
 
     graph.add_node(crf_id)
     graph.add_node_attribute(crf_id, 'provided_by', source)
