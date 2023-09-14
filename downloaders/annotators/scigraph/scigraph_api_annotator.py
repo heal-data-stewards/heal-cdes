@@ -253,9 +253,12 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
     designation = get_designation(crf)
 
     # We expect a title and a description.
-    crf_name = crf['titles'][0]
-    if not crf_name:
-        crf_name = "(untitled)"
+    # crf_name = crf['titles'][0]
+    # if not crf_name:
+    #     crf_name = "(untitled)"
+    crf_name = crf_id
+    if crf_name.startswith("HEALCDE:"):
+        crf_name = crf_name[8:]
     description = crf['descriptions'][0]
     if not description:
         description = ""
