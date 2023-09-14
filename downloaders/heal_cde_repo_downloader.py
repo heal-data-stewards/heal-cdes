@@ -37,7 +37,8 @@ logging.basicConfig(level=logging.INFO)
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
 @click.option('--heal-cde-csv-download', '--url', default=HEAL_CDE_CSV_DOWNLOAD,
               help='A URL for downloading the CSV version of the HEAL CDE repository')
-def heal_cde_repo_downloader(output, heal_cde_csv_download):
+@click.option('--export-files-as-nodes', type=bool, default=False)
+def heal_cde_repo_downloader(output, heal_cde_csv_download, export_files_as_nodes):
     # Step 1. Download the HEAL CDE CSV file.
     heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
     heal_cde_source = f'HEAL CDE Repository, downloaded at {heal_cde_download_time}'
@@ -217,18 +218,31 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download):
 
         # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
         # directly in the graph.
-        graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
+        if export_files_as_nodes:
+            graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
 
         # Create nodes for each download.
+        files_urls = set()
+        files_by_lang = collections.defaultdict(set)
+        files_urls.add(xlsx_file_url)
         for file in files:
             url = file['url']
 
-            graph.add_node(url)
-            graph.add_node_attribute(url, 'category', ['biolink:WebPage'])
-            graph.add_node_attribute(url, 'language', file['lang'])
-            graph.add_node_attribute(url, 'format', file['mime-type'])
-            graph.add_node_attribute(url, 'description', file['description'])
-            graph.add_node_attribute(url, 'provided_by', heal_cde_source)
+            if export_files_as_nodes:
+                graph.add_node(url)
+                graph.add_node_attribute(url, 'category', ['biolink:WebPage'])
+                graph.add_node_attribute(url, 'language', file['lang'])
+                graph.add_node_attribute(url, 'format', file['mime-type'])
+                graph.add_node_attribute(url, 'description', file['description'])
+                graph.add_node_attribute(url, 'provided_by', heal_cde_source)
+            else:
+                files_urls.add(url)
+                files_by_lang[file['lang']].add(url)
+
+        if not export_files_as_nodes:
+            graph.add_node_attribute('HEALCDE:' + crf_id, 'files', list(files_urls))
+            for lang in files_by_lang:
+                graph.add_node_attribute('HEALCDE:' + crf_id, f"files-{lang}", list(files_by_lang[lang]))
 
         # Step 4. Write KGX files.
         t = Transformer()
