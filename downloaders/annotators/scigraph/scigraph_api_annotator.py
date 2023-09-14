@@ -265,10 +265,12 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
 
     # Generate text for the entire form in one go.
     crf_text = designation + "\n" + crf_name + "\n" + description + "\n"
+    count_cdes = 0
     for element in crf['formElements']:
         question_text = element['label']
         crf_text += question_text
         count_elements += 1
+        count_cdes += 1
 
         if 'question' in element and 'cde' in element['question']:
             crf_text += f" (name: {element['question']['cde']['name']})"
@@ -285,15 +287,15 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
 
     if add_cde_count_to_description:
         if len(description) == 0:
-            description = f"Contains {count_elements} CDEs."
+            description = f"Contains {count_cdes} CDEs."
         else:
-            description = f"{description} Contains {count_elements} CDEs."
+            description = f"{description} Contains {count_cdes} CDEs."
 
     graph.add_node(crf_id)
     graph.add_node_attribute(crf_id, 'provided_by', source)
     graph.add_node_attribute(crf_id, 'name', crf_name)
     graph.add_node_attribute(crf_id, 'summary', description)
-    graph.add_node_attribute(crf_id, 'cde_count', count_elements)
+    graph.add_node_attribute(crf_id, 'cde_count', count_cdes)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
 
