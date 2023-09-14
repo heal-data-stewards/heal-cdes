@@ -339,12 +339,12 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
         del categories[-1]
 
     # The last category should now be the most specific category.
-    graph.add_node_attribute(crf_id, 'cde_category_extended', [
-        core_or_not,
-        adult_or_pediatric,
-        acute_or_chronic_pain,
-        categories[-1]
-    ])
+    # graph.add_node_attribute(crf_id, 'cde_category_extended', [
+    #     core_or_not,
+    #     adult_or_pediatric,
+    #     acute_or_chronic_pain,
+    #     categories[-1]
+    # ])
 
     # Let's summarize all of this into a single category (as per
     # https://github.com/helxplatform/development/issues/868#issuecomment-1072485659)
@@ -359,8 +359,8 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
         else:
             cde_category = core_or_not
 
-    graph.add_node_attribute(crf_id, 'cde_category', cde_category)
-    logging.info(f"Categorized CRF {crf_name} as {cde_category}")
+    # graph.add_node_attribute(crf_id, 'cde_category', cde_category)
+    # logging.info(f"Categorized CRF {crf_name} as {cde_category}")
 
     crf['_ner'] = {
         'scigraph': {
