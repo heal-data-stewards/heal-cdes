@@ -168,6 +168,7 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     """
 
     try:
+        logging.error(f"Querying {MONARCH_API_URI} with text: '{text}'")
         result = session.post(MONARCH_API_URI, {
             'content': text,
             'include_category': included_categories,
