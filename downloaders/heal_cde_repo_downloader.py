@@ -158,6 +158,11 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
         logging.info(f"Processing {crf_id}")
         files = heal_cde_entries[crf_id]
 
+        # These files are inexplicably failing right now:
+        if 'dc-tmd-exam-form' == crf_id:
+            logging.warning(f'Skipping {crf_id} as it seems to be stalling for some reason.')
+            continue
+
         titles = list(set(map(lambda f: f['title'], files)))
         descriptions = list(set(map(lambda f: f['description'], files)))
 
