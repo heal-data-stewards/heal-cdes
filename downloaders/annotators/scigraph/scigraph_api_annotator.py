@@ -157,7 +157,7 @@ def normalize_curie(curie):
     except json.JSONDecodeError as err:
         logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
 
-def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
+def ner_via_monarch_api(crf_id, text, included_categories=[], excluded_categories=[]):
     """
     Query the Monarch API to do NER on a string via https://api.monarchinitiative.org/api/#operations-nlp/annotate-post_annotate.
 
@@ -168,7 +168,7 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     """
 
     try:
-        logging.error(f"Querying {MONARCH_API_URI} with text: '{text}'")
+        logging.error(f"Querying {MONARCH_API_URI} with text: '{text}' (CRF ID {crf_id})")
         result = session.post(MONARCH_API_URI, {
             'content': text,
             'include_category': included_categories,
@@ -193,7 +193,7 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
 
     tokens = []
     spans = result_json['spans']
-    logging.info(f"Querying Monarch API for '{text}' produced the following tokens:")
+    logging.info(f"Querying Monarch API for '{text}' produced the following tokens (CRF ID {crf_id}):")
     for span in spans:
         for token in span['token']:
             token_definition = dict(
@@ -374,7 +374,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
         }
     }
 
-    tokens = ner_via_monarch_api(crf_text)
+    tokens = ner_via_monarch_api(crf_id, crf_text)
 
     logging.info(f"Querying CRF '{designation}' with text: {crf_text} (CRF ID {crf_id})")
     existing_term_ids = set()
