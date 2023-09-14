@@ -376,7 +376,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
 
     tokens = ner_via_monarch_api(crf_text)
 
-    logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
+    logging.info(f"Querying CRF '{designation}' with text: {crf_text} (CRF ID {crf_id})")
     existing_term_ids = set()
     for token in tokens:
         logging.info(f"Found token: {token}")
