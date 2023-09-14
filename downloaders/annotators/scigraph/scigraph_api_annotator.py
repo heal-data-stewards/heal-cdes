@@ -252,8 +252,16 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
 
     designation = get_designation(crf)
 
+    # We expect a title and a description.
+    crf_name = crf['titles'][0]
+    if not crf_name:
+        crf_name = "(untitled)"
+    description = crf['descriptions'][0]
+    if not description:
+        description = ""
+
     # Generate text for the entire form in one go.
-    crf_text = designation + "\n"
+    crf_text = designation + "\n" + crf_name + "\n" + description + "\n"
     for element in crf['formElements']:
         question_text = element['label']
         crf_text += question_text
@@ -271,14 +279,6 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
                         crf_text += f" (definition: {definition['definition']})"
 
         crf_text += "\n"
-
-    # We expect a title and a description.
-    crf_name = crf['titles'][0]
-    if not crf_name:
-        crf_name = "(untitled)"
-    description = crf['descriptions'][0]
-    if not description:
-        description = ""
 
     if add_cde_count_to_description:
         if len(description) == 0:
