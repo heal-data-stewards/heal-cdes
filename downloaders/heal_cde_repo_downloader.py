@@ -76,11 +76,18 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
         elif title.endswith('-crf-spanish.pdf'):
             crf_id = title[0:-16]
             lang = 'es'
+        elif title.endswith('-crf-swedish.pdf'):
+            crf_id = title[0:-16]
+            lang = 'sv'
         elif title.endswith('-crf-swedish.docx'):
             crf_id = title[0:-17]
             lang = 'sv'
         elif title.endswith('-copyright-statement.docx'):
             crf_id = title[0:-25]
+        elif title.endswith('-copyright_statement.docx'):
+            crf_id = title[0:-25]
+        elif title.endswith('-copyright-statement.pdf'):
+            crf_id = title[0:-24]
         elif title.endswith('-copyright-statement_.docx'):
             crf_id = title[0:-26]
         elif title.endswith('-copyright-statment.docx'):
@@ -89,12 +96,16 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
             crf_id = title[0:-35]
         elif title.endswith('-crf.docx'):
             crf_id = title[0:-9]
+        elif title.endswith('-cde.docx'):
+            crf_id = title[0:-9]
         elif title.endswith('-crf.pdf'):
             crf_id = title[0:-8]
         elif title.endswith('-cde.pdf'):
             crf_id = title[0:-8]
         elif title.endswith('-cde.xlsx'):
             crf_id = title[0:-9]
+        elif title.endswith('-crf-.xlsx'):
+            crf_id = title[0:-10]
         elif title.endswith('-cde_.xlsx'):
             crf_id = title[0:-10]
         elif title.endswith('-cdes.xlsx'):
@@ -118,6 +129,10 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
         # Get the URL
         url = row['Link to File']
 
+        # Relative links?
+        if url.startswith('/files'):
+            url = 'https://heal.nih.gov' + url
+
         # The format should still be the last part of the url.
         url_lc_parts = url.lower().split('.')
         extension = '.' + url_lc_parts[-1]
@@ -129,7 +144,8 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
             case '.pdf':
                 mime = 'application/pdf'
             case _:
-                raise RuntimeError(f"Unknown extension: {extension}")
+                mime = 'application/octet-stream'
+                logging.error(f"Unknown extension in URL {url} for {row}, assuming octet-stream: {extension}")
 
 
         heal_cde_entries[crf_id].append({
