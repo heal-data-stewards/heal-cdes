@@ -37,20 +37,26 @@ logging.basicConfig(level=logging.INFO)
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
 @click.option('--heal-cde-csv-download', '--url', default=HEAL_CDE_CSV_DOWNLOAD,
               help='A URL for downloading the CSV version of the HEAL CDE repository')
+@click.option('--heal-cde-csv', '--csv', type=click.File(),
+              help='The CSV version of the HEAL CDE repository')
 @click.option('--add-cde-count-to-description', type=bool, default=True)
 @click.option('--export-files-as-nodes', type=bool, default=False)
-def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_description, export_files_as_nodes):
+def heal_cde_repo_downloader(output, heal_cde_csv_download, heal_cde_csv, add_cde_count_to_description, export_files_as_nodes):
     # Step 1. Download the HEAL CDE CSV file.
     heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
     heal_cde_source = f'HEAL CDE Repository, downloaded at {heal_cde_download_time}'
-    logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download} at {heal_cde_download_time}.")
-    result = requests.get(heal_cde_csv_download)
-    if not result.ok:
-        logging.error(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
-        exit(1)
 
-    heal_cde_csv = result.text
-    heal_cde_csv_reader = csv.DictReader(heal_cde_csv.splitlines())
+    if not heal_cde_csv:
+        logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download} at {heal_cde_download_time}.")
+        result = requests.get(heal_cde_csv_download)
+        if not result.ok:
+            logging.error(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
+            exit(1)
+
+        heal_cde_csv = result.text
+        heal_cde_csv_reader = csv.DictReader(heal_cde_csv.splitlines())
+    else:
+        heal_cde_csv_reader = csv.DictReader(heal_cde_csv)
 
     heal_cde_entries = collections.defaultdict(list)
     for row in heal_cde_csv_reader:
