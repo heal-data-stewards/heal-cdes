@@ -112,8 +112,8 @@ IGNORED_CONCEPTS = {
 
 # Some URLs we use.
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.3/get_normalized_nodes'
-MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
-
+# MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
+MONARCH_API_URI = 'https://api-biolink.monarchinitiative.org/api/nlp/annotate/entities'
 
 def get_id_for_heal_crf(filename):
     """ Get an ID for a HEAL CRF. """
