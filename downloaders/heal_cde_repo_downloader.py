@@ -216,6 +216,8 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, heal_cde_csv, add_cd
         # Step 2. Convert to JSON.
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
         json_data = convert_xlsx_to_json(xlsx_file_path)
+        if not json_data:
+            json_data = dict()
 
         # Add titles and descriptions.
         json_data['titles'] = titles
