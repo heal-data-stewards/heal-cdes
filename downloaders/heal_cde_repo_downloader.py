@@ -32,6 +32,35 @@ HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-reposito
 logging.basicConfig(level=logging.INFO)
 
 
+# Load the HEAL CRF/study usage mappings.
+def load_heal_crf_usage_mappings(study_mapping_file):
+    crf_usage_mappings = dict()
+    study_mapping_entries = csv.DictReader(study_mapping_file)
+
+    for entry in study_mapping_entries:
+        hdp_ids = entry['HDP IDs'].split('|')
+        source = entry['Source']
+        study_name = entry['Study Name']
+        crf_urls = entry['CRF URLs'].split('|')
+
+        if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
+            logging.warning(f"No HDP IDs found for study {study_name} in {study_mapping_file}, skipping.")
+            continue
+
+        if not crf_urls or (len(crf_urls) == 1 and (crf_urls[0] == 'NA' or crf_urls[0] == '')):
+            logging.warning(f"No CRF URLs found for study {study_name} in {study_mapping_file}, skipping.")
+            continue
+
+        for crf_url in crf_urls:
+            if crf_url not in crf_usage_mappings:
+                crf_usage_mappings[crf_url] = collections.defaultdict(set)
+
+            for hdp_id in hdp_ids:
+                crf_usage_mappings[crf_url][hdp_id].update((source, study_name))
+
+    return crf_usage_mappings
+
+
 # Download and annotate all the files from the HEAL CDE repository
 @click.command()
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
@@ -39,9 +68,25 @@ logging.basicConfig(level=logging.INFO)
               help='A URL for downloading the CSV version of the HEAL CDE repository')
 @click.option('--heal-cde-csv', '--csv', type=click.File(),
               help='The CSV version of the HEAL CDE repository')
+@click.option('--heal-cde-study-mappings', '--mappings', type=click.File(),
+              help='A CSV file describing mappings from CRFs/CDEs to studies')
 @click.option('--add-cde-count-to-description', type=bool, default=True)
 @click.option('--export-files-as-nodes', type=bool, default=False)
-def heal_cde_repo_downloader(output, heal_cde_csv_download, heal_cde_csv, add_cde_count_to_description, export_files_as_nodes):
+def heal_cde_repo_downloader(
+        output,
+        heal_cde_csv_download,
+        heal_cde_csv,
+        heal_cde_study_mappings,
+        add_cde_count_to_description,
+        export_files_as_nodes
+):
+    # If we have CDE/study mappings, load them.
+    crf_study_mappings = collections.defaultdict(dict)
+    unused_crf_urls = set()
+    if heal_cde_study_mappings:
+        crf_study_mappings = load_heal_crf_usage_mappings(heal_cde_study_mappings)
+        unused_crf_urls = set(crf_study_mappings.keys())
+
     # Step 1. Download the HEAL CDE CSV file.
     heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
     heal_cde_source = f'HEAL CDE Repository, downloaded at {heal_cde_download_time}'
@@ -153,8 +198,7 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, heal_cde_csv, add_cd
                 mime = 'application/octet-stream'
                 logging.error(f"Unknown extension in URL {url} for {row}, assuming octet-stream: {extension}")
 
-
-        heal_cde_entries[crf_id].append({
+        cde_json = {
             'crf_id': crf_id,
             'title': title,
             'description': description,
@@ -162,8 +206,18 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, heal_cde_csv, add_cd
             'extension': extension,
             'mime-type': mime,
             'url': url,
+            'studies': {},
             'row': row
-        })
+        }
+
+        # Add any CDE mappings.
+        if url in crf_study_mappings:
+            cde_json['studies'] = dict()
+            for (key, sources) in crf_study_mappings[url].items():
+                cde_json['studies'][key] = list(sorted(sources))
+            unused_crf_urls.remove(url)
+
+        heal_cde_entries[crf_id].append(cde_json)
 
     # Set up the output directory.
     os.makedirs(output, exist_ok=True)
@@ -174,6 +228,9 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, heal_cde_csv, add_cd
 
     # Confirm the mapping of input rows to identifiers.
     logging.debug(json.dumps(heal_cde_entries, indent=2))
+
+    # Track the association IDs.
+    heal_cde_study_mapping_edge_count = 0
 
     # For each identifier, download the XLSX file if that's an option.
     for crf_id in heal_cde_entries:
@@ -269,7 +326,22 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, heal_cde_csv, add_cd
             for lang in files_by_lang:
                 graph.add_node_attribute('HEALCDE:' + crf_id, f"files-{lang}", list(files_by_lang[lang]))
 
-        # Step 4. Write KGX files.
+        # Step 4. Add studies.
+        for study_mappings in map(lambda f: f['studies'], files):
+            for (hdp_id, sources) in study_mappings.items():
+                heal_cde_study_mapping_edge_count += 1
+                edge_id = f'HEALCDESTUDYMAPPING:edge_{heal_cde_study_mapping_edge_count}'
+                graph.add_edge('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id)
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate', 'HEALCDESTUDYMAPPING:crf_used_by_study')
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate_label', 'HEAL CRF used by HEAL study')
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'subject', 'HEALCDE:' + crf_id)
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'object', 'HEALDATAPLATFORM:' + hdp_id)
+
+                knowledge_sources = [source for source in source_list for source_list in sources]
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'source', knowledge_sources)
+
+
+        # Step 5. Write KGX files.
         t = Transformer()
         t.process(
             source=graph_source.GraphSource(owner=t).parse(graph),
