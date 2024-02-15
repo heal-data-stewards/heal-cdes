@@ -340,7 +340,6 @@ def heal_cde_repo_downloader(
                 knowledge_sources = [source for source in source_list for source_list in sources]
                 graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'source', knowledge_sources)
 
-
         # Step 5. Write KGX files.
         t = Transformer()
         t.process(
