@@ -357,7 +357,7 @@ def heal_cde_repo_downloader(
                 filenames = list(map(lambda s: s['filename'], sources))
 
                 graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'sources', data_sources + filenames + study_names)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', data_sources)
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', data_sources[0])
 
                 # Create the HEAL CDE node.
                 graph.add_node('HEALDATAPLATFORM:' + hdp_id)
