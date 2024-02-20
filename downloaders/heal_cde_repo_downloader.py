@@ -10,6 +10,7 @@ import collections
 import csv
 import json
 import os
+from dataclasses import dataclass
 
 import click
 import logging
@@ -30,6 +31,14 @@ HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-reposito
 
 # Configure logging.
 logging.basicConfig(level=logging.INFO)
+
+
+# Case class for storing source information.
+@dataclass(frozen=True)
+class Source:
+    data_source: str
+    filename: str
+    study_name: str
 
 
 # Load the HEAL CRF/study usage mappings.
@@ -56,7 +65,7 @@ def load_heal_crf_usage_mappings(study_mapping_file):
                 crf_usage_mappings[crf_url] = collections.defaultdict(set)
 
             for hdp_id in hdp_ids:
-                crf_usage_mappings[crf_url][hdp_id].update((source, study_name))
+                crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_file, study_name))
 
     return crf_usage_mappings
 
@@ -329,6 +338,7 @@ def heal_cde_repo_downloader(
         # Step 4. Add studies.
         for study_mappings in map(lambda f: f['studies'], files):
             for (hdp_id, sources) in study_mappings.items():
+                # Create the HEAL CDE STUDY mapping edges.
                 heal_cde_study_mapping_edge_count += 1
                 edge_id = f'HEALCDESTUDYMAPPING:edge_{heal_cde_study_mapping_edge_count}'
                 graph.add_edge('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id)
@@ -337,10 +347,21 @@ def heal_cde_repo_downloader(
                 graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'subject', 'HEALCDE:' + crf_id)
                 graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'object', 'HEALDATAPLATFORM:' + hdp_id)
 
-                knowledge_sources = [source for source in (source_list for source_list in sources)]
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'sources', knowledge_sources)
-                if len(knowledge_sources) > 0:
-                    graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', knowledge_sources[0])
+                # Source/provenance information.
+                sources = [source for source in sources]
+                data_sources = list(map(lambda s: s.data_source, sources))
+                study_names = list(map(lambda s: s.study_names, sources))
+                filenames = list(map(lambda s: s.filename, sources))
+
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'sources', data_sources + filenames + study_names)
+                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', data_sources)
+
+                # Create the HEAL CDE node.
+                graph.add_node('HEALDATAPLATFORM:' + hdp_id)
+                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'name', study_names[0])
+                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'url', 'https://healdata.org/portal/discovery/' + hdp_id)
+                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'category', ['biolink:Study'])
+                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'provided_by', data_sources)
 
         # Step 5. Write KGX files.
         t = Transformer()
