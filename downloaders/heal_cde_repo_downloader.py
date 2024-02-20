@@ -8,6 +8,7 @@
 #
 import collections
 import csv
+import dataclasses
 import json
 import os
 from dataclasses import dataclass
@@ -43,6 +44,8 @@ class Source:
 
 # Load the HEAL CRF/study usage mappings.
 def load_heal_crf_usage_mappings(study_mapping_file):
+    study_mapping_filename = study_mapping_file.name
+
     crf_usage_mappings = dict()
     study_mapping_entries = csv.DictReader(study_mapping_file)
 
@@ -53,11 +56,11 @@ def load_heal_crf_usage_mappings(study_mapping_file):
         crf_urls = entry['CRF URLs'].split('|')
 
         if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
-            logging.warning(f"No HDP IDs found for study {study_name} in {study_mapping_file}, skipping.")
+            logging.warning(f"No HDP IDs found for study {study_name} in {study_mapping_filename}, skipping.")
             continue
 
         if not crf_urls or (len(crf_urls) == 1 and (crf_urls[0] == 'NA' or crf_urls[0] == '')):
-            logging.warning(f"No CRF URLs found for study {study_name} in {study_mapping_file}, skipping.")
+            logging.warning(f"No CRF URLs found for study {study_name} in {study_mapping_filename}, skipping.")
             continue
 
         for crf_url in crf_urls:
@@ -65,7 +68,7 @@ def load_heal_crf_usage_mappings(study_mapping_file):
                 crf_usage_mappings[crf_url] = collections.defaultdict(set)
 
             for hdp_id in hdp_ids:
-                crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_file, study_name))
+                crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_filename, study_name))
 
     return crf_usage_mappings
 
@@ -223,7 +226,7 @@ def heal_cde_repo_downloader(
         if url in crf_study_mappings:
             cde_json['studies'] = dict()
             for (key, sources) in crf_study_mappings[url].items():
-                cde_json['studies'][key] = list(sorted(sources))
+                cde_json['studies'][key] = list(map(lambda s: dataclasses.asdict(s), sources))
             unused_crf_urls.remove(url)
 
         heal_cde_entries[crf_id].append(cde_json)
@@ -349,9 +352,9 @@ def heal_cde_repo_downloader(
 
                 # Source/provenance information.
                 sources = [source for source in sources]
-                data_sources = list(map(lambda s: s.data_source, sources))
-                study_names = list(map(lambda s: s.study_names, sources))
-                filenames = list(map(lambda s: s.filename, sources))
+                data_sources = list(map(lambda s: s['data_source'], sources))
+                study_names = list(map(lambda s: s['study_name'], sources))
+                filenames = list(map(lambda s: s['filename'], sources))
 
                 graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'sources', data_sources + filenames + study_names)
                 graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', data_sources)
