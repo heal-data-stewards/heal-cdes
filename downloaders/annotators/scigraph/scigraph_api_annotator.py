@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# scigraph-api-annotator.py <input directory of JSON files>
+# scigraph_api_annotator.py <input directory of JSON files>
 #
 # Given an input directory of JSON files, produces a list of annotations for each CRF and CDE as a CSV.
 # Optionally, it can produce a YAML file that describes the CRF and CDE as a KGX file.
@@ -112,8 +112,8 @@ IGNORED_CONCEPTS = {
 
 # Some URLs we use.
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.3/get_normalized_nodes'
-MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
-
+# MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
+MONARCH_API_URI = 'https://api-biolink.monarchinitiative.org/api/nlp/annotate/entities'
 
 def get_id_for_heal_crf(filename):
     """ Get an ID for a HEAL CRF. """
@@ -157,7 +157,7 @@ def normalize_curie(curie):
     except json.JSONDecodeError as err:
         logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
 
-def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
+def ner_via_monarch_api(crf_id, text, included_categories=[], excluded_categories=[]):
     """
     Query the Monarch API to do NER on a string via https://api.monarchinitiative.org/api/#operations-nlp/annotate-post_annotate.
 
@@ -168,6 +168,7 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
     """
 
     try:
+        logging.error(f"Querying {MONARCH_API_URI} with text: '{text}' (CRF ID {crf_id})")
         result = session.post(MONARCH_API_URI, {
             'content': text,
             'include_category': included_categories,
@@ -192,7 +193,7 @@ def ner_via_monarch_api(text, included_categories=[], excluded_categories=[]):
 
     tokens = []
     spans = result_json['spans']
-    logging.info(f"Querying Monarch API for '{text}' produced the following tokens:")
+    logging.info(f"Querying Monarch API for '{text}' produced the following tokens (CRF ID {crf_id}):")
     for span in spans:
         for token in span['token']:
             token_definition = dict(
@@ -232,13 +233,14 @@ count_could_not_normalize = 0
 count_ignored = 0
 
 
-def process_crf(graph, filename, crf):
+def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False):
     """
     Process a CRF. We need to recursively process the CDEs as well.
 
     :param graph: A KGX graph to add the CRF to.
     :param filename: The filename being processed.
     :param crf: The CRF in JSON format to process.
+    :param source: The source of this data as a string.
     :return: A 'comprehensive' JSON object representing this file -- this is the input JSON file with
     the annotations added on. It also modifies graph and writes outputs to STDOUT (Disgusting!).
     """
@@ -248,11 +250,22 @@ def process_crf(graph, filename, crf):
     global count_could_not_normalize
     global count_ignored
 
-    crf_id = get_id_for_heal_crf(filename)
     designation = get_designation(crf)
 
+    # We expect a title and a description.
+    # crf_name = crf['titles'][0]
+    # if not crf_name:
+    #     crf_name = "(untitled)"
+    crf_name = crf_id
+    if crf_name.startswith("HEALCDE:"):
+        crf_name = crf_name[8:]
+    description = crf['descriptions'][0]
+    if not description:
+        description = ""
+
     # Generate text for the entire form in one go.
-    crf_text = designation + "\n"
+    crf_text = designation + "\n" + crf_name + "\n" + description + "\n"
+    count_cdes = 0
     for element in crf['formElements']:
         question_text = element['label']
         crf_text += question_text
@@ -260,6 +273,7 @@ def process_crf(graph, filename, crf):
 
         if 'question' in element and 'cde' in element['question']:
             crf_text += f" (name: {element['question']['cde']['name']})"
+            count_cdes += 1
 
             if 'newCde' in element['question']['cde']:
                 definitions = element['question']['cde']['newCde'].get('definitions') or []
@@ -271,12 +285,17 @@ def process_crf(graph, filename, crf):
 
         crf_text += "\n"
 
-    # The best CRF name is always the last designation, since we start with the filename and stuff.
-    crf_name = crf['designations'][-1]['designation']
+    if add_cde_count_to_description:
+        if len(description) == 0:
+            description = f"Contains {count_cdes} CDEs."
+        else:
+            description = f"{description} Contains {count_cdes} CDEs."
 
     graph.add_node(crf_id)
+    graph.add_node_attribute(crf_id, 'provided_by', source)
     graph.add_node_attribute(crf_id, 'name', crf_name)
-    graph.add_node_attribute(crf_id, 'summary', designation)
+    graph.add_node_attribute(crf_id, 'summary', description)
+    graph.add_node_attribute(crf_id, 'cde_count', count_cdes)
     graph.add_node_attribute(crf_id, 'category', ['biolink:Publication'])
     # graph.add_node_attribute(crf_id, 'summary', crf_text)
 
@@ -286,7 +305,7 @@ def process_crf(graph, filename, crf):
     #   incomplete categories such as "English", "Adult" and so on.
     file_paths = filter(lambda d: d['designation'].startswith('File path: '), crf['designations'])
     # chain.from_iterable() effectively flattens the list.
-    categories = list(chain.from_iterable(map(lambda d: d['designation'][11:].split('/'), file_paths)))
+    categories = crf['categories'] # list(chain.from_iterable(map(lambda d: d['designation'][11:].split('/'), file_paths)))
     logging.info(f"Categories for CDE {crf_name}: {categories}")
     graph.add_node_attribute(crf_id, 'cde_categories', list(categories))
     # - 2. Let's create a `cde_category` property that summarizes the longlist of categories into
@@ -325,12 +344,12 @@ def process_crf(graph, filename, crf):
         del categories[-1]
 
     # The last category should now be the most specific category.
-    graph.add_node_attribute(crf_id, 'cde_category_extended', [
-        core_or_not,
-        adult_or_pediatric,
-        acute_or_chronic_pain,
-        categories[-1]
-    ])
+    # graph.add_node_attribute(crf_id, 'cde_category_extended', [
+    #     core_or_not,
+    #     adult_or_pediatric,
+    #     acute_or_chronic_pain,
+    #     categories[-1]
+    # ])
 
     # Let's summarize all of this into a single category (as per
     # https://github.com/helxplatform/development/issues/868#issuecomment-1072485659)
@@ -345,8 +364,8 @@ def process_crf(graph, filename, crf):
         else:
             cde_category = core_or_not
 
-    graph.add_node_attribute(crf_id, 'cde_category', cde_category)
-    logging.info(f"Categorized CRF {crf_name} as {cde_category}")
+    # graph.add_node_attribute(crf_id, 'cde_category', cde_category)
+    # logging.info(f"Categorized CRF {crf_name} as {cde_category}")
 
     crf['_ner'] = {
         'scigraph': {
@@ -360,9 +379,10 @@ def process_crf(graph, filename, crf):
         }
     }
 
-    tokens = ner_via_monarch_api(crf_text)
+    tokens = ner_via_monarch_api(crf_id, crf_text)
 
-    logging.info(f"Querying CRF '{designation}' with text: {crf_text}")
+    logging.info(f"Querying CRF '{designation}' with text: {crf_text} (CRF ID {crf_id})")
+    existing_term_ids = set()
     for token in tokens:
         logging.info(f"Found token: {token}")
         count_tokens += 1
@@ -373,9 +393,9 @@ def process_crf(graph, filename, crf):
                 term_id = token['normalized']['id']['identifier']
             else:
                 global count_errors
-                error_count += 1
+                count_errors += 1
 
-                term_id = f'ERROR:{error_count}'
+                term_id = f'ERROR:{count_errors}'
 
             if term_id in IGNORED_CONCEPTS:
                 global ignored_count
@@ -388,6 +408,11 @@ def process_crf(graph, filename, crf):
 
             crf['_ner']['scigraph']['tokens']['normalized'].append(token)
             count_normalized += 1
+
+            if term_id in existing_term_ids:
+                # Suppress duplicate IDs to save space.
+                continue
+            existing_term_ids.add(term_id)
 
             graph.add_node(term_id)
             graph.add_node_attribute(term_id, 'category', token['normalized']['type'])
@@ -468,7 +493,9 @@ def main(input, output, cde_mappings_csv, to_kgx):
     cde_mappings = {}
     with open(csv_table_path, 'r') as f:
         for row in csv.DictReader(f):
-            cde_mappings[row['Filename']] = row
+            if row["Doc #"] in cde_mappings:
+                raise RuntimeError(f"Duplicate 'Doc #' found in meta CSV file: ")
+            cde_mappings[row["Doc #"]] = row
 
     global count_elements
     count_files = 0
