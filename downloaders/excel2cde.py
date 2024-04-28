@@ -187,8 +187,7 @@ def convert_xlsx_to_json(input_filename):
         return
 
     if len(db.ws_names) > 1:
-        logging.error(f'Skipping {input_filename}: too many sheets ({db.ws_names})')
-        return
+        logging.warning(f'{input_filename} has too many sheets ({db.ws_names}), defaulting to first sheet {db.ws_names[0]}.')
 
     sheet1: pylightxl.pylightxl.Worksheet = db.ws(db.ws_names[0])
 
