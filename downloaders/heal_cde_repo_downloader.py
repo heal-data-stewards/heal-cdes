@@ -36,8 +36,8 @@ MIME_PDF = 'application/pdf'
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
 
 # Sort order for languages
-LANGUAGE_ORDER = {'en': 3, 'es': 2, 'sv': 1}
-MIME_TYPE_ORDER = {MIME_DOCX: 3, MIME_XLSX: 2, MIME_PDF: 1}
+LANGUAGE_ORDER = {'en': 1, 'es': 2, 'sv': 3}
+MIME_TYPE_ORDER = {MIME_DOCX: 1, MIME_PDF: 2, MIME_XLSX: 3}
 
 # Configure logging.
 logging.basicConfig(level=logging.INFO)
@@ -324,10 +324,10 @@ def heal_cde_repo_downloader(
 
         # Step 3. Reorder the files in order of LANGUAGE_ORDER and FILE_TYPE_ORDER (in that order).
         def sort_key(file_entry):
-            assert len(LANGUAGE_ORDER) < 100, 'This sort key only works when there are less than 99 languages.'
-            return LANGUAGE_ORDER[file_entry['lang']] * 100 + MIME_TYPE_ORDER[file_entry['mime-type']]
+            return LANGUAGE_ORDER[file_entry['lang']], MIME_TYPE_ORDER[file_entry['mime-type']]
 
         files = sorted(files, key=sort_key)
+        logging.info(f"Sorted files: {"; ".join(map(lambda f: f['url'], files))}")
 
         # Step 4. Convert JSON to KGX.
         # Set up the KGX graph
