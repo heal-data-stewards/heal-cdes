@@ -167,7 +167,7 @@ def convert_question_to_formelement(row):
 
 
 # Code to convert an XLSX file to JSON.
-def convert_xlsx_to_json(input_filename, input_dir, output_dir) -> None:
+def convert_xlsx_to_json(input_filename):
     """
     Convert an XLSX file to a JSON file. We generate the JSON filename based on the command line arguments.
 
@@ -187,21 +187,13 @@ def convert_xlsx_to_json(input_filename, input_dir, output_dir) -> None:
         return
 
     if len(db.ws_names) > 1:
-        logging.error(f'Skipping {input_filename}: too many sheets ({db.ws_names})')
-        return
+        logging.warning(f'{input_filename} has too many sheets ({db.ws_names}), defaulting to first sheet {db.ws_names[0]}.')
 
     sheet1: pylightxl.pylightxl.Worksheet = db.ws(db.ws_names[0])
 
     if sheet1.address(address='A1') == 'Locating Supplemental Questionnaires on the NIH Box Account':
         logging.warning(f'Skipping {input_filename}: this is the list of supplemental questionnaires')
         return
-
-    rel_input_filename = os.path.relpath(input_filename, input_dir)
-    output_filename = os.path.join(output_dir, os.path.splitext(rel_input_filename)[0] + '.json')
-    dirname = os.path.dirname(output_filename)
-    if not os.path.exists(dirname):
-        os.makedirs(dirname)
-    logging.info(f'Writing {input_filename} to {output_filename}')
 
     cols = None
     rows = []
@@ -219,23 +211,18 @@ def convert_xlsx_to_json(input_filename, input_dir, output_dir) -> None:
 
     # Write the entire thing to JSON for now.
     # We use this schema: https://cde.nlm.nih.gov/schema/form
-    with open(output_filename, 'w') as f:
-        logging.info(f'Wrote {len(rows)} rows to {output_filename}')
+    logging.info(f'Generated {len(rows)} rows as JSON')
 
-        form_data = {
-            'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {rel_input_filename}',
-            'created': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
-            'designations': [{
-                'designation': f"Filename: {os.path.basename(output_filename)}",
-            }, {
-                'designation': f"File path: {os.path.dirname(rel_input_filename)}"
-            }],
-            'formElements': list(filter(lambda e: e is not None, map(convert_question_to_formelement, rows))),
-        }
+    form_data = {
+        'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {input_filename}',
+        'designations': [], # TODO: need to replace with URLs and suchlike
+        'created': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
+        'formElements': list(filter(lambda e: e is not None, map(convert_question_to_formelement, rows))),
+    }
 
-        form_data['designations'].extend(list(map(lambda name: {'designation': name}, list(set([row['CRF Name'] for row in rows if row['CRF Name'] != ''])))))
+    form_data['designations'].extend(list(map(lambda name: {'designation': name}, list(set([row['CRF Name'] for row in rows if row['CRF Name'] != ''])))))
 
-        json.dump(form_data, f, indent=2)
+    return form_data
 
 
 # Process input commands
