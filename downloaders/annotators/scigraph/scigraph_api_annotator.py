@@ -113,7 +113,7 @@ IGNORED_CONCEPTS = {
 # Some URLs we use.
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.3/get_normalized_nodes'
 # MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
-MONARCH_API_URI = 'https://api-biolink.monarchinitiative.org/api/nlp/annotate/entities'
+MONARCH_API_URI = 'http://api.monarchinitiative.org/v3/api/annotate/entities'
 
 
 def get_id_for_heal_crf(filename):
@@ -189,19 +189,19 @@ def ner_via_monarch_api(crf_id, text, included_categories=[], excluded_categorie
     except json.JSONDecodeError as err:
         logging.error(f"Could not parse Monarch NER POST result for text '{text}': {err}")
         result_json = {
-            'spans': []
+            'tokens': []
         }
 
     tokens = []
-    spans = result_json['spans']
+    spans = result_json['tokens']
     logging.info(f"Querying Monarch API for '{text}' produced the following tokens (CRF ID {crf_id}):")
     for span in spans:
         for token in span['token']:
             token_definition = dict(
                 text=span['text'],
                 id=token['id'],
+                name=token['name'],
                 categories=token.get('category', []),
-                terms=token['terms']
             )
 
             logging.debug(f" - [{token['id']}] \"{token['terms']}\": {token_definition}")
