@@ -25,8 +25,17 @@ from kgx.sink import jsonl_sink
 from excel2cde import convert_xlsx_to_json
 from annotators.scigraph.scigraph_api_annotator import process_crf
 
+# MIME-types we will use.
+MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+MIME_PDF = 'application/pdf'
+
 # Configuration
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
+
+# Sort order for languages
+LANGUAGE_ORDER = {'en': 3, 'es': 2, 'sv': 1}
+MIME_TYPE_ORDER = {MIME_DOCX: 3, MIME_XLSX: 2, MIME_PDF: 1}
 
 # Configure logging.
 logging.basicConfig(level=logging.INFO)
@@ -123,11 +132,11 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
         extension = '.' + url_lc_parts[-1]
         match extension:
             case '.docx':
-                mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                mime = MIME_DOCX
             case '.xlsx':
-                mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                mime = MIME_XLSX
             case '.pdf':
-                mime = 'application/pdf'
+                mime = MIME_PDF
             case _:
                 raise RuntimeError(f"Unknown extension: {extension}")
 
@@ -211,7 +220,14 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
 
         json_data['categories'] = list(sorted(categories))
 
-        # Step 3. Convert JSON to KGX.
+        # Step 3. Reorder the files in order of LANGUAGE_ORDER and FILE_TYPE_ORDER (in that order).
+        def sort_key(file_entry):
+            assert len(LANGUAGE_ORDER) < 100, 'This sort key only works when there are less than 99 languages.'
+            return LANGUAGE_ORDER[file_entry['lang']] * 100 + MIME_TYPE_ORDER[file_entry['mime-type']]
+
+        files = sorted(files, key=sort_key)
+
+        # Step 4. Convert JSON to KGX.
         # Set up the KGX graph
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
@@ -245,7 +261,7 @@ def heal_cde_repo_downloader(output, heal_cde_csv_download, add_cde_count_to_des
             for lang in files_by_lang:
                 graph.add_node_attribute('HEALCDE:' + crf_id, f"files-{lang}", list(files_by_lang[lang]))
 
-        # Step 4. Write KGX files.
+        # Step 5. Write KGX files.
         t = Transformer()
         t.process(
             source=graph_source.GraphSource(owner=t).parse(graph),
