@@ -343,7 +343,6 @@ def heal_cde_repo_downloader(
         # Create nodes for each download.
         files_urls = set()
         files_by_lang = collections.defaultdict(set)
-        files_urls.add(xlsx_file_url)
         for file in files:
             url = file['url']
 
