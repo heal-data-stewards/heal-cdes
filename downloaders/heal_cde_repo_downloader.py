@@ -327,7 +327,7 @@ def heal_cde_repo_downloader(
             return LANGUAGE_ORDER[file_entry['lang']], MIME_TYPE_ORDER[file_entry['mime-type']]
 
         files = sorted(files, key=sort_key)
-        logging.info(f"Sorted files: {"; ".join(map(lambda f: f['url'], files))}")
+        logging.info(f"Sorted files: {'; '.join(map(lambda f: f['url'], files))}")
 
         # Step 4. Convert JSON to KGX.
         # Set up the KGX graph
