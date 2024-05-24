@@ -111,7 +111,7 @@ IGNORED_CONCEPTS = {
 }
 
 # Some URLs we use.
-TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.3/get_normalized_nodes'
+TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/get_normalized_nodes'
 # MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
 MONARCH_API_URI = 'http://api.monarchinitiative.org/v3/api/annotate/entities'
 
