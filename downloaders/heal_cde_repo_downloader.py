@@ -341,8 +341,8 @@ def heal_cde_repo_downloader(
             graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
 
         # Create nodes for each download.
-        files_urls = set()
-        files_by_lang = collections.defaultdict(set)
+        files_urls = list()
+        files_by_lang = collections.defaultdict(list)
         for file in files:
             url = file['url']
 
@@ -354,8 +354,8 @@ def heal_cde_repo_downloader(
                 graph.add_node_attribute(url, 'description', file['description'])
                 graph.add_node_attribute(url, 'provided_by', heal_cde_source)
             else:
-                files_urls.add(url)
-                files_by_lang[file['lang']].add(url)
+                files_urls.append(url)
+                files_by_lang[file['lang']].append(url)
 
         if not export_files_as_nodes:
             graph.add_node_attribute('HEALCDE:' + crf_id, 'files', list(files_urls))
