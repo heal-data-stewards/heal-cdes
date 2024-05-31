@@ -19,6 +19,14 @@ $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
+### Generating HEAL CDE information
+
+```shell
+$ mkdir output-2024apr27
+$ source venv/bin/activate
+$ python downloaders/heal_cde_repo_downloader.py output-2024apr27
+```
+
 ### Generating JSON files
 
 The script generators/excel2cde.py recursively converts Excel files in the
