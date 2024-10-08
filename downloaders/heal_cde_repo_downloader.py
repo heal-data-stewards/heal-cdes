@@ -36,7 +36,7 @@ MIME_PDF = 'application/pdf'
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
 
 # Sort order for languages
-LANGUAGE_ORDER = {'en': 1, 'es': 2, 'sv': 3}
+LANGUAGE_ORDER = {'en': 1, 'es': 2, 'zh-CN': 3, 'zh-TW': 4, 'ja': 5, 'ko': 6, 'sv': 7}
 MIME_TYPE_ORDER = {MIME_DOCX: 1, MIME_PDF: 2, MIME_XLSX: 3}
 
 # Configure logging.
@@ -157,6 +157,18 @@ def heal_cde_repo_downloader(
         elif title.endswith('-crf-swedish.pdf'):
             crf_id = title[0:-16]
             lang = 'sv'
+        elif title.endswith('-crf-japanese.docx'):
+            crf_id = title[0:-18]
+            lang = 'ja'
+        elif title.endswith('-korean.docx'):
+            crf_id = title[0:-12]
+            lang = 'ko'
+        elif title.endswith('-crf-simplified-chinese.docx'):
+            crf_id = title[0:-28]
+            lang = 'zh-CN'
+        elif title.endswith('-crf-traditional-chinese.docx'):
+            crf_id = title[0:-29]
+            lang = 'zh-TW'
         elif title.endswith('-copyright-statement.docx'):
             crf_id = title[0:-25]
         elif title.endswith('-copyright_statement.docx'):
