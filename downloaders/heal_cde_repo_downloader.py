@@ -33,6 +33,7 @@ MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 MIME_PDF = 'application/pdf'
 
 # Configuration
+HEAL_DATA_PLATFORM_PREFIX = 'HEALDATAPLATFORM:'
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
 
 # Sort order for languages
@@ -222,6 +223,9 @@ def heal_cde_repo_downloader(
         # Get the URL
         url = row['Link to File']
 
+        # Get the File ID.
+        file_id = row['Media/File ID']
+
         # Relative links?
         if url.startswith('/files'):
             url = 'https://heal.nih.gov' + url
@@ -242,6 +246,7 @@ def heal_cde_repo_downloader(
 
         cde_json = {
             'crf_id': crf_id,
+            'hdp_id': HEAL_DATA_PLATFORM_PREFIX + file_id,
             'title': title,
             'description': description,
             'lang': lang,
