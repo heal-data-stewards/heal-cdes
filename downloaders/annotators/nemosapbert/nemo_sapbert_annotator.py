@@ -10,7 +10,7 @@ import json
 
 import click
 import csv
-import urllib
+import functools
 
 from kgx.graph.nx_graph import NxGraph
 from kgx.transformer import Transformer
@@ -125,6 +125,7 @@ def get_designation(element):
         return ''
 
 
+@functools.lru_cache(maxsize=65536)
 def normalize_curie(curie):
     """
     Normalize a CURIE and return the information about that term.
@@ -155,7 +156,37 @@ def normalize_curie(curie):
     except json.JSONDecodeError as err:
         logging.error(f"Could not parse Node Normalization POST result for curie '{curie}': {err}")
 
+@functools.lru_cache(maxsize=65536)
+def lookup_annotation(text, biolink_type):
+    query = {
+        'text': text,
+        'model_name': 'sapbert',
+        'count': 20,
+        'args': {}
+    }
 
+    if biolink_type:
+        # query['args']['bl_type'] = biolink_type
+        # Commenting this out as per https://github.com/helxplatform/dug/blob/63d481b59bf65b81d28661f6f9f059d662c80b2f/src/dug/core/annotators/sapbert_annotator.py#L254
+        pass
+
+    sapbert_result = session.post(ANNOTATION_URL, json=query)
+    sapbert_result.raise_for_status()
+    return sapbert_result.json()
+
+
+@functools.lru_cache(maxsize=65536)
+def lookup_classification(text):
+    result = session.post(CLASSIFICATION_URL, json={
+        'text': text,
+        'model_name': 'token_classification'
+    })
+
+    result.raise_for_status()
+    return result.json()
+
+
+@functools.lru_cache(maxsize=4096)
 def ner_via_nemo_sapbert(crf_id, text, included_categories=[], excluded_categories=[], sapbert_score_threshold=0.8):
     """
     Query the Nemo SAPBERT NER system to look up concepts for a particular text.
@@ -168,12 +199,7 @@ def ner_via_nemo_sapbert(crf_id, text, included_categories=[], excluded_categori
 
     try:
         logging.info(f"Querying {CLASSIFICATION_URL} with text: '{text}' (CRF ID {crf_id})")
-        result = session.post(CLASSIFICATION_URL, json={
-            'text': text,
-            'model_name': 'token_classification'
-        })
-        result.raise_for_status()
-        result_json = result.json()
+        result_json = lookup_classification(text)
     except Exception as err:
         logging.error(f"Could not read Classification result for text '{text}': {err}")
         return {}
@@ -184,23 +210,8 @@ def ner_via_nemo_sapbert(crf_id, text, included_categories=[], excluded_categori
         biolink_type = denotation['obj']
         text = denotation['text']
 
-        query = {
-            'text': text,
-            'model_name': 'sapbert',
-            'count': 20,
-            'args': {}
-        }
-
-        if biolink_type:
-            # query['args']['bl_type'] = biolink_type
-            # Commenting this out as per https://github.com/helxplatform/dug/blob/63d481b59bf65b81d28661f6f9f059d662c80b2f/src/dug/core/annotators/sapbert_annotator.py#L254
-            pass
-
         try:
-            sapbert_result = session.post(ANNOTATION_URL, json=query)
-            sapbert_result.raise_for_status()
-            sapbert_result_json = sapbert_result.json()
-
+            sapbert_result_json = lookup_annotation(text, biolink_type)
         except Exception as err:
             logging.error(f"Could not read SAPBERT result for text '{text}': {err}")
             continue
