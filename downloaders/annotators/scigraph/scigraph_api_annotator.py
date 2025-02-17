@@ -111,9 +111,10 @@ IGNORED_CONCEPTS = {
 }
 
 # Some URLs we use.
-TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.3/get_normalized_nodes'
+TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/get_normalized_nodes'
 # MONARCH_API_URI = 'https://api.monarchinitiative.org/api/nlp/annotate/entities'
-MONARCH_API_URI = 'https://api-biolink.monarchinitiative.org/api/nlp/annotate/entities'
+MONARCH_API_URI = 'http://api.monarchinitiative.org/v3/api/annotate/entities'
+
 
 def get_id_for_heal_crf(filename):
     """ Get an ID for a HEAL CRF. """
@@ -169,15 +170,15 @@ def ner_via_monarch_api(crf_id, text, included_categories=[], excluded_categorie
 
     try:
         logging.error(f"Querying {MONARCH_API_URI} with text: '{text}' (CRF ID {crf_id})")
-        result = session.post(MONARCH_API_URI, {
+        result = session.post(MONARCH_API_URI, json={
             'content': text,
-            'include_category': included_categories,
-            'exclude_category': excluded_categories,
-            'min_length': 4,
-            'longest_only': True,
-            'include_abbreviation': False,
-            'include_acronym': False,
-            'include_numbers': False
+            # 'include_category': included_categories,
+            # 'exclude_category': excluded_categories,
+            # 'min_length': 4,
+            # 'longest_only': True,
+            # 'include_abbreviation': False,
+            # 'include_acronym': False,
+            # 'include_numbers': False
         })
     except Exception as err:
         logging.error(f"Could not read Monarch NER POST result for text '{text}': {err}")
@@ -187,23 +188,25 @@ def ner_via_monarch_api(crf_id, text, included_categories=[], excluded_categorie
         result_json = result.json()
     except json.JSONDecodeError as err:
         logging.error(f"Could not parse Monarch NER POST result for text '{text}': {err}")
-        result_json = {
-            'spans': []
-        }
+        result_json = []
 
     tokens = []
-    spans = result_json['spans']
+    spans = result_json
     logging.info(f"Querying Monarch API for '{text}' produced the following tokens (CRF ID {crf_id}):")
     for span in spans:
-        for token in span['token']:
+        if 'tokens' not in span:
+            logging.warning(f"No tokens found for span {json.dumps(span)} in result: {result.text}")
+            continue
+
+        for token in span['tokens']:
             token_definition = dict(
                 text=span['text'],
                 id=token['id'],
+                name=token['name'],
                 categories=token.get('category', []),
-                terms=token['terms']
             )
 
-            logging.debug(f" - [{token['id']}] \"{token['terms']}\": {token_definition}")
+            logging.info(f" - [{token['id']}] \"{token['name']}\": {token_definition}")
 
             normalized = normalize_curie(token['id'])
             if normalized:

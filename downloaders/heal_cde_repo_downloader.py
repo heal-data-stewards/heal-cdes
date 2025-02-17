@@ -27,8 +27,17 @@ from kgx.sink import jsonl_sink
 from excel2cde import convert_xlsx_to_json
 from annotators.scigraph.scigraph_api_annotator import process_crf
 
+# MIME-types we will use.
+MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+MIME_PDF = 'application/pdf'
+
 # Configuration
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
+
+# Sort order for languages
+LANGUAGE_ORDER = {'en': 1, 'es': 2, 'zh-CN': 3, 'zh-TW': 4, 'ja': 5, 'ko': 6, 'sv': 7}
+MIME_TYPE_ORDER = {MIME_DOCX: 1, MIME_PDF: 2, MIME_XLSX: 3}
 
 # Configure logging.
 logging.basicConfig(level=logging.INFO)
@@ -145,7 +154,26 @@ def heal_cde_repo_downloader(
         elif title.endswith('-crf-swedish.docx'):
             crf_id = title[0:-17]
             lang = 'sv'
+        elif title.endswith('-crf-swedish.pdf'):
+            crf_id = title[0:-16]
+            lang = 'sv'
+        elif title.endswith('-crf-japanese.docx'):
+            crf_id = title[0:-18]
+            lang = 'ja'
+        elif title.endswith('-korean.docx'):
+            crf_id = title[0:-12]
+            lang = 'ko'
+        elif title.endswith('-crf-simplified-chinese.docx'):
+            crf_id = title[0:-28]
+            lang = 'zh-CN'
+        elif title.endswith('-crf-traditional-chinese.docx'):
+            crf_id = title[0:-29]
+            lang = 'zh-TW'
         elif title.endswith('-copyright-statement.docx'):
+            crf_id = title[0:-25]
+        elif title.endswith('-copyright_statement.docx'):
+            crf_id = title[0:-25]
+        elif title.endswith('-copyright-statement.pdf'):
             crf_id = title[0:-25]
         elif title.endswith('-copyright_statement.docx'):
             crf_id = title[0:-25]
@@ -158,6 +186,8 @@ def heal_cde_repo_downloader(
         elif title.endswith('-copyright-statement-pediatric.docx'):
             crf_id = title[0:-35]
         elif title.endswith('-crf.docx'):
+            crf_id = title[0:-9]
+        elif title.endswith('-cde.docx'):
             crf_id = title[0:-9]
         elif title.endswith('-cde.docx'):
             crf_id = title[0:-9]
@@ -201,11 +231,11 @@ def heal_cde_repo_downloader(
         extension = '.' + url_lc_parts[-1]
         match extension:
             case '.docx':
-                mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                mime = MIME_DOCX
             case '.xlsx':
-                mime = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                mime = MIME_XLSX
             case '.pdf':
-                mime = 'application/pdf'
+                mime = MIME_PDF
             case _:
                 mime = 'application/octet-stream'
                 logging.error(f"Unknown extension in URL {url} for {row}, assuming octet-stream: {extension}")
@@ -304,7 +334,14 @@ def heal_cde_repo_downloader(
 
         json_data['categories'] = list(sorted(categories))
 
-        # Step 3. Convert JSON to KGX.
+        # Step 3. Reorder the files in order of LANGUAGE_ORDER and FILE_TYPE_ORDER (in that order).
+        def sort_key(file_entry):
+            return LANGUAGE_ORDER[file_entry['lang']], MIME_TYPE_ORDER[file_entry['mime-type']]
+
+        files = sorted(files, key=sort_key)
+        logging.info(f"Sorted files: {'; '.join(map(lambda f: f['url'], files))}")
+
+        # Step 4. Convert JSON to KGX.
         # Set up the KGX graph
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
@@ -316,9 +353,8 @@ def heal_cde_repo_downloader(
             graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
 
         # Create nodes for each download.
-        files_urls = set()
-        files_by_lang = collections.defaultdict(set)
-        files_urls.add(xlsx_file_url)
+        files_urls = list()
+        files_by_lang = collections.defaultdict(list)
         for file in files:
             url = file['url']
 
@@ -330,15 +366,15 @@ def heal_cde_repo_downloader(
                 graph.add_node_attribute(url, 'description', file['description'])
                 graph.add_node_attribute(url, 'provided_by', heal_cde_source)
             else:
-                files_urls.add(url)
-                files_by_lang[file['lang']].add(url)
+                files_urls.append(url)
+                files_by_lang[file['lang']].append(url)
 
         if not export_files_as_nodes:
             graph.add_node_attribute('HEALCDE:' + crf_id, 'files', list(files_urls))
             for lang in files_by_lang:
                 graph.add_node_attribute('HEALCDE:' + crf_id, f"files-{lang}", list(files_by_lang[lang]))
 
-        # Step 4. Add studies.
+        # Step 5. Add studies.
         for study_mappings in map(lambda f: f['studies'], files):
             for (hdp_id, sources) in study_mappings.items():
                 # Create the HEAL CDE STUDY mapping edges.
