@@ -424,7 +424,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
         logging.info(f"Found denotation: {denotation}")
         count_tokens += 1
 
-        concept = denotation['concept']
+        concept = denotation.get('concept', {})
 
         if graph and concept:
             # Create the NamedThing that is the denotation.
