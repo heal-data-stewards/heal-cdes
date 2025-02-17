@@ -191,7 +191,9 @@ def ner_via_nemo_sapbert(crf_id, text, included_categories=[], excluded_categori
         }
 
         if biolink_type:
-            query['args']['bl_type'] = biolink_type
+            # query['args']['bl_type'] = biolink_type
+            # Commenting this out as per https://github.com/helxplatform/dug/blob/63d481b59bf65b81d28661f6f9f059d662c80b2f/src/dug/core/annotators/sapbert_annotator.py#L254
+            pass
 
         try:
             sapbert_result = session.post(ANNOTATION_URL, json=query)
