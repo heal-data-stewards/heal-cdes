@@ -303,6 +303,9 @@ def heal_cde_repo_downloader(
         xlsx_file = xlsx_files[0]
         xlsx_file_url = xlsx_file['url']
 
+        # TODO: We'll stick with our identifiers for now, but eventually we need to transition to HEAL Data Platform,
+        # e.g. https://healdata.org/mds/metadata/HDPCDE4871
+
         # Step 1. Download XLSX file.
         logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ...")
         xlsx_file_req = requests.get(xlsx_file_url, stream=True)
@@ -382,6 +385,9 @@ def heal_cde_repo_downloader(
         # Step 5. Add studies.
         for study_mappings in map(lambda f: f['studies'], files):
             for (hdp_id, sources) in study_mappings.items():
+                # TODO: We'll stick with our identifiers for now, but eventually we need to transition to HEAL Data Platform,
+                # e.g. https://healdata.org/mds/metadata/HDPCDE4871
+
                 # Create the HEAL CDE STUDY mapping edges.
                 heal_cde_study_mapping_edge_count += 1
                 edge_id = f'HEALCDESTUDYMAPPING:edge_{heal_cde_study_mapping_edge_count}'
