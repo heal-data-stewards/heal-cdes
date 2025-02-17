@@ -43,6 +43,7 @@ session.mount('https://', http_adapter)
 IGNORED_CONCEPTS = {
     'UBERON:0002542',                   # "scale" -- not a body part!
     'UBERON:0007380',                   # "dermal scale" -- not a body part!
+    'UMLS:C3166305',                    # "Scale used for body image assessment"
     'MONDO:0019395',                    # "have" is not Hinman syndrome
     'UBERON:0006611',                   # "test" is not an exoskeleton
     'PUBCHEM.COMPOUND:135398658',       # "being" is not folic acid
@@ -433,9 +434,6 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
                 count_ignored += 1
                 continue
 
-            term_type = concept['biolink_type']
-
-
             crf['_ner']['scigraph']['tokens']['normalized'].append(denotation)
             count_normalized += 1
 
@@ -447,8 +445,8 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
             edge_source = f'Nemo SAPBERT (threshold = {sapbert_score_threshold}), normalized = {TRANSLATOR_NORMALIZATION_URL}'
 
             graph.add_node(term_id)
-            graph.add_node_attribute(term_id, 'category', term_type)
-            graph.add_node_attribute(term_id, 'name', (denotation['normalized'].get('id') or {'label': 'ERROR'}).get('label'))
+            graph.add_node_attribute(term_id, 'category', concept['biolink_type'])
+            graph.add_node_attribute(term_id, 'name', concept.get('label', ''))
             graph.add_node_attribute(term_id, 'provided_by', edge_source)
 
             # Add an edge/association between the CRF and the term.
