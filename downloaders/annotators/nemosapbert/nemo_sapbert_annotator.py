@@ -109,6 +109,11 @@ IGNORED_CONCEPTS = {
     # Stopped at forelimb stylopod (UBERON:0003822): 10 CRFs
 }
 
+# Text that should not be NERed.
+IGNORED_TEXT_LOWERCASE = {
+    'talk'
+}
+
 # Some URLs we use.
 TRANSLATOR_NORMALIZATION_URL = 'https://nodenormalization-sri.renci.org/1.5/get_normalized_nodes'
 CLASSIFICATION_URL = 'https://med-nemo.apps.renci.org/annotate/'
@@ -158,6 +163,9 @@ def normalize_curie(curie):
 
 @functools.lru_cache(maxsize=65536)
 def lookup_annotation(text, biolink_type):
+    if text.lower() in IGNORED_TEXT_LOWERCASE:
+        return []
+
     query = {
         'text': text,
         'model_name': 'sapbert',
