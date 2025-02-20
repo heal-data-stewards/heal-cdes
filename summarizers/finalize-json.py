@@ -16,10 +16,15 @@
 import os
 import json
 import logging
+from collections import defaultdict
 
 import click
 
 logging.basicConfig(level=logging.INFO)
+
+# Global indexes.
+nodes_by_type = defaultdict(list)
+edges = []
 
 
 @click.command()
@@ -41,16 +46,33 @@ def finalize_json(input_dir):
             if filename.lower().endswith('_nodes.jsonl'):
                 logging.info(f'Found nodes file {filepath}')
                 count_nodes += 1
-                # TODO ingest nodes file.
+
+                with open(filepath, 'r') as f:
+                    for line in f:
+                        node = json.loads(line)
+                        for category in node.get('category', ['None']):
+                            nodes_by_type[category].append(node)
+
             elif filename.lower().endswith('_edges.jsonl'):
                 logging.info(f'Found edges file {filepath}')
                 count_edges += 1
-                # TODO ingest edges file.
+
+                with open(filepath, 'r') as f:
+                    for line in f:
+                        edge = json.loads(line)
+                        edges.append(edge)
+
             else:
                 logging.debug(f'Skipping file {filepath}, neither nodes nor edges file.')
 
-    logging.info(f'Processed {count_nodes} nodes and {count_edges} edges files.')
+    # Identify CRFs.
+    crfs = list(filter(lambda n: n['id'].startswith('HEALCDE:'), nodes_by_type['biolink:Publication']))
+    logging.info(f'Found {len(crfs)} CRFs.')
 
+    # Final step: get rid of nodes that we've pruned out.
+    # TODO
+
+    logging.info(f'Processed {count_nodes} nodes and {count_edges} edges files.')
 
 if __name__ == "__main__":
     finalize_json()
