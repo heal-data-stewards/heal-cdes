@@ -27,8 +27,14 @@ rows_by_record_id = defaultdict(list)
     dir_okay=False,
     allow_dash=True
 ))
-def extract_study_mappings(input_file):
+@click.option('--study-to-hdpid', required=True, type=click.Path(
+    exists=True,
+    file_okay=True,
+    dir_okay=False,
+))
+def extract_study_mappings(input_file, study_to_hdpid):
     input_path = click.format_filename(input_file)
+    study_to_hdpid_path = click.format_filename(study_to_hdpid)
     logging.info(f'Reading HEAL CDE team export from {input_path}')
 
     # Read rows from file.
@@ -40,6 +46,13 @@ def extract_study_mappings(input_file):
             count_rows += 1
             rows_by_record_id[row["Record ID"]].append(row)
     logging.info(f'Read {len(rows_by_record_id.keys())} records covering {count_rows} rows.')
+
+    # Load the study to HDP ID mappings.
+    project_number_to_hdp_id = dict()
+    with open(study_to_hdpid_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            project_number_to_hdp_id[row['Project Number'].strip()] = row['HDP_ID'].strip()
 
     # For each record, we need to collect three kinds of information:
     # 1. Each record should have EXACTLY ONE "Project Number" and "Project Title  &nbsp; "
@@ -56,16 +69,16 @@ def extract_study_mappings(input_file):
         measure_names = set()
         for row in rows:
             # Figure out the project number
-            if row["Project Number"].strip():
+            if row["Project Number"].strip() and row["Project Number"].strip() != "n/a":
                 if project_number is not None:
                     raise RuntimeError(f"Found multiple project numbers for record {record_id}")
-                project_number = row["Project Number"]
+                project_number = row["Project Number"].strip()
 
             # Figure out the project title.
             if row["Project Title  &nbsp; "].strip():
                 if project_title is not None:
                     raise RuntimeError(f"Found multiple project numbers for record {record_id}")
-                project_title = row["Project Title  &nbsp; "]
+                project_title = row["Project Title  &nbsp; "].strip()
 
             # Look for measure names.
             measure_name_rows = {
@@ -97,6 +110,31 @@ def extract_study_mappings(input_file):
         count_crfs += len(measure_names)
 
     logging.info(f'Found {count_crfs} CRFs ({len(unique_crf_names)} unique) listed for {len(project_crfs.keys())} projects.')
+
+    # Write it to stdout.
+    writer = csv.DictWriter(
+        click.get_text_stream('stdout'),
+        fieldnames=[
+            'project_number',
+            'hdp_id',
+            'project_title',
+            'crf_name',
+            'source'
+        ]
+    )
+    writer.writeheader()
+    for project_number in project_crfs.keys():
+        if project_number not in project_number_to_hdp_id:
+            raise RuntimeError(f"Project '{project_number}' is missing from the study to HDP ID mappings.")
+
+        for crf_name in project_crfs[project_number]["crfs"]:
+            writer.writerow({
+                'project_number': project_number,
+                'hdp_id': project_number_to_hdp_id[project_number],
+                'project_title': project_crfs[project_number].get("project_title", ""),
+                'crf_name': crf_name,
+                'source': input_path
+            })
 
 
 if __name__ == "__main__":
