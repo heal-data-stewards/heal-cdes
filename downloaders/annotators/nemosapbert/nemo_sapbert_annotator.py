@@ -413,7 +413,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
     # logging.info(f"Categorized CRF {crf_name} as {cde_category}")
 
     crf['_ner'] = {
-        'scigraph': {
+        'nemo_sapbert': {
             'crf_name': crf_name,
             'crf_text': crf_text,
             'tokens': {
@@ -425,6 +425,8 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
     }
 
     comprehensive = ner_via_nemo_sapbert(crf_id, crf_text, sapbert_score_threshold=sapbert_score_threshold)
+    crf['_ner']['nemo_sapbert']['results'] = comprehensive
+    crf['denotations'] = comprehensive.get('denotations', [])
 
     logging.info(f"Querying CRF '{designation}' with text: {crf_text} (CRF ID {crf_id})")
     existing_term_ids = set()
@@ -490,7 +492,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
             crf['_ner']['scigraph']['tokens']['could_not_normalize'].append(denotation)
             count_could_not_normalize += 1
 
-    return comprehensive
+    return crf
 
 
 # Process individual files

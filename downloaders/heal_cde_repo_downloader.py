@@ -351,7 +351,9 @@ def heal_cde_repo_downloader(
 
         # Let's write out the comprehensive file somewhere.
         with open(kgx_file_path + '.json', 'w') as jsonf:
-            json.dump(comprehensive, jsonf, indent=2)
+            json.dump({
+                '': comprehensive
+            }, jsonf, indent=2)
 
         # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
         # directly in the graph.
