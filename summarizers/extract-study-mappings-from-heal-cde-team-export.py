@@ -158,10 +158,10 @@ def extract_study_mappings(input_file, study_to_hdpid):
                 if row[measure_header].strip():
                     value = row[measure_header].strip()
                     if value.lower() == "checked":
-                        logging.info(f"Found checked measure '{header_crf_mappings[measure_header]}' in row {row}")
+                        logging.debug(f"Found checked measure '{header_crf_mappings[measure_header]}' in row {row}")
                         measure_names.add(HEAL_CDE_PREFIX + header_crf_mappings[measure_header])
                     elif value.lower() == "unchecked":
-                        logging.info(f"Found unchecked measure '{header_crf_mappings[measure_header]}' in row {row}")
+                        logging.debug(f"Found unchecked measure '{header_crf_mappings[measure_header]}' in row {row}")
                     else:
                         raise RuntimeError(f"Unexpected value '{value}' for CRF header {measure_header} in row {row}")
 
@@ -219,7 +219,7 @@ def extract_study_mappings(input_file, study_to_hdpid):
                 'source': input_path
             })
 
-    logging.info(f"Unique measures: {json.dumps(sorted(unique_crf_names), indent=2)}")
+
 
 
 if __name__ == "__main__":

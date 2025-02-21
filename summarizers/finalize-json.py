@@ -69,6 +69,9 @@ def finalize_json(input_dir):
     crfs = list(filter(lambda n: n['id'].startswith('HEALCDE:'), nodes_by_type['biolink:Publication']))
     logging.info(f'Found {len(crfs)} CRFs.')
 
+    for crf in sorted(crfs, key=lambda crf: crf['name']):
+        print(f"{crf['id']}\t{crf['summary']}")
+
     # Final step: get rid of nodes that we've pruned out.
     # TODO
 
