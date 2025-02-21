@@ -12,6 +12,7 @@ import os
 import json
 import logging
 from collections import defaultdict
+from importlib.metadata import requires
 
 import click
 
@@ -34,9 +35,15 @@ rows_by_record_id = defaultdict(list)
     file_okay=True,
     dir_okay=False,
 ))
-def extract_study_mappings(input_file, study_to_hdpid):
+@click.option('--measure-to-heal-cde-id', required=True, type=click.Path(
+    exists=True,
+    file_okay=True,
+    dir_okay=False,
+))
+def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
     input_path = click.format_filename(input_file)
     study_to_hdpid_path = click.format_filename(study_to_hdpid)
+    measure_to_heal_cde_id_path = click.format_filename(measure_to_heal_cde_id)
     logging.info(f'Reading HEAL CDE team export from {input_path}')
 
     # Read rows from file.
@@ -56,6 +63,73 @@ def extract_study_mappings(input_file, study_to_hdpid):
         reader = csv.DictReader(f)
         for row in reader:
             project_number_to_hdp_id[row['Project Number'].strip()] = row['HDP_ID'].strip()
+
+    # Load the measure to HEAL CDE ID mappings.
+    crf_to_heal_cde_id = dict()
+    with open(measure_to_heal_cde_id_path, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            crf_to_heal_cde_id[row['Measure Name'].strip()] = row['HEAL CDE ID'].strip()
+
+    # Column name mappings.
+    header_crf_mappings = {
+        "Demographics (choice=Adult Demographics)": "adult-demographics",
+        "Pain Intensity (choice=PEG (for chronic pain))": "peg",
+        "Pain Intensity (choice=BPI Pain Severity (for acute pain))": "bpi-pain-severity",
+        "Pain Interference (choice=PEG (for chronic pain))": "peg",
+        "Pain Interference (choice=BPI Pain Interference (Copyrighted) (for acute pain))": "bpi-pain-interference",
+        "Pain Catastrophizing (choice=Pain Catastrophizing Scale (PCS) - 6 item)": "NA",
+        "Pain Catastrophizing (choice=Pain Catastrophizing Scale (PCS) - 13 item*)": "NA",
+        "Physical Functioning/QOL (choice=PROMIS Physical Functioning Short Form 6b)": "physical-function-6b",
+        "Sleep (choice=PROMIS Sleep Disturbance 6a)": "sleep-disturbance-6a",
+        "Sleep (choice=Sleep Duration Question)": "sleep-duration",
+        "Global Satisfaction with Treatment (choice=PGIC)": "pgic",
+        "Substance Use Screener (choice=TAPS 1)": "taps-1",
+        "Prescription Opioid Use (choice=Compute Opioid MME using either the REDCap Data Dictionary in the HEAL CDE repository or the web tool)": "opioid-mme",
+        "Quality of Life (choice=World Health Organization Quality of Life (WHOQOL) - 2 item)": "whoqol-2",
+        "Quality of Life (choice=World Health Organization Quality of Life (WHOQOL) - 26 item*)": "whoqol-bref",
+        "Demographics (choice=Child Demographics)": "pediatric-demographic",
+        "Pain Intensity (choice=BPI Pain Severity)": "bpi-pain-severity",
+        "Pain Interference (choice=BPI Pain Interference (Copyrighted))": "bpi-pain-interference",
+        "Sleep (choice=AWS-10 + Sleep Duration Items)": "sleep-asws",
+        "Pain Catastrophizing (Administered to Child) (choice=Pain Catastrophizing Scale for Children)": "pcs-child",
+        "Pain Catastrophizing (Administered to Parent) (choice=Pain Catastrophizing)": "pcs-parent",
+        "Substance Abuser Screener (choice=NIDA Modified Assist Tool-2)": "nida-modified-assist",
+        "Prescription Opioid Use (choice=Compute Opioid MME using either the REDCap Data Dictionary in the HEAL CDE repository or the web tool)": "opioid-mme",
+        "PedsQL Inventory Age Range(s) (choice=2-4 year old)": "pedsql-sickle-cell-parent-report-ages-2-4",
+        "PedsQL Inventory Age Range(s) (choice=5-7 year old)": "pedsql-sickle-cell-child-report-ages-5-7",
+        "PedsQL Inventory Age Range(s) (choice=8-12 year old)": "pedsql-sickle-cell-parent-report-ages-8-12",
+        "PedsQL Inventory Age Range(s) (choice=13-18 year old)": "pedsql-sickle-cell-parent-report-ages-13-18",
+        "PHQ (choice=Patient Health Questionnaire (PHQ) - 2 item)": "phq2",
+        "PHQ (choice=Patient Health Questionnaire (PHQ) - 8 item*)": "patient-health-questionnaire-8",
+        "PHQ (choice=Patient Health Questionnaire (PHQ) - 9 item*)": "patient-health-questionnaire-9",
+        "PHQ Ped (choice=Patient Health Questionnaire (PHQ) - 2 item)": "phq2",
+        "PHQ Ped (choice=Patient Health Questionnaire (PHQ) - 8 item*)": "patient-health-questionnaire-8",
+        "PHQ Ped (choice=Patient Health Questionnaire (PHQ) - 9 item*)": "patient-health-questionnaire-9",
+        "GAD (choice=Generalized Anxiety Disorder (GAD) - 2 item)": "gad2",
+        "GAD (choice=Generalized Anxiety Disorder (GAD) - 7 item*)": "generalized-anxiety-disorder-7",
+        "GAD Ped (choice=Generalized Anxiety Disorder (GAD) - 2 item)": "gad2",
+        "GAD Ped (choice=Generalized Anxiety Disorder (GAD) - 7 item*)": "generalized-anxiety-disorder-7",
+        "PGIC Ped (choice=Patient Global Impression of Change (PGIC))": "pgic",
+        "PGIC Ped (choice=Patient Global Impression of Severity (PGIS))": "pgic",
+        "Recommended Measures: (choice=Alcohol Use Disorders Identification Test - AUDIT *Full [IMPOWR])": "NA",
+        "Recommended Measures: (choice=Bank v1.0 Alcohol: Alcohol Use SF 7a [PROMIS])": "promis-alcohol-use-7a",
+        "Recommended Measures: (choice=Brief Spirituality Scale [IMPOWR])": "NA",
+        "Recommended Measures: (choice=Coronavirus Pandemic Measures 7 item)": "NA",
+        "Recommended Measures: (choice=Optional Demographics [IMPOWR])": "NA",
+        "Recommended Measures: (choice=Health Services Utilization/Health Economics l [IMPOWR])": "NA",
+        "Recommended Measures: (choice=Multidimensional Scale of Perceived Social Support- MSPSS)": "mspss",
+        "Recommended Measures: (choice=Narcan Usage [IMPOWR])": "NA",
+        "Recommended Measures: (choice=Pain Conditions [IMPOWR])": "NA",
+        "Recommended Measures: (choice=PTSD Checklist for DSM 5 - PCL 5)": "pcl-5",
+        "Recommended Measures: (choice=Severity of Substance Use *Past 30 days v1.0 Short Form 7a [PROMIS])": "promis-severity-of-substance-use-7a",
+        "Recommended Measures: (choice=Staff Survey)": "NA",
+        "Recommended Measures: (choice=Stigma/Discrimination Questions [IMPOWR])": "NA",
+        "Recommended Measures: (choice=Substance Use [IMPOWR])": "NA",
+        "Recommended Measures: (choice=The Brief Assessment of Recovery Capital- BARC 10)": "barc-10",
+        "Recommended Measures: (choice=The Brief Pain Inventory 24 Hour- BPI (Copyrighted))": "NA",
+        "Recommended Measures: (choice=Treatment Satisfaction  [IMPOWR])": "NA"
+    }
 
     # For each record, we need to collect three kinds of information:
     # 1. Each record should have EXACTLY ONE "Project Number" and "Project Title  &nbsp; "
@@ -96,70 +170,12 @@ def extract_study_mappings(input_file, study_to_hdpid):
             # TODO: figure out "How does your study  intend to monitor opioid use?"
 
             # Look for headers that are really CRFs.
-            header_crf_mappings = {
-                "Demographics (choice=Adult Demographics)": "adult-demographics",
-                "Pain Intensity (choice=PEG (for chronic pain))": "peg",
-                "Pain Intensity (choice=BPI Pain Severity (for acute pain))": "bpi-pain-severity",
-                "Pain Interference (choice=PEG (for chronic pain))": "peg",
-                "Pain Interference (choice=BPI Pain Interference (Copyrighted) (for acute pain))": "bpi-pain-interference",
-                "Pain Catastrophizing (choice=Pain Catastrophizing Scale (PCS) - 6 item)": "NA",
-                "Pain Catastrophizing (choice=Pain Catastrophizing Scale (PCS) - 13 item*)": "NA",
-                "Physical Functioning/QOL (choice=PROMIS Physical Functioning Short Form 6b)": "physical-function-6b",
-                "Sleep (choice=PROMIS Sleep Disturbance 6a)": "sleep-disturbance-6a",
-                "Sleep (choice=Sleep Duration Question)": "sleep-duration",
-                "Global Satisfaction with Treatment (choice=PGIC)": "pgic",
-                "Substance Use Screener (choice=TAPS 1)": "taps-1",
-                "Prescription Opioid Use (choice=Compute Opioid MME using either the REDCap Data Dictionary in the HEAL CDE repository or the web tool)": "opioid-mme",
-                "Quality of Life (choice=World Health Organization Quality of Life (WHOQOL) - 2 item)": "whoqol-2",
-                "Quality of Life (choice=World Health Organization Quality of Life (WHOQOL) - 26 item*)": "whoqol-bref",
-                "Demographics (choice=Child Demographics)": "pediatric-demographic",
-                "Pain Intensity (choice=BPI Pain Severity)": "bpi-pain-severity",
-                "Pain Interference (choice=BPI Pain Interference (Copyrighted))": "bpi-pain-interference",
-                "Sleep (choice=AWS-10 + Sleep Duration Items)": "sleep-asws",
-                "Pain Catastrophizing (Administered to Child) (choice=Pain Catastrophizing Scale for Children)": "pcs-child",
-                "Pain Catastrophizing (Administered to Parent) (choice=Pain Catastrophizing)": "pcs-parent",
-                "Substance Abuser Screener (choice=NIDA Modified Assist Tool-2)": "nida-modified-assist",
-                "Prescription Opioid Use (choice=Compute Opioid MME using either the REDCap Data Dictionary in the HEAL CDE repository or the web tool)": "opioid-mme",
-                "PedsQL Inventory Age Range(s) (choice=2-4 year old)": "pedsql-sickle-cell-parent-report-ages-2-4",
-                "PedsQL Inventory Age Range(s) (choice=5-7 year old)": "pedsql-sickle-cell-child-report-ages-5-7",
-                "PedsQL Inventory Age Range(s) (choice=8-12 year old)": "pedsql-sickle-cell-parent-report-ages-8-12",
-                "PedsQL Inventory Age Range(s) (choice=13-18 year old)": "pedsql-sickle-cell-parent-report-ages-13-18",
-                "PHQ (choice=Patient Health Questionnaire (PHQ) - 2 item)": "phq2",
-                "PHQ (choice=Patient Health Questionnaire (PHQ) - 8 item*)": "patient-health-questionnaire-8",
-                "PHQ (choice=Patient Health Questionnaire (PHQ) - 9 item*)": "patient-health-questionnaire-9",
-                "PHQ Ped (choice=Patient Health Questionnaire (PHQ) - 2 item)": "phq2",
-                "PHQ Ped (choice=Patient Health Questionnaire (PHQ) - 8 item*)": "patient-health-questionnaire-8",
-                "PHQ Ped (choice=Patient Health Questionnaire (PHQ) - 9 item*)": "patient-health-questionnaire-9",
-                "GAD (choice=Generalized Anxiety Disorder (GAD) - 2 item)": "gad2",
-                "GAD (choice=Generalized Anxiety Disorder (GAD) - 7 item*)": "generalized-anxiety-disorder-7",
-                "GAD Ped (choice=Generalized Anxiety Disorder (GAD) - 2 item)": "gad2",
-                "GAD Ped (choice=Generalized Anxiety Disorder (GAD) - 7 item*)": "generalized-anxiety-disorder-7",
-                "PGIC Ped (choice=Patient Global Impression of Change (PGIC))": "pgic",
-                "PGIC Ped (choice=Patient Global Impression of Severity (PGIS))": "pgic",
-                "Recommended Measures: (choice=Alcohol Use Disorders Identification Test - AUDIT *Full [IMPOWR])": "NA",
-                "Recommended Measures: (choice=Bank v1.0 Alcohol: Alcohol Use SF 7a [PROMIS])": "promis-alcohol-use-7a",
-                "Recommended Measures: (choice=Brief Spirituality Scale [IMPOWR])": "NA",
-                "Recommended Measures: (choice=Coronavirus Pandemic Measures 7 item)": "NA",
-                "Recommended Measures: (choice=Optional Demographics [IMPOWR])": "NA",
-                "Recommended Measures: (choice=Health Services Utilization/Health Economics l [IMPOWR])": "NA",
-                "Recommended Measures: (choice=Multidimensional Scale of Perceived Social Support- MSPSS)": "mspss",
-                "Recommended Measures: (choice=Narcan Usage [IMPOWR])": "NA",
-                "Recommended Measures: (choice=Pain Conditions [IMPOWR])": "NA",
-                "Recommended Measures: (choice=PTSD Checklist for DSM 5 - PCL 5)": "pcl-5",
-                "Recommended Measures: (choice=Severity of Substance Use *Past 30 days v1.0 Short Form 7a [PROMIS])": "promis-severity-of-substance-use-7a",
-                "Recommended Measures: (choice=Staff Survey)": "NA",
-                "Recommended Measures: (choice=Stigma/Discrimination Questions [IMPOWR])": "NA",
-                "Recommended Measures: (choice=Substance Use [IMPOWR])": "NA",
-                "Recommended Measures: (choice=The Brief Assessment of Recovery Capital- BARC 10)": "barc-10",
-                "Recommended Measures: (choice=The Brief Pain Inventory 24 Hour- BPI (Copyrighted))": "NA",
-                "Recommended Measures: (choice=Treatment Satisfaction  [IMPOWR])": "NA"
-            }
             for measure_header in header_crf_mappings.keys():
                 if row[measure_header].strip():
                     value = row[measure_header].strip()
                     if value.lower() == "checked":
-                        logging.debug(f"Found checked measure '{header_crf_mappings[measure_header]}' in row {row}")
-                        measure_names.add(HEAL_CDE_PREFIX + header_crf_mappings[measure_header])
+                        logging.debug(f"Found checked measure '{measure_header}' in row {row}")
+                        measure_names.add(measure_header)
                     elif value.lower() == "unchecked":
                         logging.debug(f"Found unchecked measure '{header_crf_mappings[measure_header]}' in row {row}")
                     else:
@@ -194,7 +210,9 @@ def extract_study_mappings(input_file, study_to_hdpid):
             'hdp_id',
             'project_title',
             'crf_name',
-            'source'
+            'heal_crf_id',
+            'source',
+            'input_path'
         ]
     )
     writer.writeheader()
@@ -203,23 +221,28 @@ def extract_study_mappings(input_file, study_to_hdpid):
             raise RuntimeError(f"Project '{project_number}' is missing from the study to HDP ID mappings.")
 
         for crf_name in project_crfs[project_number]["crfs"]:
-            if crf_name == HEAL_CDE_PREFIX + 'NA':
+            if crf_name in crf_to_heal_cde_id:
+                heal_crf_id = HEAL_CDE_PREFIX + crf_to_heal_cde_id[crf_name]
+                mapping_source = measure_to_heal_cde_id_path
+            elif crf_name in header_crf_mappings:
+                heal_crf_id = HEAL_CDE_PREFIX + header_crf_mappings[crf_name]
+                mapping_source = "Internal header_crf_mappings column mappings"
+            else:
+                raise RuntimeError(f"CRF '{crf_name}' is missing from the measure to HEAL CDE ID mappings.")
+
+            if heal_crf_id == HEAL_CDE_PREFIX + 'NA':
                 # NA! Ignore.
                 continue
-
-            if not crf_name.startswith(HEAL_CDE_PREFIX):
-                # TODO We need to transform this.
-                pass
 
             writer.writerow({
                 'project_number': project_number,
                 'hdp_id': project_number_to_hdp_id[project_number],
                 'project_title': project_crfs[project_number].get("project_title", ""),
                 'crf_name': crf_name,
-                'source': input_path
+                'heal_crf_id': heal_crf_id,
+                'source': mapping_source,
+                'input_path': input_path,
             })
-
-
 
 
 if __name__ == "__main__":
