@@ -91,6 +91,7 @@ def finalize_json(input_dir, output_nodes, output_edges, heal_crf_mappings):
     logging.info(f'Found {len(crfs)} CRFs: {json.dumps(list(map(lambda c: c["id"] + ": " + c.get("summary", ""), crfs)), indent=2)}')
 
     # Add CRF mappings.
+    hdp_id_study_name = dict()
     hdp_id_to_heal_crf_mappings = dict()
     unique_heal_crf_ids = set()
     for mapping_file in heal_crf_mappings:
@@ -108,9 +109,15 @@ def finalize_json(input_dir, output_nodes, output_edges, heal_crf_mappings):
                         hdp_id_to_heal_crf_mappings[mapping_path][hdp_id].add(heal_crf_id)
                         unique_heal_crf_ids.add(heal_crf_id)
 
+                        if hdp_id != 'NA' and 'project_title' in row and row['project_title']:
+                            if hdp_id in hdp_id_study_name and row['project_title'] != hdp_id_study_name[hdp_id]:
+                                logging.warning(f"Multiple project titles found for {hdp_id}: '{row['project_title']}' and '{hdp_id_study_name.get(hdp_id, '')}'.")
+                            hdp_id_study_name[hdp_id] = row['project_title']
+
     logging.info(f"Found mappings from {len(hdp_id_to_heal_crf_mappings)} HDP IDs to {len(unique_heal_crf_ids)} HEAL CRFs.")
 
     # Add edges for the mappings.
+    hdp_ids_to_add = set()
     for source in hdp_id_to_heal_crf_mappings.keys():
         for hdp_id_without_prefix, heal_crf_ids in hdp_id_to_heal_crf_mappings[source].items():
             for heal_crf_id in heal_crf_ids:
@@ -129,6 +136,20 @@ def finalize_json(input_dir, output_nodes, output_edges, heal_crf_mappings):
                     ],
                     "knowledge_source": "HEAL CDE Usage"
                 })
+                hdp_ids_to_add.add(hdp_id_without_prefix)
+
+    # Add nodes for the HDP studies we've included.
+    for hdp_id_without_prefix in sorted(hdp_ids_to_add):
+        if hdp_id_without_prefix in hdp_id_study_name:
+            nodes.append({
+                "id": f"HEALDATAPLATFORM:{hdp_id_without_prefix}",
+                "url": f"https://healdata.org/portal/discovery/{hdp_id_without_prefix}",
+                "name": hdp_id_study_name[hdp_id_without_prefix],
+                "category": [
+                    "biolink:Study"
+                ],
+                "provided_by": ["HEAL CDE finalize-json.py"],
+            })
 
     # Final step: get rid of nodes that we've pruned out.
     # TODO
