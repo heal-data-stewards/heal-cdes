@@ -1,0 +1,21 @@
+Index,CRF Name,HEAL CDE ID,heal_crf_id,Number of items,Duplicate,Source,Found In 1,Found In 2,Found In 3,hdp_id
+196,Brief Pain Inventory (BPI),bpi-lf,HEALCDE:bpi-lf,59,,Liezl uploaded to HDD GitHub repo,HDP00125,,,HDP00125
+202,PROMIS Physical Function Pain,physical-function-6b,HEALCDE:physical-function-6b,6,,Liezl uploaded to HDD GitHub repo,HDP00125,,,HDP00125
+208,PROMIS Sleep Disturbance 6a,sleep-disturbance-6a,HEALCDE:sleep-disturbance-6a,6,,Liezl uploaded to HDD GitHub repo,HDP00125,,,HDP00125
+223,PCS 13,pcs-parent,HEALCDE:pcs-parent,13,,Liezl uploaded to HDD GitHub repo,HDP00125,,,HDP00125
+231,PHQ 8,patient-health-questionnaire-8,HEALCDE:patient-health-questionnaire-8,8,,Liezl uploaded to HDD GitHub repo,HDP00125,,,HDP00125
+261,Patient Global Impression of Change (PGIC) Pain,pgic,HEALCDE:pgic,1,,Liezl uploaded to HDD GitHub repo,HDP00125,,,HDP00125
+358,"No HEAL CRF Match, related topic",NA,HEALCDE:NA,,,Liezl uploaded to HDD GitHub repo,HDP00980,HDP00125,HDP00337,HDP00980|HDP00125|HDP00337
+392,Demographics,adult-demographics,HEALCDE:adult-demographics,"31, 21",,Liezl uploaded to HDD GitHub repo,HDP00980,HDP00125,,HDP00980|HDP00125
+393,No HEAL CRF Match,NA,HEALCDE:NA,,,Liezl uploaded to HDD GitHub repo,HDP00980,HDP00125,HDP00337,HDP00980|HDP00125|HDP00337
+403,TAPS Pain,taps,HEALCDE:taps,"9, 5",,Liezl uploaded to HDD GitHub repo,HDP00337,HDP00125,,HDP00337|HDP00125
+4940,GAD 7,generalized-anxiety-disorder-7,HEALCDE:generalized-anxiety-disorder-7,"17, 7",,Liezl uploaded to HDD GitHub repo,HDP00337,HDP00125,,HDP00337|HDP00125
+4942,4956 Brief Pain Inventory (BPI) - HDPCDE4956,bpi-7day,HEALCDE:bpi-7day,5,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP00330),HDP00330,,,HDP00330
+4943,4936 Patient Health Questionnaire-2 (PHQ-2) - HDPCDE4936,phq2,HEALCDE:phq2,3,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP00330),HDP00330,,,HDP00330
+4944,5096 Generalized Anxiety Disorder-2 (GAD-2) - HDPCDE5096,gad2,HEALCDE:gad2,3,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP00330),HDP00330,,,HDP00330
+4945,5071 Tobacco Alcohol Prescription medications and other Substance (TAPS) - HDPCDE5071,taps,HEALCDE:taps,6,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP00330),HDP00330,,,HDP00330
+4946,5086 Brief Pain Inventory (BPI) - HDPCDE5086,bpi-pain-severity,HEALCDE:bpi-pain-severity,4,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP01327),HDP01327,,,HDP01327
+4947,5351 Generalized Anxiety Disorder (GAD-7) - HDPCDE5351,generalized-anxiety-disorder-7,HEALCDE:generalized-anxiety-disorder-7,8,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP01327),HDP01327,,,HDP01327
+4948,5376 Patient Health Questionnaire (PHQ-9) - HDPCDE5376,patient-health-questionnaire-9,HEALCDE:patient-health-questionnaire-9,11,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP01327),HDP01327,,,HDP01327
+4949,5016 Patient Global Impression of Change (PGIC) - HDPCDE5016,pgic,HEALCDE:pgic,1,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP01327),HDP01327,,,HDP01327
+4950,4891 Pain Catastrophizing Scale - Parent (PCS-P) - HDPCDE4891,pcs-parent,HEALCDE:pcs-parent,17,,HEAL Data Platform (https://healdata.org/mds/metadata/HDP01327),HDP01327,,,HDP01327
