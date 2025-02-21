@@ -23,6 +23,8 @@ import click
 logging.basicConfig(level=logging.INFO)
 
 # Global indexes.
+nodes = []
+nodes_by_id = defaultdict(list)
 nodes_by_type = defaultdict(list)
 edges = []
 
@@ -34,12 +36,24 @@ edges = []
     dir_okay=True,
     allow_dash=False
 ))
+@click.option('--output-nodes', required=True, default='annotated_nodes.jsonl', type=click.Path(
+    exists=False,
+    file_okay=True,
+    dir_okay=False,
+    allow_dash=True
+))
+@click.option('--output-edges', required=True, default='annotated_edges.jsonl', type=click.Path(
+    exists=False,
+    file_okay=True,
+    dir_okay=False,
+    allow_dash=True
+))
 @click.option('--heal-crf-mappings', required=False, default=[], multiple=True, type=click.Path(
     exists=True,
     file_okay=True,
     dir_okay=False,
 ))
-def finalize_json(input_dir, heal_crf_mappings):
+def finalize_json(input_dir, output_nodes, output_edges, heal_crf_mappings):
     input_path = click.format_filename(input_dir)
     logging.info(f'Looking for KGX files in {input_path}')
 
@@ -50,21 +64,23 @@ def finalize_json(input_dir, heal_crf_mappings):
             filepath = os.path.join(root, filename)
             if filename.lower().endswith('_nodes.jsonl'):
                 logging.info(f'Found nodes file {filepath}')
-                count_nodes += 1
 
                 with open(filepath, 'r') as f:
                     for line in f:
                         node = json.loads(line)
+                        count_nodes += 1
+                        nodes.append(node)
+                        nodes_by_id[node['id']].append(node)
                         for category in node.get('category', ['None']):
                             nodes_by_type[category].append(node)
 
             elif filename.lower().endswith('_edges.jsonl'):
                 logging.info(f'Found edges file {filepath}')
-                count_edges += 1
 
                 with open(filepath, 'r') as f:
                     for line in f:
                         edge = json.loads(line)
+                        count_edges += 1
                         edges.append(edge)
 
             else:
@@ -72,12 +88,13 @@ def finalize_json(input_dir, heal_crf_mappings):
 
     # Identify CRFs.
     crfs = list(filter(lambda n: n['id'].startswith('HEALCDE:'), nodes_by_type['biolink:Publication']))
-    logging.info(f'Found {len(crfs)} CRFs.')
+    logging.info(f'Found {len(crfs)} CRFs: {json.dumps(list(map(lambda c: c["id"] + ": " + c.get("summary", ""), crfs)), indent=2)}')
 
     # Add CRF mappings.
-    hdp_id_to_heal_crf_mappings = defaultdict(set)
+    hdp_id_to_heal_crf_mappings = dict()
     unique_heal_crf_ids = set()
     for mapping_file in heal_crf_mappings:
+        hdp_id_to_heal_crf_mappings[mapping_file] = defaultdict(set)
         mapping_path = click.format_filename(mapping_file)
         logging.info(f'Adding CRF mappings from {mapping_path}')
         with open(mapping_path, 'r', encoding='utf-8-sig') as f:
@@ -88,15 +105,43 @@ def finalize_json(input_dir, heal_crf_mappings):
 
                 for heal_crf_id in heal_crf_ids:
                     for hdp_id in hdp_ids:
-                        hdp_id_to_heal_crf_mappings[hdp_id].add(heal_crf_id)
+                        hdp_id_to_heal_crf_mappings[mapping_path][hdp_id].add(heal_crf_id)
                         unique_heal_crf_ids.add(heal_crf_id)
 
     logging.info(f"Found mappings from {len(hdp_id_to_heal_crf_mappings)} HDP IDs to {len(unique_heal_crf_ids)} HEAL CRFs.")
 
+    # Add edges for the mappings.
+    for source in hdp_id_to_heal_crf_mappings.keys():
+        for hdp_id_without_prefix, heal_crf_ids in hdp_id_to_heal_crf_mappings[source].items():
+            for heal_crf_id in heal_crf_ids:
+                hdp_id = f"HEALDATAPLATFORM:{hdp_id_without_prefix}"
+                if heal_crf_id == "HEALCDE:NA":
+                    continue
+                if heal_crf_id not in nodes_by_id:
+                    raise RuntimeError(f"Could not look up HEAL CRF ID {heal_crf_id} in nodes.")
+                edges.append({
+                    "predicate": "HEALCDESTUDYMAPPING:crf_used_by_study",
+                    "predicate_label": "HEAL CRF used by HEAL study",
+                    "subject": heal_crf_id,
+                    "object": hdp_id,
+                    "sources": [
+                        source
+                    ],
+                    "knowledge_source": "HEAL CDE Usage"
+                })
+
     # Final step: get rid of nodes that we've pruned out.
     # TODO
 
-    logging.info(f'Processed {count_nodes} nodes and {count_edges} edges files.')
+    with open(click.format_filename(output_nodes), 'w') as fnodes:
+        for node in nodes:
+            fnodes.write(json.dumps(node) + '\n')
+
+    with open(click.format_filename(output_edges), 'w') as fedges:
+        for edge in edges:
+            fedges.write(json.dumps(edge) + '\n')
+
+    logging.info(f'Wrote out {len(nodes)} nodes (original {count_nodes}) and {len(edges)} edges (original {count_edges}) files.')
 
 if __name__ == "__main__":
     finalize_json()
