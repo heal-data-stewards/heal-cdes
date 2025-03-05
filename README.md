@@ -22,9 +22,8 @@ $ pip install -r requirements.txt
 ### Generating HEAL CDE information
 
 ```shell
-$ mkdir output-2024apr27
-$ source venv/bin/activate
-$ python downloaders/heal_cde_repo_downloader.py output-2024apr27
+$ mkdir output-2025mar5
+$ python downloaders/heal_cde_repo_downloader.py output-2025mar5
 ```
 
 ### Incorporate HEAL CDE exports
