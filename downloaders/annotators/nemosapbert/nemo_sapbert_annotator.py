@@ -451,11 +451,11 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
                 ignored_count += 1
 
                 logging.info(f'Ignoring concept {term_id} as it is on the list of ignored concepts')
-                crf['_ner']['scigraph']['tokens']['ignored'].append(denotation)
+                crf['_ner']['nemo_sapbert']['tokens']['ignored'].append(denotation)
                 count_ignored += 1
                 continue
 
-            crf['_ner']['scigraph']['tokens']['normalized'].append(denotation)
+            crf['_ner']['nemo_sapbert']['tokens']['normalized'].append(denotation)
             count_normalized += 1
 
             if term_id in existing_term_ids:
@@ -489,7 +489,7 @@ def process_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, 
 
             graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
         else:
-            crf['_ner']['scigraph']['tokens']['could_not_normalize'].append(denotation)
+            crf['_ner']['nemo_sapbert']['tokens']['could_not_normalize'].append(denotation)
             count_could_not_normalize += 1
 
     return crf
