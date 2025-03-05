@@ -27,6 +27,12 @@ $ source venv/bin/activate
 $ python downloaders/heal_cde_repo_downloader.py output-2024apr27
 ```
 
+### Incorporate HEAL CDE exports
+
+```shell
+$ python summarizers/extract-study-mappings-from-heal-cde-team-export.py mappings/study-crf-mappings/from-heal-cde-team/HEALCommonDataElemen_DATA_LABELS_2025-03-03_1124.csv --study-to-hdpid mappings/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv --measure-to-heal-cde-id mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv > mappings/study-crf-mappings/study-crf-mappings.csv
+```
+
 ### Generating JSON files
 
 The script generators/excel2cde.py recursively converts Excel files in the
