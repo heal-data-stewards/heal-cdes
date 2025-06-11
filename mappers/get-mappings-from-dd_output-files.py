@@ -29,14 +29,81 @@
 #   - variable_name: The variable name from the data dictionary
 #   - heal_cde_variable_name: The variable name from the HEAL CDE definition of this CRF, or the numerical index value
 #     of the CDE within the CRF (i.e. 1, 2, 3, ...).
+import os
+import logging
+from dataclasses import dataclass
 
 import click
+import yaml
+
+# Set up logging.
+logging.basicConfig(level=logging.INFO)
+
+@dataclass
+class Mapping:
+    heal_crf_id: str
+    hdp_id: str
+    module: str = ""
+    variable_name: str = ""
+    heal_cde_variable_name: str = ""
+
+def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids) -> list[Mapping]:
+    """
+    Extract mappings from a DD_output-formatted XLSX file.
+
+    :param xlsx_filename: The full path to the DD_output XLSX file to extract mappings from.
+    :return: A list of Mappings extracted from this Excel file.
+    :raises ValueError: If the Excel file is not in the expected format.
+    """
+    pass
+
+def get_metadata_files_in_project_directory(project_dir):
+    for root, _, files in os.walk(project_dir):
+        for filename in files:
+            file_path = os.path.join(root, filename)
+            if '/vlmd/' in file_path and filename.lower() == 'metadata.yaml':
+                yield file_path
 
 @click.command()
 @click.argument('input-dir', required=True, type=click.Path(dir_okay=True, file_okay=False))
 @click.option('--output-file', '-o', help='Output file to write mappings to.', type=click.File('w'), default='-')
 def get_mappings_from_dd_output_files(input_dir, output_file):
-    pass
+    count_candidate_files = 0
+    count_candidate_files_without_metadata = 0
+
+    # We need to recurse into input_dir and find (1) all `CDEs` directories and (2) corresponding `vlmd/*/metadata.yaml` files.
+    for root, _, files in os.walk(input_dir):
+        for filename in files:
+            file_path = os.path.join(root, filename)
+            if '/CDEs/' in file_path and filename.lower().startswith('dd_') and file_path.lower().endswith('.xlsx'):
+                # Candidate file!
+                #
+                # Can we find VLMD files?
+                project_dir = os.path.dirname(os.path.dirname(file_path))
+                metadata_yaml_files = list(get_metadata_files_in_project_directory(project_dir))
+
+                if metadata_yaml_files:
+                    count_candidate_files += 1
+
+                    hdp_ids = set()
+                    for metadata_yaml_file in metadata_yaml_files:
+                        with open(metadata_yaml_file, 'r') as yamlf:
+                            document = yaml.safe_load(yamlf)
+                            try:
+                                hdp_id = document.get('Project', {}).get('HDP_ID')
+                            except KeyError:
+                                raise ValueError(f'Could not find HDP_ID in {metadata_yaml_file}')
+                            hdp_ids.add(hdp_id)
+
+                    logging.info(f'Found candidate DD_output file {file_path} with HDP IDs: {hdp_ids}.')
+
+                else:
+                    logging.warning(f'Found candidate DD_output file {file_path} WITHOUT metadata files.')
+                    count_candidate_files_without_metadata += 1
+
+
+
+    logging.info(f'Found {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
 
 if __name__ == "__main__":
     get_mappings_from_dd_output_files()
