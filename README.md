@@ -22,9 +22,25 @@ $ pip install -r requirements.txt
 ### Generating HEAL CDE information
 
 ```shell
-$ mkdir output-2024apr27
-$ source venv/bin/activate
-$ python downloaders/heal_cde_repo_downloader.py output-2024apr27
+$ mkdir output-2025mar5
+$ python downloaders/heal_cde_repo_downloader.py output-2025mar5
+```
+
+### Incorporate HEAL CDE exports
+
+This is a two-step process. First, we use one script to convert the HEAL CDE export file into a standard format,
+which we store in `mappings/study-crf-mappings/study-crf-mappings.csv`.
+
+```shell
+$ python summarizers/extract-study-mappings-from-heal-cde-team-export.py mappings/study-crf-mappings/from-heal-cde-team/HEALCommonDataElemen_DATA_LABELS_2025-03-03_1124.csv --study-to-hdpid mappings/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv --measure-to-heal-cde-id mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv > mappings/study-crf-mappings/study-crf-mappings.csv
+```
+
+Then, we use the `finalize-json.py` script and provide CRF mappings to it from two sources:
+- `mappings/heal-cde-to-id-mappings/heal-crf-to-id-mappings.csv`: mappings from Liezl's work and those already incorporated into the Platform MDS.
+- `mappings/study-crf-mappings/study-crf-mappings.csv`: mappings from the HEAL CDE export generated in the previous step.
+
+```shell
+$ python summarizers/finalize-json.py output-2025mar5 --heal-crf-mappings mappings/heal-cde-to-id-mappings/heal-crf-to-id-mappings.csv --heal-crf-mappings mappings/study-crf-mappings/study-crf-mappings.csv
 ```
 
 ### Generating JSON files
