@@ -29,25 +29,42 @@
 #   - variable_name: The variable name from the data dictionary
 #   - heal_cde_variable_name: The variable name from the HEAL CDE definition of this CRF, or the numerical index value
 #     of the CDE within the CRF (i.e. 1, 2, 3, ...).
+import csv
 import os
 import logging
+from collections import defaultdict
 from dataclasses import dataclass
 
 import click
+import openpyxl
 import yaml
+import pandas
+
+# Configuration
+MAX_EXCEL_ROWS = 200_000
+MANUAL_VALIDATION_NA_VALUES = {
+    "No HEAL CRF match",
+    "No HEAL CRF Match",
+    "No HEAL CRF match, but related",
+    "No HEAL CRF Match, but related",
+    "No HEAL CRF Match, related topic",
+    "but related",
+    "related topic",
+    "but close"
+}
 
 # Set up logging.
 logging.basicConfig(level=logging.INFO)
 
 @dataclass
-class Mapping:
-    heal_crf_id: str
-    hdp_id: str
-    module: str = ""
-    variable_name: str = ""
-    heal_cde_variable_name: str = ""
+class StudyCRFMapping:
+    xlsx_filename: str
+    hdp_ids: set[str]
+    crf_name: str
+    form_name: str
+    variable_names: set[str]
 
-def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids) -> list[Mapping]:
+def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids) -> list[StudyCRFMapping]:
     """
     Extract mappings from a DD_output-formatted XLSX file.
 
@@ -55,7 +72,92 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids) -> list[Ma
     :return: A list of Mappings extracted from this Excel file.
     :raises ValueError: If the Excel file is not in the expected format.
     """
-    pass
+
+    try:
+        df = pandas.read_excel(xlsx_filename, sheet_name='EnhancedDD', nrows=MAX_EXCEL_ROWS + 1)
+    except ValueError as e:
+        if "Worksheet named 'EnhancedDD' not found" in str(e):
+            # TODO: raise exception.
+            workbook = openpyxl.load_workbook(xlsx_filename)
+            logging.error(f'Could not find "EnhancedDD" sheet in {xlsx_filename}, sheets: {workbook.sheetnames}')
+            return []
+        raise RuntimeError(f'Could not read Excel file {xlsx_filename}: ({type(e)}) {e}')
+
+    # Too many rows?
+    if len(df) > MAX_EXCEL_ROWS:
+        # TODO: raise exception.
+        logging.error(f'Found at least {len(df)} rows in {xlsx_filename}, which is more than the maximum of {MAX_EXCEL_ROWS}.')
+        return []
+
+    # Record unique form-CRF mappings.
+    crf_by_form_name = defaultdict(dict)
+
+    rows = df.to_dict(orient='records')
+    for row in rows:
+        logging.debug(f"{xlsx_filename}: {row}")
+
+        # Make sure we actually have all three columns we need.
+        if 'Form Name' in row:
+            form_name = row.get('Form Name')
+        elif 'module' in row:
+            form_name = row.get('module')
+        elif 'section' in row:
+            form_name = row.get('section')
+        else:
+            raise ValueError(f"Missing required column in {xlsx_filename} (no form name column found): {row.keys()}")
+
+        if 'Variable / Field Name' in row:
+            variable_name = row.get('Variable / Field Name')
+        elif 'name' in row:
+            variable_name = row.get('name')
+        else:
+            raise ValueError(f"Missing required column in {xlsx_filename} (no variable name column found): {row.keys()}")
+
+        if 'Manual Validation' in row:
+            crf_names = row.get('Manual Validation')
+        elif 'Manual Verification' in row:
+            crf_names = row.get('Manual Verification')
+        else:
+            raise ValueError(f"Missing required column in {xlsx_filename} (either 'Manual Validation' or 'Manual Verification' must be present): {row.keys()}")
+
+        # Skip any NA values.
+        if crf_names in MANUAL_VALIDATION_NA_VALUES:
+            continue
+
+        # Any commas in crf_names?
+        if ',' not in crf_names:
+            crf_names = [crf_names]
+        else:
+            crf_names = map(lambda x: x.strip(), crf_names.split(','))
+
+        for crf_name in crf_names:
+            # Skip any NA values (some might show up here after splitting by comma)
+            if crf_name in MANUAL_VALIDATION_NA_VALUES:
+                continue
+
+            crf_info = crf_by_form_name[crf_name]
+            if form_name not in crf_info:
+                logging.debug(f"Found new {form_name} for {crf_name} in {xlsx_filename}.")
+                crf_info[form_name] = set()
+
+            if variable_name is not None:
+                crf_info[form_name].add(variable_name)
+
+    # Translate crf_by_form_name into mappings.
+    mappings = []
+    for crf_name, form_name_to_variable_names in crf_by_form_name.items():
+        for form_name in form_name_to_variable_names.keys():
+            mappings.append(StudyCRFMapping(
+                xlsx_filename=xlsx_filename,
+                hdp_ids=hdp_ids,
+                form_name=form_name,
+                crf_name=crf_name,
+                variable_names=form_name_to_variable_names[form_name]
+            ))
+
+    logging.info(f'Found {len(mappings)} mappings in {xlsx_filename}.')
+
+    return mappings
 
 def get_metadata_files_in_project_directory(project_dir):
     for root, _, files in os.walk(project_dir):
@@ -70,6 +172,9 @@ def get_metadata_files_in_project_directory(project_dir):
 def get_mappings_from_dd_output_files(input_dir, output_file):
     count_candidate_files = 0
     count_candidate_files_without_metadata = 0
+
+    # Tally up mappings.
+    mappings = []
 
     # We need to recurse into input_dir and find (1) all `CDEs` directories and (2) corresponding `vlmd/*/metadata.yaml` files.
     for root, _, files in os.walk(input_dir):
@@ -96,14 +201,36 @@ def get_mappings_from_dd_output_files(input_dir, output_file):
                             hdp_ids.add(hdp_id)
 
                     logging.info(f'Found candidate DD_output file {file_path} with HDP IDs: {hdp_ids}.')
+                    mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids))
 
                 else:
-                    logging.warning(f'Found candidate DD_output file {file_path} WITHOUT metadata files.')
+                    # TODO: change this into an exception.
+                    logging.error(f'Found candidate DD_output file {file_path} WITHOUT metadata files.')
                     count_candidate_files_without_metadata += 1
 
+    logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
 
+    # Write mappings into the output file.
+    writer = csv.DictWriter(output_file, fieldnames=['filename', 'hdp_id', 'crf_id', 'crf_name', 'form_name', 'variable_names'])
+    writer.writeheader()
+    count_rows = 0
+    for mapping in mappings:
+        for hdp_id in mapping.hdp_ids:
+            variable_names = mapping.variable_names
+            if not variable_names or variable_names is None:
+                variable_names = {}
 
-    logging.info(f'Found {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
+            writer.writerow({
+                'filename': mapping.xlsx_filename,
+                'hdp_id': hdp_id,
+                'crf_id': 'HEALCDE:NA', # TODO
+                'crf_name': mapping.crf_name,
+                'form_name': mapping.form_name,
+                'variable_names': "|".join(sorted(variable_names)),
+            })
+            count_rows += 1
+
+    logging.info(f'Wrote {count_rows} rows to {output_file.name}.')
 
 if __name__ == "__main__":
     get_mappings_from_dd_output_files()
