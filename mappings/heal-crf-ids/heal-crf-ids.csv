@@ -1,15 +1,15 @@
 CRF Name,HEAL CDE CURIE,HEAL Data Platform CURIE,Other Names
 PROMIS Item Bank v2.0 – Physical Function – Short Form 6b,HEALCDE:physical-function-6b,HEALDATAPLATFORM:HDPCDE5041,PROMIS Physical Function Pain
 PROMIS Sleep Disturbance 6a,HEALCDE:sleep-disturbance-6a,,
-Pain Catastrophizing Scale 13,HEALCDE:pcs-13,,PCS 13
-Patient Health Questionnaire (PHQ-8),HEALCDE:patient-health-questionnaire-8,HEALDATAPLATFORM:HDPCDE5361,PHQ 8
-Demographics Adult,HEALCDE:adult-demographics,HEALDATAPLATFORM:HDPCDE00001,
-4956 Brief Pain Inventory (BPI) - HDPCDE4956,HEALCDE:bpi-pain-severity-7d,HEALDATAPLATFORM:HDPCDE4956,
-4936 Patient Health Questionnaire-2 (PHQ-2) - HDPCDE4936,HEALCDE:phq2,HEALDATAPLATFORM:HDPCDE4936,
-5096 Generalized Anxiety Disorder-2 (GAD-2) - HDPCDE5096,HEALCDE:gad2,HEALDATAPLATFORM:HDPCDE5096,
+Pain Catastrophizing Scale 13,HEALCDE:pcs-13,,PCS 13|PCS (Pain Catastrophizing Scale)|Pain Catastrophizing Scale (PCS)
+Patient Health Questionnaire (PHQ-8),HEALCDE:patient-health-questionnaire-8,HEALDATAPLATFORM:HDPCDE5361,PHQ 8|PHQ-8
+Demographics Adult,HEALCDE:adult-demographics,HEALDATAPLATFORM:HDPCDE00001,Demographics
+Brief Pain Inventory (BPI) - 7 days,HEALCDE:bpi-pain-severity-7d,HEALDATAPLATFORM:HDPCDE4956,
+Patient Health Questionnaire-2 (PHQ-2),HEALCDE:phq2,HEALDATAPLATFORM:HDPCDE4936,
+Generalized Anxiety Disorder-2 (GAD-2),HEALCDE:gad2,HEALDATAPLATFORM:HDPCDE5096,GAD 2|GAD-2|GAD2
 Tobacco Alcohol Prescription medications and other Substance (TAPS),HEALCDE:taps,HEALDATAPLATFORM:HDPCDE5071,TAPS Pain
-5086 Brief Pain Inventory (BPI) - HDPCDE5086,HEALCDE:bpi-pain-severity,HEALDATAPLATFORM:HDPCDE5086,
-5351 Generalized Anxiety Disorder (GAD-7) - HDPCDE5351,HEALCDE:generalized-anxiety-disorder-7,HEALDATAPLATFORM:HDPCDE5351,GAD 7
-5376 Patient Health Questionnaire (PHQ-9) - HDPCDE5376,HEALCDE:patient-health-questionnaire-9,HEALDATAPLATFORM:HDPCDE5376,
-Patient Global Impression of Change (PGIC),HEALCDE:pgic,HEALDATAPLATFORM:HDPCDE5016,Patient Global Impression of Change (PGIC) Pain
+Brief Pain Inventory (BPI) Severity,HEALCDE:bpi-pain-severity,HEALDATAPLATFORM:HDPCDE5086,BPI Pain Severity
+Generalized Anxiety Disorder (GAD-7),HEALCDE:generalized-anxiety-disorder-7,HEALDATAPLATFORM:HDPCDE5351,GAD 7|GAD-7|GAD7
+Patient Health Questionnaire (PHQ-9),HEALCDE:patient-health-questionnaire-9,HEALDATAPLATFORM:HDPCDE5376,PHQ-9
+Patient Global Impression of Change (PGIC),HEALCDE:pgic,HEALDATAPLATFORM:HDPCDE5016,Patient Global Impression of Change (PGIC) Pain|PGIC (Patient Global Impression of Change Pain)
 Pain Catastrophizing Scale - Parent (PCS-P),HEALCDE:pcs-parent,HEALDATAPLATFORM:HDPCDE4891,

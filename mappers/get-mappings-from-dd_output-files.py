@@ -61,14 +61,17 @@ class StudyCRFMapping:
     xlsx_filename: str
     hdp_ids: set[str]
     crf_name: str
+    crf_ids: list[str]
     form_name: str
     variable_names: set[str]
 
-def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids) -> list[StudyCRFMapping]:
+def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_crf_ids) -> list[StudyCRFMapping]:
     """
     Extract mappings from a DD_output-formatted XLSX file.
 
     :param xlsx_filename: The full path to the DD_output XLSX file to extract mappings from.
+    :param hdp_ids: A set of HDP IDs associated with this DD_output file.
+    :param name_to_crf_ids: A dictionary mapping CRF names to their corresponding CRF IDs.
     :return: A list of Mappings extracted from this Excel file.
     :raises ValueError: If the Excel file is not in the expected format.
     """
@@ -147,11 +150,18 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids) -> list[St
     mappings = []
     for crf_name, form_name_to_variable_names in crf_by_form_name.items():
         for form_name in form_name_to_variable_names.keys():
+            crf_ids = list(filter(lambda x: x, map(lambda x: x.get('HEAL CDE CURIE', '').strip(), name_to_crf_ids.get(crf_name, []))))
+
+            if not crf_ids:
+                # TODO: raise exception
+                logging.error(f"Could not find any CRF IDs for '{crf_name}' in {xlsx_filename}.")
+
             mappings.append(StudyCRFMapping(
                 xlsx_filename=xlsx_filename,
                 hdp_ids=hdp_ids,
                 form_name=form_name,
                 crf_name=crf_name,
+                crf_ids=crf_ids,
                 variable_names=form_name_to_variable_names[form_name]
             ))
 
@@ -168,10 +178,27 @@ def get_metadata_files_in_project_directory(project_dir):
 
 @click.command()
 @click.argument('input-dir', required=True, type=click.Path(dir_okay=True, file_okay=False))
+@click.option('--crf-id-file', '-i', required=True, type=click.File('r'))
 @click.option('--output-file', '-o', help='Output file to write mappings to.', type=click.File('w'), default='-')
-def get_mappings_from_dd_output_files(input_dir, output_file):
+def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
     count_candidate_files = 0
     count_candidate_files_without_metadata = 0
+
+    # Load HEAL CRF IDs.
+    crf_id_mappings = []
+    name_to_crf_ids = defaultdict(list)
+
+    crf_reader = csv.DictReader(crf_id_file)
+    for row in crf_reader:
+        crf_id_mappings.append(row)
+
+        names = {row['CRF Name']}
+        other_names = map(lambda n: n.strip(), row.get('Other Names', '').split('|'))
+        if other_names:
+            names.update(other_names)
+
+        for name in names:
+            name_to_crf_ids[name].append(row)
 
     # Tally up mappings.
     mappings = []
@@ -201,7 +228,7 @@ def get_mappings_from_dd_output_files(input_dir, output_file):
                             hdp_ids.add(hdp_id)
 
                     logging.info(f'Found candidate DD_output file {file_path} with HDP IDs: {hdp_ids}.')
-                    mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids))
+                    mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids))
 
                 else:
                     # TODO: change this into an exception.
@@ -211,7 +238,7 @@ def get_mappings_from_dd_output_files(input_dir, output_file):
     logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
 
     # Write mappings into the output file.
-    writer = csv.DictWriter(output_file, fieldnames=['filename', 'hdp_id', 'crf_id', 'crf_name', 'form_name', 'variable_names'])
+    writer = csv.DictWriter(output_file, fieldnames=['filename', 'hdp_id', 'crf_ids', 'crf_name', 'form_name', 'variable_names'])
     writer.writeheader()
     count_rows = 0
     for mapping in mappings:
@@ -223,7 +250,7 @@ def get_mappings_from_dd_output_files(input_dir, output_file):
             writer.writerow({
                 'filename': mapping.xlsx_filename,
                 'hdp_id': hdp_id,
-                'crf_id': 'HEALCDE:NA', # TODO
+                'crf_ids':  "|".join(sorted(mapping.crf_ids)),
                 'crf_name': mapping.crf_name,
                 'form_name': mapping.form_name,
                 'variable_names': "|".join(sorted(variable_names)),
