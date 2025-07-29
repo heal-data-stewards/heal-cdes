@@ -33,7 +33,7 @@ MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 MIME_PDF = 'application/pdf'
 
 # Configuration
-HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
+HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?_format=csv"
 
 # Sort order for languages
 LANGUAGE_ORDER = {'en': 1, 'es': 2, 'zh-CN': 3, 'zh-TW': 4, 'ja': 5, 'ko': 6, 'sv': 7}
