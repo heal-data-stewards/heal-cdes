@@ -73,9 +73,9 @@ def convert_permissible_values(row):
             split_descriptions = pv_regex.split(descriptions)
 
         for value, description in zip(split_values, split_descriptions):
-            pv = { 'permissibleValue': value }
+            pv = { 'value': value }
             if description is not None:
-                pv['valueMeaningDefinition'] = description
+                pv['description'] = description
             pvs.append(pv)
 
     return pvs
@@ -141,27 +141,27 @@ def convert_question_to_formelement(row):
             })
 
     form_element = {
-        'elementType': 'question',
-        'label': row.get('Additional Notes (Question Text)', ''),
-        'question': {
-            'cde': {
-                'name': get_value(row, 'CDE Name'),
-                'newCde': {
-                    'definitions': definitions,
-                    'designations': designations
-                },
-                'datatype': row.get('Data Type'),
-                'ids': ids,
-                'permissibleValues': convert_permissible_values(row)
-            }
+        'type': 'variable',
+        'id': row.get('Variable Name'),
+        'name': row.get('CDE Name'),
+        'data_type': 'text', # TODO: figure out what the actual values are here.
+        'question_text': row.get('Additional Notes (Question Text)'),
+        'permissible_values': convert_permissible_values(row),
+        'is_standardized': True,
+        'other': {
+            'question_number': row.get('CRF Question #'),
+            'definition': row.get('Definition'),
+            'short_description': row.get('Short Description'),
+            'crf_name': row.get('CRF Name'),
+            'references': row.get('Disease Specific References'),
         }
     }
 
-    if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
-        form_element['instructions'] = {
-            'value': row.get('Disease Specific Instructions'),
-            'valueFormat': 'text'
-        }
+    # if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
+    #     form_element['instructions'] = {
+    #         'value': row.get('Disease Specific Instructions'),
+    #         'valueFormat': 'text'
+    #     }
 
     return form_element
 

@@ -82,7 +82,7 @@ def load_heal_crf_usage_mappings(study_mapping_file):
     return crf_usage_mappings
 
 
-# Download and annotate all the files from the HEAL CDE repository
+# Download all the files from the HEAL CDE repository in the Dug Data Model.
 @click.command()
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
 @click.option('--heal-cde-csv-download', '--url', default=HEAL_CDE_CSV_DOWNLOAD,
@@ -347,18 +347,39 @@ def heal_cde_repo_downloader(
         # Set up the KGX graph
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
-        comprehensive = process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+            # process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+
+        # Convert all the formElements to Dug variables.
+        crf_curie = 'HEALCDE:' + crf_id
+
+        # Now we have all the information we need to generate a Dug Data Model file for this CRF.
+        cdes = json_data['formElements'] if 'formElements' in json_data else []
+        count_cdes = len(cdes)
+        description = descriptions[0] if descriptions else ''
+        if len(description) == 0:
+            description = f"Contains {count_cdes} CDEs."
+        else:
+            description = f"{description} Contains {count_cdes} CDEs."
+
+        crf_model = {
+            'type': 'section',      # We model this as a DugSection, containing DugVariables
+            'id': crf_curie,
+            'name': crf_id,
+            'description': description,
+            'action': None,         # TODO: is this the URL to download this CRF?
+            'is_crf': True,
+            'variable_list': cdes,
+        }
+
+        with open(kgx_file_path + '.dug.json', 'w') as jsonf:
+            json.dump(crf_model, jsonf, indent=2)
 
         # Let's write out the comprehensive file somewhere.
         with open(kgx_file_path + '.json', 'w') as jsonf:
             json.dump({
-                '': comprehensive
+                'filename': kgx_file_path + '.json',
+                'json_data': json_data,
             }, jsonf, indent=2)
-
-        # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
-        # directly in the graph.
-        if export_files_as_nodes:
-            graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
 
         # Create nodes for each download.
         files_urls = list()
