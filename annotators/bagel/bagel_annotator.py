@@ -1,7 +1,7 @@
 import functools
 import logging
 
-from renci_ner.core import AnnotatorWithProps
+from renci_ner.core import AnnotatorWithProps, Annotation
 from renci_ner.services.linkers.babelsapbert import BabelSAPBERTAnnotator
 from renci_ner.services.linkers.bagel import BagelAnnotator
 from renci_ner.services.linkers.nameres import NameRes
@@ -9,6 +9,77 @@ from renci_ner.services.ner.biomegatron import BioMegatron
 
 
 # Annotate a CRF in our weird internal format using Bagel.
+
+
+# Ignore certain concepts and categories.
+IGNORED_CONCEPTS = {
+    'UBERON:0002542',                   # "scale" -- not a body part!
+    'UBERON:0007380',                   # "dermal scale" -- not a body part!
+    'UMLS:C3166305',                    # "Scale used for body image assessment"
+    'MONDO:0019395',                    # "have" is not Hinman syndrome
+    'UBERON:0006611',                   # "test" is not an exoskeleton
+    'PUBCHEM.COMPOUND:135398658',       # "being" is not folic acid
+    'MONDO:0010472',                    # "being" is not developmental and epileptic encephalopathy
+    'MONDO:0011760',                    # "being" is not Scheie syndrome
+    'MONDO:0008534',                    # "getting" is not generalized essential telangiectasia
+    'UBERON:0004704',                   # "depression" is not bone fossa
+    'UBERON:0000467',                   # "system" is not an anatomical system
+    'MONDO:0017879',                    # "have" is not hantavirus pulmonary syndrome
+    'MONDO:0009271',                    # "going" or "goes" is not geroderma osteodysplastica
+    'MONDO:0017015',                    # "children" is not primary interstitial lung disease specific to childhood
+    'CHEBI:24433',                      # "rested" or "group" aren't a chemical group
+    'MONDO:0010953',                    # "face" is not Fanconi anemia complementation group E
+    'GO:0043336',                       # "rested" is not site-specific telomere resolvase activity
+    'NCBIGene:5978',                    # "rested" is not the gene REST
+    'MONDO:0009176',                    # "ever" is not epidermodysplasia verruciformis
+    'GO:0019013',                       # "core" is not viral nucleocapsid
+    'MONDO:0012833',                    # "could" is not Crouzon syndrome-acanthosis nigricans syndrome (): 18 CRFs
+    'NCBITaxon:6754',                   # "cancer" is not the animal group Cancer
+    'UBERON:0004529',                   # "spine" is not anatomical projection
+    'UBERON:0013496',                   # "spine" is not unbarbed keratin-coated spine
+    'MONDO:0000605',                    # "sensitive" is not hypersensitivity reaction disease
+    'PUBCHEM.COMPOUND:84815',           # "meds" is not D-Methionine
+    'MONDO:0016648',                    # "meds" is not multiple epiphyseal dysplasia (disease)
+    'GO:0044326',                       # "neck" is not dendritic spine neck
+    'UBERON:2002175',                   # "role" is not rostral octaval nerve motor nucleus
+    'MONDO:0002531',                    # "skin" is not skin neoplasm
+    'MONDO:0024457',                    # "plans" is not neurodegeneration with brain iron accumulation 2A
+    'MONDO:0017998',                    # "plans" is not PLA2G6-associated neurodegeneration
+    'UBERON:0004111',                   # "open" is not anatomical conduit
+    'MONDO:0002169',                    # "read" is not rectum adenocarcinoma
+    'UBERON:0007358',                   # "read" is not abomasum
+    'CHEBI:18282',                      # "based" is not nucleobase
+    'UBERON:0035971',                   # "post" is not postsubiculum
+    'GO:0033867',                       # "fast" is not Fas-activated serine/threonine kinase activity
+    'CHEMBL.COMPOUND:CHEMBL224120',     # "same" is not CHEMBL224120
+    'MONDO:0019380',                    # "weed" is not western equine encephalitis
+    'CL:0000968',                       # "cell" is not Be cell
+    'PR:000004978',                     # "calm" is not calmodulin
+    'GO:0008705',                       # "meth" is not methionine synthase activity
+    'UBERON:0001932',                   # "arch" is not arcuate nucleus of hypothalamus
+    'MONDO:0004980',                    # "allergy" is not atopic eczema
+    'MONDO:0009994',                    # "arms" are not alveolar rhabdomyosarcoma
+    # Stopped at decompression sickness (MONDO:0020797): 5 CRFs
+    'PUBCHEM.COMPOUND:5460341',         # "could" is not Calcium: 19 CRFs
+    'GO:0044309',                       # "neuron spine" isn't right -- "spine" should match UBERON:0001130 (and does)
+    'UBERON:0015230',                   # "dorsal vessel heart" isn't as good as "heart" (UBERON:0000948), which we match
+    'KEGG.COMPOUND:C00701',             # "based" is not a base
+    'UBERON:0010230',                   # "eyeball of camera-type eye" is probably too specific
+    'PUBCHEM.COMPOUND:34756',           # "same" is not S-Adenosyl-L-methionine (PUBCHEM.COMPOUND:34756): 8 CRFs
+    'CL:0000000',                       # "cell" never refers to actual cells
+    'CL:0000669',                       # "pericyte cell" never refers to actual cells
+    'PUBCHEM.COMPOUND:5234',            # Both mentions of 'salts' refer to the drug "bath salts" (https://en.wikipedia.org/wiki/Bath_salts)
+    'GO:0031672',                       # The "A band" cellular component doesn't really come up here
+
+
+    # TODO:
+    # - chronic obstructive pulmonary disease (MONDO:0005002): 17 CRFs -> matches "cold"
+    # - leg (UBERON:0000978) -> matches "lower extremity"
+    # - Needs more investigation:
+    #   - hindlimb zeugopod (UBERON:0003823): 14 CRFs
+    #   - heme (PUBCHEM.COMPOUND:53629486 <- Molecular Mixture)
+    # Stopped at forelimb stylopod (UBERON:0003822): 10 CRFs
+}
 
 def get_designation(element):
     """ Return the designations for a CDE. If any designations are present, we concatenate them together so they can be
@@ -30,6 +101,9 @@ def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
     :return: The response from the NER service, translated into token definitions.
     """
 
+    global biomegatron
+    global sapbert_annotator
+    global nameres_annotator
     global bagel_annotator
     if not bagel_annotator:
         biomegatron = BioMegatron()
@@ -43,6 +117,7 @@ def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
         annotated_text = biomegatron.annotate(text)
         result = bagel_annotator.annotate_with(annotated_text, [
             AnnotatorWithProps(nameres_annotator, {
+                'limit': 5,
                 'only_taxa': [
                     'NCBITaxon:9606',       # Homo sapiens
                     'NCBITaxon:10090',      # Mus musculus
@@ -51,13 +126,13 @@ def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
                 ]
             }),
             AnnotatorWithProps(sapbert_annotator, {
+                'limit': 5,
                 'score': sapbert_score_threshold,
             })
         ])
-    except Exception as exp:
-        logging.error(f"Could not annotate {text} using BioMegatron: {exp}")
-        errors.append(exp)
-
+    except ValueError as err:
+        logging.error(f"Could not annotate \"{text[0:100]}...\" using BioMegatron + Bagel: {err}")
+        errors.append(str(err))
 
     if not result:
         denotations = []
@@ -69,8 +144,8 @@ def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
             'concept': {
                 'id': d.id,
                 'label': d.label,
-                'biolink_type': d.biolink_type,
-                'score': d.score
+                'biolink_type': d.type,
+                'score': d.props.get('score', None),
             }
         }, result.annotations))
 
@@ -233,7 +308,7 @@ def annotate_crf(graph, crf_id, crf, source, add_cde_count_to_description=False,
     # logging.info(f"Categorized CRF {crf_name} as {cde_category}")
 
     crf['_ner'] = {
-        'nemo_sapbert': {
+        'bagel': {
             'crf_name': crf_name,
             'crf_text': crf_text,
             'tokens': {
@@ -245,7 +320,7 @@ def annotate_crf(graph, crf_id, crf, source, add_cde_count_to_description=False,
     }
 
     comprehensive = ner_via_bagel(crf_id, crf_text, sapbert_score_threshold=sapbert_score_threshold)
-    crf['_ner']['nemo_sapbert']['results'] = comprehensive
+    crf['_ner']['bagel']['results'] = comprehensive
     crf['denotations'] = comprehensive.get('denotations', [])
 
     logging.info(f"Querying CRF '{designation}' with text: {crf_text} (CRF ID {crf_id})")
@@ -271,11 +346,11 @@ def annotate_crf(graph, crf_id, crf, source, add_cde_count_to_description=False,
                 ignored_count += 1
 
                 logging.info(f'Ignoring concept {term_id} as it is on the list of ignored concepts')
-                crf['_ner']['nemo_sapbert']['tokens']['ignored'].append(denotation)
+                crf['_ner']['bagel']['tokens']['ignored'].append(denotation)
                 count_ignored += 1
                 continue
 
-            crf['_ner']['nemo_sapbert']['tokens']['normalized'].append(denotation)
+            crf['_ner']['bagel']['tokens']['normalized'].append(denotation)
             count_normalized += 1
 
             if term_id in existing_term_ids:
@@ -283,7 +358,7 @@ def annotate_crf(graph, crf_id, crf, source, add_cde_count_to_description=False,
                 continue
             existing_term_ids.add(term_id)
 
-            edge_source = f'Nemo SAPBERT (threshold = {sapbert_score_threshold}), normalized = {TRANSLATOR_NORMALIZATION_URL}'
+            edge_source = f'Bagel (with NameRes and SAPBERT with threshold = {sapbert_score_threshold})'
 
             graph.add_node(term_id)
             graph.add_node_attribute(term_id, 'category', concept['biolink_type'])
@@ -309,7 +384,7 @@ def annotate_crf(graph, crf_id, crf, source, add_cde_count_to_description=False,
 
             graph.add_edge_attribute(crf_id, term_id, association_id, 'object', term_id)
         else:
-            crf['_ner']['nemo_sapbert']['tokens']['could_not_normalize'].append(denotation)
+            crf['_ner']['bagel']['tokens']['could_not_normalize'].append(denotation)
             count_could_not_normalize += 1
 
     return crf
