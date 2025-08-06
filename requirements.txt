@@ -7,3 +7,6 @@ click
 requests
 biolink-model
 kgx
+
+# For testing with the Bagel code.
+renci-ner @ git+https://github.com/RENCI-NER/renci-ner@add-bagel
