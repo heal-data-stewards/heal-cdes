@@ -6,7 +6,7 @@ from renci_ner.services.linkers.babelsapbert import BabelSAPBERTAnnotator
 from renci_ner.services.linkers.bagel import BagelAnnotator
 from renci_ner.services.linkers.nameres import NameRes
 from renci_ner.services.ner.biomegatron import BioMegatron
-
+from requests import HTTPError
 
 # Annotate a CRF in our weird internal format using Bagel.
 
@@ -130,9 +130,10 @@ def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
                 'score': sapbert_score_threshold,
             })
         ])
-    except ValueError as err:
+    except (ValueError, HTTPError) as err:
         logging.error(f"Could not annotate \"{text[0:100]}...\" using BioMegatron + Bagel: {err}")
         errors.append(str(err))
+
 
     if not result:
         denotations = []
