@@ -24,6 +24,7 @@ from kgx.transformer import Transformer
 from kgx.source import graph_source
 from kgx.sink import jsonl_sink
 
+from annotators.bagel.bagel_annotator import annotate_crf
 from excel2cde import convert_xlsx_to_json
 from annotators.nemosapbert.nemo_sapbert_annotator import process_crf
 
@@ -347,7 +348,8 @@ def heal_cde_repo_downloader(
         # Set up the KGX graph
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
-        comprehensive = process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+        comprehensive = annotate_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+            # process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
 
         # Let's write out the comprehensive file somewhere.
         with open(kgx_file_path + '.json', 'w') as jsonf:
