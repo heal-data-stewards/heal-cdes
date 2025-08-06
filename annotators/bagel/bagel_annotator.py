@@ -130,7 +130,7 @@ def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
                 'score': sapbert_score_threshold,
             })
         ])
-    except (ValueError, HTTPError) as err:
+    except HTTPError as err:
         logging.error(f"Could not annotate \"{text[0:100]}...\" using BioMegatron + Bagel: {err}")
         errors.append(str(err))
 
