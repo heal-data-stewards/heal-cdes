@@ -110,7 +110,6 @@ def heal_cde_repo_downloader(
 
     # Step 1. Download the HEAL CDE CSV file.
     heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
-    heal_cde_source = f'HEAL CDE Repository, downloaded at {heal_cde_download_time}'
 
     if not heal_cde_csv:
         logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download} at {heal_cde_download_time}.")
@@ -266,18 +265,21 @@ def heal_cde_repo_downloader(
     # Set up the output directory.
     os.makedirs(output, exist_ok=True)
 
+    # Counts.
+    count_crfs = 0
+    count_xlsx = 0
+    count_urls = 0
+
     # Write to outputs.
-    with open(os.path.join(output, 'list.json'), 'w') as f:
+    with open(os.path.join(output, 'cdes.json'), 'w') as f:
         json.dump(heal_cde_entries, f, indent=2)
 
     # Confirm the mapping of input rows to identifiers.
     logging.debug(json.dumps(heal_cde_entries, indent=2))
 
-    # Track the association IDs.
-    heal_cde_study_mapping_edge_count = 0
-
     # For each identifier, download the XLSX file if that's an option.
     for crf_id in heal_cde_entries:
+        count_crfs += 1
         logging.info(f"Processing {crf_id}")
         files = heal_cde_entries[crf_id]
 
@@ -307,8 +309,9 @@ def heal_cde_repo_downloader(
             logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
             continue
 
-        xlsx_file_path = os.path.join(crf_dir, crf_id + '.xlsx')
+        xlsx_file_path = os.path.join(crf_dir, 'crf.xlsx')
         with open(xlsx_file_path, 'wb') as fd:
+            count_xlsx += 1
             for chunk in xlsx_file_req.iter_content(chunk_size=128):
                 fd.write(chunk)
 
@@ -340,84 +343,17 @@ def heal_cde_repo_downloader(
         def sort_key(file_entry):
             return LANGUAGE_ORDER[file_entry['lang']], MIME_TYPE_ORDER[file_entry['mime-type']]
 
-        files = sorted(files, key=sort_key)
-        logging.info(f"Sorted files: {'; '.join(map(lambda f: f['url'], files))}")
+        sorted_files = sorted(files, key=sort_key)
+        urls = list(map(lambda f: f['url'], sorted_files))
+        logging.info(f"Sorted URLs: {'; '.join(urls)}")
+        json_data['urls'] = urls
+        count_urls += len(urls)
 
-        # Step 4. Convert JSON to KGX.
-        # Set up the KGX graph
-        graph = NxGraph()
-        kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
-        comprehensive = annotate_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
-            # process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+        # Save the JSON file for annotation.
+        with open(os.path.join(crf_dir, 'crf.json'), 'w') as jsonf:
+            json.dump(json_data, jsonf, indent=2)
 
-        # Let's write out the comprehensive file somewhere.
-        with open(kgx_file_path + '.json', 'w') as jsonf:
-            json.dump({
-                '': comprehensive
-            }, jsonf, indent=2)
-
-        # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
-        # directly in the graph.
-        if export_files_as_nodes:
-            graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
-
-        # Create nodes for each download.
-        files_urls = list()
-        files_by_lang = collections.defaultdict(list)
-        for file in files:
-            url = file['url']
-
-            if export_files_as_nodes:
-                graph.add_node(url)
-                graph.add_node_attribute(url, 'category', ['biolink:WebPage'])
-                graph.add_node_attribute(url, 'language', file['lang'])
-                graph.add_node_attribute(url, 'format', file['mime-type'])
-                graph.add_node_attribute(url, 'description', file['description'])
-                graph.add_node_attribute(url, 'provided_by', heal_cde_source)
-            else:
-                files_urls.append(url)
-                files_by_lang[file['lang']].append(url)
-
-        if not export_files_as_nodes:
-            graph.add_node_attribute('HEALCDE:' + crf_id, 'files', list(files_urls))
-            for lang in files_by_lang:
-                graph.add_node_attribute('HEALCDE:' + crf_id, f"files-{lang}", list(files_by_lang[lang]))
-
-        # Step 5. Add studies.
-        for study_mappings in map(lambda f: f['studies'], files):
-            for (hdp_id, sources) in study_mappings.items():
-                # Create the HEAL CDE STUDY mapping edges.
-                heal_cde_study_mapping_edge_count += 1
-                edge_id = f'HEALCDESTUDYMAPPING:edge_{heal_cde_study_mapping_edge_count}'
-                graph.add_edge('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate', 'HEALCDESTUDYMAPPING:crf_used_by_study')
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate_label', 'HEAL CRF used by HEAL study')
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'subject', 'HEALCDE:' + crf_id)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'object', 'HEALDATAPLATFORM:' + hdp_id)
-
-                # Source/provenance information.
-                sources = [source for source in sources]
-                data_sources = list(map(lambda s: s['data_source'], sources))
-                study_names = list(map(lambda s: s['study_name'], sources))
-                filenames = list(map(lambda s: s['filename'], sources))
-
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'sources', data_sources + filenames + study_names)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', data_sources[0])
-
-                # Create the HEAL CDE node.
-                graph.add_node('HEALDATAPLATFORM:' + hdp_id)
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'name', study_names[0])
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'url', 'https://healdata.org/portal/discovery/' + hdp_id)
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'category', ['biolink:Study'])
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'provided_by', data_sources)
-
-        # Step 5. Write KGX files.
-        t = Transformer()
-        t.process(
-            source=graph_source.GraphSource(owner=t).parse(graph),
-            sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_file_path)
-        )
-
+    logging.info(f"Download complete: {count_crfs} CRFs, {count_xlsx} XLSX files, {count_urls} URLs downloaded.")
 
 # Run heal_cde_repo_downloader() if not used as a library.
 if __name__ == "__main__":
