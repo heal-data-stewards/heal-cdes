@@ -356,6 +356,8 @@ def heal_cde_repo_downloader(
         json_data['urls'] = urls
         count_urls += len(urls)
 
+        json_data['sorted_files'] = sorted_files
+
         # Save the JSON file for annotation.
         with open(os.path.join(crf_dir, 'crf.json'), 'w') as jsonf:
             json.dump(json_data, jsonf, indent=2)
