@@ -12,6 +12,7 @@ import dataclasses
 import json
 import os
 from dataclasses import dataclass
+from time import sleep
 
 import click
 import logging
@@ -19,13 +20,7 @@ import requests
 
 import datetime
 
-from kgx.graph.nx_graph import NxGraph
-from kgx.transformer import Transformer
-from kgx.source import graph_source
-from kgx.sink import jsonl_sink
-
-from annotators.bagel.bagel_annotator import annotate_crf
-from excel2cde import convert_xlsx_to_json
+from downloaders.excel2cde import convert_xlsx_to_json
 
 # MIME-types we will use.
 MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -91,15 +86,11 @@ def load_heal_crf_usage_mappings(study_mapping_file):
               help='The CSV version of the HEAL CDE repository')
 @click.option('--heal-cde-study-mappings', '--mappings', type=click.File(),
               help='A CSV file describing mappings from CRFs/CDEs to studies')
-@click.option('--add-cde-count-to-description', type=bool, default=True)
-@click.option('--export-files-as-nodes', type=bool, default=False)
 def heal_cde_repo_downloader(
         output,
         heal_cde_csv_download,
         heal_cde_csv,
         heal_cde_study_mappings,
-        add_cde_count_to_description,
-        export_files_as_nodes
 ):
     # If we have CDE/study mappings, load them.
     crf_study_mappings = collections.defaultdict(dict)
@@ -303,19 +294,35 @@ def heal_cde_repo_downloader(
         xlsx_file_url = xlsx_file['url']
 
         # Step 1. Download XLSX file.
-        logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ...")
-        xlsx_file_req = requests.get(xlsx_file_url, stream=True)
-        if not xlsx_file_req.ok:
-            logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
-            continue
-
+        attempt_count = 0
         xlsx_file_path = os.path.join(crf_dir, 'crf.xlsx')
-        with open(xlsx_file_path, 'wb') as fd:
-            count_xlsx += 1
-            for chunk in xlsx_file_req.iter_content(chunk_size=128):
-                fd.write(chunk)
+        while True:
+            attempt_count += 1
+            logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ... (attempt {attempt_count}/10)")
+            xlsx_file_req = requests.get(xlsx_file_url, stream=True)
+            if not xlsx_file_req.ok:
+                logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
+                continue
 
-        logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
+            with open(xlsx_file_path, 'wb') as fd:
+                count_xlsx += 1
+                for chunk in xlsx_file_req.iter_content(chunk_size=128):
+                    fd.write(chunk)
+
+            # Check if the file size of xlsx_file_path is 0.
+            if os.path.getsize(xlsx_file_path) >= 100:
+                break
+
+            # We got a near-empty file! If attempt_count <= 10, we'll try again.
+            logging.error(f"  XLSX file for {crf_id} at {xlsx_file_path} is near empty, retrying.")
+            if attempt_count > 10:
+                raise RuntimeError(f"Could not download XLSX file for {crf_id} from {xlsx_file_url} after 10 attempts.")
+            else:
+                sleep(10 * attempt_count)
+                continue
+
+        file_size = os.path.getsize(xlsx_file_path)
+        logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path} (file size: {file_size} bytes).")
 
         # Step 2. Convert to JSON.
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
