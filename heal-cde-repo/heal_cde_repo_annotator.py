@@ -79,7 +79,7 @@ def heal_cde_repo_annotator(
         count_crfs += 1
         time_elapsed_seconds = (time_ns() - time_started) / 1E9
         logging.info(f"Annotating {crf_id} ({count_crfs}/{total_crfs} or {count_crfs/total_crfs*100:.2f}%)")
-        logging.info(f" - Current rate: {count_crfs/time_elapsed_seconds:.2f} CRFs/second or {time_elapsed_seconds/count_crfs:.2f} seconds/CRF.")
+        logging.info(f" - Current rate: {count_crfs/time_elapsed_seconds:.4f} CRFs/second or {time_elapsed_seconds/count_crfs:.2f} seconds/CRF.")
 
         remaining_crfs = total_crfs - count_crfs
         time_remaining_seconds = (time_elapsed_seconds / count_crfs * remaining_crfs)
