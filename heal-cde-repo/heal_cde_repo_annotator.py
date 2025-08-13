@@ -89,6 +89,14 @@ def heal_cde_repo_annotator(
         crf_dir = os.path.join(downloads, crf_id)
         crf_json_file = os.path.join(crf_dir, 'crf.json')
 
+        # Before we load the CRF to annotate: do we already have a nodes and edges file?
+        # If so, we'll skip it.
+        nodes_file = os.path.join(crf_dir, 'nodes.json')
+        edges_file = os.path.join(crf_dir, 'edges.json')
+        if os.path.exists(nodes_file) and os.path.exists(edges_file):
+            logging.info(f"Nodes and edges files already exist for {crf_id}, skipping.")
+            continue
+
         # No CRF JSON file? Let's skip it.
         if not os.path.exists(crf_json_file):
             logging.warning(f"CRF JSON file not found for {crf_id}, skipping.")
