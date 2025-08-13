@@ -91,6 +91,8 @@ def heal_cde_repo_annotator(
 
         # Before we load the CRF to annotate: do we already have a nodes and edges file?
         # If so, we'll skip it.
+        #
+        # TODO: we should add an 'errors.json' file so that we don't try to re-annotate files that already failed.
         nodes_file = os.path.join(crf_dir, 'nodes.json')
         edges_file = os.path.join(crf_dir, 'edges.json')
         if os.path.exists(nodes_file) and os.path.exists(edges_file):
