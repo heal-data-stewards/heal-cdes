@@ -43,6 +43,7 @@ import pandas
 # Configuration
 MAX_EXCEL_ROWS = 200_000
 MANUAL_VALIDATION_NA_VALUES = {
+    "No CRF match",
     "No HEAL CRF match",
     "No HEAL CRF Match",
     "No HEAL CRF match, but related",
@@ -52,6 +53,22 @@ MANUAL_VALIDATION_NA_VALUES = {
     "related topic",
     "but close"
 }
+
+def is_candidate_mappings_file(filename):
+    filename_lower = filename.lower()
+
+    if filename.startswith('~$'):
+        # Excel temporary file, definitely not.
+        return False
+
+    if filename_lower.startswith('dd_') and filename_lower.endswith('.xlsx'):
+        # First round DD_output file.
+        return True
+    elif filename_lower.endswith('_matches_confirmed.xlsx'):
+        # New style DD_output file (as of 2025aug14 or https://github.com/uc-cdis/heal-data-dictionaries/pull/529)
+        return True
+    else:
+        return False
 
 # Set up logging.
 logging.basicConfig(level=logging.INFO)
@@ -116,12 +133,14 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
         else:
             raise ValueError(f"Missing required column in {xlsx_filename} (no variable name column found): {row.keys()}")
 
-        if 'Manual Validation' in row:
-            crf_names = row.get('Manual Validation')
-        elif 'Manual Verification' in row:
-            crf_names = row.get('Manual Verification')
-        else:
-            raise ValueError(f"Missing required column in {xlsx_filename} (either 'Manual Validation' or 'Manual Verification' must be present): {row.keys()}")
+        CRF_NAME_COLUMNS = {'Manual Validation', 'Manual Verification', 'HEAL Core CRF Match'}
+        crf_names = None
+        for crf_name_column in CRF_NAME_COLUMNS:
+            if crf_name_column in row:
+                crf_names = row.get(crf_name_column)
+                break
+        if crf_names is None:
+            raise ValueError(f"Missing required column in {xlsx_filename} (one of: {CRF_NAME_COLUMNS} must be present): {row.keys()}")
 
         # Skip any NA values.
         if crf_names in MANUAL_VALIDATION_NA_VALUES:
@@ -207,7 +226,7 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
     for root, _, files in os.walk(input_dir):
         for filename in files:
             file_path = os.path.join(root, filename)
-            if '/CDEs/' in file_path and filename.lower().startswith('dd_') and file_path.lower().endswith('.xlsx'):
+            if '/CDEs/' in file_path and is_candidate_mappings_file(filename):
                 # Candidate file!
                 #
                 # Can we find VLMD files?
