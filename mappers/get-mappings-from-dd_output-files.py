@@ -175,6 +175,11 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
                 # TODO: raise exception
                 logging.error(f"Could not find any CRF IDs for '{crf_name}' in {xlsx_filename}.")
 
+            if len(crf_ids) == 1 and crf_ids[0] == 'NA':
+                # We don't have a mapping for this CRF yet -- skip it.
+                # This is primarily for the Brief Pain Inventory (BPI).
+                continue
+
             mappings.append(StudyCRFMapping(
                 xlsx_filename=xlsx_filename,
                 hdp_ids=hdp_ids,
