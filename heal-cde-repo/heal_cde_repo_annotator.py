@@ -112,15 +112,26 @@ def heal_cde_repo_annotator(
 
         files = json_data['sorted_files']
 
+        # Start filling out the graph.
         graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
-        comprehensive = annotate_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
 
-        # Let's write out the comprehensive file somewhere.
-        with open(kgx_file_path + '.json', 'w') as jsonf:
-            json.dump({
-                '': comprehensive
-            }, jsonf, indent=2)
+        # Has this file already been annotated? If so, we can load those annotation results.
+        comprehensive_file_path = os.path.join(crf_dir, 'comprehensive.json')
+        if os.path.exists(comprehensive_file_path):
+            with open(comprehensive_file_path, 'r') as jsonf:
+                comprehensive = json.load(jsonf)
+        else:
+            comprehensive = annotate_crf(bagel_url, graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+            with open(comprehensive_file_path, 'w') as jsonf:
+                json.dump(comprehensive, jsonf, indent=2)
+
+        # Are there any errors?
+        if '_ner' in comprehensive and 'bagel' in comprehensive['_ner'] and 'errors' in comprehensive['_ner']['bagel']:
+            with open(os.path.join(crf_dir, 'errors.json'), 'w') as jsonf:
+                json.dump(json_data['errors'], jsonf, indent=2)
+            error_str = json.dumps(comprehensive['_ner']['bagel']['errors'], indent=2)
+            logging.error(f"Errors found when trying to run NER on {crf_id}: {error_str}")
 
         # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
         # directly in the graph.
