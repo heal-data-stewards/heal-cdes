@@ -43,7 +43,7 @@ logging.basicConfig(level=logging.INFO)
 class Source:
     data_source: str
     filename: str
-    study_name: str
+    study_name: str = ''
 
 
 # Load the HEAL CRF/study usage mappings.
@@ -54,17 +54,30 @@ def load_heal_crf_usage_mappings(study_mapping_file):
     study_mapping_entries = csv.DictReader(study_mapping_file)
 
     for entry in study_mapping_entries:
-        hdp_ids = entry['HDP IDs'].split('|')
-        source = entry['Source']
-        study_name = entry['Study Name']
-        crf_urls = entry['CRF URLs'].split('|')
+        if 'HDP IDs' in entry:
+            hdp_ids = entry['HDP IDs'].split('|')
+        elif 'hdp_id' in entry:
+            hdp_ids = [entry['hdp_id']]
+        else:
+            raise RuntimeError(f"No HDP IDs column found in {study_mapping_filename}: {entry.keys()}")
+
+        if 'CRF URLs' in entry:
+            crf_urls = entry['CRF URLs'].split('|')
+        elif 'crf_ids' in entry:
+            crf_urls = entry['crf_ids'].split('|')
+        elif 'heal_crf_id' in entry:
+            crf_urls = [entry['heal_crf_id']]
+        else:
+            raise RuntimeError(f"No CRF URLs column found in {study_mapping_filename}: {entry.keys()}")
+
+        source = entry.get('Source', entry.get('filename', ''))
 
         if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
-            logging.warning(f"No HDP IDs found for study {study_name} in {study_mapping_filename}, skipping.")
+            logging.warning(f"No HDP IDs found in row {entry} in {study_mapping_filename}, skipping.")
             continue
 
         if not crf_urls or (len(crf_urls) == 1 and (crf_urls[0] == 'NA' or crf_urls[0] == '')):
-            logging.warning(f"No CRF URLs found for study {study_name} in {study_mapping_filename}, skipping.")
+            logging.warning(f"No CRF URLs found in row {entry} in {study_mapping_filename}, skipping.")
             continue
 
         for crf_url in crf_urls:
@@ -72,7 +85,7 @@ def load_heal_crf_usage_mappings(study_mapping_file):
                 crf_usage_mappings[crf_url] = collections.defaultdict(set)
 
             for hdp_id in hdp_ids:
-                crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_filename, study_name))
+                crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_filename))
 
     return crf_usage_mappings
 
