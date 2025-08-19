@@ -38,7 +38,7 @@ LANGUAGE_ORDER = {'en': 1, 'es': 2, 'zh-CN': 3, 'zh-TW': 4, 'ja': 5, 'ko': 6, 's
 MIME_TYPE_ORDER = {MIME_DOCX: 1, MIME_PDF: 2, MIME_XLSX: 3}
 
 # Configure logging.
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s %(asctime)s: %(message)s')
 
 # Configuration
 heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
