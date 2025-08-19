@@ -8,6 +8,9 @@ from renci_ner.services.linkers.nameres import NameRes
 from renci_ner.services.ner.biomegatron import BioMegatron
 from requests import HTTPError, RequestException
 
+# BAGEL URL
+DEFAULT_BAGEL_URL = "https://bagel.apps.renci.org"
+
 # Annotate a CRF in our weird internal format using Bagel.
 
 
@@ -93,7 +96,7 @@ def get_designation(element):
 bagel_annotator = None
 
 @functools.lru_cache(maxsize=4096)
-def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
+def ner_via_bagel(crf_id, text, bagel_url=DEFAULT_BAGEL_URL, sapbert_score_threshold=0.8):
     """
     Query the Bagel NER system to look up concepts for a particular text.
 
@@ -109,7 +112,7 @@ def ner_via_bagel(crf_id, text, sapbert_score_threshold=0.8):
         biomegatron = BioMegatron()
         nameres_annotator = NameRes()
         sapbert_annotator = BabelSAPBERTAnnotator()
-        bagel_annotator = BagelAnnotator()
+        bagel_annotator = BagelAnnotator(url=bagel_url)
 
     errors = []
     result = None
@@ -175,7 +178,7 @@ count_could_not_normalize = 0
 # Normalized tokens that were ignored as per the ignore list.
 count_ignored = 0
 
-def annotate_crf(graph, crf_id, crf, source, add_cde_count_to_description=False, sapbert_score_threshold=0.8):
+def annotate_crf(bagel_url, graph, crf_id, crf, source, add_cde_count_to_description=False, sapbert_score_threshold=0.8):
     """
     Annotate a CRF. We need to recursively annotate the CDEs as well.
 
@@ -320,7 +323,7 @@ def annotate_crf(graph, crf_id, crf, source, add_cde_count_to_description=False,
         }
     }
 
-    comprehensive = ner_via_bagel(crf_id, crf_text, sapbert_score_threshold=sapbert_score_threshold)
+    comprehensive = ner_via_bagel(crf_id, crf_text, bagel_url=bagel_url, sapbert_score_threshold=sapbert_score_threshold)
     crf['_ner']['bagel']['results'] = comprehensive
     crf['denotations'] = comprehensive.get('denotations', [])
 

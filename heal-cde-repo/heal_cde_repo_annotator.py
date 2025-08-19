@@ -55,10 +55,12 @@ class Source:
 # Download and annotate all the files from the HEAL CDE repository
 @click.command()
 @click.argument('downloads', type=click.Path(dir_okay=True, file_okay=False), required=True)
+@click.option('--bagel-url', default='https://bagel.apps.renci.org')
 @click.option('--add-cde-count-to-description', type=bool, default=True)
 @click.option('--export-files-as-nodes', type=bool, default=False)
 def heal_cde_repo_annotator(
         downloads,
+        bagel_url,
         add_cde_count_to_description,
         export_files_as_nodes
 ):
