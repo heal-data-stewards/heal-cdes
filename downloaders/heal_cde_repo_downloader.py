@@ -353,16 +353,24 @@ def heal_cde_repo_downloader(
         else:
             description = f"{description} Contains {count_cdes} CDEs."
 
+        # Ironically, the best CRF name is part of the CDEs (at least when querying the HEAL CDE repository).
+        crf_names = []
+        for cde in cdes:
+            if 'CRF Name' in cde:
+                crf_names.append(cde['CRF Name'])
+        crf_names.append(crf_id)
+
         entries = []
         entries.extend(cdes)
         entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
             'id': crf_curie,
-            'name': crf_id,
+            'crf_id': crf_id,
+            'name': crf_names[0],
             'description': description,
             'action': None,         # TODO: is this the URL to download this CRF?
             'is_crf': True,
-            'variable_list': list(map(lambda cde: cde['id'], cdes)),
+            'variable_list': list(map(lambda cde: cde['id'], cdes)), # Should just be the variable IDs.
         })
 
         with open(kgx_file_path + '.dug.json', 'w') as jsonf:
