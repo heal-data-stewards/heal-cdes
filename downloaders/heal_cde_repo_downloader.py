@@ -370,8 +370,8 @@ def heal_cde_repo_downloader(
         # Ironically, the best CRF name is part of the CDEs (at least when querying the HEAL CDE repository).
         crf_names = []
         for cde in cdes:
-            if 'CRF Name' in cde:
-                crf_names.append(cde['CRF Name'])
+            if 'crf_name' in cde:
+                crf_names.append(cde['crf_name'])
         crf_names.append(crf_id)
 
         entries = []
