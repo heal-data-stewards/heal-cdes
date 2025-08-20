@@ -19,13 +19,7 @@ import requests
 
 import datetime
 
-from kgx.graph.nx_graph import NxGraph
-from kgx.transformer import Transformer
-from kgx.source import graph_source
-from kgx.sink import jsonl_sink
-
 from excel2cde import convert_xlsx_to_json
-from annotators.nemosapbert.nemo_sapbert_annotator import process_crf
 
 # MIME-types we will use.
 MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -344,8 +338,6 @@ def heal_cde_repo_downloader(
         logging.info(f"Sorted files: {'; '.join(map(lambda f: f['url'], files))}")
 
         # Step 4. Convert JSON to KGX.
-        # Set up the KGX graph
-        graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
             # process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
 
@@ -361,18 +353,20 @@ def heal_cde_repo_downloader(
         else:
             description = f"{description} Contains {count_cdes} CDEs."
 
-        crf_model = {
+        entries = []
+        entries.extend(cdes)
+        entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
             'id': crf_curie,
             'name': crf_id,
             'description': description,
             'action': None,         # TODO: is this the URL to download this CRF?
             'is_crf': True,
-            'variable_list': cdes,
-        }
+            'variable_list': list(map(lambda cde: cde['id'], cdes)),
+        })
 
         with open(kgx_file_path + '.dug.json', 'w') as jsonf:
-            json.dump(crf_model, jsonf, indent=2)
+            json.dump(entries, jsonf, indent=2)
 
         # Let's write out the comprehensive file somewhere.
         with open(kgx_file_path + '.json', 'w') as jsonf:
@@ -380,63 +374,6 @@ def heal_cde_repo_downloader(
                 'filename': kgx_file_path + '.json',
                 'json_data': json_data,
             }, jsonf, indent=2)
-
-        # Create nodes for each download.
-        files_urls = list()
-        files_by_lang = collections.defaultdict(list)
-        for file in files:
-            url = file['url']
-
-            if export_files_as_nodes:
-                graph.add_node(url)
-                graph.add_node_attribute(url, 'category', ['biolink:WebPage'])
-                graph.add_node_attribute(url, 'language', file['lang'])
-                graph.add_node_attribute(url, 'format', file['mime-type'])
-                graph.add_node_attribute(url, 'description', file['description'])
-                graph.add_node_attribute(url, 'provided_by', heal_cde_source)
-            else:
-                files_urls.append(url)
-                files_by_lang[file['lang']].append(url)
-
-        if not export_files_as_nodes:
-            graph.add_node_attribute('HEALCDE:' + crf_id, 'files', list(files_urls))
-            for lang in files_by_lang:
-                graph.add_node_attribute('HEALCDE:' + crf_id, f"files-{lang}", list(files_by_lang[lang]))
-
-        # Step 5. Add studies.
-        for study_mappings in map(lambda f: f['studies'], files):
-            for (hdp_id, sources) in study_mappings.items():
-                # Create the HEAL CDE STUDY mapping edges.
-                heal_cde_study_mapping_edge_count += 1
-                edge_id = f'HEALCDESTUDYMAPPING:edge_{heal_cde_study_mapping_edge_count}'
-                graph.add_edge('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate', 'HEALCDESTUDYMAPPING:crf_used_by_study')
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate_label', 'HEAL CRF used by HEAL study')
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'subject', 'HEALCDE:' + crf_id)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'object', 'HEALDATAPLATFORM:' + hdp_id)
-
-                # Source/provenance information.
-                sources = [source for source in sources]
-                data_sources = list(map(lambda s: s['data_source'], sources))
-                study_names = list(map(lambda s: s['study_name'], sources))
-                filenames = list(map(lambda s: s['filename'], sources))
-
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'sources', data_sources + filenames + study_names)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', data_sources[0])
-
-                # Create the HEAL CDE node.
-                graph.add_node('HEALDATAPLATFORM:' + hdp_id)
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'name', study_names[0])
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'url', 'https://healdata.org/portal/discovery/' + hdp_id)
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'category', ['biolink:Study'])
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'provided_by', data_sources)
-
-        # Step 5. Write KGX files.
-        t = Transformer()
-        t.process(
-            source=graph_source.GraphSource(owner=t).parse(graph),
-            sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_file_path)
-        )
 
 
 # Run heal_cde_repo_downloader() if not used as a library.

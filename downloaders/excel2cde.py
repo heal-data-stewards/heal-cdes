@@ -146,15 +146,15 @@ def convert_question_to_formelement(row):
         'name': row.get('CDE Name'),
         'data_type': 'text', # TODO: figure out what the actual values are here.
         'question_text': row.get('Additional Notes (Question Text)'),
-        'permissible_values': convert_permissible_values(row),
+        'metadata': {
+            'permissible_values': convert_permissible_values(row),
+        },
         'is_standardized': True,
-        'other': {
-            'question_number': row.get('CRF Question #'),
-            'definition': row.get('Definition'),
-            'short_description': row.get('Short Description'),
-            'crf_name': row.get('CRF Name'),
-            'references': row.get('Disease Specific References'),
-        }
+        'question_number': row.get('CRF Question #'),
+        'definition': row.get('Definition'),
+        'short_description': row.get('Short Description'),
+        'crf_name': row.get('CRF Name'),
+        'references': row.get('Disease Specific References'),
     }
 
     # if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
