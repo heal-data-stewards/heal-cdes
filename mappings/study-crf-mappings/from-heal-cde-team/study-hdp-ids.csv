@@ -21,9 +21,9 @@ Project Number,Cleaned Project Number,HDP_ID,HDP Title,Duplicate HDP_ID
 1R61NS114926-01,,HDP00253,SPRINT: Signature for Pain Recovery IN Teens,
 1R61NS114954-01,,HDP00111,The Inflammatory Index as a Biomarker for Pain in Patients with Sickle Cell Disease,
 1R61NS129050-01,,HDP00924,"Integrating Nonpharmacologic Strategies for Pain with Inclusion, Respect, and Equity (INSPIRE): Tailored digital tools, telehealth coaching, and primary care coordination",
-1R61NS129757-01,,NA,,
+1R61NS129757-01,1R61AT012284-01,HDP00922,Electrophysiological and ultrasound quantitative biomarkers for myofascial pain,https://healdata.org/portal/discovery/HDP00922/
 1RM1DA055310-01,,HDP00280,Pain Care at Home to Amplify Function (Pain CHAMP),https://healdata.org/portal/discovery/HDP01046/
-1RM1DA055311-01,,NA,,
+1RM1DA055311-01,,HDP01337,Tailored Retention and Engagement for Equitable Treatment of OUD and Pain (TREETOP),https://healdata.org/portal/discovery/HDP01337/
 1RM1DA055437-01,,HDP00106,Trial of Buprenorphine Microdosing During Hospitalization (IMPOWR-ME),"https://healdata.org/portal/discovery/HDP01048/, https://healdata.org/portal/discovery/HDP01049/"
 1RM1NS128741-01,,HDP01029,From Nerve to Brain: Toward a Mechanistic Understanding of Spinal Cord Stimulation in Human Subjects,
 1RM1NS128787-01,,HDP00982,"Understanding the Mechanistic, Neurophysiological, and Antinociceptive Effects of Transcutaneous Auricular Neurostimulation for Treatment of Chronic Pain",
@@ -39,37 +39,37 @@ Project Number,Cleaned Project Number,HDP_ID,HDP Title,Duplicate HDP_ID
 1U19NS135528-01,,HDP01155,The Penn Human Precision Pain Center (HPPC): Discovery and Functional Evaluation of Human Primary Somatosensory Neuron Types at Normal and Chronic Pain Conditions,
 1UC2AR082186-01,,HDP00960,Mapping the joint-nerve interactome of the knee,
 1UG3AT012728-01,,HDP01368,Personalized Auricular Point Acupressure for Chronic Pain Self-Management in Rural Populations,
-1UG3HL165839-01A1,,NA,,
+1UG3HL165839-01A1,,HDP01499,Peer suppoRt for adolescents and Emerging adults with Sickle cell pain: promoting ENgagement in Cognitive behavioral thErapy,https://healdata.org/portal/discovery/HDP01499/
 1UG3NR020929-01,,HDP01108,Reaching Rural Veterans: Applying Mind-Body Skills for Pain Using a Whole Health Telehealth Intervention (RAMP-WH),
 1UG3NS131785-01,,HDP01194,Identifying multimodal biomarkers for autologous serum tears in the treatment of chronic postoperative ocular pain,
 1UG3NS135168-01,,HDP01176,IMPACT: Integrative Mindfulness-Based Predictive Approach for Chronic low back pain Treatment,
 1UG3NS139943-01,,HDP01433,Targeted Realtime Assessment of Chronic Pain (TRAC-Pain) in Youth,
 1UH2AR076719-01,,HDP00308,Novel imaging of endplate biomarkers in chronic low back pain,
-3UG1CA189824-09S1,,NA,,
+3UG1CA189824-09S1,,HDP00576,An Internet-based Program to Help Cancer Survivors Manage Pain (IMPACTS),https://healdata.org/portal/discovery/HDP00576/
 3UH3AT009763-04S1,,HDP00464,Nonpharmacologic Pain Management for Lumbar Surgery,
-3UM1NS118922-03S1,,NA,,
-4R33AG081034-02,,NA,,
-4R33MD018333-02,,NA,,
+3UM1NS118922-03S1,,HDP00894,Transition from Acute to Chronic Pain After Thoracic Surgery,https://healdata.org/portal/discovery/HDP00894/
+4R33AG081034-02,,HDP00980,Addressing the chronic pain epidemic among older adults in underserved community center; The GetActive+ study.,https://healdata.org/portal/discovery/HDP00980/
+4R33MD018333-02,,HDP01508,Group-based Integrative Pain Management: A multi-level approach to address intersectional stigma and social isolation in diverse primary care safety net patients with chronic pain,https://healdata.org/portal/discovery/HDP01508/
 4R33NR020845-02,,HDP01329,Equity Using Interventions for Pain and Depression (EQUIPD),
-4R33NS113341-02,,NA,,
-4UH3AR076729-02,,NA,,
-4UH3AR076731-02,,NA,,
-4UH3AR076741-02,,NA,,
-5U24NS113850-03,,NA,,
-5UH3AG067493-04,,NA,,
-5UH3AR076568-04,,NA,,
-5UH3AR077360-04,,NA,,
-5UH3CA261067-03,,NA,,
-5UH3DA051241-04,,NA,,
+4R33NS113341-02,,HDP00219,Discovery of the Biomarker Signature for Neuropathic Corneal Pain,https://healdata.org/portal/discovery/HDP00219/
+4UH3AR076729-02,,HDP00962,The Spine Phenome Project: Enhancing Patient Diversity,https://healdata.org/portal/discovery/HDP00962/
+4UH3AR076731-02,,HDP00349,"Development, Evaluation and Translation of Robotic Apparel for Alleviating Low Back Pain",https://healdata.org/portal/discovery/HDP00349/
+4UH3AR076741-02,1UH2AR076741-01,HDP00387,Imaging Epigenetic Dysregulation in Patients with Low Back Pain,https://healdata.org/portal/discovery/HDP00387/
+5U24NS113850-03,OT2NS122680-01,HDP01051,EPPIC-Net: Novaremed Painful Diabetic Peripheral Neuropathy ISA,https://healdata.org/portal/discovery/HDP01051/
+5UH3AG067493-04,4UH3AG067493-02,HDP01489,Tailored Non-Pharmacotherapy Services for Chronic Pain: Testing Scalable and Pragmatic Approaches,https://healdata.org/portal/discovery/HDP01489/
+5UH3AR076568-04,3UH3AR076568-02S1,HDP00728,Proof of concept study to treat negative affect in chronic low back pain,https://healdata.org/portal/discovery/HDP00728/
+5UH3AR077360-04,4UH3AR077360-02,HDP01488,A sequenced-strategy for improving outcomes in patients with knee osteoarthritis pain,https://healdata.org/portal/discovery/HDP01488/
+5UH3CA261067-03,3UH3CA261067-02S1,HDP00636,Optimizing the use of ketamine to reduce chronic postsurgical pain,https://healdata.org/portal/discovery/HDP00636/
+5UH3DA051241-04,4UH3DA051241-02,HDP01492,Integrated Treatment for Veterans with Co-Occurring Chronic Pain and Opioid Use Disorder,https://healdata.org/portal/discovery/HDP01492/
 61AT012283-01,1R61AT012283-01,HDP01004,"Development and identification of magnetic resonance, electrophysiological, and fiber-optic imaging biomarkers of myofascial pain",
-EN20-01,,NA,,
+EN20-01,OT2NS122680-01,HDP01051,EPPIC-Net: Novaremed Painful Diabetic Peripheral Neuropathy ISA,https://healdata.org/portal/discovery/HDP01051/
 K12NS130673,1K12NS130673-01,HDP01030,University of Michigan (UM) HEAL Initiative National K12 Clinical Pain Career Development Program (UM-HCPDP),
 K24NS126781,,NA,,
 NS128787-01,1RM1NS128787-01,HDP00982,"Understanding the Mechanistic, Neurophysiological, and Antinociceptive Effects of Transcutaneous Auricular Neurostimulation for Treatment of Chronic Pain",
 OT2NS122680-01,,HDP01050,A Study to Evaluate the Safety and Efficacy of CNTX-6970 in Subjects With Knee Osteoarthritis Pain,https://healdata.org/portal/discovery/HDP01051/
 R01 DA058620-01,1R01DA058620-01,HDP01105,"Sequential Trial of Adding Buprenorphine, Cognitive Behavioral Treatment, and Transcranial Magnetic Stimulation to Improve Outcomes of Long-Term Opioid Therapy for Chronic Pain (ACTION)",
-R01DA056045,,NA,,
-R33MH132249,,NA,,
+R01DA056045,1R01DA056045-01,HDP01509,Randomized Clinical Trial Intervention to Treat Chronic Pain Among Persons Maintained on Methadone for Opioid Use Disorder,https://healdata.org/portal/discovery/HDP01509/
+R33MH132249,1R61MH132249-01,HDP00911,Latinx Children and Surgery,https://healdata.org/portal/discovery/HDP00911/
 R61 AT012275-01A1,1R61AT012275-01A1,HDP01351,Development of diagnostic and prognostic ultrasound imaging biomarkers for plantar heel pain,
 R61AT012270-01A1,1R61AT012270-01A1,HDP01416,Development and Clinical Translation of RPBM for Quantitative Assessment of Myofascial Pain,
 R61 AT012279-01,,HDP01018,Quantifying and Treating Myofascial Dysfunction in Post Stroke Shoulder Pain,
@@ -90,8 +90,8 @@ UG3NS135170,1UG3NS135170-01,HDP01166,Predictive Biosignature for Endoscopic Ther
 UG3NS135173-01,1UG3NS135173-01,HDP01190,Developing Radiocaine NaV imaging as a response monitoring biomarker for chronic pain,
 UH2-UH3AR076736,5UH3AR076736-04,HDP01284,Focused Ultrasound Neuromodulation of Dorsal Root Ganglion for Noninvasive Mitigation of Low Back Pain,
 UH3AG067593,4UH3AG067593-02,HDP01493,Non-pharmacological Options in postoperative Hospital-based And Rehabilitation pain Management (NOHARM) pragmatic clinical trial,
-UH3AR076573,,NA,,
-UH3AR076723,,NA,,
+UH3AR076573,1UG3AR076573-01,HDP00233,Randomized-controlled trial of virtual reality for chronic low back pain to improve patient-reported outcomes and physical activity,https://healdata.org/portal/discovery/HDP00233/
+UH3AR076723,1UH2AR076723-01,HDP00239,Wearable nanocomposite sensor system for diagnosing mechanical sources of low back pain and guiding rehabilitation,https://healdata.org/portal/discovery/HDP00239/
 UH3AR076724/CA-0165219,3UH3AR076724-04S1,HDP01246,"Technology Research Site for Advanced, Faster Quantitative Imaging for BACPAC",
 UH3AT010621,3UH3AT010621-03S2,HDP00498,Group-Based Mindfulness for Patients with Chronic Low Back Pain in the Primary Care,https://healdata.org/portal/discovery/HDP01497/
 UH3AT010739,5UH3AT010739-04,HDP01494,Pragmatic Trial of Acupuncture for Chronic Low Back Pain in Older Adults,
@@ -101,9 +101,9 @@ UC2AR082197-01,1UC2AR082197-01,HDP00996,Neural Architecture of the Murine and Hu
 UH3AR076387,4UH3AR076387-02,HDP01498,Fibromyalgia TENS in Physical Therapy Study (TIPS):an embedded pragmatic clinical trial,
 R61CA278594,1R61CA278594-01,HDP00941,"Achieving Equity through SocioCulturally-informed, Digitally-Enabled Cancer Pain managemeNT (ASCENT) Clinical Trial",
 3K12NS130673,3K12NS130673-02S1,HDP01479,University of Michigan (UM) HEAL Initiative National K12 Clinical Pain Career Development Program (UM-HCPDP),
-1UG3NR020930-01,,HDP01148,Adapting and Implementing a Nurse Care Management Model to Care for Rural Patients with Chronic Pain,
+1UG3NR020930-01,1UG3NR020930-01,HDP01148,Adapting and Implementing a Nurse Care Management Model to Care for Rural Patients with Chronic Pain,https://healdata.org/portal/discovery/HDP01148/
 R61DK135406,1R61DK135406-01,HDP00904,PAINED: Project Addressing INequities in the Emergency Department,
 1R61AT013008-01,,HDP01446,Quantitative Assessment of Pelvic Floor Muscle Fitness in Myofascial Pelvic Pain,
-4R33NS129050-02,,NA,,
+4R33NS129050-02,1R61NS129050-01,HDP00924,"Integrating Nonpharmacologic Strategies for Pain with Inclusion, Respect, and Equity (INSPIRE): Tailored digital tools, telehealth coaching, and primary care coordination",https://healdata.org/portal/discovery/HDP00924/
 1UG3NS139014-01,,HDP01373,An innovative device for management of neuropathic pain after spinal cord injury,
 1UG3NS138882-01,,HDP01474,Developing AI-Driven Pain Intensity and Pain Sensitization Biomarker Signatures to Optimize Neonatal Pain Management,
