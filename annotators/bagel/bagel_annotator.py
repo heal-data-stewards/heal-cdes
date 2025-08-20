@@ -201,8 +201,10 @@ def annotate_crf(bagel_url, graph, crf_id, crf, source, add_cde_count_to_descrip
     # if not crf_name:
     #     crf_name = "(untitled)"
     crf_name = crf_id
-    if crf_name.startswith("HEALCDE:"):
-        crf_name = crf_name[8:]
+    if 'designations' in crf and len(crf['designations']) > 0:
+        crf_name = crf['designations'][0]['designation']
+    elif designation:
+        crf_name = designation
     description = crf['descriptions'][0]
     if not description:
         description = ""
