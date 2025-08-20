@@ -12,6 +12,7 @@ import dataclasses
 import json
 import os
 from dataclasses import dataclass
+from time import sleep
 
 import click
 import logging
@@ -85,15 +86,11 @@ def load_heal_crf_usage_mappings(study_mapping_file):
               help='The CSV version of the HEAL CDE repository')
 @click.option('--heal-cde-study-mappings', '--mappings', type=click.File(),
               help='A CSV file describing mappings from CRFs/CDEs to studies')
-@click.option('--add-cde-count-to-description', type=bool, default=True)
-@click.option('--export-files-as-nodes', type=bool, default=False)
 def heal_cde_repo_downloader(
         output,
         heal_cde_csv_download,
         heal_cde_csv,
         heal_cde_study_mappings,
-        add_cde_count_to_description,
-        export_files_as_nodes
 ):
     # If we have CDE/study mappings, load them.
     crf_study_mappings = collections.defaultdict(dict)
@@ -267,8 +264,9 @@ def heal_cde_repo_downloader(
     # Confirm the mapping of input rows to identifiers.
     logging.debug(json.dumps(heal_cde_entries, indent=2))
 
-    # Track the association IDs.
-    heal_cde_study_mapping_edge_count = 0
+    # Count downloads
+    count_xlsx = 0
+    count_json = 0
 
     # For each identifier, download the XLSX file if that's an option.
     for crf_id in heal_cde_entries:
@@ -295,16 +293,32 @@ def heal_cde_repo_downloader(
         xlsx_file_url = xlsx_file['url']
 
         # Step 1. Download XLSX file.
-        logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ...")
-        xlsx_file_req = requests.get(xlsx_file_url, stream=True)
-        if not xlsx_file_req.ok:
-            logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
-            continue
+        attempt_count = 0
+        xlsx_file_path = os.path.join(crf_dir, 'crf.xlsx')
+        while True:
+            attempt_count += 1
+            logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ... (attempt {attempt_count}/10)")
+            xlsx_file_req = requests.get(xlsx_file_url, stream=True)
+            if not xlsx_file_req.ok:
+                logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
+                continue
 
-        xlsx_file_path = os.path.join(crf_dir, crf_id + '.xlsx')
-        with open(xlsx_file_path, 'wb') as fd:
-            for chunk in xlsx_file_req.iter_content(chunk_size=128):
-                fd.write(chunk)
+            with open(xlsx_file_path, 'wb') as fd:
+                count_xlsx += 1
+                for chunk in xlsx_file_req.iter_content(chunk_size=128):
+                    fd.write(chunk)
+
+            # Check if the file size of xlsx_file_path is 0.
+            if os.path.getsize(xlsx_file_path) >= 100:
+                break
+
+            # We got a near-empty file! If attempt_count <= 10, we'll try again.
+            logging.error(f"  XLSX file for {crf_id} at {xlsx_file_path} is near empty, retrying.")
+            if attempt_count > 10:
+                raise RuntimeError(f"Could not download XLSX file for {crf_id} from {xlsx_file_url} after 10 attempts.")
+            else:
+                sleep(10 * attempt_count)
+                continue
 
         logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
 
@@ -374,6 +388,7 @@ def heal_cde_repo_downloader(
         })
 
         with open(kgx_file_path + '.dug.json', 'w') as jsonf:
+            count_json += 1
             json.dump(entries, jsonf, indent=2)
 
         # Let's write out the comprehensive file somewhere.
@@ -382,6 +397,8 @@ def heal_cde_repo_downloader(
                 'filename': kgx_file_path + '.json',
                 'json_data': json_data,
             }, jsonf, indent=2)
+
+    logging.info(f"Downloaded {count_xlsx} XLSX files to produce {count_json} JSON files.")
 
 
 # Run heal_cde_repo_downloader() if not used as a library.
