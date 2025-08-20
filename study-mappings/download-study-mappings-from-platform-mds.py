@@ -14,17 +14,17 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s %(asctime)s: %(mes
 
 @click.command()
 @click.option('--mds-url', required=False, default=DEFAULT_MDS_URL, help='URL of the Platform MDS.')
-def extract_study_mappings_from_platform_mds(mds_url):
+def download_study_mappings_from_platform_mds(mds_url):
     """
-    Extract study mappings from the HEAL Platform MDS.
+    Download study mappings from the HEAL Platform MDS.
     \f
 
     :param mds_url: The Platform MDS URL.
     """
 
     # Get all the studies.
-    
+
 
 
 if __name__ == "__main__":
-    extract_study_mappings_from_platform_mds()
+    download_study_mappings_from_platform_mds()
