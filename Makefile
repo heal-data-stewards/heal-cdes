@@ -7,8 +7,10 @@
 #
 
 # CONFIGURATION
-# These will need to be updated every time this script is run.
+# In most cases, you will want to run `make OUTPUT_DIR=2025aug26` to use that as the output directory.
 OUTPUT_DIR = ./output-2025aug19
+
+# These will need to be updated every time this script is run.
 HEAL_DATA_DICTIONARIES_DIR=../heal-data-dictionaries
 HEAL_CDE_EXPORT_FILE=mappings/study-crf-mappings/from-heal-cde-team/HEALCommonDataElemen_DATA_LABELS_2025-07-24_0948.csv
 HEAL_CDE_STUDY_HDPID_MAPPING_FILE=mappings/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv
