@@ -154,7 +154,10 @@ def convert_question_to_formelement(row):
             'crf_name': str(row.get('CRF Name')),
             'question_text': str(row.get('Additional Notes (Question Text)')),
             'references': str(row.get('Disease Specific References')),
-            'question_number': str(row.get('CRF Question #')),
+
+            # These fields get interpreted as numeric values by ElasticSearch, so we need to stop producing them
+            # until it's time.
+            # 'question_number': str(row.get('CRF Question #')),
         },
     }
 
