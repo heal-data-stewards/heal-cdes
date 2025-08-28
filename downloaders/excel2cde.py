@@ -73,9 +73,9 @@ def convert_permissible_values(row):
             split_descriptions = pv_regex.split(descriptions)
 
         for value, description in zip(split_values, split_descriptions):
-            pv = { 'value': value }
+            pv = { 'value': str(value) }
             if description is not None:
-                pv['description'] = description
+                pv['description'] = str(description)
             pvs.append(pv)
 
     return pvs
@@ -143,18 +143,18 @@ def convert_question_to_formelement(row):
     # Should conform to DugVariable
     form_element = {
         'type': 'variable',
-        'id': row.get('Variable Name'),
-        'name': row.get('CDE Name'),
-        'description': row.get('Definition'),
+        'id': str(row.get('Variable Name')),
+        'name': str(row.get('CDE Name')),
+        'description': str(row.get('Definition')),
         'data_type': 'text',
         'is_standardized': True,
         'metadata': {
             'permissible_values': convert_permissible_values(row),
-            'short_description': row.get('Short Description'),
-            'crf_name': row.get('CRF Name'),
-            'question_text': row.get('Additional Notes (Question Text)'),
-            'references': row.get('Disease Specific References'),
-            'question_number': row.get('CRF Question #'),
+            'short_description': str(row.get('Short Description')),
+            'crf_name': str(row.get('CRF Name')),
+            'question_text': str(row.get('Additional Notes (Question Text)')),
+            'references': str(row.get('Disease Specific References')),
+            'question_number': str(row.get('CRF Question #')),
         },
     }
 

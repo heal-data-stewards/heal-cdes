@@ -380,13 +380,13 @@ def heal_cde_repo_downloader(
         # This should conform to a DugSection.
         entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
-            'id': crf_curie,
-            'crf_id': crf_id,
-            'name': crf_names[0],
-            'description': description,
+            'id': str(crf_curie),
+            'crf_id': str(crf_id),
+            'name': str(crf_names[0]),
+            'description': str(description),
             # 'action': None,         # TODO: is this the URL to download this CRF?
             'is_crf': True,
-            'variable_list': list(map(lambda cde: cde['id'], cdes)), # Should just be the variable IDs.
+            'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
         })
 
         with open(kgx_file_path + '.dug.json', 'w') as jsonf:
