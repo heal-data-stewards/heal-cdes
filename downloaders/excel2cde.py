@@ -140,21 +140,22 @@ def convert_question_to_formelement(row):
                 'id': f"https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code={cdisc_id}"
             })
 
+    # Should conform to DugVariable
     form_element = {
         'type': 'variable',
         'id': row.get('Variable Name'),
         'name': row.get('CDE Name'),
-        'data_type': 'text', # TODO: figure out what the actual values are here.
-        'question_text': row.get('Additional Notes (Question Text)'),
+        'description': row.get('Definition'),
+        'data_type': 'text',
+        'is_standardized': True,
         'metadata': {
             'permissible_values': convert_permissible_values(row),
+            'short_description': row.get('Short Description'),
+            'crf_name': row.get('CRF Name'),
+            'question_text': row.get('Additional Notes (Question Text)'),
+            'references': row.get('Disease Specific References'),
+            'question_number': row.get('CRF Question #'),
         },
-        'is_standardized': True,
-        'question_number': row.get('CRF Question #'),
-        'definition': row.get('Definition'),
-        'short_description': row.get('Short Description'),
-        'crf_name': row.get('CRF Name'),
-        'references': row.get('Disease Specific References'),
     }
 
     # if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
