@@ -376,6 +376,8 @@ def heal_cde_repo_downloader(
 
         entries = []
         entries.extend(cdes)
+
+        # This should conform to a DugSection.
         entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
             'id': crf_curie,
