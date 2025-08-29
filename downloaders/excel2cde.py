@@ -82,7 +82,7 @@ def convert_permissible_values(row):
 
 
 # Translate a question into formElements.
-def convert_question_to_formelement(row, crf_id):
+def convert_question_to_formelement(row, crf_curie):
     """
     Convert an individual question to a form element.
 
@@ -149,7 +149,7 @@ def convert_question_to_formelement(row, crf_id):
         'data_type': 'text',
         'is_standardized': True,
         'parents': [
-            crf_id
+            crf_curie
         ],
         'metadata': {
             'permissible_values': convert_permissible_values(row),
@@ -174,7 +174,7 @@ def convert_question_to_formelement(row, crf_id):
 
 
 # Code to convert an XLSX file to JSON.
-def convert_xlsx_to_json(input_filename, crf_id):
+def convert_xlsx_to_json(input_filename, crf_curie):
     """
     Convert an XLSX file to a JSON file. We generate the JSON filename based on the command line arguments.
 
@@ -220,7 +220,7 @@ def convert_xlsx_to_json(input_filename, crf_id):
     # We use this schema: https://cde.nlm.nih.gov/schema/form
     logging.info(f'Generated {len(rows)} rows as JSON')
 
-    form_elements = list(filter(lambda e: e is not None, [convert_question_to_formelement(row, crf_id) for row in rows]))
+    form_elements = list(filter(lambda e: e is not None, [convert_question_to_formelement(row, crf_curie) for row in rows]))
 
     form_data = {
         'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {input_filename}',

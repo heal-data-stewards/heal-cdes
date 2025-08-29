@@ -323,8 +323,10 @@ def heal_cde_repo_downloader(
         logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
 
         # Step 2. Convert to JSON.
+        crf_curie = 'HEALCDE:' + crf_id
+
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
-        json_data = convert_xlsx_to_json(xlsx_file_path, crf_id)
+        json_data = convert_xlsx_to_json(xlsx_file_path, crf_curie)
         if not json_data:
             json_data = dict()
 
@@ -355,9 +357,6 @@ def heal_cde_repo_downloader(
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
             # process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
 
-        # Convert all the formElements to Dug variables.
-        crf_curie = 'HEALCDE:' + crf_id
-
         # Now we have all the information we need to generate a Dug Data Model file for this CRF.
         cdes = json_data['formElements'] if 'formElements' in json_data else []
         count_cdes = len(cdes)
@@ -370,8 +369,8 @@ def heal_cde_repo_downloader(
         # Ironically, the best CRF name is part of the CDEs (at least when querying the HEAL CDE repository).
         crf_names = []
         for cde in cdes:
-            if 'crf_name' in cde:
-                crf_names.append(cde['crf_name'])
+            if 'metadata' in cde and 'crf_name' in cde['metadata']:
+                crf_names.append(cde['metadata']['crf_name'])
         crf_names.append(crf_id)
 
         entries = []
