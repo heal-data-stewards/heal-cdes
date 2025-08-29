@@ -220,7 +220,7 @@ def convert_xlsx_to_json(input_filename, crf_id):
     # We use this schema: https://cde.nlm.nih.gov/schema/form
     logging.info(f'Generated {len(rows)} rows as JSON')
 
-    form_elements = [convert_question_to_formelement(row, crf_id) for row in rows]
+    form_elements = list(filter(lambda e: e is not None, [convert_question_to_formelement(row, crf_id) for row in rows]))
 
     form_data = {
         'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {input_filename}',
