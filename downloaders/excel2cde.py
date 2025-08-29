@@ -82,7 +82,7 @@ def convert_permissible_values(row):
 
 
 # Translate a question into formElements.
-def convert_question_to_formelement(row):
+def convert_question_to_formelement(row, crf_id):
     """
     Convert an individual question to a form element.
 
@@ -148,6 +148,9 @@ def convert_question_to_formelement(row):
         'description': str(row.get('Definition')),
         'data_type': 'text',
         'is_standardized': True,
+        'parents': [
+            crf_id
+        ],
         'metadata': {
             'permissible_values': convert_permissible_values(row),
             'short_description': str(row.get('Short Description')),
@@ -156,7 +159,7 @@ def convert_question_to_formelement(row):
             'references': str(row.get('Disease Specific References')),
 
             # These fields get interpreted as numeric values by ElasticSearch, so we need to stop producing them
-            # until it's time.
+            # until we actually need them.
             # 'question_number': str(row.get('CRF Question #')),
         },
     }
@@ -171,7 +174,7 @@ def convert_question_to_formelement(row):
 
 
 # Code to convert an XLSX file to JSON.
-def convert_xlsx_to_json(input_filename):
+def convert_xlsx_to_json(input_filename, crf_id):
     """
     Convert an XLSX file to a JSON file. We generate the JSON filename based on the command line arguments.
 
@@ -217,11 +220,13 @@ def convert_xlsx_to_json(input_filename):
     # We use this schema: https://cde.nlm.nih.gov/schema/form
     logging.info(f'Generated {len(rows)} rows as JSON')
 
+    form_elements = [convert_question_to_formelement(row, crf_id) for row in rows]
+
     form_data = {
         'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {input_filename}',
         'designations': [], # TODO: need to replace with URLs and suchlike
         'created': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
-        'formElements': list(filter(lambda e: e is not None, map(convert_question_to_formelement, rows))),
+        'formElements': form_elements,
     }
 
     form_data['designations'].extend(list(map(lambda name: {'designation': name}, list(set([row['CRF Name'] for row in rows if row['CRF Name'] != ''])))))
@@ -243,7 +248,8 @@ def convert_xlsx_to_json(input_filename):
     dir_okay=True,
     allow_dash=False
 ))
-def excel2cde(input_dir, output):
+@click.option('--crf-id', default='HEALCDE:NONE', type=str)
+def excel2cde(input_dir, output, crf_id):
     input_dir = click.format_filename(input_dir)
     output_dir = click.format_filename(output)
 
@@ -259,7 +265,7 @@ def excel2cde(input_dir, output):
         for filename in files:
             if filename.lower().endswith('.xlsx') or filename.lower().endswith('.csv'):
                 filepath = os.path.join(root, filename)
-                convert_xlsx_to_json(filepath, input_dir, output_dir)
+                convert_xlsx_to_json(filepath, crf_id)
 
 
 if __name__ == '__main__':

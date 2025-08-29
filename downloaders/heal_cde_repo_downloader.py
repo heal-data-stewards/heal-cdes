@@ -324,7 +324,7 @@ def heal_cde_repo_downloader(
 
         # Step 2. Convert to JSON.
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
-        json_data = convert_xlsx_to_json(xlsx_file_path)
+        json_data = convert_xlsx_to_json(xlsx_file_path, crf_id)
         if not json_data:
             json_data = dict()
 
