@@ -384,7 +384,7 @@ def heal_cde_repo_downloader(
             'name': str(crf_names[0]),
             'description': str(description),
             # 'action': None,         # TODO: is this the URL to download this CRF?
-            'is_crf': True,
+            'is_standardized': True,
             'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
         })
 
