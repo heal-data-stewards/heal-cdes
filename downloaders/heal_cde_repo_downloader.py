@@ -381,6 +381,16 @@ def heal_cde_repo_downloader(
         if len(files) > 0:
             best_url = files[0]['url']
 
+        # Provide a list of URLs for export.
+        url_list = list(map(lambda f: {
+            'url': f['url'],
+            'filename': f['title'],
+            'lang': f['lang'],
+            'mime-type': f['mime-type'],
+            'description': f['description'],
+            'drupal_id': f['row'].get('Media/File ID', None),
+        }, files))
+
         # This should conform to a DugSection.
         entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
@@ -392,7 +402,7 @@ def heal_cde_repo_downloader(
             'is_standardized': True,
             'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
             'metadata': {
-                'files': files,
+                'urls': url_list,
             }
         })
 
