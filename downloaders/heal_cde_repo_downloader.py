@@ -376,6 +376,11 @@ def heal_cde_repo_downloader(
         entries = []
         entries.extend(cdes)
 
+        # Choose a best URL if one is present.
+        best_url = None
+        if len(files) > 0:
+            best_url = files[0]['url']
+
         # This should conform to a DugSection.
         entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
@@ -383,9 +388,12 @@ def heal_cde_repo_downloader(
             'crf_id': str(crf_id),
             'name': str(crf_names[0]),
             'description': str(description),
-            # 'action': None,         # TODO: is this the URL to download this CRF?
+            'action': best_url,
             'is_standardized': True,
             'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
+            'metadata': {
+                'files': files,
+            }
         })
 
         with open(kgx_file_path + '.dug.json', 'w') as jsonf:
