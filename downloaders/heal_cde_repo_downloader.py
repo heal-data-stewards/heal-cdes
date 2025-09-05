@@ -11,8 +11,8 @@ import csv
 import dataclasses
 import json
 import os
-from dataclasses import dataclass
 from time import sleep
+from typing import NamedTuple
 
 import click
 import logging
@@ -21,6 +21,10 @@ import requests
 import datetime
 
 from excel2cde import convert_xlsx_to_json
+
+# Prefixes.
+HEALCDE_PREFIX = 'HEALCDE:'
+HDP_PREFIX = 'HEALDATAPLATFORM:'
 
 # MIME-types we will use.
 MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -39,16 +43,13 @@ logging.basicConfig(level=logging.INFO)
 
 
 # Case class for storing source information.
-@dataclass(frozen=True)
-class Source:
+class Source(NamedTuple):
     data_source: str
     filename: str
-    study_name: str = ''
-
 
 # Load the HEAL CRF/study usage mappings.
 def load_heal_crf_usage_mappings(study_mapping_files):
-    all_crf_usage_mappings = collections.defaultdict(set)
+    all_crf_usage_mappings = dict()
 
     for study_mapping_file in study_mapping_files:
         crf_usage_mappings = dict()
@@ -73,7 +74,7 @@ def load_heal_crf_usage_mappings(study_mapping_files):
             else:
                 raise RuntimeError(f"No CRF URLs column found in {study_mapping_filename}: {entry.keys()}")
 
-            source = entry.get('Source', entry.get('filename', ''))
+            source = entry.get('Source', entry.get('filename', study_mapping_filename))
 
             if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
                 logging.warning(f"No HDP IDs found in row {entry} in {study_mapping_filename}, skipping.")
@@ -85,16 +86,21 @@ def load_heal_crf_usage_mappings(study_mapping_files):
 
             for crf_url in crf_urls:
                 if crf_url not in crf_usage_mappings:
-                    crf_usage_mappings[crf_url] = collections.defaultdict(set)
+                    crf_usage_mappings[crf_url] = collections.defaultdict(list)
 
                 for hdp_id in hdp_ids:
-                    crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_filename))
+                    crf_usage_mappings[crf_url][hdp_id].append(Source(source, study_mapping_filename))
 
         logging.info(f"Loaded CRF mappings from study mapping file {study_mapping_filename}: {len(crf_usage_mappings)}")
 
         # Add the mappings to the global list.
         for crf_id in crf_usage_mappings:
-            all_crf_usage_mappings[crf_id].update(crf_usage_mappings[crf_id])
+            for hdp_id in crf_usage_mappings[crf_id]:
+                if crf_id not in all_crf_usage_mappings:
+                    all_crf_usage_mappings[crf_id] = dict()
+                if hdp_id not in all_crf_usage_mappings[crf_id]:
+                    all_crf_usage_mappings[crf_id][hdp_id] = []
+                all_crf_usage_mappings[crf_id][hdp_id].extend(crf_usage_mappings[crf_id][hdp_id])
 
     logging.info(f"Loaded CRF mappings from {len(study_mapping_files)} study mapping files: {len(all_crf_usage_mappings)}")
 
@@ -347,7 +353,7 @@ def heal_cde_repo_downloader(
         logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
 
         # Step 2. Convert to JSON.
-        crf_curie = 'HEALCDE:' + crf_id
+        crf_curie = HEALCDE_PREFIX + crf_id
 
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
         json_data = convert_xlsx_to_json(xlsx_file_path, crf_curie)
@@ -401,14 +407,11 @@ def heal_cde_repo_downloader(
         entries.extend(cdes)
 
         # Which studies have included this CRF?
-        study_mappings = crf_study_mappings.get(crf_curie, [])
+        study_mappings = crf_study_mappings.get(crf_curie, {})
         heal_studies_for_crf = set()
-        for study in study_mappings:
-            study_curie = study['study_id']
-            heal_studies_for_crf.add(study_curie)
-
-        # Change it from a set to a list so we can write it out as JSON.
-        heal_studies_for_crf = sorted(list(heal_studies_for_crf))
+        for hdp_id in study_mappings.keys():
+            heal_studies_for_crf.add(hdp_id)
+        heal_studies_for_crf = sorted(map(lambda hdp_id: HDP_PREFIX + hdp_id, heal_studies_for_crf))
 
         # Choose a best URL if one is present.
         best_url = None
@@ -438,6 +441,7 @@ def heal_cde_repo_downloader(
             'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
             'metadata': {
                 'urls': url_list,
+                'study_mappings': study_mappings,
             }
         })
 
