@@ -47,45 +47,56 @@ class Source:
 
 
 # Load the HEAL CRF/study usage mappings.
-def load_heal_crf_usage_mappings(study_mapping_file):
-    study_mapping_filename = study_mapping_file.name
+def load_heal_crf_usage_mappings(study_mapping_files):
+    all_crf_usage_mappings = collections.defaultdict(set)
 
-    crf_usage_mappings = dict()
-    study_mapping_entries = csv.DictReader(study_mapping_file)
+    for study_mapping_file in study_mapping_files:
+        crf_usage_mappings = dict()
+        study_mapping_filename = study_mapping_file.name
+        logging.info(f"Loading CRF mappings from study mapping file {study_mapping_filename}")
+        study_mapping_entries = csv.DictReader(study_mapping_file)
 
-    for entry in study_mapping_entries:
-        if 'HDP IDs' in entry:
-            hdp_ids = entry['HDP IDs'].split('|')
-        elif 'hdp_id' in entry:
-            hdp_ids = [entry['hdp_id']]
-        else:
-            raise RuntimeError(f"No HDP IDs column found in {study_mapping_filename}: {entry.keys()}")
+        for entry in study_mapping_entries:
+            if 'HDP IDs' in entry:
+                hdp_ids = entry['HDP IDs'].split('|')
+            elif 'hdp_id' in entry:
+                hdp_ids = [entry['hdp_id']]
+            else:
+                raise RuntimeError(f"No HDP IDs column found in {study_mapping_filename}: {entry.keys()}")
 
-        if 'CRF URLs' in entry:
-            crf_urls = entry['CRF URLs'].split('|')
-        elif 'crf_ids' in entry:
-            crf_urls = entry['crf_ids'].split('|')
-        elif 'heal_crf_id' in entry:
-            crf_urls = [entry['heal_crf_id']]
-        else:
-            raise RuntimeError(f"No CRF URLs column found in {study_mapping_filename}: {entry.keys()}")
+            if 'CRF URLs' in entry:
+                crf_urls = entry['CRF URLs'].split('|')
+            elif 'crf_ids' in entry:
+                crf_urls = entry['crf_ids'].split('|')
+            elif 'heal_crf_id' in entry:
+                crf_urls = [entry['heal_crf_id']]
+            else:
+                raise RuntimeError(f"No CRF URLs column found in {study_mapping_filename}: {entry.keys()}")
 
-        source = entry.get('Source', entry.get('filename', ''))
+            source = entry.get('Source', entry.get('filename', ''))
 
-        if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
-            logging.warning(f"No HDP IDs found in row {entry} in {study_mapping_filename}, skipping.")
-            continue
+            if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
+                logging.warning(f"No HDP IDs found in row {entry} in {study_mapping_filename}, skipping.")
+                continue
 
-        if not crf_urls or (len(crf_urls) == 1 and (crf_urls[0] == 'NA' or crf_urls[0] == '')):
-            logging.warning(f"No CRF URLs found in row {entry} in {study_mapping_filename}, skipping.")
-            continue
+            if not crf_urls or (len(crf_urls) == 1 and (crf_urls[0] == 'NA' or crf_urls[0] == '')):
+                logging.warning(f"No CRF URLs found in row {entry} in {study_mapping_filename}, skipping.")
+                continue
 
-        for crf_url in crf_urls:
-            if crf_url not in crf_usage_mappings:
-                crf_usage_mappings[crf_url] = collections.defaultdict(set)
+            for crf_url in crf_urls:
+                if crf_url not in crf_usage_mappings:
+                    crf_usage_mappings[crf_url] = collections.defaultdict(set)
 
-            for hdp_id in hdp_ids:
-                crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_filename))
+                for hdp_id in hdp_ids:
+                    crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_filename))
+
+        logging.info(f"Loaded CRF mappings from study mapping file {study_mapping_filename}: {len(crf_usage_mappings)}")
+
+        # Add the mappings to the global list.
+        for crf_id in crf_usage_mappings:
+            all_crf_usage_mappings[crf_id].update(crf_usage_mappings[crf_id])
+
+    logging.info(f"Loaded CRF mappings from {len(study_mapping_files)} study mapping files: {len(all_crf_usage_mappings)}")
 
     return crf_usage_mappings
 

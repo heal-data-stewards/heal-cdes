@@ -22,7 +22,7 @@ MAPPINGS_DIR=$(OUTPUT_DIR)/mappings
 DOWNLOADS_DIR=$(OUTPUT_DIR)/downloads
 
 # Overall targets
-all: $(OUTPUT_DIR)/download_done
+all: $(DOWNLOADS_DIR)/done
 
 clean:
 	rm -rf $(OUTPUT_DIR)
