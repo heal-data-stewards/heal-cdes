@@ -97,7 +97,7 @@ def load_heal_crf_usage_mappings(study_mapping_file):
               help='A URL for downloading the CSV version of the HEAL CDE repository')
 @click.option('--heal-cde-csv', '--csv', type=click.File(),
               help='The CSV version of the HEAL CDE repository')
-@click.option('--heal-cde-study-mappings', '--mappings', type=click.File(),
+@click.option('--heal-cde-study-mappings', '--mappings', multiple=True, type=click.File(),
               help='A CSV file describing mappings from CRFs/CDEs to studies')
 def heal_cde_repo_downloader(
         output,
