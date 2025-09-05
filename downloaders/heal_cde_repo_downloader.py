@@ -74,7 +74,18 @@ def load_heal_crf_usage_mappings(study_mapping_files):
             else:
                 raise RuntimeError(f"No CRF URLs column found in {study_mapping_filename}: {entry.keys()}")
 
-            source = entry.get('Source', entry.get('filename', study_mapping_filename))
+            # Assemble a source from multiple places.
+            sources = []
+            fieldnames_for_source = [
+                'source',
+                'Source',
+                'filename',
+                'input_path'
+            ]
+            for fieldname in fieldnames_for_source:
+                if fieldname in entry:
+                    sources.append(entry[fieldname])
+            source = "; ".join(sources)
 
             if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
                 logging.warning(f"No HDP IDs found in row {entry} in {study_mapping_filename}, skipping.")
@@ -408,9 +419,7 @@ def heal_cde_repo_downloader(
 
         # Which studies have included this CRF?
         study_mappings = crf_study_mappings.get(crf_curie, {})
-        heal_studies_for_crf = set()
-        for hdp_id in study_mappings.keys():
-            heal_studies_for_crf.add(hdp_id)
+        heal_studies_for_crf = study_mappings.keys()
         heal_studies_for_crf = sorted(map(lambda hdp_id: HDP_PREFIX + hdp_id, heal_studies_for_crf))
 
         # Choose a best URL if one is present.
