@@ -389,6 +389,16 @@ def heal_cde_repo_downloader(
         entries = []
         entries.extend(cdes)
 
+        # Which studies have included this CRF?
+        study_mappings = crf_study_mappings.get(crf_curie, [])
+        heal_studies_for_crf = set()
+        for study in study_mappings:
+            study_curie = study['study_id']
+            heal_studies_for_crf.add(study_curie)
+
+        # Change it from a set to a list so we can write it out as JSON.
+        heal_studies_for_crf = sorted(list(heal_studies_for_crf))
+
         # Choose a best URL if one is present.
         best_url = None
         if len(files) > 0:
@@ -408,6 +418,7 @@ def heal_cde_repo_downloader(
         entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
             'id': str(crf_curie),
+            'parents': heal_studies_for_crf,
             'crf_id': str(crf_id),
             'name': str(crf_names[0]),
             'description': str(description),
