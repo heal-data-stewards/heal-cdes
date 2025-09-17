@@ -8,7 +8,7 @@
 
 # CONFIGURATION
 # In most cases, you will want to run `make OUTPUT_DIR=2025aug26` to use that as the output directory.
-OUTPUT_DIR = ./output-2025aug19
+OUTPUT_DIR = ./output-2025sep17
 
 # These will need to be updated every time this script is run.
 HEAL_DATA_DICTIONARIES_DIR=../heal-data-dictionaries
