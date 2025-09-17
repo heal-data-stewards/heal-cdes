@@ -147,7 +147,7 @@ def convert_question_to_formelement(row, crf_curie):
         'name': str(row.get('CDE Name')),
         'description': str(row.get('Definition')),
         'data_type': 'text',
-        'is_standardized': True,
+        'is_cde': True,
         'parents': [
             crf_curie
         ],

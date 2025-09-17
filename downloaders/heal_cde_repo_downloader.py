@@ -446,7 +446,7 @@ def heal_cde_repo_downloader(
             'name': str(crf_names[0]),
             'description': str(description),
             'action': best_url,
-            'is_standardized': True,
+            'is_crf': True,
             'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
             'metadata': {
                 'urls': url_list,
