@@ -8,3 +8,9 @@ requests
 biolink-model
 kgx
 pandas
+
+# For testing with the Bagel code.
+renci-ner @ git+https://github.com/RENCI-NER/renci-ner@add-bagel
+
+# For calculating rate
+humanfriendly
