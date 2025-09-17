@@ -140,12 +140,25 @@ def convert_question_to_formelement(row, crf_curie):
                 'id': f"https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code={cdisc_id}"
             })
 
+    # Check if the id/name/description are blank.
+    element_id = row.get('Variable Name', '')
+    element_name = row.get('CDE Name', '')
+    element_description = row.get('Definition', '')
+    if element_id == '':
+        # If the name and description is also blank, then we can
+        # assume that this is a blank row, and we can skip it.
+        # Otherwise, we complain.
+        if element_name == '' and element_description == '':
+            return None
+
+        raise ValueError(f"Found Excel row missing element_id ('Variable Name'): {row}")
+
     # Should conform to DugVariable
     form_element = {
         'type': 'variable',
-        'id': str(row.get('Variable Name')),
-        'name': str(row.get('CDE Name')),
-        'description': str(row.get('Definition')),
+        'id': str(element_id),
+        'name': str(element_name),
+        'description': str(element_description),
         'data_type': 'text',
         'is_cde': True,
         'parents': [
