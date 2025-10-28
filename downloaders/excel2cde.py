@@ -50,7 +50,7 @@ def get_value(row: dict[str, str], key: str):
     if key == 'CDE Name':
         return row.get('Data Element Name')
 
-    return None
+    return ''
 
 
 def convert_permissible_values(row):
@@ -82,7 +82,7 @@ def convert_permissible_values(row):
 
 
 # Translate a question into formElements.
-def convert_question_to_formelement(row, crf_curie):
+def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     """
     Convert an individual question to a form element.
 
@@ -94,10 +94,10 @@ def convert_question_to_formelement(row, crf_curie):
     #   - CRF Question #
 
     # Skip the CDISC warning line.
-    if get_value(row, 'CDE Name').strip().startswith('This CDE detail form is not CDISC compliant.'):
+    if get_value(row, colname_varname).strip().startswith('This CDE detail form is not CDISC compliant.'):
         return None
 
-    if get_value(row, 'CDE Name').strip().startswith('This CDE detail form\xa0is not CDISC compliant.'):
+    if get_value(row, colname_varname).strip().startswith('This CDE detail form\xa0is not CDISC compliant.'):
         return None
 
     definitions = []
@@ -220,14 +220,26 @@ def convert_xlsx_to_json(input_filename, crf_curie):
 
     cols = None
     rows = []
+    colname_varname = None
     for row in sheet1.rows:
         if cols is None:
             cols = row
+            # Make sure we have a `CDE Name` column.
+            if 'CDE Name' in cols:
+                colname_varname = 'CDE Name'
+            elif 'Variable Name' in cols:
+                colname_varname = 'Variable Name'
+            elif 'Data Element Name' in cols:
+                colname_varname = 'Data Element Name'
+            else:
+                raise RuntimeError(f'Missing required column "CDE Name" in {input_filename}: {cols}')
         else:
             data = dict(zip(cols, row))
-            cde_name = get_value(data, 'CDE Name')
+            cde_name = get_value(data, colname_varname)
             if cde_name is not None and cde_name != '':
                 rows.append(data)
+            else:
+                logging.warning(f'Found row with no CDE Name/variable name (column {colname_varname}): {data}')
 
     if len(rows) == 0:
         logging.warning(f'No form elements found in {input_filename}')
@@ -236,7 +248,7 @@ def convert_xlsx_to_json(input_filename, crf_curie):
     # We use this schema: https://cde.nlm.nih.gov/schema/form
     logging.info(f'Generated {len(rows)} rows as JSON')
 
-    form_elements = list(filter(lambda e: e is not None, [convert_question_to_formelement(row, crf_curie) for row in rows]))
+    form_elements = list(filter(lambda e: e is not None, [convert_question_to_formelement(row, crf_curie, colname_varname) for row in rows]))
 
     form_data = {
         'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {input_filename}',
