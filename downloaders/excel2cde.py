@@ -41,16 +41,16 @@ def get_value(row: dict[str, str], key: str):
     :return: The value corresponding to that key in the input row.
     """
 
+    result = ''
+
     if key in row:
-        return row[key]
+        result = row[key]
+    elif key == 'External Id CDISC':
+        result = row.get('External ID CDISC')
+    elif key == 'CDE Name':
+        result = row.get('Data Element Name')
 
-    if key == 'External Id CDISC':
-        return row.get('External ID CDISC')
-
-    if key == 'CDE Name':
-        return row.get('Data Element Name')
-
-    return ''
+    return result.strip()
 
 
 def convert_permissible_values(row):
@@ -94,10 +94,10 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     #   - CRF Question #
 
     # Skip the CDISC warning line.
-    if get_value(row, colname_varname).strip().startswith('This CDE detail form is not CDISC compliant.'):
+    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.'):
         return None
 
-    if get_value(row, colname_varname).strip().startswith('This CDE detail form\xa0is not CDISC compliant.'):
+    if get_value(row, colname_varname).startswith('This CDE detail form\xa0is not CDISC compliant.'):
         return None
 
     definitions = []
