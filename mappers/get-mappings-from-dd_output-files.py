@@ -64,7 +64,7 @@ def is_candidate_mappings_file(filename):
     if filename_lower.startswith('dd_') and filename_lower.endswith('.xlsx'):
         # First round DD_output file.
         return True
-    elif filename_lower.contains('_matches_confirmed'):
+    elif '_matches_confirmed' in filename_lower:
         # New style DD_output file (as of 2025aug14 or https://github.com/uc-cdis/heal-data-dictionaries/pull/529)
         return True
     else:
@@ -93,15 +93,22 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
     :raises ValueError: If the Excel file is not in the expected format.
     """
 
-    try:
-        df = pandas.read_excel(xlsx_filename, sheet_name='EnhancedDD', nrows=MAX_EXCEL_ROWS + 1)
-    except ValueError as e:
-        if "Worksheet named 'EnhancedDD' not found" in str(e):
-            # TODO: raise exception.
-            workbook = openpyxl.load_workbook(xlsx_filename)
-            logging.error(f'Could not find "EnhancedDD" sheet in {xlsx_filename}, sheets: {workbook.sheetnames}')
-            return []
-        raise RuntimeError(f'Could not read Excel file {xlsx_filename}: ({type(e)}) {e}')
+    sheet_names = ['EnhancedDD', 'VLMD_Results']
+    found_sheet = False
+    for sheet_name in sheet_names:
+        try:
+            df = pandas.read_excel(xlsx_filename, sheet_name=sheet_name, nrows=MAX_EXCEL_ROWS + 1)
+            found_sheet = True
+            break
+        except ValueError as e:
+            if "Worksheet named 'EnhancedDD' not found" in str(e):
+                continue
+            raise RuntimeError(f'Could not read Excel file {xlsx_filename}: ({type(e)}) {e}')
+
+    if not found_sheet:
+        # TODO: raise exception.
+        workbook = openpyxl.load_workbook(xlsx_filename)
+        raise RuntimeError(f'Could not find sheets {sheet_names} in {xlsx_filename}, sheets: {workbook.sheetnames}')
 
     # Too many rows?
     if len(df) > MAX_EXCEL_ROWS:
