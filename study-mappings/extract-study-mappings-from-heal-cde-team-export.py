@@ -20,6 +20,11 @@ HEAL_CDE_PREFIX = "HEALCDE:"
 
 logging.basicConfig(level=logging.INFO)
 
+# Column names.
+RECORD_ID_COLNAME = "Record ID"
+PROJECT_NUMBER_COLNAME = "Project Number"
+PROJECT_TITLE_COLNAME = "Project Title  &nbsp; "
+
 # Global indexes.
 rows_by_record_id = defaultdict(list)
 
@@ -54,7 +59,7 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
         logging.info(f"Input file has headers: {reader.fieldnames}")
         for row in reader:
             count_rows += 1
-            rows_by_record_id[row["Record ID"]].append(row)
+            rows_by_record_id[row[RECORD_ID_COLNAME]].append(row)
     logging.info(f'Read {len(rows_by_record_id.keys())} records covering {count_rows} rows.')
 
     # Load the study to HDP ID mappings.
@@ -132,7 +137,7 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
     }
 
     # For each record, we need to collect three kinds of information:
-    # 1. Each record should have EXACTLY ONE "Project Number" and "Project Title  &nbsp; "
+    # 1. Each record should have EXACTLY ONE PROJECT_NUMBER_COLNAME and
     # 2. Some columns record some common measures.
     # 3. Collect all the measures listed by name under "Measure Name".
     project_crfs = defaultdict(dict)
@@ -146,16 +151,16 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
         measure_names = set()
         for row in rows:
             # Figure out the project number
-            if row["Project Number"].strip() and row["Project Number"].strip() != "n/a":
+            if row[PROJECT_NUMBER_COLNAME].strip() and row[PROJECT_NUMBER_COLNAME].strip() != "n/a":
                 if project_number is not None:
                     raise RuntimeError(f"Found multiple project numbers for record {record_id}")
-                project_number = row["Project Number"].strip()
+                project_number = row[PROJECT_NUMBER_COLNAME].strip()
 
             # Figure out the project title.
-            if row["Project Title  &nbsp; "].strip():
+            if row[PROJECT_TITLE_COLNAME].strip():
                 if project_title is not None:
                     raise RuntimeError(f"Found multiple project numbers for record {record_id}")
-                project_title = row["Project Title  &nbsp; "].strip()
+                project_title = row[PROJECT_TITLE_COLNAME].strip()
 
             # Look for measure names.
             measure_name_rows = {
