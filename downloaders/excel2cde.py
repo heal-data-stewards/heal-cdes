@@ -46,9 +46,9 @@ def get_value(row: dict[str, str], key: str):
     if key in row:
         result = row[key]
     elif key == 'External Id CDISC':
-        result = row.get('External ID CDISC')
+        result = row.get('External ID CDISC', '')
     elif key == 'CDE Name':
-        result = row.get('Data Element Name')
+        result = row.get('Data Element Name', '')
 
     return result.strip()
 
@@ -144,9 +144,9 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
             })
 
     # Check if the id/name/description are blank.
-    element_id = row.get('Variable Name', '')
-    element_name = row.get('CDE Name', '')
-    element_description = row.get('Definition', '')
+    element_id = get_value(row, 'Variable Name')
+    element_name = get_value(row, colname_varname)
+    element_description = get_value(row, 'Definition')
     if element_id == '':
         # If the name and description is also blank, then we can
         # assume that this is a blank row, and we can skip it.
