@@ -52,7 +52,7 @@ $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv: $(HEAL_CRF_ID_C
 # STEP 2. Download data dictionaries.
 $(OUTPUT_DIR)/download_done: $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv
 	mkdir $(OUTPUT_DIR)
-	PYTHONPATH=. python study-mappings/download-study-mappings-from-platform-mds.py $(OUTPUT_DIR) \
+	PYTHONPATH=. python downloaders/heal_cde_repo_downloader.py $(OUTPUT_DIR) \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
