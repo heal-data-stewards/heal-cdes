@@ -64,7 +64,7 @@ def is_candidate_mappings_file(filename):
     if filename_lower.startswith('dd_') and filename_lower.endswith('.xlsx'):
         # First round DD_output file.
         return True
-    elif filename_lower.endswith('_matches_confirmed.xlsx'):
+    elif filename_lower.contains('_matches_confirmed'):
         # New style DD_output file (as of 2025aug14 or https://github.com/uc-cdis/heal-data-dictionaries/pull/529)
         return True
     else:
