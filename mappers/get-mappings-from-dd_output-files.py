@@ -130,15 +130,19 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
             form_name = row.get('module')
         elif 'section' in row:
             form_name = row.get('section')
+        elif 'Instrument' in row:
+            form_name = row.get('Instrument')
         else:
-            raise ValueError(f"Missing required column in {xlsx_filename} (no form name column found): {row.keys()}")
+            raise ValueError(f"Missing required column form name in {xlsx_filename}: {row.keys()}")
 
         if 'Variable / Field Name' in row:
             variable_name = row.get('Variable / Field Name')
         elif 'name' in row:
             variable_name = row.get('name')
+        elif 'ElementName' in row:
+            variable_name = row.get('ElementName')
         else:
-            raise ValueError(f"Missing required column in {xlsx_filename} (no variable name column found): {row.keys()}")
+            raise ValueError(f"Missing required column field name in {xlsx_filename}: {row.keys()}")
 
         CRF_NAME_COLUMNS = {'Manual Validation', 'Manual Verification', 'HEAL Core CRF Match'}
         crf_names = None
@@ -147,7 +151,7 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
                 crf_names = row.get(crf_name_column)
                 break
         if crf_names is None:
-            raise ValueError(f"Missing required column in {xlsx_filename} (one of: {CRF_NAME_COLUMNS} must be present): {row.keys()}")
+            raise ValueError(f"Missing required column manual validation in {xlsx_filename} (one of: {CRF_NAME_COLUMNS} must be present): {row.keys()}")
 
         # Skip any NA values.
         if crf_names in MANUAL_VALIDATION_NA_VALUES:
