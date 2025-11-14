@@ -47,6 +47,9 @@ class Source(NamedTuple):
     data_source: str
     filename: str
 
+    def __str__(self):
+        return f"{self.data_source} ({self.filename})"
+
 # Load the HEAL CRF/study usage mappings.
 def load_heal_crf_usage_mappings(study_mapping_files):
     all_crf_usage_mappings = dict()
@@ -130,7 +133,7 @@ def load_heal_crf_usage_mappings(study_mapping_files):
                     all_crf_usage_mappings[crf_id][hdp_id] = {}
 
                 for field in crf_usage_mappings[crf_id][hdp_id]:
-                    all_crf_usage_mappings[crf_id][hdp_id][field] = list(crf_usage_mappings[crf_id][hdp_id][field])
+                    all_crf_usage_mappings[crf_id][hdp_id][field] = sorted(crf_usage_mappings[crf_id][hdp_id][field])
 
     logging.info(f"Loaded CRF mappings from {len(study_mapping_files)} study mapping files: {json.dumps(all_crf_usage_mappings, indent=2)}")
 
@@ -498,6 +501,74 @@ def heal_cde_repo_downloader(
 
     logging.info(f"Downloaded {count_xlsx} XLSX files to produce {count_json} JSON files.")
 
+    # Let's write out a bunch of reports.
+    report_dir = os.path.join(output, "reports")
+    os.makedirs(report_dir)
+
+    # Report 1. Write out a summary of all the HDP IDs we've written out.
+    # TODO
+
+    # Report 2. All study/CRF mappings, with source information.
+    crf_usage_by_study = collections.defaultdict(dict)
+    for crf_id in crf_study_mappings:
+        for hdp_id in crf_study_mappings[crf_id]:
+            crf_usage_by_study[hdp_id][crf_id] = crf_study_mappings[crf_id][hdp_id]
+
+    study_crf_mappings_report = os.path.join(report_dir, "study-crf-mappings.csv")
+    with open(study_crf_mappings_report, "w") as fout:
+        writer = csv.DictWriter(fout, [
+            'hdp_id',
+            'crf_id',
+            'sources'
+        ])
+        writer.writeheader()
+
+        count_mappings = 0
+        for hdp_id in crf_usage_by_study:
+            for crf_id in crf_usage_by_study[hdp_id]:
+                sources = sorted(map(str, crf_usage_by_study[hdp_id][crf_id].get("_sources", [])))
+
+                writer.writerow({
+                    'hdp_id': hdp_id,
+                    'crf_id': crf_id,
+                    'sources': "||".join(sources)
+                })
+                count_mappings += 1
+
+        logging.info(f"Wrote out {count_mappings} to {study_crf_mappings_report}.")
+
+
+    # Report 3. All variable/CDE mappings, with source information.
+    study_cde_mappings_report = os.path.join(report_dir, "study-cde-mappings.csv")
+    with open(study_cde_mappings_report, "w") as fout:
+        writer = csv.DictWriter(fout, [
+            'hdp_id',
+            'crf_id',
+            'cde_name',
+            'variable_names',
+            'sources'
+        ])
+        writer.writeheader()
+
+        count_mappings = 0
+        for hdp_id in crf_usage_by_study:
+            for crf_id in crf_usage_by_study[hdp_id]:
+                sources = sorted(map(str, crf_usage_by_study[hdp_id][crf_id].get("_sources", [])))
+
+                for cde_name in crf_usage_by_study[hdp_id][crf_id]:
+                    if cde_name == "_sources":
+                        continue
+
+                    writer.writerow({
+                        'hdp_id': hdp_id,
+                        'crf_id': crf_id,
+                        'cde_name': cde_name,
+                        'variable_names': ", ".join(crf_usage_by_study[hdp_id][crf_id][cde_name]),
+                        'sources': "||".join(sources)
+                    })
+                    count_mappings += 1
+
+        logging.info(f"Wrote out {count_mappings} to {study_cde_mappings_report}.")
 
 # Run heal_cde_repo_downloader() if not used as a library.
 if __name__ == "__main__":
