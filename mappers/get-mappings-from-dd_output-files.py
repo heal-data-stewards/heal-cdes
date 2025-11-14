@@ -288,7 +288,7 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
     logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
 
     # Write mappings into the output file.
-    writer = csv.DictWriter(output_file, fieldnames=['filename', 'hdp_id', 'crf_ids', 'crf_name', 'form_name', 'variable_names', 'mapped_variable_names'])
+    writer = csv.DictWriter(output_file, fieldnames=['filename', 'hdp_id', 'crf_ids', 'crf_name', 'form_name', 'variable_name', 'cde_names'])
     writer.writeheader()
     count_rows = 0
     for mapping in mappings:
@@ -303,8 +303,8 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
                 'crf_ids':  "|".join(sorted(mapping.crf_ids)),
                 'crf_name': mapping.crf_name,
                 'form_name': mapping.form_name,
-                'variable_names': variable_name,
-                'mapped_variable_names': '|'.join(sorted(mapping.mapped_variable_names)) if mapping.mapped_variable_names else '',
+                'variable_name': variable_name,
+                'cde_names': '|'.join(sorted(mapping.mapped_variable_names)) if mapping.mapped_variable_names else '',
             })
             count_rows += 1
 

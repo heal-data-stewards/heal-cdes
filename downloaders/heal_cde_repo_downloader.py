@@ -74,6 +74,14 @@ def load_heal_crf_usage_mappings(study_mapping_files):
             else:
                 raise RuntimeError(f"No CRF URLs column found in {study_mapping_filename}: {entry.keys()}")
 
+            variable_name = None
+            if 'variable_name' in entry:
+                variable_name = entry['variable_name']
+
+            cde_names = []
+            if 'cde_names' in entry:
+                cde_names = entry['cde_names'].split('|')
+
             # Assemble a source from multiple places.
             sources = []
             fieldnames_for_source = [
@@ -97,21 +105,32 @@ def load_heal_crf_usage_mappings(study_mapping_files):
 
             for crf_url in crf_urls:
                 if crf_url not in crf_usage_mappings:
-                    crf_usage_mappings[crf_url] = collections.defaultdict(list)
+                    crf_usage_mappings[crf_url] = dict()
 
                 for hdp_id in hdp_ids:
-                    crf_usage_mappings[crf_url][hdp_id].append(Source(source, study_mapping_filename))
+                    if hdp_id not in crf_usage_mappings[crf_url]:
+                        crf_usage_mappings[crf_url][hdp_id] = collections.defaultdict(set)
 
-        logging.info(f"Loaded CRF mappings from study mapping file {study_mapping_filename}: {json.dumps(crf_usage_mappings, indent=2)}")
+                    if variable_name and cde_names:
+                        for cde_name in cde_names:
+                            if cde_name:
+                                crf_usage_mappings[crf_url][hdp_id][cde_name].add(variable_name)
+
+                    crf_usage_mappings[crf_url][hdp_id]["_sources"].add(Source(source, study_mapping_filename))
+
+        logging.info(f"Loaded CRF mappings from study mapping file {study_mapping_filename}: {len(crf_usage_mappings)}")
 
         # Add the mappings to the global list.
         for crf_id in crf_usage_mappings:
+            if crf_id not in all_crf_usage_mappings:
+                all_crf_usage_mappings[crf_id] = {}
+
             for hdp_id in crf_usage_mappings[crf_id]:
-                if crf_id not in all_crf_usage_mappings:
-                    all_crf_usage_mappings[crf_id] = dict()
                 if hdp_id not in all_crf_usage_mappings[crf_id]:
-                    all_crf_usage_mappings[crf_id][hdp_id] = []
-                all_crf_usage_mappings[crf_id][hdp_id].extend(crf_usage_mappings[crf_id][hdp_id])
+                    all_crf_usage_mappings[crf_id][hdp_id] = {}
+
+                for field in crf_usage_mappings[crf_id][hdp_id]:
+                    all_crf_usage_mappings[crf_id][hdp_id][field] = list(crf_usage_mappings[crf_id][hdp_id][field])
 
     logging.info(f"Loaded CRF mappings from {len(study_mapping_files)} study mapping files: {json.dumps(all_crf_usage_mappings, indent=2)}")
 
@@ -407,20 +426,32 @@ def heal_cde_repo_downloader(
         else:
             description = f"{description} Contains {count_cdes} CDEs."
 
+        # Which studies have included this CRF?
+        study_mappings = crf_study_mappings.get(crf_curie, {})
+        heal_studies_for_crf = study_mappings.keys()
+        heal_studies_for_crf = sorted(map(lambda hdp_id: HDP_PREFIX + hdp_id, heal_studies_for_crf))
+
         # Ironically, the best CRF name is part of the CDEs (at least when querying the HEAL CDE repository).
         crf_names = []
         for cde in cdes:
             if 'metadata' in cde and 'crf_name' in cde['metadata']:
                 crf_names.append(cde['metadata']['crf_name'])
+
+            # Does this CDE have any mappings?
+            study_variable_mappings = collections.defaultdict(set)
+            for hdp_id in study_mappings:
+                for cde_name in study_mappings[hdp_id]:
+                    if cde_name == cde['id']:
+                        study_variable_mappings[hdp_id].update(study_mappings[hdp_id][cde_name])
+            if study_variable_mappings:
+                cde['metadata']['study_variable_mappings'] = dict()
+                for hdp_id in study_variable_mappings:
+                    cde['metadata']['study_variable_mappings'][hdp_id] = sorted(study_variable_mappings[hdp_id])
+
         crf_names.append(crf_id)
 
         entries = []
         entries.extend(cdes)
-
-        # Which studies have included this CRF?
-        study_mappings = crf_study_mappings.get(crf_curie, {})
-        heal_studies_for_crf = study_mappings.keys()
-        heal_studies_for_crf = sorted(map(lambda hdp_id: HDP_PREFIX + hdp_id, heal_studies_for_crf))
 
         # Choose a best URL if one is present.
         best_url = None
