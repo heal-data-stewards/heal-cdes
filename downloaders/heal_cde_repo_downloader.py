@@ -524,8 +524,8 @@ def heal_cde_repo_downloader(
         writer.writeheader()
 
         count_mappings = 0
-        for hdp_id in crf_usage_by_study:
-            for crf_id in crf_usage_by_study[hdp_id]:
+        for hdp_id in sorted(crf_usage_by_study.keys()):
+            for crf_id in sorted(crf_usage_by_study[hdp_id].keys()):
                 sources = sorted(map(str, crf_usage_by_study[hdp_id][crf_id].get("_sources", [])))
 
                 writer.writerow({
@@ -551,11 +551,11 @@ def heal_cde_repo_downloader(
         writer.writeheader()
 
         count_mappings = 0
-        for hdp_id in crf_usage_by_study:
-            for crf_id in crf_usage_by_study[hdp_id]:
+        for hdp_id in sorted(crf_usage_by_study.keys()):
+            for crf_id in sorted(crf_usage_by_study[hdp_id].keys()):
                 sources = sorted(map(str, crf_usage_by_study[hdp_id][crf_id].get("_sources", [])))
 
-                for cde_name in crf_usage_by_study[hdp_id][crf_id]:
+                for cde_name in sorted(crf_usage_by_study[hdp_id][crf_id].keys()):
                     if cde_name == "_sources":
                         continue
 
