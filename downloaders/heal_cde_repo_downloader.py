@@ -102,7 +102,7 @@ def load_heal_crf_usage_mappings(study_mapping_files):
                 for hdp_id in hdp_ids:
                     crf_usage_mappings[crf_url][hdp_id].append(Source(source, study_mapping_filename))
 
-        logging.info(f"Loaded CRF mappings from study mapping file {study_mapping_filename}: {len(crf_usage_mappings)}")
+        logging.info(f"Loaded CRF mappings from study mapping file {study_mapping_filename}: {json.dumps(crf_usage_mappings, indent=2)}")
 
         # Add the mappings to the global list.
         for crf_id in crf_usage_mappings:
@@ -113,9 +113,9 @@ def load_heal_crf_usage_mappings(study_mapping_files):
                     all_crf_usage_mappings[crf_id][hdp_id] = []
                 all_crf_usage_mappings[crf_id][hdp_id].extend(crf_usage_mappings[crf_id][hdp_id])
 
-    logging.info(f"Loaded CRF mappings from {len(study_mapping_files)} study mapping files: {len(all_crf_usage_mappings)}")
+    logging.info(f"Loaded CRF mappings from {len(study_mapping_files)} study mapping files: {json.dumps(all_crf_usage_mappings, indent=2)}")
 
-    return crf_usage_mappings
+    return all_crf_usage_mappings
 
 
 # Download all the files from the HEAL CDE repository in the Dug Data Model.
