@@ -34,6 +34,7 @@ import os
 import logging
 from collections import defaultdict
 from dataclasses import dataclass
+from pathlib import Path
 
 import click
 import openpyxl
@@ -243,7 +244,7 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
         for filename in files:
             file_path = os.path.join(root, filename)
             if is_candidate_mappings_file(filename):
-                hdp_id = os.path.dirname(os.path.dirname(file_path))
+                hdp_id = Path(file_path).parent.name
 
                 logging.info(f'Found candidate DD_output file {file_path} with HDP ID: {hdp_id}.')
                 mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_id, name_to_crf_ids))
