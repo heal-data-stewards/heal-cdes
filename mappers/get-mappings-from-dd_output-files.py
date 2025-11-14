@@ -32,6 +32,7 @@
 import csv
 import os
 import logging
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -242,15 +243,17 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
     # We need to recurse into input_dir and find (1) all `CDEs` directories and (2) corresponding `vlmd/*/metadata.yaml` files.
     for root, _, files in os.walk(input_dir):
         for filename in files:
-            file_path = os.path.join(root, filename)
+            file_path = Path(os.path.join(root, filename))
             if is_candidate_mappings_file(filename):
                 hdp_id = Path(file_path).parent.name
 
-                logging.info(f'Found candidate DD_output file {file_path} with HDP ID: {hdp_id}.')
+                if not re.fullmatch(r'HDP\d+', hdp_id):
+                    raise ValueError(f"Invalid HDP ID {hdp_id} in path {file_path}.")
+
+                logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_id} (from path Path({file_path})')
                 mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_id, name_to_crf_ids))
             else:
-                # TODO: change this into an exception.
-                logging.error(f"Found candidate DD_output file {file_path} but couldn't determine HDP ID.")
+                logging.info(f"Ignoring non-candidate file {file_path}")
                 count_candidate_files_without_metadata += 1
 
     logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
