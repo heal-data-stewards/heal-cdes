@@ -8,7 +8,7 @@
 
 # CONFIGURATION
 # These will be updated every time this script is run.
-OUTPUT_DIR = ./output-2025oct28
+OUTPUT_DIR = ./output-2025nov14
 MAPPINGS_DIR = ./mappings
 HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2025-10-16T142745/HEAL_CDE_data.csv
 HEAL_CDE_STUDY_HDPID_MAPPING_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv
@@ -16,7 +16,7 @@ HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE=mappings/study-crf-mappings/from-heal-cde-tea
 
 # Remote directories
 # - Where is the HEAL Data Dictionaries repository?
-HEAL_DATA_DICTIONARIES_DIR=../heal-data-dictionaries
+HEAL_DATA_DICTIONARIES_DIR=../heal-cde-mappings
 
 # Additional inputs
 HEAL_CRF_ID_CSV = $(MAPPINGS_DIR)/heal-crf-ids/heal-crf-ids.csv

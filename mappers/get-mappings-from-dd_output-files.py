@@ -242,33 +242,15 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
     for root, _, files in os.walk(input_dir):
         for filename in files:
             file_path = os.path.join(root, filename)
-            if '/CDEs/' in file_path and is_candidate_mappings_file(filename):
-                # Candidate file!
-                #
-                # Can we find VLMD files?
-                project_dir = os.path.dirname(os.path.dirname(file_path))
-                metadata_yaml_files = list(get_metadata_files_in_project_directory(project_dir))
+            if is_candidate_mappings_file(filename):
+                hdp_id = os.path.dirname(os.path.dirname(file_path))
 
-                if metadata_yaml_files:
-                    count_candidate_files += 1
-
-                    hdp_ids = set()
-                    for metadata_yaml_file in metadata_yaml_files:
-                        with open(metadata_yaml_file, 'r') as yamlf:
-                            document = yaml.safe_load(yamlf)
-                            try:
-                                hdp_id = document.get('Project', {}).get('HDP_ID')
-                            except KeyError:
-                                raise ValueError(f'Could not find HDP_ID in {metadata_yaml_file}')
-                            hdp_ids.add(hdp_id)
-
-                    logging.info(f'Found candidate DD_output file {file_path} with HDP IDs: {hdp_ids}.')
-                    mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids))
-
-                else:
-                    # TODO: change this into an exception.
-                    logging.error(f'Found candidate DD_output file {file_path} WITHOUT metadata files.')
-                    count_candidate_files_without_metadata += 1
+                logging.info(f'Found candidate DD_output file {file_path} with HDP ID: {hdp_id}.')
+                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_id, name_to_crf_ids))
+            else:
+                # TODO: change this into an exception.
+                logging.error(f"Found candidate DD_output file {file_path} but couldn't determine HDP ID.")
+                count_candidate_files_without_metadata += 1
 
     logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
 
