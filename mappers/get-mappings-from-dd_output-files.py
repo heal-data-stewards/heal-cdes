@@ -251,7 +251,7 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
                     raise ValueError(f"Invalid HDP ID {hdp_id} in path {file_path}.")
 
                 logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_id} (from path Path({file_path})')
-                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_id, name_to_crf_ids))
+                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, [hdp_id], name_to_crf_ids))
             else:
                 logging.info(f"Ignoring non-candidate file {file_path}")
                 count_candidate_files_without_metadata += 1
