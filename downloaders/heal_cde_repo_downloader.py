@@ -11,6 +11,7 @@ import csv
 import dataclasses
 import json
 import os
+from doctest import debug_script
 from time import sleep
 from typing import NamedTuple
 
@@ -141,6 +142,41 @@ def load_heal_crf_usage_mappings(study_mapping_files):
 
 
 # Download all the files from the HEAL CDE repository in the Dug Data Model.
+def get_url_description(url, cdes):
+    # Each url entry includes a description (url['description']), but since
+    # this is generally identical to the CRF description, I'll skip it here.
+
+    match url['lang']:
+        case 'en':
+            language = 'English'
+        case 'es':
+            language = 'Spanish'
+        case 'zh-CN':
+            language = 'Chinese (Simplified)'
+        case 'zh-TW':
+            language = 'Chinese (Traditional)'
+        case 'ja':
+            language = 'Japanese'
+        case 'ko':
+            language = 'Korean'
+        case 'sv':
+            language = 'Swedish'
+        case _:
+            raise RuntimeError(f"Unknown language '{url['lang']}' in URL entry: {url}")
+    description = f"This is the {language} download of the "
+
+    if url['mime-type'] == MIME_XLSX:
+        # This is always in English, so in this case we take out the language code.
+        description = f'This is the Excel file that describes the {len(cdes)} CDEs present in this CRF.'
+    elif url['mime-type'] == MIME_DOCX:
+        description += ' Microsoft Word document containing the questionnaire.'
+    elif url['mime-type'] == MIME_PDF:
+        description += ' PDF document containing the questionnaire.'
+    else:
+        raise RuntimeError(f"Unknown mime-type '{url['mime-type']}' in URL entry: {url}")
+
+    return description
+
 @click.command()
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
 @click.option('--heal-cde-csv-download', '--url', default=HEAL_CDE_CSV_DOWNLOAD,
@@ -467,7 +503,7 @@ def heal_cde_repo_downloader(
             'filename': f['title'],
             'lang': f['lang'],
             'mime-type': f['mime-type'],
-            'description': f['description'],
+            'description': get_url_description(f, cdes),
             'drupal_id': f['row'].get('Media/File ID', None),
         }, files))
 
