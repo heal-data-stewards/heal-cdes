@@ -238,6 +238,15 @@ def convert_xlsx_to_json(input_filename, crf_curie):
             cde_name = get_value(data, colname_varname)
             if cde_name is not None and cde_name != '':
                 rows.append(data)
+            elif data['Variable Name'].startswith('This CDE detail form is not CDISC compliant.'):
+                # We can silently skip this.
+                pass
+            elif data['Variable Name'].startswith("This CDE detail form\xa0is not CDISC compliant."):
+                # We can silently skip this.
+                pass
+            elif data['CRF Name'] == '' and data['Variable Name'] == '' and data['CRF Question #'] == '':
+                # We can silently skip this.
+                pass
             else:
                 logging.warning(f'Found row with no CDE Name/variable name (column {colname_varname}): {data}')
 
