@@ -97,7 +97,7 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.'):
         return None
 
-    if get_value(row, colname_varname).startswith('This CDE detail form\xa0is not CDISC compliant.'):
+    if get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
         return None
 
     definitions = []

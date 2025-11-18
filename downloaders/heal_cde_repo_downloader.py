@@ -169,9 +169,9 @@ def get_url_description(url, cdes):
         # This is always in English, so in this case we take out the language code.
         description = f'This is the Excel file that describes the {len(cdes)} CDEs present in this CRF.'
     elif url['mime-type'] == MIME_DOCX:
-        description += ' Microsoft Word document containing the questionnaire.'
+        description += 'Microsoft Word document containing the questionnaire.'
     elif url['mime-type'] == MIME_PDF:
-        description += ' PDF document containing the questionnaire.'
+        description += 'PDF document containing the questionnaire.'
     else:
         raise RuntimeError(f"Unknown mime-type '{url['mime-type']}' in URL entry: {url}")
 
