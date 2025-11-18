@@ -519,6 +519,7 @@ def heal_cde_repo_downloader(
             'is_crf': True,
             'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
             'metadata': {
+                'categories': sorted(categories),
                 'urls': url_list,
                 'study_mappings': study_mappings,
             }
