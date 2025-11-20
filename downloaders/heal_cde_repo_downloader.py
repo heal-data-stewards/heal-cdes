@@ -21,6 +21,8 @@ import requests
 
 import datetime
 
+from mypy.checkexpr import defaultdict
+
 from excel2cde import convert_xlsx_to_json
 
 # Prefixes.
@@ -118,6 +120,16 @@ def load_heal_crf_usage_mappings(study_mapping_files):
                     if variable_name and cde_names:
                         for cde_name in cde_names:
                             if cde_name:
+                                # For some CRF/CDE mappings, we'd like to change them before we write them out.
+                                if crf_url == 'HEALCDE:adult-demographics' and cde_name == 'ETHNIC':
+                                    cde_name = 'HI_LA'
+                                elif crf_url == 'HEALCDE:gad2' and cde_name == 'GAD2NotStopWryScl':
+                                    cde_name = 'GAD2NotStopWryScale'
+
+                                # And for others, we'd just like to skip them.
+                                if crf_url == 'HEALCDE:adult-demographics' and cde_name == 'EDULEVELspouse':
+                                    continue
+
                                 crf_usage_mappings[crf_url][hdp_id][cde_name].add(variable_name)
 
                     crf_usage_mappings[crf_url][hdp_id]["_sources"].add(Source(source, study_mapping_filename))
@@ -363,6 +375,9 @@ def heal_cde_repo_downloader(
     # Confirm the mapping of input rows to identifiers.
     logging.debug(json.dumps(heal_cde_entries, indent=2))
 
+    # Track CRF/CDE pairs written out -- we'll need this to look for ones that couldn't be mapped.
+    crf_cde_pairs_emitted = defaultdict(dict)
+
     # Count downloads
     count_xlsx = 0
     count_json = 0
@@ -473,6 +488,11 @@ def heal_cde_repo_downloader(
         # Ironically, the best CRF name is part of the CDEs (at least when querying the HEAL CDE repository).
         crf_names = []
         for cde in cdes:
+            cde_id = cde['id']
+            if cde_id not in crf_cde_pairs_emitted[crf_curie]:
+                crf_cde_pairs_emitted[crf_curie][cde_id] = []
+            crf_cde_pairs_emitted[crf_curie][cde_id].append(cde)
+
             if 'metadata' in cde and 'crf_name' in cde['metadata']:
                 crf_names.append(cde['metadata']['crf_name'])
 
@@ -480,7 +500,7 @@ def heal_cde_repo_downloader(
             study_variable_mappings = collections.defaultdict(set)
             for hdp_id in study_mappings:
                 for cde_name in study_mappings[hdp_id]:
-                    if cde_name == cde['id']:
+                    if cde_name == cde_id:
                         study_variable_mappings[hdp_id].update(study_mappings[hdp_id][cde_name])
             if study_variable_mappings:
                 cde['metadata']['study_variable_mappings'] = dict()
@@ -582,6 +602,7 @@ def heal_cde_repo_downloader(
             'hdp_id',
             'crf_id',
             'cde_name',
+            'emitted',
             'variable_names',
             'sources'
         ])
@@ -596,10 +617,15 @@ def heal_cde_repo_downloader(
                     if cde_name == "_sources":
                         continue
 
+                    flag_emitted = False
+                    if crf_id in crf_cde_pairs_emitted and cde_name in crf_cde_pairs_emitted[crf_id]:
+                        flag_emitted = True
+
                     writer.writerow({
                         'hdp_id': hdp_id,
                         'crf_id': crf_id,
                         'cde_name': cde_name,
+                        'emitted': flag_emitted,
                         'variable_names': ", ".join(crf_usage_by_study[hdp_id][crf_id][cde_name]),
                         'sources': "||".join(sources)
                     })

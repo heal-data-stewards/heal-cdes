@@ -201,6 +201,8 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
                     if mapped_variable:
                         if '|' in mapped_variable or ',' in mapped_variable:
                             raise ValueError(f"Invalid mapped variable name '{mapped_variable}' in {xlsx_filename}: {row}")
+
+                        # Before we write this out, there are a couple of manual fixed we'd like to apply:
                         crf_info[form_name][variable_name].add(mapped_variable)
 
 
