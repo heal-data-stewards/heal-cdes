@@ -184,8 +184,19 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
                 crf_info[form_name][variable_name] = set()
 
                 # Is there a mapped variable name here too?
-                if 'Best Match CDE Name' in row:
+                if 'Best Match CDE Name' in row and 'Best Match Score' in row:
                     mapped_variable = row.get('Best Match CDE Name')
+                    best_match_score_str = row.get('Best Match Score')
+                    try:
+                        best_match_score = float(best_match_score_str)
+                    except ValueError as ex:
+                        logging.warning(f"Invalid Best Match Score '{best_match_score_str}' for {mapped_variable} in {xlsx_filename} (exception: {ex}), skipping: {row}")
+                        continue
+
+                    if best_match_score < 80:
+                        logging.warning(f"Best Match Score {best_match_score} is below threshold 0.80 for {mapped_variable} in {xlsx_filename}, skipping: {row}")
+                        continue
+
                     logging.info(f"Found mapped variable {mapped_variable} for {crf_name} in {xlsx_filename}.")
                     if mapped_variable:
                         if '|' in mapped_variable or ',' in mapped_variable:
