@@ -285,15 +285,46 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
     # We need to recurse into input_dir and find (1) all `CDEs` directories and (2) corresponding `vlmd/*/metadata.yaml` files.
     for root, _, files in os.walk(input_dir):
         for filename in files:
+            # We might run this script on two types of directories:
+            # 1. The HEAL Data Dictionaries repository, which uses arbitrary names for the root directory, `/CDEs/` for
+            #    the folder with the Excel files we're looking for, and `metadata.yaml` for information about the study,
+            #    including the HDP ID.
+            # 2. The HEAL CDE Mappings Repository, which uses HDP IDs for the root directory.
+            #
+            # These should be easy to distinguish.
             file_path = Path(os.path.join(root, filename))
             if is_candidate_mappings_file(filename):
-                hdp_id = Path(file_path).parent.name
+                hdp_ids = set()
 
-                if not re.fullmatch(r'HDP\d+', hdp_id):
-                    raise ValueError(f"Invalid HDP ID {hdp_id} in path {file_path}.")
+                # Figure out an HDP ID.
+                parent_name = file_path.parent.name
+                if re.fullmatch('^HDP\d+$', parent_name):
+                    # We're in the HEAL CDE Mappings repository.
+                    hdp_ids = {file_path.parent.name}
+                elif parent_name.lower() == 'cdes':
+                    # We're in the HEAL Data Dictionaries repository.
+                    project_dir = file_path.parent.parent
+                    metadata_yaml_files = list(get_metadata_files_in_project_directory(project_dir))
 
-                logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_id} (from path Path({file_path})')
-                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, [hdp_id], name_to_crf_ids))
+                    if not metadata_yaml_files:
+                        raise RuntimeError(f"Could not find metadata.yaml file in {project_dir} for candidate mapping file {filename} in {file_path}.")
+
+                    count_candidate_files += 1
+
+                    hdp_ids = set()
+                    for metadata_yaml_file in metadata_yaml_files:
+                        with open(metadata_yaml_file, 'r') as yamlf:
+                            document = yaml.safe_load(yamlf)
+                            try:
+                                hdp_id = document.get('Project').get('HDP_ID')
+                            except KeyError:
+                                raise ValueError(f'Could not find HDP_ID in {metadata_yaml_file}: {document}')
+                            if not re.fullmatch(r'^HDP\d+$', hdp_id):
+                                raise ValueError(f"Invalid HDP ID {hdp_id} in path {file_path}.")
+                            hdp_ids.add(hdp_id)
+
+                logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_ids} (from path Path({file_path})')
+                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids))
             else:
                 logging.info(f"Ignoring non-candidate file {file_path}")
                 count_candidate_files_without_metadata += 1

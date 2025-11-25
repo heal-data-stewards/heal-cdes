@@ -16,7 +16,8 @@ HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE=mappings/study-crf-mappings/from-heal-cde-tea
 
 # Remote directories
 # - Where is the HEAL Data Dictionaries repository?
-HEAL_DATA_DICTIONARIES_DIR=../heal-cde-mappings
+HEAL_DATA_DICTIONARIES_DIR=../heal-case-sensitive/heal-data-dictionaries/
+HEAL_CDE_MAPPINGS=../heal-cde-mappings/
 
 # Additional inputs
 HEAL_CRF_ID_CSV = $(MAPPINGS_DIR)/heal-crf-ids/heal-crf-ids.csv
@@ -28,18 +29,23 @@ clean:
 	rm -f $(OUTPUT_DIR)/download_done
 	rm -f $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv
 	rm -f $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
-	rm -f $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv
+	rm -f $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv
+	rm -f $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv
 	rm -rf $(OUTPUT_DIR)
 
 .PHONY: all clean
 
 # STEP 1. MAPPINGS
-# We generate mappings from three sources:
-$(MAPPINGS_DIR)/done: $(HEAL_CRF_ID_CSV) $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
-	touch $@
+# We generate mappings from four sources:
 
-# MAPPING SOURCE 1: the dd_output files in the HEAL Data Dictionaries
-$(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv: $(HEAL_DATA_DICTIONARIES_DIR) $(HEAL_CRF_ID_CSV)
+# MAPPING SOURCE 1.1: the dd_output files in the HEAL Data Dictionaries
+$(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv: $(HEAL_DATA_DICTIONARIES_DIR) $(HEAL_CRF_ID_CSV)
+	mkdir -p $(MAPPINGS_DIR)/heal-data-dictionaries-mappings
+	python mappers/get-mappings-from-dd_output-files.py $< -o $@ --crf-id-file $(HEAL_CRF_ID_CSV)
+
+
+# MAPPING SOURCE 1.2: the study/CRF and variable/CDE files in the HEAL CDE Mappings
+$(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv: $(HEAL_CDE_MAPPINGS) $(HEAL_CRF_ID_CSV)
 	mkdir -p $(MAPPINGS_DIR)/heal-data-dictionaries-mappings
 	python mappers/get-mappings-from-dd_output-files.py $< -o $@ --crf-id-file $(HEAL_CRF_ID_CSV)
 
@@ -54,10 +60,11 @@ $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv: $(HEAL_CRF_ID_C
 	python study-mappings/download-study-mappings-from-platform-mds.py --mappings $(HEAL_CRF_ID_CSV) > $@
 
 # STEP 2. Download data dictionaries.
-$(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
+$(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
 	mkdir -p $(OUTPUT_DIR)
 	PYTHONPATH=. python downloaders/heal_cde_repo_downloader.py $(OUTPUT_DIR) \
-		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv \
+		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv \
+		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv \
 		--cde-corrections $(MAPPINGS_DIR)/heal-crf-ids/heal-cde-corrections.csv
