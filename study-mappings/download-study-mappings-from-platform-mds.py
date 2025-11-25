@@ -115,7 +115,7 @@ def download_study_mappings_from_platform_mds(output, mds_url, heal_crf_ids_mapp
                         })
                         count_dds += 1
                 else:
-                    logging.warning(f"Could not find CDE ID for DD label '{dd_label}' ({hdpdd_id}) for study {hdp_id}.")
+                    logging.info(f"Data dictionary '{dd_label}' ({hdpdd_id}) in study {hdp_id} does not appear to be a CDE, skipping.")
 
         if 'common_data_elements' in vlmd:
             found_cde_mapping = False
