@@ -8,7 +8,7 @@
 
 # CONFIGURATION
 # These will be updated every time this script is run.
-OUTPUT_DIR = ./output-2025nov19
+OUTPUT_DIR = ./output-2025nov25
 MAPPINGS_DIR = ./mappings
 HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2025-10-16T142745/HEAL_CDE_data.csv
 HEAL_CDE_STUDY_HDPID_MAPPING_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv
@@ -54,9 +54,11 @@ $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv: $(HEAL_CRF_ID_C
 	python study-mappings/download-study-mappings-from-platform-mds.py --mappings $(HEAL_CRF_ID_CSV) > $@
 
 # STEP 2. Download data dictionaries.
-$(OUTPUT_DIR)/download_done: $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
-	mkdir $(OUTPUT_DIR)
+$(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
+	mkdir -p $(OUTPUT_DIR)
 	PYTHONPATH=. python downloaders/heal_cde_repo_downloader.py $(OUTPUT_DIR) \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/dd_output-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv \
-		--mappings $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
+		--mappings $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv \
+		--cde-corrections $(MAPPINGS_DIR)/heal-crf-ids/heal-cde-corrections.csv
+	touch $@

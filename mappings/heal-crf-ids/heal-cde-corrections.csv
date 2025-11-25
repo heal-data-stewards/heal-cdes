@@ -3,7 +3,7 @@ HEALCDE:bpi-pain-severity,BPIAvgPain7dRtngScale,BPIAvgPainRatingScl,"In this for
 HEALCDE:bpi-pain-severity,BPILstPain7dRtngScale,BPILeastPainRatingScl,"In this form, BPILeastPainRatingScl is for the last 24 hours, not 7 days."
 HEALCDE:generalized-anxiety-disorder-7,GAD2FeelNervScale,GAD2FeelNervScl,"GAD2 variables found in GAD7, but it's spelled differently here."
 HEALCDE:generalized-anxiety-disorder-7,GAD2NotStopWryScale,GAD2NotStopWryScl,"GAD2 variables found in GAD7, but it's spelled differently here."
-HEALCDE:generalized-anxiety-disorder-7,PHQDiffcltyPerfScl,NA,This just seems to be incorrect.
+HEALCDE:generalized-anxiety-disorder-7,PHQDiffcltyPerfScl,SKIP,This just seems to be incorrect.
 HEALCDE:pcs-parent,PCSCWorryPainEndScale,PCSPWorryPainEndScale,"PCSC refers to pcs-child, not pcs-parent"
 HEALCDE:pcs-parent,PCSCWantPainStopScale,PCSPWantPainStopScale,"PCSC refers to pcs-child, not pcs-parent"
 HEALCDE:pcs-parent,PCSCSeriousHappenScale,PCSPSeriousHappenScale,"PCSC refers to pcs-child, not pcs-parent"
@@ -15,6 +15,6 @@ HEALCDE:pcs-parent,PCSCNothingCanDoScale,PCSPNothingCanDoScale,"PCSC refers to p
 HEALCDE:pcs-parent,PCSCNeverGetBetterScale,PCSPNeverGetBetterScale,"PCSC refers to pcs-child, not pcs-parent"
 HEALCDE:pcs-parent,PCSCCantStandPainScale,PCSPCantStandPainScale,"PCSC refers to pcs-child, not pcs-parent"
 HEALCDE:pcs-parent,PCSCCantGoOnScale,PCSPCantGoOnScale,"PCSC refers to pcs-child, not pcs-parent"
-HEALCDE:adult-demographics,ETHNIC,NA,Multiple ethnic fields in adult-demographics
+HEALCDE:adult-demographics,ETHNIC,SKIP,Multiple ethnic fields in adult-demographics
 HEALCDE:gad2,GAD2NotStopWryScl,GAD2NotStopWryScale,"GAD7 variables found in GAD2, but it's spelled differently here."
 HEALCDE:adult-demographics,EDULEVELspouse,SKIP,No such field

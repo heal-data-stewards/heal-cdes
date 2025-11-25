@@ -54,8 +54,22 @@ class Source(NamedTuple):
         return f"{self.data_source} ({self.filename})"
 
 # Load the HEAL CRF/study usage mappings.
-def load_heal_crf_usage_mappings(study_mapping_files):
+def load_heal_crf_usage_mappings(study_mapping_files, correction_files):
     all_crf_usage_mappings = dict()
+    cde_corrections = defaultdict(dict)
+
+    for correction_file in correction_files:
+        reader = csv.DictReader(correction_file)
+        for row in reader:
+            crf_id = row['crf_id']
+            cde_name_incorrect = row['cde_name_incorrect']
+            if cde_name_incorrect in cde_corrections[crf_id]:
+                raise RuntimeError(f"Duplicate correction for CDE {cde_name_incorrect} in CRF {crf_id} (previously: {cde_corrections[crf_id][cde_name_incorrect]}): {row}")
+            cde_corrections[crf_id][cde_name_incorrect] = {
+                'cde_name_correct': row['cde_name_correct'],
+                'notes': row['notes'],
+                'filename': correction_file,
+            }
 
     for study_mapping_file in study_mapping_files:
         crf_usage_mappings = dict()
@@ -120,15 +134,19 @@ def load_heal_crf_usage_mappings(study_mapping_files):
                     if variable_name and cde_names:
                         for cde_name in cde_names:
                             if cde_name:
-                                # For some CRF/CDE mappings, we'd like to change them before we write them out.
-                                if crf_url == 'HEALCDE:adult-demographics' and cde_name == 'ETHNIC':
-                                    cde_name = 'HI_LA'
-                                elif crf_url == 'HEALCDE:gad2' and cde_name == 'GAD2NotStopWryScl':
-                                    cde_name = 'GAD2NotStopWryScale'
-
-                                # And for others, we'd just like to skip them.
-                                if crf_url == 'HEALCDE:adult-demographics' and cde_name == 'EDULEVELspouse':
-                                    continue
+                                if crf_url in cde_corrections and cde_name in cde_corrections[crf_url]:
+                                    # Correct the CDE name.
+                                    correction = cde_corrections[crf_url][cde_name]
+                                    cde_correction_name = correction['cde_name_correct']
+                                    reason = cde_corrections[crf_url][cde_name]['notes']
+                                    if (not cde_correction_name) or cde_correction_name == 'NA':
+                                        logging.info(f"Found correction for CDE name {cde_name} in CRF {crf_url} but no correction name was provided, reason: {reason}, correction not applied.")
+                                    elif cde_correction_name == 'SKIP':
+                                        logging.info(f"Correction for CDE name {cde_name} in CRF {crf_url} is to skip, skipping CDE entirely.")
+                                        continue
+                                    else:
+                                        logging.info(f"Corrected CDE name {cde_name} in CRF {crf_url} to {cde_correction_name} for reason {reason}, applying correction.")
+                                        cde_name = cde_correction_name
 
                                 crf_usage_mappings[crf_url][hdp_id][cde_name].add(variable_name)
 
@@ -189,6 +207,11 @@ def get_url_description(url, cdes):
 
     return description
 
+
+def load_heal_cde_corrections(heal_cde_corrections):
+    pass
+
+
 @click.command()
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
 @click.option('--heal-cde-csv-download', '--url', default=HEAL_CDE_CSV_DOWNLOAD,
@@ -197,17 +220,20 @@ def get_url_description(url, cdes):
               help='The CSV version of the HEAL CDE repository')
 @click.option('--heal-cde-study-mappings', '--mappings', multiple=True, type=click.File(),
               help='A CSV file describing mappings from CRFs/CDEs to studies')
+@click.option('--heal-cde-corrections', '--cde-corrections', multiple=True, type=click.File(),
+              help='A CSV file describing corrections to the mappings from CRFs/CDEs to studies')
 def heal_cde_repo_downloader(
         output,
         heal_cde_csv_download,
         heal_cde_csv,
         heal_cde_study_mappings,
+        heal_cde_corrections,
 ):
     # If we have CDE/study mappings, load them.
     crf_study_mappings = collections.defaultdict(dict)
     unused_crf_urls = set()
     if heal_cde_study_mappings:
-        crf_study_mappings = load_heal_crf_usage_mappings(heal_cde_study_mappings)
+        crf_study_mappings = load_heal_crf_usage_mappings(heal_cde_study_mappings, heal_cde_corrections)
         unused_crf_urls = set(crf_study_mappings.keys())
 
     # Step 1. Download the HEAL CDE CSV file.
@@ -620,6 +646,8 @@ def heal_cde_repo_downloader(
                     flag_emitted = False
                     if crf_id in crf_cde_pairs_emitted and cde_name in crf_cde_pairs_emitted[crf_id]:
                         flag_emitted = True
+                    else:
+                        logging.warning(f"No mappings emitted for CDE {cde_name} in {crf_id}: this CDE name probably doesn't exist in this CRF file.")
 
                     writer.writerow({
                         'hdp_id': hdp_id,
