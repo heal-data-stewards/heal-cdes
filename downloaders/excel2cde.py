@@ -41,16 +41,16 @@ def get_value(row: dict[str, str], key: str):
     :return: The value corresponding to that key in the input row.
     """
 
+    result = ''
+
     if key in row:
-        return row[key]
+        result = row[key]
+    elif key == 'External Id CDISC':
+        result = row.get('External ID CDISC', '')
+    elif key == 'CDE Name':
+        result = row.get('Data Element Name', '')
 
-    if key == 'External Id CDISC':
-        return row.get('External ID CDISC')
-
-    if key == 'CDE Name':
-        return row.get('Data Element Name')
-
-    return None
+    return result.strip()
 
 
 def convert_permissible_values(row):
@@ -73,16 +73,16 @@ def convert_permissible_values(row):
             split_descriptions = pv_regex.split(descriptions)
 
         for value, description in zip(split_values, split_descriptions):
-            pv = { 'permissibleValue': value }
+            pv = { 'value': str(value) }
             if description is not None:
-                pv['valueMeaningDefinition'] = description
+                pv['description'] = str(description)
             pvs.append(pv)
 
     return pvs
 
 
 # Translate a question into formElements.
-def convert_question_to_formelement(row):
+def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     """
     Convert an individual question to a form element.
 
@@ -94,7 +94,10 @@ def convert_question_to_formelement(row):
     #   - CRF Question #
 
     # Skip the CDISC warning line.
-    if get_value(row, 'CDE Name').startswith('This CDE detail form is not CDISC compliant.'):
+    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.'):
+        return None
+
+    if get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
         return None
 
     definitions = []
@@ -140,34 +143,54 @@ def convert_question_to_formelement(row):
                 'id': f"https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code={cdisc_id}"
             })
 
+    # Check if the id/name/description are blank.
+    element_id = get_value(row, 'Variable Name')
+    element_name = get_value(row, colname_varname)
+    element_description = get_value(row, 'Definition')
+    if element_id == '':
+        # If the name and description is also blank, then we can
+        # assume that this is a blank row, and we can skip it.
+        # Otherwise, we complain.
+        if element_name == '' and element_description == '':
+            return None
+
+        raise ValueError(f"Found Excel row missing element_id ('Variable Name'): {row}")
+
+    # Should conform to DugVariable
     form_element = {
-        'elementType': 'question',
-        'label': row.get('Additional Notes (Question Text)', ''),
-        'question': {
-            'cde': {
-                'name': get_value(row, 'CDE Name'),
-                'newCde': {
-                    'definitions': definitions,
-                    'designations': designations
-                },
-                'datatype': row.get('Data Type'),
-                'ids': ids,
-                'permissibleValues': convert_permissible_values(row)
-            }
-        }
+        'type': 'variable',
+        'id': str(element_id),
+        'name': str(element_name),
+        'description': str(element_description),
+        'data_type': 'text',
+        'is_cde': True,
+        'parents': [
+            crf_curie
+        ],
+        'metadata': {
+            'permissible_values': convert_permissible_values(row),
+            'short_description': str(row.get('Short Description')),
+            'crf_name': str(row.get('CRF Name')),
+            'question_text': str(row.get('Additional Notes (Question Text)')),
+            'references': str(row.get('Disease Specific References')),
+
+            # These fields get interpreted as numeric values by ElasticSearch, so we need to stop producing them
+            # until we actually need them.
+            # 'question_number': str(row.get('CRF Question #')),
+        },
     }
 
-    if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
-        form_element['instructions'] = {
-            'value': row.get('Disease Specific Instructions'),
-            'valueFormat': 'text'
-        }
+    # if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
+    #     form_element['instructions'] = {
+    #         'value': row.get('Disease Specific Instructions'),
+    #         'valueFormat': 'text'
+    #     }
 
     return form_element
 
 
 # Code to convert an XLSX file to JSON.
-def convert_xlsx_to_json(input_filename):
+def convert_xlsx_to_json(input_filename, crf_curie):
     """
     Convert an XLSX file to a JSON file. We generate the JSON filename based on the command line arguments.
 
@@ -197,14 +220,35 @@ def convert_xlsx_to_json(input_filename):
 
     cols = None
     rows = []
+    colname_varname = None
     for row in sheet1.rows:
         if cols is None:
             cols = row
+            # Make sure we have a `CDE Name` column.
+            if 'CDE Name' in cols:
+                colname_varname = 'CDE Name'
+            elif 'Variable Name' in cols:
+                colname_varname = 'Variable Name'
+            elif 'Data Element Name' in cols:
+                colname_varname = 'Data Element Name'
+            else:
+                raise RuntimeError(f'Missing required column "CDE Name" in {input_filename}: {cols}')
         else:
             data = dict(zip(cols, row))
-            cde_name = get_value(data, 'CDE Name')
+            cde_name = get_value(data, colname_varname)
             if cde_name is not None and cde_name != '':
                 rows.append(data)
+            elif data['Variable Name'].startswith('This CDE detail form is not CDISC compliant.'):
+                # We can silently skip this.
+                pass
+            elif data['Variable Name'].startswith("This CDE detail form\xa0is not CDISC compliant."):
+                # We can silently skip this.
+                pass
+            elif data['CRF Name'] == '' and data['Variable Name'] == '' and data['CRF Question #'] == '':
+                # We can silently skip this.
+                pass
+            else:
+                logging.warning(f'Found row with no CDE Name/variable name (column {colname_varname}): {data}')
 
     if len(rows) == 0:
         logging.warning(f'No form elements found in {input_filename}')
@@ -213,11 +257,13 @@ def convert_xlsx_to_json(input_filename):
     # We use this schema: https://cde.nlm.nih.gov/schema/form
     logging.info(f'Generated {len(rows)} rows as JSON')
 
+    form_elements = list(filter(lambda e: e is not None, [convert_question_to_formelement(row, crf_curie, colname_varname) for row in rows]))
+
     form_data = {
         'source': f'Generated from HEAL CDE source file by cde2json.py {version}: {input_filename}',
         'designations': [], # TODO: need to replace with URLs and suchlike
         'created': datetime.datetime.now().astimezone().replace(microsecond=0).isoformat(),
-        'formElements': list(filter(lambda e: e is not None, map(convert_question_to_formelement, rows))),
+        'formElements': form_elements,
     }
 
     form_data['designations'].extend(list(map(lambda name: {'designation': name}, list(set([row['CRF Name'] for row in rows if row['CRF Name'] != ''])))))
@@ -239,7 +285,8 @@ def convert_xlsx_to_json(input_filename):
     dir_okay=True,
     allow_dash=False
 ))
-def excel2cde(input_dir, output):
+@click.option('--crf-id', default='HEALCDE:NONE', type=str)
+def excel2cde(input_dir, output, crf_id):
     input_dir = click.format_filename(input_dir)
     output_dir = click.format_filename(output)
 
@@ -255,7 +302,7 @@ def excel2cde(input_dir, output):
         for filename in files:
             if filename.lower().endswith('.xlsx') or filename.lower().endswith('.csv'):
                 filepath = os.path.join(root, filename)
-                convert_xlsx_to_json(filepath, input_dir, output_dir)
+                convert_xlsx_to_json(filepath, crf_id)
 
 
 if __name__ == '__main__':

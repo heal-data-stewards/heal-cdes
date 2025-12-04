@@ -20,6 +20,11 @@ HEAL_CDE_PREFIX = "HEALCDE:"
 
 logging.basicConfig(level=logging.INFO)
 
+# Column names.
+RECORD_ID_COLNAME = "record_id"
+PROJECT_NUMBER_COLNAME = "projectnumber"
+PROJECT_TITLE_COLNAME = "projecttitle"
+
 # Global indexes.
 rows_by_record_id = defaultdict(list)
 
@@ -54,7 +59,7 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
         logging.info(f"Input file has headers: {reader.fieldnames}")
         for row in reader:
             count_rows += 1
-            rows_by_record_id[row["Record ID"]].append(row)
+            rows_by_record_id[row[RECORD_ID_COLNAME]].append(row)
     logging.info(f'Read {len(rows_by_record_id.keys())} records covering {count_rows} rows.')
 
     # Load the study to HDP ID mappings.
@@ -131,8 +136,32 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
         "Recommended Measures: (choice=Treatment Satisfaction  [IMPOWR])": "NA"
     }
 
+    # TODO: These are very much more complicated in the Oct 2025 export -- hopefully in the future it'll go back to the
+    # way it used to be, otherwise we'll cross that bridge then.
+    header_crf_mappings = {
+        "demo_choice___1": "adult-demographics",
+        "painintens_choice___1": "peg",
+        "painintens_choice___2": "bpi-pain-severity",
+        "paininter_choice___1": "peg",
+        "paininter_choice___2": "NA",
+        "paincatast_choice___1": "NA",
+        "paincatast_choice___2": "NA",
+        "physfunct_choice___1": "physical-function-6b",
+        "sleep_choice___1": "sleep-disturbance-6a",
+        "sleep_choice___2": "sleep-duration",
+        "satisfy_choice___1": "pgic",
+        "substance_choice___1": "NA",
+        "opioid_choice___1": "opioid-mme",
+        "qol_choice___1": "whoqol-2",
+        "qol_choice___2": "whoqol-bref",
+        # Skipping 'spanish', 'language', 'opioid' as they are hard to parse
+        "demoped_choice___1": "pediatric-demographic",
+        # Not sure what painintensped_choice___1-3 map to
+        # "painintensped_choice___2": "bpi-pain-severity",
+    }
+
     # For each record, we need to collect three kinds of information:
-    # 1. Each record should have EXACTLY ONE "Project Number" and "Project Title  &nbsp; "
+    # 1. Each record should have EXACTLY ONE PROJECT_NUMBER_COLNAME and
     # 2. Some columns record some common measures.
     # 3. Collect all the measures listed by name under "Measure Name".
     project_crfs = defaultdict(dict)
@@ -146,22 +175,22 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
         measure_names = set()
         for row in rows:
             # Figure out the project number
-            if row["Project Number"].strip() and row["Project Number"].strip() != "n/a":
+            if row[PROJECT_NUMBER_COLNAME].strip() and row[PROJECT_NUMBER_COLNAME].strip() != "n/a":
                 if project_number is not None:
                     raise RuntimeError(f"Found multiple project numbers for record {record_id}")
-                project_number = row["Project Number"].strip()
+                project_number = row[PROJECT_NUMBER_COLNAME].strip()
 
             # Figure out the project title.
-            if row["Project Title  &nbsp; "].strip():
+            if row[PROJECT_TITLE_COLNAME].strip():
                 if project_title is not None:
                     raise RuntimeError(f"Found multiple project numbers for record {record_id}")
-                project_title = row["Project Title  &nbsp; "].strip()
+                project_title = row[PROJECT_TITLE_COLNAME].strip()
 
             # Look for measure names.
             measure_name_rows = {
-                'Measure Name',
-                'Name of Measure',
-                'Name of Other Measure'
+                'measurename',
+                'selectedmeasure',
+                'othermeasurename'
             }
             for measure_name_row in measure_name_rows:
                 if row[measure_name_row].strip():
@@ -217,6 +246,10 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
     )
     writer.writeheader()
     for project_number in project_crfs.keys():
+        if project_number == 'xxxx' or project_number == '123':
+            # What the heck.
+            continue
+
         if project_number not in project_number_to_hdp_id:
             raise RuntimeError(f"Project '{project_number}' is missing from the study to HDP ID mappings.")
 

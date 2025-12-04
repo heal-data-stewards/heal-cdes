@@ -32,8 +32,10 @@
 import csv
 import os
 import logging
+import re
 from collections import defaultdict
 from dataclasses import dataclass
+from pathlib import Path
 
 import click
 import openpyxl
@@ -67,6 +69,9 @@ def is_candidate_mappings_file(filename):
     elif filename_lower.endswith('_matches_confirmed.xlsx'):
         # New style DD_output file (as of 2025aug14 or https://github.com/uc-cdis/heal-data-dictionaries/pull/529)
         return True
+    elif '_matches_confirmed_vlmd_cdesearch_' in filename_lower:
+        # File containing variable mappings
+        return True
     else:
         return False
 
@@ -80,7 +85,8 @@ class StudyCRFMapping:
     crf_name: str
     crf_ids: list[str]
     form_name: str
-    variable_names: set[str]
+    variable_name: str
+    mapped_variable_names: set[str]
 
 def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_crf_ids) -> list[StudyCRFMapping]:
     """
@@ -93,15 +99,22 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
     :raises ValueError: If the Excel file is not in the expected format.
     """
 
-    try:
-        df = pandas.read_excel(xlsx_filename, sheet_name='EnhancedDD', nrows=MAX_EXCEL_ROWS + 1)
-    except ValueError as e:
-        if "Worksheet named 'EnhancedDD' not found" in str(e):
-            # TODO: raise exception.
-            workbook = openpyxl.load_workbook(xlsx_filename)
-            logging.error(f'Could not find "EnhancedDD" sheet in {xlsx_filename}, sheets: {workbook.sheetnames}')
-            return []
-        raise RuntimeError(f'Could not read Excel file {xlsx_filename}: ({type(e)}) {e}')
+    sheet_names = ['EnhancedDD', 'VLMD_Results']
+    found_sheet = False
+    for sheet_name in sheet_names:
+        try:
+            df = pandas.read_excel(xlsx_filename, sheet_name=sheet_name, nrows=MAX_EXCEL_ROWS + 1, dtype=str, keep_default_na=False)
+            found_sheet = True
+            break
+        except ValueError as e:
+            if "Worksheet named 'EnhancedDD' not found" in str(e):
+                continue
+            raise RuntimeError(f'Could not read Excel file {xlsx_filename}: ({type(e)}) {e}')
+
+    if not found_sheet:
+        # TODO: raise exception.
+        workbook = openpyxl.load_workbook(xlsx_filename)
+        raise RuntimeError(f'Could not find sheets {sheet_names} in {xlsx_filename}, sheets: {workbook.sheetnames}')
 
     # Too many rows?
     if len(df) > MAX_EXCEL_ROWS:
@@ -123,30 +136,35 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
             form_name = row.get('module')
         elif 'section' in row:
             form_name = row.get('section')
+        elif 'Instrument' in row:
+            form_name = row.get('Instrument')
         else:
-            raise ValueError(f"Missing required column in {xlsx_filename} (no form name column found): {row.keys()}")
+            raise ValueError(f"Missing required column form name in {xlsx_filename}: {row.keys()}")
 
         if 'Variable / Field Name' in row:
             variable_name = row.get('Variable / Field Name')
         elif 'name' in row:
             variable_name = row.get('name')
+        elif 'ElementName' in row:
+            variable_name = row.get('ElementName')
         else:
-            raise ValueError(f"Missing required column in {xlsx_filename} (no variable name column found): {row.keys()}")
+            raise ValueError(f"Missing required column field name in {xlsx_filename}: {row.keys()}")
 
-        CRF_NAME_COLUMNS = {'Manual Validation', 'Manual Verification', 'HEAL Core CRF Match'}
+        CRF_NAME_COLUMNS = ['Manual Validation', 'Manual Verification', 'HEAL Core CRF Match', 'Best Match CRF Name']
         crf_names = None
         for crf_name_column in CRF_NAME_COLUMNS:
             if crf_name_column in row:
                 crf_names = row.get(crf_name_column)
                 break
         if crf_names is None:
-            raise ValueError(f"Missing required column in {xlsx_filename} (one of: {CRF_NAME_COLUMNS} must be present): {row.keys()}")
+            raise ValueError(f"Missing required column manual validation in {xlsx_filename} (one of: {CRF_NAME_COLUMNS} must be present): {row.keys()}")
 
         # Skip any NA values.
         if crf_names in MANUAL_VALIDATION_NA_VALUES:
             continue
 
         # Any commas in crf_names?
+        logging.info(f"Found {crf_names} in {xlsx_filename}.")
         if ',' not in crf_names:
             crf_names = [crf_names]
         else:
@@ -160,10 +178,33 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
             crf_info = crf_by_form_name[crf_name]
             if form_name not in crf_info:
                 logging.debug(f"Found new {form_name} for {crf_name} in {xlsx_filename}.")
-                crf_info[form_name] = set()
+                crf_info[form_name] = dict()
 
             if variable_name is not None:
-                crf_info[form_name].add(variable_name)
+                crf_info[form_name][variable_name] = set()
+
+                # Is there a mapped variable name here too?
+                if 'Best Match CDE Name' in row and 'Best Match Score' in row:
+                    mapped_variable = row.get('Best Match CDE Name')
+                    best_match_score_str = row.get('Best Match Score')
+                    try:
+                        best_match_score = float(best_match_score_str)
+                    except ValueError as ex:
+                        logging.warning(f"Invalid Best Match Score '{best_match_score_str}' for {mapped_variable} in {xlsx_filename} (exception: {ex}), skipping: {row}")
+                        continue
+
+                    if best_match_score < 80:
+                        logging.warning(f"Best Match Score {best_match_score} is below threshold 0.80 for {mapped_variable} in {xlsx_filename}, skipping: {row}")
+                        continue
+
+                    logging.info(f"Found mapped variable {mapped_variable} for {crf_name} in {xlsx_filename}.")
+                    if mapped_variable:
+                        if '|' in mapped_variable or ',' in mapped_variable:
+                            raise ValueError(f"Invalid mapped variable name '{mapped_variable}' in {xlsx_filename}: {row}")
+
+                        # Before we write this out, there are a couple of manual fixed we'd like to apply:
+                        crf_info[form_name][variable_name].add(mapped_variable)
+
 
     # Translate crf_by_form_name into mappings.
     mappings = []
@@ -180,14 +221,28 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
                 # This is primarily for the Brief Pain Inventory (BPI).
                 continue
 
-            mappings.append(StudyCRFMapping(
-                xlsx_filename=xlsx_filename,
-                hdp_ids=hdp_ids,
-                form_name=form_name,
-                crf_name=crf_name,
-                crf_ids=crf_ids,
-                variable_names=form_name_to_variable_names[form_name]
-            ))
+            for variable_name in form_name_to_variable_names[form_name].keys():
+                mapped_variable_names = form_name_to_variable_names[form_name][variable_name]
+                if not mapped_variable_names:
+                    mappings.append(StudyCRFMapping(
+                        xlsx_filename=xlsx_filename,
+                        hdp_ids=hdp_ids,
+                        form_name=form_name,
+                        crf_name=crf_name,
+                        crf_ids=crf_ids,
+                        variable_name=variable_name,
+                        mapped_variable_names=set(),
+                    ))
+                else:
+                    mappings.append(StudyCRFMapping(
+                        xlsx_filename=xlsx_filename,
+                        hdp_ids=hdp_ids,
+                        form_name=form_name,
+                        crf_name=crf_name,
+                        crf_ids=crf_ids,
+                        variable_name=variable_name,
+                        mapped_variable_names=mapped_variable_names,
+                    ))
 
     logging.info(f'Found {len(mappings)} mappings in {xlsx_filename}.')
 
@@ -230,15 +285,30 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
     # We need to recurse into input_dir and find (1) all `CDEs` directories and (2) corresponding `vlmd/*/metadata.yaml` files.
     for root, _, files in os.walk(input_dir):
         for filename in files:
-            file_path = os.path.join(root, filename)
-            if '/CDEs/' in file_path and is_candidate_mappings_file(filename):
-                # Candidate file!
-                #
-                # Can we find VLMD files?
-                project_dir = os.path.dirname(os.path.dirname(file_path))
-                metadata_yaml_files = list(get_metadata_files_in_project_directory(project_dir))
+            # We might run this script on two types of directories:
+            # 1. The HEAL Data Dictionaries repository, which uses arbitrary names for the root directory, `/CDEs/` for
+            #    the folder with the Excel files we're looking for, and `metadata.yaml` for information about the study,
+            #    including the HDP ID.
+            # 2. The HEAL CDE Mappings Repository, which uses HDP IDs for the root directory.
+            #
+            # These should be easy to distinguish.
+            file_path = Path(os.path.join(root, filename))
+            if is_candidate_mappings_file(filename):
+                hdp_ids = set()
 
-                if metadata_yaml_files:
+                # Figure out an HDP ID.
+                parent_name = file_path.parent.name
+                if re.fullmatch('^HDP\d+$', parent_name):
+                    # We're in the HEAL CDE Mappings repository.
+                    hdp_ids = {file_path.parent.name}
+                elif parent_name.lower() == 'cdes':
+                    # We're in the HEAL Data Dictionaries repository.
+                    project_dir = file_path.parent.parent
+                    metadata_yaml_files = list(get_metadata_files_in_project_directory(project_dir))
+
+                    if not metadata_yaml_files:
+                        raise RuntimeError(f"Could not find metadata.yaml file in {project_dir} for candidate mapping file {filename} in {file_path}.")
+
                     count_candidate_files += 1
 
                     hdp_ids = set()
@@ -246,30 +316,30 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
                         with open(metadata_yaml_file, 'r') as yamlf:
                             document = yaml.safe_load(yamlf)
                             try:
-                                hdp_id = document.get('Project', {}).get('HDP_ID')
+                                hdp_id = document.get('Project').get('HDP_ID')
                             except KeyError:
-                                raise ValueError(f'Could not find HDP_ID in {metadata_yaml_file}')
+                                raise ValueError(f'Could not find HDP_ID in {metadata_yaml_file}: {document}')
+                            if not re.fullmatch(r'^HDP\d+$', hdp_id):
+                                raise ValueError(f"Invalid HDP ID {hdp_id} in path {file_path}.")
                             hdp_ids.add(hdp_id)
 
-                    logging.info(f'Found candidate DD_output file {file_path} with HDP IDs: {hdp_ids}.')
-                    mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids))
-
-                else:
-                    # TODO: change this into an exception.
-                    logging.error(f'Found candidate DD_output file {file_path} WITHOUT metadata files.')
-                    count_candidate_files_without_metadata += 1
+                logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_ids} (from path Path({file_path})')
+                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids))
+            else:
+                logging.info(f"Ignoring non-candidate file {file_path}")
+                count_candidate_files_without_metadata += 1
 
     logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
 
     # Write mappings into the output file.
-    writer = csv.DictWriter(output_file, fieldnames=['filename', 'hdp_id', 'crf_ids', 'crf_name', 'form_name', 'variable_names'])
+    writer = csv.DictWriter(output_file, fieldnames=['filename', 'hdp_id', 'crf_ids', 'crf_name', 'form_name', 'variable_name', 'cde_names'])
     writer.writeheader()
     count_rows = 0
     for mapping in mappings:
         for hdp_id in mapping.hdp_ids:
-            variable_names = mapping.variable_names
-            if not variable_names or variable_names is None:
-                variable_names = {}
+            variable_name = mapping.variable_name
+            if not variable_name or variable_name is None:
+                variable_name = ''
 
             writer.writerow({
                 'filename': mapping.xlsx_filename,
@@ -277,7 +347,8 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
                 'crf_ids':  "|".join(sorted(mapping.crf_ids)),
                 'crf_name': mapping.crf_name,
                 'form_name': mapping.form_name,
-                'variable_names': "|".join(sorted(variable_names)),
+                'variable_name': variable_name,
+                'cde_names': '|'.join(sorted(mapping.mapped_variable_names)) if mapping.mapped_variable_names else '',
             })
             count_rows += 1
 

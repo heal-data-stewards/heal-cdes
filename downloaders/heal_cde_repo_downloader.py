@@ -11,7 +11,9 @@ import csv
 import dataclasses
 import json
 import os
-from dataclasses import dataclass
+from doctest import debug_script
+from time import sleep
+from typing import NamedTuple
 
 import click
 import logging
@@ -19,13 +21,13 @@ import requests
 
 import datetime
 
-from kgx.graph.nx_graph import NxGraph
-from kgx.transformer import Transformer
-from kgx.source import graph_source
-from kgx.sink import jsonl_sink
+from mypy.checkexpr import defaultdict
 
 from excel2cde import convert_xlsx_to_json
-from annotators.nemosapbert.nemo_sapbert_annotator import process_crf
+
+# Prefixes.
+HEALCDE_PREFIX = 'HEALCDE:'
+HDP_PREFIX = 'HEALDATAPLATFORM:'
 
 # MIME-types we will use.
 MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -33,7 +35,7 @@ MIME_XLSX = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 MIME_PDF = 'application/pdf'
 
 # Configuration
-HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?page&_format=csv"
+HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?_format=csv"
 
 # Sort order for languages
 LANGUAGE_ORDER = {'en': 1, 'es': 2, 'zh-CN': 3, 'zh-TW': 4, 'ja': 5, 'ko': 6, 'sv': 7}
@@ -44,68 +46,194 @@ logging.basicConfig(level=logging.INFO)
 
 
 # Case class for storing source information.
-@dataclass(frozen=True)
-class Source:
+class Source(NamedTuple):
     data_source: str
     filename: str
-    study_name: str
 
+    def __str__(self):
+        return f"{self.data_source} ({self.filename})"
 
 # Load the HEAL CRF/study usage mappings.
-def load_heal_crf_usage_mappings(study_mapping_file):
-    study_mapping_filename = study_mapping_file.name
+def load_heal_crf_usage_mappings(study_mapping_files, correction_files):
+    all_crf_usage_mappings = dict()
+    cde_corrections = defaultdict(dict)
 
-    crf_usage_mappings = dict()
-    study_mapping_entries = csv.DictReader(study_mapping_file)
+    for correction_file in correction_files:
+        reader = csv.DictReader(correction_file)
+        for row in reader:
+            crf_id = row['crf_id']
+            cde_name_incorrect = row['cde_name_incorrect']
+            if cde_name_incorrect in cde_corrections[crf_id]:
+                raise RuntimeError(f"Duplicate correction for CDE {cde_name_incorrect} in CRF {crf_id} (previously: {cde_corrections[crf_id][cde_name_incorrect]}): {row}")
+            cde_corrections[crf_id][cde_name_incorrect] = {
+                'cde_name_correct': row['cde_name_correct'],
+                'notes': row['notes'],
+                'filename': correction_file,
+            }
 
-    for entry in study_mapping_entries:
-        hdp_ids = entry['HDP IDs'].split('|')
-        source = entry['Source']
-        study_name = entry['Study Name']
-        crf_urls = entry['CRF URLs'].split('|')
+    for study_mapping_file in study_mapping_files:
+        crf_usage_mappings = dict()
+        study_mapping_filename = study_mapping_file.name
+        logging.info(f"Loading CRF mappings from study mapping file {study_mapping_filename}")
+        study_mapping_entries = csv.DictReader(study_mapping_file)
 
-        if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
-            logging.warning(f"No HDP IDs found for study {study_name} in {study_mapping_filename}, skipping.")
-            continue
+        for entry in study_mapping_entries:
+            if 'HDP IDs' in entry:
+                hdp_ids = entry['HDP IDs'].split('|')
+            elif 'hdp_id' in entry:
+                hdp_ids = [entry['hdp_id']]
+            else:
+                raise RuntimeError(f"No HDP IDs column found in {study_mapping_filename}: {entry.keys()}")
 
-        if not crf_urls or (len(crf_urls) == 1 and (crf_urls[0] == 'NA' or crf_urls[0] == '')):
-            logging.warning(f"No CRF URLs found for study {study_name} in {study_mapping_filename}, skipping.")
-            continue
+            if 'CRF URLs' in entry:
+                crf_urls = entry['CRF URLs'].split('|')
+            elif 'crf_ids' in entry:
+                crf_urls = entry['crf_ids'].split('|')
+            elif 'heal_crf_id' in entry:
+                crf_urls = [entry['heal_crf_id']]
+            else:
+                raise RuntimeError(f"No CRF URLs column found in {study_mapping_filename}: {entry.keys()}")
 
-        for crf_url in crf_urls:
-            if crf_url not in crf_usage_mappings:
-                crf_usage_mappings[crf_url] = collections.defaultdict(set)
+            variable_name = None
+            if 'variable_name' in entry:
+                variable_name = entry['variable_name']
 
-            for hdp_id in hdp_ids:
-                crf_usage_mappings[crf_url][hdp_id].add(Source(source, study_mapping_filename, study_name))
+            cde_names = []
+            if 'cde_names' in entry:
+                cde_names = entry['cde_names'].split('|')
 
-    return crf_usage_mappings
+            # Assemble a source from multiple places.
+            sources = []
+            fieldnames_for_source = [
+                'source',
+                'Source',
+                'filename',
+                'input_path'
+            ]
+            for fieldname in fieldnames_for_source:
+                if fieldname in entry:
+                    sources.append(entry[fieldname])
+            source = "; ".join(sources)
+
+            if not hdp_ids or (len(hdp_ids) == 1 and (hdp_ids[0] == 'NA' or hdp_ids[0] == '')):
+                logging.warning(f"No HDP IDs found in row {entry} in {study_mapping_filename}, skipping.")
+                continue
+
+            if not crf_urls or (len(crf_urls) == 1 and (crf_urls[0] == 'NA' or crf_urls[0] == '')):
+                logging.warning(f"No CRF URLs found in row {entry} in {study_mapping_filename}, skipping.")
+                continue
+
+            for crf_url in crf_urls:
+                if crf_url not in crf_usage_mappings:
+                    crf_usage_mappings[crf_url] = dict()
+
+                for hdp_id in hdp_ids:
+                    if hdp_id not in crf_usage_mappings[crf_url]:
+                        crf_usage_mappings[crf_url][hdp_id] = collections.defaultdict(set)
+
+                    if variable_name and cde_names:
+                        for cde_name in cde_names:
+                            if cde_name:
+                                if crf_url in cde_corrections and cde_name in cde_corrections[crf_url]:
+                                    # Correct the CDE name.
+                                    correction = cde_corrections[crf_url][cde_name]
+                                    cde_correction_name = correction['cde_name_correct']
+                                    reason = cde_corrections[crf_url][cde_name]['notes']
+                                    if (not cde_correction_name) or cde_correction_name == 'NA':
+                                        logging.info(f"Found correction for CDE name {cde_name} in CRF {crf_url} but no correction name was provided, reason: {reason}, correction not applied.")
+                                    elif cde_correction_name == 'SKIP':
+                                        logging.info(f"Correction for CDE name {cde_name} in CRF {crf_url} is to skip, skipping CDE entirely.")
+                                        continue
+                                    else:
+                                        logging.info(f"Corrected CDE name {cde_name} in CRF {crf_url} to {cde_correction_name} for reason {reason}, applying correction.")
+                                        cde_name = cde_correction_name
+
+                                crf_usage_mappings[crf_url][hdp_id][cde_name].add(variable_name)
+
+                    crf_usage_mappings[crf_url][hdp_id]["_sources"].add(Source(source, study_mapping_filename))
+
+        logging.info(f"Loaded CRF mappings from study mapping file {study_mapping_filename}: {len(crf_usage_mappings)}")
+
+        # Add the mappings to the global list.
+        for crf_id in crf_usage_mappings:
+            if crf_id not in all_crf_usage_mappings:
+                all_crf_usage_mappings[crf_id] = {}
+
+            for hdp_id in crf_usage_mappings[crf_id]:
+                if hdp_id not in all_crf_usage_mappings[crf_id]:
+                    all_crf_usage_mappings[crf_id][hdp_id] = {}
+
+                for field in crf_usage_mappings[crf_id][hdp_id]:
+                    all_crf_usage_mappings[crf_id][hdp_id][field] = sorted(crf_usage_mappings[crf_id][hdp_id][field])
+
+    logging.info(f"Loaded CRF mappings from {len(study_mapping_files)} study mapping files: {json.dumps(all_crf_usage_mappings, indent=2)}")
+
+    return all_crf_usage_mappings
 
 
-# Download and annotate all the files from the HEAL CDE repository
+# Download all the files from the HEAL CDE repository in the Dug Data Model.
+def get_url_description(url, cdes):
+    # Each url entry includes a description (url['description']), but since
+    # this is generally identical to the CRF description, I'll skip it here.
+
+    match url['lang']:
+        case 'en':
+            language = 'English'
+        case 'es':
+            language = 'Spanish'
+        case 'zh-CN':
+            language = 'Chinese (Simplified)'
+        case 'zh-TW':
+            language = 'Chinese (Traditional)'
+        case 'ja':
+            language = 'Japanese'
+        case 'ko':
+            language = 'Korean'
+        case 'sv':
+            language = 'Swedish'
+        case _:
+            raise RuntimeError(f"Unknown language '{url['lang']}' in URL entry: {url}")
+    description = f"This is the {language} download of the "
+
+    if url['mime-type'] == MIME_XLSX:
+        # This is always in English, so in this case we take out the language code.
+        description = f'This is the Excel file that describes the {len(cdes)} CDEs present in this CRF.'
+    elif url['mime-type'] == MIME_DOCX:
+        description += 'Microsoft Word document containing the questionnaire.'
+    elif url['mime-type'] == MIME_PDF:
+        description += 'PDF document containing the questionnaire.'
+    else:
+        raise RuntimeError(f"Unknown mime-type '{url['mime-type']}' in URL entry: {url}")
+
+    return description
+
+
+def load_heal_cde_corrections(heal_cde_corrections):
+    pass
+
+
 @click.command()
 @click.argument('output', type=click.Path(dir_okay=True, file_okay=False), required=True)
 @click.option('--heal-cde-csv-download', '--url', default=HEAL_CDE_CSV_DOWNLOAD,
               help='A URL for downloading the CSV version of the HEAL CDE repository')
 @click.option('--heal-cde-csv', '--csv', type=click.File(),
               help='The CSV version of the HEAL CDE repository')
-@click.option('--heal-cde-study-mappings', '--mappings', type=click.File(),
+@click.option('--heal-cde-study-mappings', '--mappings', multiple=True, type=click.File(),
               help='A CSV file describing mappings from CRFs/CDEs to studies')
-@click.option('--add-cde-count-to-description', type=bool, default=True)
-@click.option('--export-files-as-nodes', type=bool, default=False)
+@click.option('--heal-cde-corrections', '--cde-corrections', multiple=True, type=click.File(),
+              help='A CSV file describing corrections to the mappings from CRFs/CDEs to studies')
 def heal_cde_repo_downloader(
         output,
         heal_cde_csv_download,
         heal_cde_csv,
         heal_cde_study_mappings,
-        add_cde_count_to_description,
-        export_files_as_nodes
+        heal_cde_corrections,
 ):
     # If we have CDE/study mappings, load them.
     crf_study_mappings = collections.defaultdict(dict)
     unused_crf_urls = set()
     if heal_cde_study_mappings:
-        crf_study_mappings = load_heal_crf_usage_mappings(heal_cde_study_mappings)
+        crf_study_mappings = load_heal_crf_usage_mappings(heal_cde_study_mappings, heal_cde_corrections)
         unused_crf_urls = set(crf_study_mappings.keys())
 
     # Step 1. Download the HEAL CDE CSV file.
@@ -273,8 +401,12 @@ def heal_cde_repo_downloader(
     # Confirm the mapping of input rows to identifiers.
     logging.debug(json.dumps(heal_cde_entries, indent=2))
 
-    # Track the association IDs.
-    heal_cde_study_mapping_edge_count = 0
+    # Track CRF/CDE pairs written out -- we'll need this to look for ones that couldn't be mapped.
+    crf_cde_pairs_emitted = defaultdict(dict)
+
+    # Count downloads
+    count_xlsx = 0
+    count_json = 0
 
     # For each identifier, download the XLSX file if that's an option.
     for crf_id in heal_cde_entries:
@@ -301,22 +433,40 @@ def heal_cde_repo_downloader(
         xlsx_file_url = xlsx_file['url']
 
         # Step 1. Download XLSX file.
-        logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ...")
-        xlsx_file_req = requests.get(xlsx_file_url, stream=True)
-        if not xlsx_file_req.ok:
-            logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
-            continue
+        attempt_count = 0
+        xlsx_file_path = os.path.join(crf_dir, 'crf.xlsx')
+        while True:
+            attempt_count += 1
+            logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ... (attempt {attempt_count}/10)")
+            xlsx_file_req = requests.get(xlsx_file_url, stream=True)
+            if not xlsx_file_req.ok:
+                logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
+                continue
 
-        xlsx_file_path = os.path.join(crf_dir, crf_id + '.xlsx')
-        with open(xlsx_file_path, 'wb') as fd:
-            for chunk in xlsx_file_req.iter_content(chunk_size=128):
-                fd.write(chunk)
+            with open(xlsx_file_path, 'wb') as fd:
+                count_xlsx += 1
+                for chunk in xlsx_file_req.iter_content(chunk_size=128):
+                    fd.write(chunk)
+
+            # Check if the file size of xlsx_file_path is 0.
+            if os.path.getsize(xlsx_file_path) >= 100:
+                break
+
+            # We got a near-empty file! If attempt_count <= 10, we'll try again.
+            logging.error(f"  XLSX file for {crf_id} at {xlsx_file_path} is near empty, retrying.")
+            if attempt_count > 10:
+                raise RuntimeError(f"Could not download XLSX file for {crf_id} from {xlsx_file_url} after 10 attempts.")
+            else:
+                sleep(10 * attempt_count)
+                continue
 
         logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
 
         # Step 2. Convert to JSON.
+        crf_curie = HEALCDE_PREFIX + crf_id
+
         logging.info(f"  Converting {xlsx_file_path} to JSON ...")
-        json_data = convert_xlsx_to_json(xlsx_file_path)
+        json_data = convert_xlsx_to_json(xlsx_file_path, crf_curie)
         if not json_data:
             json_data = dict()
 
@@ -344,79 +494,172 @@ def heal_cde_repo_downloader(
         logging.info(f"Sorted files: {'; '.join(map(lambda f: f['url'], files))}")
 
         # Step 4. Convert JSON to KGX.
-        # Set up the KGX graph
-        graph = NxGraph()
         kgx_file_path = os.path.join(crf_dir, crf_id)  # Suffixes are added by the KGX tools.
-        comprehensive = process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+            # process_crf(graph, 'HEALCDE:' + crf_id, json_data, heal_cde_source, add_cde_count_to_description=add_cde_count_to_description)
+
+        # Now we have all the information we need to generate a Dug Data Model file for this CRF.
+        cdes = json_data['formElements'] if 'formElements' in json_data else []
+        count_cdes = len(cdes)
+        description = descriptions[0] if descriptions else ''
+        if len(description) == 0:
+            description = f"Contains {count_cdes} CDEs."
+        else:
+            description = f"{description} Contains {count_cdes} CDEs."
+
+        # Which studies have included this CRF?
+        study_mappings = crf_study_mappings.get(crf_curie, {})
+        heal_studies_for_crf = study_mappings.keys()
+        heal_studies_for_crf = sorted(map(lambda hdp_id: HDP_PREFIX + hdp_id, heal_studies_for_crf))
+
+        # Ironically, the best CRF name is part of the CDEs (at least when querying the HEAL CDE repository).
+        crf_names = []
+        for cde in cdes:
+            cde_id = cde['id']
+            if cde_id not in crf_cde_pairs_emitted[crf_curie]:
+                crf_cde_pairs_emitted[crf_curie][cde_id] = []
+            crf_cde_pairs_emitted[crf_curie][cde_id].append(cde)
+
+            if 'metadata' in cde and 'crf_name' in cde['metadata']:
+                crf_names.append(cde['metadata']['crf_name'])
+
+            # Does this CDE have any mappings?
+            study_variable_mappings = collections.defaultdict(set)
+            for hdp_id in study_mappings:
+                for cde_name in study_mappings[hdp_id]:
+                    if cde_name == cde_id:
+                        study_variable_mappings[hdp_id].update(study_mappings[hdp_id][cde_name])
+            if study_variable_mappings:
+                cde['metadata']['study_variable_mappings'] = dict()
+                for hdp_id in study_variable_mappings:
+                    cde['metadata']['study_variable_mappings'][hdp_id] = sorted(study_variable_mappings[hdp_id])
+
+        crf_names.append(crf_id)
+
+        entries = []
+        entries.extend(cdes)
+
+        # Choose a best URL if one is present.
+        best_url = None
+        if len(files) > 0:
+            best_url = files[0]['url']
+
+        # Provide a list of URLs for export.
+        url_list = list(map(lambda f: {
+            'url': f['url'],
+            'filename': f['title'],
+            'lang': f['lang'],
+            'mime-type': f['mime-type'],
+            'description': get_url_description(f, cdes),
+            'drupal_id': f['row'].get('Media/File ID', None),
+        }, files))
+
+        # This should conform to a DugSection.
+        entries.append({
+            'type': 'section',      # We model this as a DugSection, containing DugVariables
+            'id': str(crf_curie),
+            'parents': heal_studies_for_crf,
+            'crf_id': str(crf_id),
+            'name': str(crf_names[0]),
+            'description': str(description),
+            'action': best_url,
+            'is_crf': True,
+            'variable_list': list(map(lambda cde: str(cde['id']), cdes)), # Should just be the variable IDs.
+            'metadata': {
+                'categories': sorted(categories),
+                'urls': url_list,
+                'study_mappings': study_mappings,
+            }
+        })
+
+        with open(kgx_file_path + '.dug.json', 'w') as jsonf:
+            count_json += 1
+            json.dump(entries, jsonf, indent=2)
 
         # Let's write out the comprehensive file somewhere.
         with open(kgx_file_path + '.json', 'w') as jsonf:
             json.dump({
-                '': comprehensive
+                'filename': kgx_file_path + '.json',
+                'json_data': json_data,
             }, jsonf, indent=2)
 
-        # Add files. To do this, we'll provide references to URLs to the CDE, and then later provide metadata about those URLs
-        # directly in the graph.
-        if export_files_as_nodes:
-            graph.add_node_attribute('HEALCDE:' + crf_id, 'has_download', list(map(lambda x: x['url'], files)))
+    logging.info(f"Downloaded {count_xlsx} XLSX files to produce {count_json} JSON files.")
 
-        # Create nodes for each download.
-        files_urls = list()
-        files_by_lang = collections.defaultdict(list)
-        for file in files:
-            url = file['url']
+    # Let's write out a bunch of reports.
+    report_dir = os.path.join(output, "reports")
+    os.makedirs(report_dir)
 
-            if export_files_as_nodes:
-                graph.add_node(url)
-                graph.add_node_attribute(url, 'category', ['biolink:WebPage'])
-                graph.add_node_attribute(url, 'language', file['lang'])
-                graph.add_node_attribute(url, 'format', file['mime-type'])
-                graph.add_node_attribute(url, 'description', file['description'])
-                graph.add_node_attribute(url, 'provided_by', heal_cde_source)
-            else:
-                files_urls.append(url)
-                files_by_lang[file['lang']].append(url)
+    # Report 1. Write out a summary of all the HDP IDs we've written out.
+    # TODO
 
-        if not export_files_as_nodes:
-            graph.add_node_attribute('HEALCDE:' + crf_id, 'files', list(files_urls))
-            for lang in files_by_lang:
-                graph.add_node_attribute('HEALCDE:' + crf_id, f"files-{lang}", list(files_by_lang[lang]))
+    # Report 2. All study/CRF mappings, with source information.
+    crf_usage_by_study = collections.defaultdict(dict)
+    for crf_id in crf_study_mappings:
+        for hdp_id in crf_study_mappings[crf_id]:
+            crf_usage_by_study[hdp_id][crf_id] = crf_study_mappings[crf_id][hdp_id]
 
-        # Step 5. Add studies.
-        for study_mappings in map(lambda f: f['studies'], files):
-            for (hdp_id, sources) in study_mappings.items():
-                # Create the HEAL CDE STUDY mapping edges.
-                heal_cde_study_mapping_edge_count += 1
-                edge_id = f'HEALCDESTUDYMAPPING:edge_{heal_cde_study_mapping_edge_count}'
-                graph.add_edge('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate', 'HEALCDESTUDYMAPPING:crf_used_by_study')
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'predicate_label', 'HEAL CRF used by HEAL study')
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'subject', 'HEALCDE:' + crf_id)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'object', 'HEALDATAPLATFORM:' + hdp_id)
+    study_crf_mappings_report = os.path.join(report_dir, "study-crf-mappings.csv")
+    with open(study_crf_mappings_report, "w") as fout:
+        writer = csv.DictWriter(fout, [
+            'hdp_id',
+            'crf_id',
+            'sources'
+        ])
+        writer.writeheader()
 
-                # Source/provenance information.
-                sources = [source for source in sources]
-                data_sources = list(map(lambda s: s['data_source'], sources))
-                study_names = list(map(lambda s: s['study_name'], sources))
-                filenames = list(map(lambda s: s['filename'], sources))
+        count_mappings = 0
+        for hdp_id in sorted(crf_usage_by_study.keys()):
+            for crf_id in sorted(crf_usage_by_study[hdp_id].keys()):
+                sources = sorted(map(str, crf_usage_by_study[hdp_id][crf_id].get("_sources", [])))
 
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'sources', data_sources + filenames + study_names)
-                graph.add_edge_attribute('HEALCDE:' + crf_id, 'HEALDATAPLATFORM:' + hdp_id, edge_id, 'knowledge_source', data_sources[0])
+                writer.writerow({
+                    'hdp_id': hdp_id,
+                    'crf_id': crf_id,
+                    'sources': "||".join(sources)
+                })
+                count_mappings += 1
 
-                # Create the HEAL CDE node.
-                graph.add_node('HEALDATAPLATFORM:' + hdp_id)
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'name', study_names[0])
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'url', 'https://healdata.org/portal/discovery/' + hdp_id)
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'category', ['biolink:Study'])
-                graph.add_node_attribute('HEALDATAPLATFORM:' + hdp_id, 'provided_by', data_sources)
+        logging.info(f"Wrote out {count_mappings} to {study_crf_mappings_report}.")
 
-        # Step 5. Write KGX files.
-        t = Transformer()
-        t.process(
-            source=graph_source.GraphSource(owner=t).parse(graph),
-            sink=jsonl_sink.JsonlSink(owner=t, filename=kgx_file_path)
-        )
 
+    # Report 3. All variable/CDE mappings, with source information.
+    study_cde_mappings_report = os.path.join(report_dir, "study-cde-mappings.csv")
+    with open(study_cde_mappings_report, "w") as fout:
+        writer = csv.DictWriter(fout, [
+            'hdp_id',
+            'crf_id',
+            'cde_name',
+            'emitted',
+            'variable_names',
+            'sources'
+        ])
+        writer.writeheader()
+
+        count_mappings = 0
+        for hdp_id in sorted(crf_usage_by_study.keys()):
+            for crf_id in sorted(crf_usage_by_study[hdp_id].keys()):
+                sources = sorted(map(str, crf_usage_by_study[hdp_id][crf_id].get("_sources", [])))
+
+                for cde_name in sorted(crf_usage_by_study[hdp_id][crf_id].keys()):
+                    if cde_name == "_sources":
+                        continue
+
+                    flag_emitted = False
+                    if crf_id in crf_cde_pairs_emitted and cde_name in crf_cde_pairs_emitted[crf_id]:
+                        flag_emitted = True
+                    else:
+                        logging.warning(f"No mappings emitted for CDE {cde_name} in {crf_id}: this CDE name probably doesn't exist in this CRF file.")
+
+                    writer.writerow({
+                        'hdp_id': hdp_id,
+                        'crf_id': crf_id,
+                        'cde_name': cde_name,
+                        'emitted': flag_emitted,
+                        'variable_names': ", ".join(crf_usage_by_study[hdp_id][crf_id][cde_name]),
+                        'sources': "||".join(sources)
+                    })
+                    count_mappings += 1
+
+        logging.info(f"Wrote out {count_mappings} to {study_cde_mappings_report}.")
 
 # Run heal_cde_repo_downloader() if not used as a library.
 if __name__ == "__main__":

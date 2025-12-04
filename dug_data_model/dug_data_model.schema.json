@@ -1,0 +1,567 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "definitions": {
+    "DugSection": {
+      "$defs": {
+        "DugConcept": {
+          "properties": {
+            "id": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            },
+            "description": {
+              "title": "Description",
+              "type": "string"
+            },
+            "type": {
+              "default": "concept",
+              "title": "Type",
+              "type": "string"
+            },
+            "program_name_list": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Program Name List",
+              "type": "array"
+            },
+            "action": {
+              "default": "",
+              "title": "Action",
+              "type": "string"
+            },
+            "parents": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Parents",
+              "type": "array"
+            },
+            "parent_type": {
+              "default": "",
+              "title": "Parent Type",
+              "type": "string"
+            },
+            "concepts": {
+              "additionalProperties": {
+                "$ref": "#/$defs/DugConcept"
+              },
+              "title": "Concepts",
+              "type": "object"
+            },
+            "search_terms": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Search Terms",
+              "type": "array"
+            },
+            "optional_terms": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Optional Terms",
+              "type": "array"
+            },
+            "metadata": {
+              "title": "Metadata",
+              "type": "object"
+            },
+            "identifiers": {
+              "title": "Identifiers",
+              "type": "object"
+            },
+            "kg_answers": {
+              "title": "Kg Answers",
+              "type": "object"
+            },
+            "concept_type": {
+              "default": "",
+              "title": "Concept Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "description"
+          ],
+          "title": "DugConcept",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "type": {
+          "default": "section",
+          "title": "Type",
+          "type": "string"
+        },
+        "program_name_list": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Program Name List",
+          "type": "array"
+        },
+        "action": {
+          "default": "",
+          "title": "Action",
+          "type": "string"
+        },
+        "parents": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Parents",
+          "type": "array"
+        },
+        "parent_type": {
+          "default": "",
+          "title": "Parent Type",
+          "type": "string"
+        },
+        "concepts": {
+          "additionalProperties": {
+            "$ref": "#/$defs/DugConcept"
+          },
+          "title": "Concepts",
+          "type": "object"
+        },
+        "search_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Search Terms",
+          "type": "array"
+        },
+        "optional_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Optional Terms",
+          "type": "array"
+        },
+        "metadata": {
+          "title": "Metadata",
+          "type": "object"
+        },
+        "is_standardized": {
+          "default": false,
+          "title": "Is Standardized",
+          "type": "boolean"
+        },
+        "variable_list": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Variable List",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ],
+      "title": "DugSection",
+      "type": "object"
+    },
+    "DugVariable": {
+      "$defs": {
+        "DugConcept": {
+          "properties": {
+            "id": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            },
+            "description": {
+              "title": "Description",
+              "type": "string"
+            },
+            "type": {
+              "default": "concept",
+              "title": "Type",
+              "type": "string"
+            },
+            "program_name_list": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Program Name List",
+              "type": "array"
+            },
+            "action": {
+              "default": "",
+              "title": "Action",
+              "type": "string"
+            },
+            "parents": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Parents",
+              "type": "array"
+            },
+            "parent_type": {
+              "default": "",
+              "title": "Parent Type",
+              "type": "string"
+            },
+            "concepts": {
+              "additionalProperties": {
+                "$ref": "#/$defs/DugConcept"
+              },
+              "title": "Concepts",
+              "type": "object"
+            },
+            "search_terms": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Search Terms",
+              "type": "array"
+            },
+            "optional_terms": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Optional Terms",
+              "type": "array"
+            },
+            "metadata": {
+              "title": "Metadata",
+              "type": "object"
+            },
+            "identifiers": {
+              "title": "Identifiers",
+              "type": "object"
+            },
+            "kg_answers": {
+              "title": "Kg Answers",
+              "type": "object"
+            },
+            "concept_type": {
+              "default": "",
+              "title": "Concept Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "description"
+          ],
+          "title": "DugConcept",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "type": {
+          "default": "variable",
+          "title": "Type",
+          "type": "string"
+        },
+        "program_name_list": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Program Name List",
+          "type": "array"
+        },
+        "action": {
+          "default": "",
+          "title": "Action",
+          "type": "string"
+        },
+        "parents": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Parents",
+          "type": "array"
+        },
+        "parent_type": {
+          "default": "",
+          "title": "Parent Type",
+          "type": "string"
+        },
+        "concepts": {
+          "additionalProperties": {
+            "$ref": "#/$defs/DugConcept"
+          },
+          "title": "Concepts",
+          "type": "object"
+        },
+        "search_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Search Terms",
+          "type": "array"
+        },
+        "optional_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Optional Terms",
+          "type": "array"
+        },
+        "metadata": {
+          "title": "Metadata",
+          "type": "object"
+        },
+        "data_type": {
+          "default": "text",
+          "title": "Data Type",
+          "type": "string"
+        },
+        "is_standardized": {
+          "default": false,
+          "title": "Is Standardized",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ],
+      "title": "DugVariable",
+      "type": "object"
+    },
+    "DugStudy": {
+      "$defs": {
+        "DugConcept": {
+          "properties": {
+            "id": {
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            },
+            "description": {
+              "title": "Description",
+              "type": "string"
+            },
+            "type": {
+              "default": "concept",
+              "title": "Type",
+              "type": "string"
+            },
+            "program_name_list": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Program Name List",
+              "type": "array"
+            },
+            "action": {
+              "default": "",
+              "title": "Action",
+              "type": "string"
+            },
+            "parents": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Parents",
+              "type": "array"
+            },
+            "parent_type": {
+              "default": "",
+              "title": "Parent Type",
+              "type": "string"
+            },
+            "concepts": {
+              "additionalProperties": {
+                "$ref": "#/$defs/DugConcept"
+              },
+              "title": "Concepts",
+              "type": "object"
+            },
+            "search_terms": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Search Terms",
+              "type": "array"
+            },
+            "optional_terms": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Optional Terms",
+              "type": "array"
+            },
+            "metadata": {
+              "title": "Metadata",
+              "type": "object"
+            },
+            "identifiers": {
+              "title": "Identifiers",
+              "type": "object"
+            },
+            "kg_answers": {
+              "title": "Kg Answers",
+              "type": "object"
+            },
+            "concept_type": {
+              "default": "",
+              "title": "Concept Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "description"
+          ],
+          "title": "DugConcept",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "type": {
+          "default": "study",
+          "title": "Type",
+          "type": "string"
+        },
+        "program_name_list": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Program Name List",
+          "type": "array"
+        },
+        "action": {
+          "default": "",
+          "title": "Action",
+          "type": "string"
+        },
+        "parents": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Parents",
+          "type": "array"
+        },
+        "parent_type": {
+          "default": "",
+          "title": "Parent Type",
+          "type": "string"
+        },
+        "concepts": {
+          "additionalProperties": {
+            "$ref": "#/$defs/DugConcept"
+          },
+          "title": "Concepts",
+          "type": "object"
+        },
+        "search_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Search Terms",
+          "type": "array"
+        },
+        "optional_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Optional Terms",
+          "type": "array"
+        },
+        "metadata": {
+          "title": "Metadata",
+          "type": "object"
+        },
+        "publications": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Publications",
+          "type": "array"
+        },
+        "variable_list": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Variable List",
+          "type": "array"
+        },
+        "abstract": {
+          "default": "",
+          "title": "Abstract",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ],
+      "title": "DugStudy",
+      "type": "object"
+    }
+  },
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/definitions/DugSection"
+      },
+      {
+        "$ref": "#/definitions/DugVariable"
+      },
+      {
+        "$ref": "#/definitions/DugStudy"
+      }
+    ]
+  }
+}

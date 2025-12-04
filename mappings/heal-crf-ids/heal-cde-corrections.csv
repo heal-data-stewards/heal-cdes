@@ -1,0 +1,20 @@
+crf_id,cde_name_incorrect,cde_name_correct,notes
+HEALCDE:bpi-pain-severity,BPIAvgPain7dRtngScale,BPIAvgPainRatingScl,"In this form, BPIAvgPainRatingScl is actually for the last 24 hours, not 24 hours."
+HEALCDE:bpi-pain-severity,BPILstPain7dRtngScale,BPILeastPainRatingScl,"In this form, BPILeastPainRatingScl is for the last 24 hours, not 7 days."
+HEALCDE:generalized-anxiety-disorder-7,GAD2FeelNervScale,GAD2FeelNervScl,"GAD2 variables found in GAD7, but it's spelled differently here."
+HEALCDE:generalized-anxiety-disorder-7,GAD2NotStopWryScale,GAD2NotStopWryScl,"GAD2 variables found in GAD7, but it's spelled differently here."
+HEALCDE:generalized-anxiety-disorder-7,PHQDiffcltyPerfScl,SKIP,This just seems to be incorrect.
+HEALCDE:pcs-parent,PCSCWorryPainEndScale,PCSPWorryPainEndScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCWantPainStopScale,PCSPWantPainStopScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCSeriousHappenScale,PCSPSeriousHappenScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCPainWorsenScale,PCSPPainWorsenScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCPainOutOfMindScale,PCSPPainOutOfMindScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCPainGoAwayScale,PCSPPainGoAwayScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCOthrPainEventScale,PCSPOthrPainEventScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCNothingCanDoScale,PCSPNothingCanDoScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCNeverGetBetterScale,PCSPNeverGetBetterScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCCantStandPainScale,PCSPCantStandPainScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:pcs-parent,PCSCCantGoOnScale,PCSPCantGoOnScale,"PCSC refers to pcs-child, not pcs-parent"
+HEALCDE:adult-demographics,ETHNIC,SKIP,Multiple ethnic fields in adult-demographics
+HEALCDE:gad2,GAD2NotStopWryScl,GAD2NotStopWryScale,"GAD7 variables found in GAD2, but it's spelled differently here."
+HEALCDE:adult-demographics,EDULEVELspouse,SKIP,No such field
