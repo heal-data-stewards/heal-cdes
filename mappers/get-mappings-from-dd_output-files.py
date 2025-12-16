@@ -164,7 +164,7 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
             continue
 
         # Any commas in crf_names?
-        logging.info(f"Found {crf_names} in {xlsx_filename}.")
+        logging.debug(f"Found {crf_names} in {xlsx_filename}.")
         if ',' not in crf_names:
             crf_names = [crf_names]
         else:
