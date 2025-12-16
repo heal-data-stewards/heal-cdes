@@ -555,13 +555,13 @@ def heal_cde_repo_downloader(
 
         # Dug would prefer that we don't include the HDP_PREFIX and HEALCDE_PREFIX, so we strip them out here.
         id_without_prefix = str(crf_curie)
-        if id_without_prefix.startswith(HDP_PREFIX):
-            id_without_prefix = id_without_prefix[len(HDP_PREFIX):]
+        if id_without_prefix.startswith(HEALCDE_PREFIX):
+            id_without_prefix = id_without_prefix[len(HEALCDE_PREFIX):]
 
         heal_studies_without_prefix = []
         for hdp_id in heal_studies_for_crf:
-            if hdp_id.startswith(HEALCDE_PREFIX):
-                heal_studies_without_prefix.append(hdp_id[len(HEALCDE_PREFIX):])
+            if hdp_id.startswith(HDP_PREFIX):
+                heal_studies_without_prefix.append(hdp_id[len(HDP_PREFIX):])
             else:
                 heal_studies_without_prefix.append(hdp_id)
 
