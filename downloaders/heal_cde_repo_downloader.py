@@ -553,11 +553,23 @@ def heal_cde_repo_downloader(
             'drupal_id': f['row'].get('Media/File ID', None),
         }, files))
 
+        # Dug would prefer that we don't include the HDP_PREFIX and HEALCDE_PREFIX, so we strip them out here.
+        id_without_prefix = str(crf_curie)
+        if id_without_prefix.startswith(HEALCDE_PREFIX):
+            id_without_prefix = id_without_prefix[len(HEALCDE_PREFIX):]
+
+        heal_studies_without_prefix = []
+        for hdp_id in heal_studies_for_crf:
+            if hdp_id.startswith(HDP_PREFIX):
+                heal_studies_without_prefix.append(hdp_id[len(HDP_PREFIX):])
+            else:
+                heal_studies_without_prefix.append(hdp_id)
+
         # This should conform to a DugSection.
         entries.append({
             'type': 'section',      # We model this as a DugSection, containing DugVariables
-            'id': str(crf_curie),
-            'parents': heal_studies_for_crf,
+            'id': id_without_prefix,
+            'parents': heal_studies_without_prefix,
             'crf_id': str(crf_id),
             'name': str(crf_names[0]),
             'description': str(description),
