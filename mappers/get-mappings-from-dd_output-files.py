@@ -326,7 +326,7 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
                 logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_ids} (from path Path({file_path})')
                 mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids))
             else:
-                logging.info(f"Ignoring non-candidate file {file_path}")
+                logging.debug(f"Ignoring non-candidate file {file_path}")
                 count_candidate_files_without_metadata += 1
 
     logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
