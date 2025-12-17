@@ -8,9 +8,9 @@
 
 # CONFIGURATION
 # These will be updated every time this script is run.
-OUTPUT_DIR = ./output-2025dec16
+OUTPUT_DIR = ./output-2025dec17
 MAPPINGS_DIR = ./mappings
-HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2025-10-16T142745/HEAL_CDE_data.csv
+HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2025-12-01T130102/Heal_CDE_data.csv
 HEAL_CDE_STUDY_HDPID_MAPPING_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv
 HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE=mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv
 
