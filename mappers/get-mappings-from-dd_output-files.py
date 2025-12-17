@@ -298,7 +298,7 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
 
                 # Figure out an HDP ID.
                 parent_name = file_path.parent.name
-                if re.fullmatch('^HDP\d+$', parent_name):
+                if re.fullmatch(r'^HDP\d+$', parent_name):
                     # We're in the HEAL CDE Mappings repository.
                     hdp_ids = {file_path.parent.name}
                 elif parent_name.lower() == 'cdes':
