@@ -213,7 +213,8 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
             crf_ids = list(filter(lambda x: x, map(lambda x: x.get('HEAL CDE CURIE', '').strip(), name_to_crf_ids.get(crf_name, []))))
 
             if not crf_ids:
-                raise RuntimeError(f"Could not find any CRF IDs for '{crf_name}' in {xlsx_filename} -- please add them to {crf_id_filename}.")
+                # TODO: raise exception
+                logging.error(f"Could not find any CRF IDs for '{crf_name}' in {xlsx_filename} -- please add them to {crf_id_filename}.")
 
             if len(crf_ids) == 1 and crf_ids[0] == 'NA':
                 # We don't have a mapping for this CRF yet -- skip it.
