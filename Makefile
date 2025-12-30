@@ -42,23 +42,27 @@ clean:
 # MAPPING SOURCE 1.1: the dd_output files in the HEAL Data Dictionaries
 $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv: $(HEAL_DATA_DICTIONARIES_DIR) $(HEAL_CRF_ID_CSV)
 	mkdir -p $(MAPPINGS_DIR)/heal-data-dictionaries-mappings
-	${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o $@ --crf-id-file $(HEAL_CRF_ID_CSV)
+	${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o "$@.tmp" --crf-id-file $(HEAL_CRF_ID_CSV)
+	mv "$@.tmp" $@
 
 
 # MAPPING SOURCE 1.2: the study/CRF and variable/CDE files in the HEAL CDE Mappings
 $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv: $(HEAL_CDE_MAPPINGS) $(HEAL_CRF_ID_CSV)
 	mkdir -p $(MAPPINGS_DIR)/heal-data-dictionaries-mappings
-	${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o $@ --crf-id-file $(HEAL_CRF_ID_CSV)
+	${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o "$@.tmp" --crf-id-file $(HEAL_CRF_ID_CSV)
+	mv "$@.tmp" $@
 
 # MAPPING SOURCE 2: the mappings from the latest HEAL CDE team REDCap export.
 $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv: $(HEAL_CDE_EXPORT_FILE) $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE)
 	mkdir -p $(MAPPINGS_DIR)/study-crf-mappings
-	${PYTHON} study-mappings/extract-study-mappings-from-heal-cde-team-export.py $< --study-to-hdpid $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE) --measure-to-heal-cde-id $(HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE) > $@
+	${PYTHON} study-mappings/extract-study-mappings-from-heal-cde-team-export.py $< --study-to-hdpid $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE) --measure-to-heal-cde-id $(HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE) > "$@.tmp"
+	mv "$@.tmp" $@
 
 # MAPPING SOURCE 3: the mappings from the HEAL MDS
 $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv: $(HEAL_CRF_ID_CSV)
 	mkdir -p $(MAPPINGS_DIR)/platform-mds-mappings
-	${PYTHON} study-mappings/download-study-mappings-from-platform-mds.py --mappings $(HEAL_CRF_ID_CSV) > $@
+	${PYTHON} study-mappings/download-study-mappings-from-platform-mds.py --mappings $(HEAL_CRF_ID_CSV) > "$@.tmp"
+	mv "$@.tmp" $@
 
 # STEP 2. Download data dictionaries.
 $(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
