@@ -251,7 +251,7 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
             continue
 
         if project_number not in project_number_to_hdp_id:
-            raise RuntimeError(f"Project '{project_number}' is missing from the study to HDP ID mappings.")
+            raise RuntimeError(f"Project '{project_number}' is missing from the study to HDP ID mappings. Please add to {study_to_hdpid_path}.")
 
         for crf_name in project_crfs[project_number]["crfs"]:
             if crf_name in crf_to_heal_cde_id:
@@ -261,7 +261,7 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
                 heal_crf_id = HEAL_CDE_PREFIX + header_crf_mappings[crf_name]
                 mapping_source = "Internal header_crf_mappings column mappings"
             else:
-                raise RuntimeError(f"CRF '{crf_name}' is missing from the measure to HEAL CDE ID mappings.")
+                raise RuntimeError(f"CRF '{crf_name}' is missing from the measure to HEAL CDE ID mappings. Please add to {measure_to_heal_cde_id_path}.")
 
             if heal_crf_id == HEAL_CDE_PREFIX + 'NA':
                 # NA! Ignore.
