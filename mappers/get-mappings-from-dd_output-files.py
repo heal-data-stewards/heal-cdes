@@ -88,7 +88,7 @@ class StudyCRFMapping:
     variable_name: str
     mapped_variable_names: set[str]
 
-def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_crf_ids) -> list[StudyCRFMapping]:
+def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_crf_ids, crf_id_filename) -> list[StudyCRFMapping]:
     """
     Extract mappings from a DD_output-formatted XLSX file.
 
@@ -213,8 +213,7 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
             crf_ids = list(filter(lambda x: x, map(lambda x: x.get('HEAL CDE CURIE', '').strip(), name_to_crf_ids.get(crf_name, []))))
 
             if not crf_ids:
-                # TODO: raise exception
-                logging.error(f"Could not find any CRF IDs for '{crf_name}' in {xlsx_filename}.")
+                raise RuntimeError(f"Could not find any CRF IDs for '{crf_name}' in {xlsx_filename} -- please add them to {crf_id_filename}.")
 
             if len(crf_ids) == 1 and crf_ids[0] == 'NA':
                 # We don't have a mapping for this CRF yet -- skip it.
@@ -324,7 +323,7 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
                             hdp_ids.add(hdp_id)
 
                 logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_ids} (from path Path({file_path})')
-                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids))
+                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids, crf_id_file.name))
             else:
                 logging.debug(f"Ignoring non-candidate file {file_path}")
                 count_candidate_files_without_metadata += 1
