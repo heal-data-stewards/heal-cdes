@@ -203,7 +203,17 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
         data_type = 'date'
     elif row_data_type in {'time'}:
         data_type = 'time'
-    elif row_data_type in {'numeric values', 'numericvalues', 'numeric', 'numeric (calculated)', ''}:
+    elif row_data_type in {
+        'numeric values',
+        'numericvalues',
+        'numeric',
+        # Calculated values.
+        'numeric (calculated)',
+        'calculated as the sum of all responses',
+        'derived using the tables in the user manual or by using automated software (e.g. healthmeasures or redcap)',
+        # No type provided
+        ''
+    }:
         # Is this an enumerated type?
         if not enum_values:
             data_type = 'number'
