@@ -659,7 +659,8 @@ def heal_cde_repo_downloader(
                     if crf_id in crf_cde_pairs_emitted and cde_name in crf_cde_pairs_emitted[crf_id]:
                         flag_emitted = True
                     else:
-                        logging.warning(f"No mappings emitted for CDE {cde_name} in {crf_id}: this CDE name probably doesn't exist in this CRF file.")
+                        correction_files = list(map(lambda c: c.name, heal_cde_corrections))
+                        logging.warning(f"No mappings emitted for CDE {cde_name} in {crf_id}: this CDE name probably doesn't exist in this CRF file. You should add it to one of the correction files: {correction_files}.")
 
                     writer.writerow({
                         'hdp_id': hdp_id,
