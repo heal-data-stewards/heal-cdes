@@ -168,13 +168,77 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
         enum_values.append(value)
 
         description = pv.get('description', '').strip()
-        if description.startswith(value + ' = '):
-            # If the description includes the value, remove them.
+
+        # If the description includes the value, remove them.
+        if description.startswith(value + ' = ') or description.startswith(value + ' - '):
             description = description[len(str(value)) + 3:]
+        elif description.startswith(value + '= '):
+            description = description[len(str(value)) + 2:]
+        elif description.startswith(value + '='):
+            description = description[len(str(value)) + 1:]
+
 
         if description:
             # Don't write out a description if it's empty.
             permissible_values[value] = description
+
+    # Figure out minimum and maximum values if possible.
+    min_value = None
+    max_value = None
+    if len(enum_values) == 1 and 'to' in enum_values[0]:
+        range = re.match(r'^(\d+) to (\d+)$', enum_values[0])
+        if range:
+            min_value = int(range.group(1))
+            max_value = int(range.group(2))
+
+    # Figure out the data type.
+    row_data_type = row.get('Data Type').lower().strip()
+    data_type = 'string'
+    if row_data_type in {'alphanumeric values.', 'alphanumeric'}:
+        # We don't have a specific alphanumeric value, so let's go with string.
+        data_type = 'string'
+    elif row_data_type in {'free text', 'free-form entry'}:
+        data_type = 'string'
+    elif row_data_type in {'date'}:
+        data_type = 'date'
+    elif row_data_type in {'time'}:
+        data_type = 'time'
+    elif row_data_type in {'numeric values', 'numericvalues', 'numeric', 'numeric (calculated)', ''}:
+        # Is this an enumerated type?
+        if not enum_values:
+            data_type = 'number'
+        else:
+            # Check if every value in enum_values is an integer.
+            if all(map(lambda x: x.isdigit(), enum_values)):
+                data_type = 'integer'
+            else:
+                data_type = 'number'
+    else:
+        raise ValueError(f"Unknown data type '{row_data_type}' in {row} in CRF {crf_curie}")
+
+    # Compile metadata, including optional values.
+    metadata = {
+        'short_description': str(row.get('Short Description')),
+        'crf_name': str(row.get('CRF Name')),
+        'question_text': str(row.get('Additional Notes (Question Text)')),
+        'references': str(row.get('Disease Specific References')),
+
+        # These fields get interpreted as numeric values by ElasticSearch, so we need to stop producing them
+        # until we actually need them.
+        # 'question_number': str(row.get('CRF Question #')),
+    }
+    if enum_values:
+        metadata['enum'] = enum_values
+    if permissible_values:
+        metadata['permissible_values'] = permissible_values
+    if min_value:
+        metadata['minimum'] = min_value
+    if max_value:
+        metadata['maximum'] = max_value
+
+    disease_specific_instructions = str(row.get('Disease Specific Instructions')).strip()
+    if disease_specific_instructions is not None and disease_specific_instructions != '':
+        metadata['instructions'] = disease_specific_instructions
 
     # Should conform to DugVariable
     form_element = {
@@ -182,30 +246,13 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
         'id': str(element_id),
         'name': str(element_name),
         'description': str(element_description),
-        'data_type': 'text',
+        'data_type': data_type,
         'is_cde': True,
         'parents': [
             crf_curie
         ],
-        'metadata': {
-            'enum': enum_values,
-            'permissible_values': permissible_values,
-            'short_description': str(row.get('Short Description')),
-            'crf_name': str(row.get('CRF Name')),
-            'question_text': str(row.get('Additional Notes (Question Text)')),
-            'references': str(row.get('Disease Specific References')),
-
-            # These fields get interpreted as numeric values by ElasticSearch, so we need to stop producing them
-            # until we actually need them.
-            # 'question_number': str(row.get('CRF Question #')),
-        },
+        'metadata': metadata,
     }
-
-    # if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
-    #     form_element['instructions'] = {
-    #         'value': row.get('Disease Specific Instructions'),
-    #         'valueFormat': 'text'
-    #     }
 
     return form_element
 
