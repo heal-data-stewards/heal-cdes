@@ -240,13 +240,16 @@ def heal_cde_repo_downloader(
     heal_cde_download_time = datetime.datetime.now(datetime.timezone.utc)
     heal_cde_source = f'HEAL CDE Repository, downloaded at {heal_cde_download_time}'
 
-    logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download} at {heal_cde_download_time}.")
-    result = requests.get(heal_cde_csv_download)
-    if not result.ok:
-        raise RuntimeError(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
+    if not heal_cde_csv:
+        logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download} at {heal_cde_download_time}.")
+        result = requests.get(heal_cde_csv_download)
+        if not result.ok:
+            raise RuntimeError(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
 
-    heal_cde_csv = result.text
-    heal_cde_csv_reader = csv.DictReader(heal_cde_csv.splitlines())
+        heal_cde_csv = result.text
+        heal_cde_csv_reader = csv.DictReader(heal_cde_csv.splitlines())
+    else:
+        heal_cde_csv_reader = csv.DictReader(heal_cde_csv)
 
     heal_cde_entries = collections.defaultdict(list)
     for row in heal_cde_csv_reader:
