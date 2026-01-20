@@ -199,11 +199,14 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
         data_type = 'string'
     elif row_data_type in {'free text', 'free-form entry'}:
         data_type = 'string'
+    elif row_data_type in {'datetime'}:
+        data_type = 'datetime'
     elif row_data_type in {'date'}:
         data_type = 'date'
     elif row_data_type in {'time'}:
         data_type = 'time'
     elif row_data_type in {
+        'numeric value',
         'numeric values',
         'numerical values',
         'numericvalues',
