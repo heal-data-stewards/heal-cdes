@@ -247,6 +247,9 @@ def heal_cde_repo_downloader(
             raise RuntimeError(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
 
         heal_cde_csv = result.text
+        if len(heal_cde_csv) < 10:
+            raise RuntimeError(f"Downloaded CSV file from {heal_cde_csv_download} was near-empty ('{heal_cde_csv}'), please try again.")
+
         heal_cde_csv_reader = csv.DictReader(heal_cde_csv.splitlines())
     else:
         heal_cde_csv_reader = csv.DictReader(heal_cde_csv)

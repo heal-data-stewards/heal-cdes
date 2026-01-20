@@ -50,7 +50,7 @@ def get_value(row: dict[str, str], key: str):
     elif key == 'CDE Name':
         result = row.get('Data Element Name', '')
 
-    return result.strip()
+    return str(result).strip()
 
 
 def convert_permissible_values(row):
@@ -94,10 +94,11 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     #   - CRF Question #
 
     # Skip the CDISC warning line.
-    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.'):
+    crf_question_number = get_value(row, 'CRF Question #')
+    if crf_question_number.startswith('This CDE detail form is not CDISC compliant.') or crf_question_number.startswith("This CDE detail form\xa0is not CDISC compliant."):
         return None
 
-    if get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
+    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.') or get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
         return None
 
     definitions = []
@@ -194,12 +195,12 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     # Figure out the data type.
     row_data_type = row.get('Data Type').lower().strip()
     data_type = 'string'
-    if row_data_type in {'alphanumeric values.', 'alphanumeric'}:
+    if row_data_type in {'alphanumeric', 'alphanumeric values', 'alphanumeric values.', 'alphaumeric values'}:
         # We don't have a specific alphanumeric value, so let's go with string.
         data_type = 'string'
-    elif row_data_type in {'free text', 'free-form entry'}:
+    elif row_data_type in {'text', 'free text', 'free-form entry'}:
         data_type = 'string'
-    elif row_data_type in {'datetime'}:
+    elif row_data_type in {'datetime', 'date or date & time'}:
         data_type = 'datetime'
     elif row_data_type in {'date'}:
         data_type = 'date'
