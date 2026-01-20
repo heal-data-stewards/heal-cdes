@@ -156,6 +156,26 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
 
         raise ValueError(f"Found Excel row missing element_id ('Variable Name'): {row}")
 
+    # For the Dug Data model, we should split up the permissible values into a list of permissible values (`enum`)
+    # and mappings from values to strings (`permissible_values`).
+    permissible_values_list = convert_permissible_values(row)
+    enum_values = []
+    permissible_values = {}
+    for pv in permissible_values_list:
+        value = pv['value']
+        if value in enum_values:
+            logging.warning(f'Duplicate value {value} in permissible values for {element_name}')
+        enum_values.append(value)
+
+        description = pv.get('description', '').strip()
+        if description.startswith(value + ' = '):
+            # If the description includes the value, remove them.
+            description = description[len(str(value)) + 3:]
+
+        if description:
+            # Don't write out a description if it's empty.
+            permissible_values[value] = description
+
     # Should conform to DugVariable
     form_element = {
         'type': 'variable',
@@ -168,7 +188,8 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
             crf_curie
         ],
         'metadata': {
-            'permissible_values': convert_permissible_values(row),
+            'enum': enum_values,
+            'permissible_values': permissible_values,
             'short_description': str(row.get('Short Description')),
             'crf_name': str(row.get('CRF Name')),
             'question_text': str(row.get('Additional Notes (Question Text)')),
