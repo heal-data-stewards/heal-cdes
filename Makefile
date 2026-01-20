@@ -12,7 +12,7 @@ PYTHON = uv run python
 OUTPUT_DIR = ./output-2026jan20
 LOGFILE = "$(OUTPUT_DIR)/logs/log.txt"
 MAPPINGS_DIR = ./mappings
-HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2025-12-01T130102/Heal_CDE_data.csv
+HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv
 HEAL_CDE_STUDY_HDPID_MAPPING_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv
 HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE=mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv
 
@@ -56,38 +56,33 @@ $(LOGFILE):
 # MAPPING SOURCE 1.1: the dd_output files in the HEAL Data Dictionaries
 $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv: $(HEAL_DATA_DICTIONARIES_DIR) $(HEAL_CRF_ID_CSV) $(LOGFILE)
 	mkdir -p $(MAPPINGS_DIR)/heal-data-dictionaries-mappings
-	${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o "$@.tmp" --crf-id-file $(HEAL_CRF_ID_CSV) 2>&1 | tee -a $(LOGFILE)
-	mv "$@.tmp" $@
-
+	@set -o pipefail; ${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o "$@.tmp" --crf-id-file $(HEAL_CRF_ID_CSV) 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
 
 # MAPPING SOURCE 1.2: the study/CRF and variable/CDE files in the HEAL CDE Mappings
 $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv: $(HEAL_CDE_MAPPINGS) $(HEAL_CRF_ID_CSV) $(LOGFILE)
 	mkdir -p $(MAPPINGS_DIR)/heal-data-dictionaries-mappings
-	${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o "$@.tmp" --crf-id-file $(HEAL_CRF_ID_CSV) 2>&1 | tee -a $(LOGFILE)
-	mv "$@.tmp" $@
+	@set -o pipefail; ${PYTHON} mappers/get-mappings-from-dd_output-files.py $< -o "$@.tmp" --crf-id-file $(HEAL_CRF_ID_CSV) 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
 
 # MAPPING SOURCE 2: the mappings from the latest HEAL CDE team REDCap export.
 $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv: $(HEAL_CDE_EXPORT_FILE) $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE) $(LOGFILE)
 	mkdir -p $(MAPPINGS_DIR)/study-crf-mappings
-	${PYTHON} study-mappings/extract-study-mappings-from-heal-cde-team-export.py $< --study-to-hdpid $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE) --measure-to-heal-cde-id $(HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE) --output "$@.tmp" 2>&1 | tee -a $(LOGFILE)
-	mv "$@.tmp" $@
+	@set -o pipefail; ${PYTHON} study-mappings/extract-study-mappings-from-heal-cde-team-export.py $< --study-to-hdpid $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE) --measure-to-heal-cde-id $(HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE) --output "$@.tmp" 2>&1 | tee -a $(LOGFILE) \
+		&& mv "$@.tmp" $@
 
 # MAPPING SOURCE 3: the mappings from the HEAL MDS
 $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv: $(HEAL_CRF_ID_CSV) $(LOGFILE)
 	mkdir -p $(MAPPINGS_DIR)/platform-mds-mappings
-	${PYTHON} study-mappings/download-study-mappings-from-platform-mds.py --mappings $(HEAL_CRF_ID_CSV) --output "$@.tmp" 2>&1 | tee -a $(LOGFILE)
-	mv "$@.tmp" $@
+	@set -o pipefail; ${PYTHON} study-mappings/download-study-mappings-from-platform-mds.py --mappings $(HEAL_CRF_ID_CSV) --output "$@.tmp" 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
 
 # STEP 2. Download data dictionaries.
 $(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
 	mkdir -p $(OUTPUT_DIR)
-	PYTHONPATH=. ${PYTHON} downloaders/heal_cde_repo_downloader.py $(OUTPUT_DIR) \
+	PYTHONPATH=. set -o pipefail; ${PYTHON} downloaders/heal_cde_repo_downloader.py $(OUTPUT_DIR) \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv \
-		--cde-corrections $(MAPPINGS_DIR)/heal-crf-ids/heal-cde-corrections.csv | tee -a $(LOGFILE)
-	touch $@
+		--cde-corrections $(MAPPINGS_DIR)/heal-crf-ids/heal-cde-corrections.csv | tee -a $(LOGFILE) && touch $@
 
 # FINAL STEP: write out error and warning logs
 $(OUTPUT_DIR)/logs/warnings.txt: $(LOGFILE) $(OUTPUT_DIR)/download_done

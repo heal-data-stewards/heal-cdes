@@ -289,7 +289,7 @@ def extract_study_mappings(input_file, output, study_to_hdpid, measure_to_heal_c
     # Any errors? If so, abort.
     if flag_any_errors:
         output.truncate()
-        raise ValueError("Errors were found in the input file.")
+        raise RuntimeError("Errors were found in the input file.")
 
 
 if __name__ == "__main__":
