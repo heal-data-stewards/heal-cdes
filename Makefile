@@ -55,7 +55,7 @@ $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv: $(HEAL_CD
 # MAPPING SOURCE 2: the mappings from the latest HEAL CDE team REDCap export.
 $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv: $(HEAL_CDE_EXPORT_FILE) $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE)
 	mkdir -p $(MAPPINGS_DIR)/study-crf-mappings
-	${PYTHON} study-mappings/extract-study-mappings-from-heal-cde-team-export.py $< --study-to-hdpid $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE) --measure-to-heal-cde-id $(HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE) > "$@.tmp"
+	${PYTHON} study-mappings/extract-study-mappings-from-heal-cde-team-export.py $< --study-to-hdpid $(HEAL_CDE_STUDY_HDPID_MAPPING_FILE) --measure-to-heal-cde-id $(HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE) --output "$@.tmp"
 	mv "$@.tmp" $@
 
 # MAPPING SOURCE 3: the mappings from the HEAL MDS
