@@ -20,3 +20,4 @@ PedsQL Inventory,HEALCDE:pedsql-inventory,,PedsQL|PedsQL (Pediatric Quality of L
 Adolescent Sleep Wake Scale 10 (AWS-10) and Sleep pattern/duration items,HEALCDE:sleep-asws-pediatric,,SleepASWS
 NIDA ASSIST ADA modified Levels 1 and 2,HEALCDE:nida-assist-ada-modified-levels-1-2,HEALDATAPLATFORM:HDPCDE4871,NIDAL2 (NIDA Modified ASSIST L2)
 Pain Catastrophizing Scale - Child (PCS-C),HEALCDE:pcs-child,HEALDATAPLATFORM:HDPCDE4881,PCS Child
+Sleep Duration,HEALCDE:sleep-duration,HEALDATAPLATFORM:HDPCDE5061,Sleep Duration Pain

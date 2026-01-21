@@ -244,10 +244,12 @@ def heal_cde_repo_downloader(
         logging.info(f"Downloading HEAL CDE CSV file at {heal_cde_csv_download} at {heal_cde_download_time}.")
         result = requests.get(heal_cde_csv_download)
         if not result.ok:
-            logging.error(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
-            exit(1)
+            raise RuntimeError(f"Could not download {heal_cde_csv_download}: {result.status_code} {result.text}")
 
         heal_cde_csv = result.text
+        if len(heal_cde_csv) < 10:
+            raise RuntimeError(f"Downloaded CSV file from {heal_cde_csv_download} was near-empty ('{heal_cde_csv}'), please try again.")
+
         heal_cde_csv_reader = csv.DictReader(heal_cde_csv.splitlines())
     else:
         heal_cde_csv_reader = csv.DictReader(heal_cde_csv)
@@ -659,7 +661,8 @@ def heal_cde_repo_downloader(
                     if crf_id in crf_cde_pairs_emitted and cde_name in crf_cde_pairs_emitted[crf_id]:
                         flag_emitted = True
                     else:
-                        logging.warning(f"No mappings emitted for CDE {cde_name} in {crf_id}: this CDE name probably doesn't exist in this CRF file.")
+                        correction_files = list(map(lambda c: c.name, heal_cde_corrections))
+                        logging.warning(f"No mappings emitted for CDE {cde_name} in {crf_id}: this CDE name probably doesn't exist in this CRF file. You should add it to one of the correction files: {correction_files}.")
 
                     writer.writerow({
                         'hdp_id': hdp_id,

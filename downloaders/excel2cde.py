@@ -50,7 +50,7 @@ def get_value(row: dict[str, str], key: str):
     elif key == 'CDE Name':
         result = row.get('Data Element Name', '')
 
-    return result.strip()
+    return str(result).strip()
 
 
 def convert_permissible_values(row):
@@ -94,10 +94,11 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     #   - CRF Question #
 
     # Skip the CDISC warning line.
-    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.'):
+    crf_question_number = get_value(row, 'CRF Question #')
+    if crf_question_number.startswith('This CDE detail form is not CDISC compliant.') or crf_question_number.startswith("This CDE detail form\xa0is not CDISC compliant."):
         return None
 
-    if get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
+    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.') or get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
         return None
 
     definitions = []
@@ -156,35 +157,115 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
 
         raise ValueError(f"Found Excel row missing element_id ('Variable Name'): {row}")
 
+    # For the Dug Data model, we should split up the permissible values into a list of permissible values (`enum`)
+    # and mappings from values to strings (`permissible_values`).
+    permissible_values_list = convert_permissible_values(row)
+    enum_values = []
+    permissible_values = {}
+    for pv in permissible_values_list:
+        value = pv['value']
+        if value in enum_values:
+            logging.warning(f'Duplicate value {value} in permissible values for {element_name}')
+        enum_values.append(value)
+
+        description = pv.get('description', '').strip()
+
+        # If the description includes the value, remove them.
+        if description.startswith(value + ' = ') or description.startswith(value + ' - '):
+            description = description[len(str(value)) + 3:]
+        elif description.startswith(value + '= '):
+            description = description[len(str(value)) + 2:]
+        elif description.startswith(value + '='):
+            description = description[len(str(value)) + 1:]
+
+
+        if description:
+            # Don't write out a description if it's empty.
+            permissible_values[value] = description
+
+    # Figure out minimum and maximum values if possible.
+    min_value = None
+    max_value = None
+    if len(enum_values) == 1 and 'to' in enum_values[0]:
+        range = re.match(r'^(\d+) to (\d+)$', enum_values[0])
+        if range:
+            min_value = int(range.group(1))
+            max_value = int(range.group(2))
+
+    # Figure out the data type.
+    row_data_type = row.get('Data Type').lower().strip()
+    data_type = 'string'
+    if row_data_type in {'alphanumeric', 'alphanumeric values', 'alphanumeric values.', 'alphaumeric values'}:
+        # We don't have a specific alphanumeric value, so let's go with string.
+        data_type = 'string'
+    elif row_data_type in {'text', 'free text', 'free-form entry'}:
+        data_type = 'string'
+    elif row_data_type in {'datetime', 'date or date & time'}:
+        data_type = 'datetime'
+    elif row_data_type in {'date'}:
+        data_type = 'date'
+    elif row_data_type in {'time'}:
+        data_type = 'time'
+    elif row_data_type in {
+        'numeric value',
+        'numeric values',
+        'numerical values',
+        'numericvalues',
+        'numeric',
+        # Calculated values.
+        'numeric (calculated)',
+        # No type provided
+        ''
+    } or row_data_type.startswith('calculate') or row_data_type.startswith('derive'):
+        # Is this an enumerated type?
+        if not enum_values:
+            data_type = 'number'
+        else:
+            # Check if every value in enum_values is an integer.
+            if all(map(lambda x: x.isdigit(), enum_values)):
+                data_type = 'integer'
+            else:
+                data_type = 'number'
+    else:
+        raise ValueError(f"Unknown data type '{row_data_type}' in {row} in CRF {crf_curie}")
+
+    # Compile metadata, including optional values.
+    metadata = {
+        'short_description': str(row.get('Short Description')),
+        'crf_name': str(row.get('CRF Name')),
+        'question_text': str(row.get('Additional Notes (Question Text)')),
+        'references': str(row.get('Disease Specific References')),
+
+        # These fields get interpreted as numeric values by ElasticSearch, so we need to stop producing them
+        # until we actually need them.
+        # 'question_number': str(row.get('CRF Question #')),
+    }
+    if enum_values:
+        metadata['enum'] = enum_values
+    if permissible_values:
+        metadata['permissible_values'] = permissible_values
+    if min_value:
+        metadata['minimum'] = min_value
+    if max_value:
+        metadata['maximum'] = max_value
+
+    disease_specific_instructions = str(row.get('Disease Specific Instructions')).strip()
+    if disease_specific_instructions is not None and disease_specific_instructions != '':
+        metadata['instructions'] = disease_specific_instructions
+
     # Should conform to DugVariable
     form_element = {
         'type': 'variable',
         'id': str(element_id),
         'name': str(element_name),
         'description': str(element_description),
-        'data_type': 'text',
+        'data_type': data_type,
         'is_cde': True,
         'parents': [
             crf_curie
         ],
-        'metadata': {
-            'permissible_values': convert_permissible_values(row),
-            'short_description': str(row.get('Short Description')),
-            'crf_name': str(row.get('CRF Name')),
-            'question_text': str(row.get('Additional Notes (Question Text)')),
-            'references': str(row.get('Disease Specific References')),
-
-            # These fields get interpreted as numeric values by ElasticSearch, so we need to stop producing them
-            # until we actually need them.
-            # 'question_number': str(row.get('CRF Question #')),
-        },
+        'metadata': metadata,
     }
-
-    # if row.get('Disease Specific Instructions') is not None and row.get('Disease Specific Instructions') != '':
-    #     form_element['instructions'] = {
-    #         'value': row.get('Disease Specific Instructions'),
-    #         'valueFormat': 'text'
-    #     }
 
     return form_element
 

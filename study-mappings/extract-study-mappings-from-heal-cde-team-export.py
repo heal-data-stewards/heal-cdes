@@ -11,6 +11,7 @@ import csv
 import os
 import json
 import logging
+import sys
 from collections import defaultdict
 from importlib.metadata import requires
 
@@ -35,6 +36,7 @@ rows_by_record_id = defaultdict(list)
     dir_okay=False,
     allow_dash=True
 ))
+@click.option('--output', type=click.File('w'), default=sys.stdout)
 @click.option('--study-to-hdpid', required=True, type=click.Path(
     exists=True,
     file_okay=True,
@@ -45,7 +47,7 @@ rows_by_record_id = defaultdict(list)
     file_okay=True,
     dir_okay=False,
 ))
-def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
+def extract_study_mappings(input_file, output, study_to_hdpid, measure_to_heal_cde_id):
     input_path = click.format_filename(input_file)
     study_to_hdpid_path = click.format_filename(study_to_hdpid)
     measure_to_heal_cde_id_path = click.format_filename(measure_to_heal_cde_id)
@@ -231,9 +233,12 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
 
     logging.info(f'Found {count_crfs} CRFs ({len(unique_crf_names)} unique) listed for {len(project_crfs.keys())} projects.')
 
+    # Did we run into any errors in producing this output file?
+    flag_any_errors = False
+
     # Write it to stdout.
     writer = csv.DictWriter(
-        click.get_text_stream('stdout'),
+        output,
         fieldnames=[
             'project_number',
             'hdp_id',
@@ -251,7 +256,9 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
             continue
 
         if project_number not in project_number_to_hdp_id:
-            raise RuntimeError(f"Project '{project_number}' is missing from the study to HDP ID mappings.")
+            logging.error(f"Project '{project_number}' is missing from the study to HDP ID mappings. Please add to {study_to_hdpid_path}.")
+            flag_any_errors = True
+            continue
 
         for crf_name in project_crfs[project_number]["crfs"]:
             if crf_name in crf_to_heal_cde_id:
@@ -261,7 +268,9 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
                 heal_crf_id = HEAL_CDE_PREFIX + header_crf_mappings[crf_name]
                 mapping_source = "Internal header_crf_mappings column mappings"
             else:
-                raise RuntimeError(f"CRF '{crf_name}' is missing from the measure to HEAL CDE ID mappings.")
+                logging.error(f"CRF '{crf_name}' is missing from the measure to HEAL CDE ID mappings. Please add to {measure_to_heal_cde_id_path}.")
+                flag_any_errors = True
+                continue
 
             if heal_crf_id == HEAL_CDE_PREFIX + 'NA':
                 # NA! Ignore.
@@ -276,6 +285,11 @@ def extract_study_mappings(input_file, study_to_hdpid, measure_to_heal_cde_id):
                 'source': mapping_source,
                 'input_path': input_path,
             })
+
+    # Any errors? If so, abort.
+    if flag_any_errors:
+        output.truncate()
+        raise RuntimeError("Errors were found in the input file.")
 
 
 if __name__ == "__main__":
