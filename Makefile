@@ -87,8 +87,8 @@ $(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(MAPPINGS_
 # FINAL STEP: write out error and warning logs
 $(OUTPUT_DIR)/logs/warnings.txt: $(LOGFILE) $(OUTPUT_DIR)/download_done
 	@grep -i "warning" $< > $@ || true
-	echo "- Found $$(wc -l < $@) warnings during make."
+	@echo "- Found $$(wc -l < $@) warnings during make."
 
 $(OUTPUT_DIR)/logs/errors.txt: $(LOGFILE) $(OUTPUT_DIR)/download_done
 	@grep -i "error" $< > $@ || true
-	echo "- Found $$(wc -l < $@) errors during make."
+	@echo "- Found $$(wc -l < $@) errors during make."
