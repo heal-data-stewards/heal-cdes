@@ -424,53 +424,98 @@ def heal_cde_repo_downloader(
         # At the moment we only support a single XLSX file.
         xlsx_files = list(filter(lambda f: f['extension'] == '.xlsx', files))
         if len(xlsx_files) == 0:
-            logging.warning(f"{crf_id} contains no XLSX files, skipping.")
-            continue
+            logging.warning(f"{crf_id} contains no XLSX files, will try to download Word document instead.")
+            # Look for a DOCX file to download
+            docx_files = list(filter(lambda f: f['extension'] == '.docx', files))
+            if len(docx_files) == 0:
+                logging.warning(f"{crf_id} contains no XLSX or DOCX files, skipping.")
+                continue
+            
+            # Download the first DOCX file
+            docx_file = docx_files[0]
+            docx_file_url = docx_file['url']
+            
+            # Step 1. Download DOCX file.
+            attempt_count = 0
+            docx_file_path = os.path.join(crf_dir, 'crf.docx')
+            while True:
+                attempt_count += 1
+                logging.info(f"  Downloading DOCX file for {crf_id} from {docx_file_url} ... (attempt {attempt_count}/10)")
+                docx_file_req = requests.get(docx_file_url, stream=True)
+                if not docx_file_req.ok:
+                    logging.error(f"  COULD NOT DOWNLOAD {docx_file_url}: {docx_file_req.status_code} {docx_file_req.text}")
+                    continue
+
+                with open(docx_file_path, 'wb') as fd:
+                    for chunk in docx_file_req.iter_content(chunk_size=128):
+                        fd.write(chunk)
+
+                # Check if the file size of docx_file_path is 0.
+                if os.path.getsize(docx_file_path) >= 100:
+                    break
+
+                # We got a near-empty file! If attempt_count <= 10, we'll try again.
+                logging.error(f"  DOCX file for {crf_id} at {docx_file_path} is near empty, retrying.")
+                if attempt_count > 10:
+                    raise RuntimeError(f"Could not download DOCX file for {crf_id} from {docx_file_url} after 10 attempts.")
+                else:
+                    sleep(10 * attempt_count)
+                    continue
+
+            logging.info(f"  Downloaded {docx_file_url} to {docx_file_path}.")
+            
+            # Step 2. Create a minimal JSON structure (we can't parse Word docs like XLSX)
+            crf_curie = HEALCDE_PREFIX + crf_id
+            json_data = {
+                'formElements': [],  # No CDEs available from Word document
+                'source': 'word_document',
+                'word_document_path': docx_file_path
+            }
         elif len(xlsx_files) > 1:
             raise RuntimeError(
                 f"CRF {crf_id} contains more than one XLSX file, which is not currently supported: {xlsx_files}"
             )
+        else:
+            xlsx_file = xlsx_files[0]
+            xlsx_file_url = xlsx_file['url']
 
-        xlsx_file = xlsx_files[0]
-        xlsx_file_url = xlsx_file['url']
+            # Step 1. Download XLSX file.
+            attempt_count = 0
+            xlsx_file_path = os.path.join(crf_dir, 'crf.xlsx')
+            while True:
+                attempt_count += 1
+                logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ... (attempt {attempt_count}/10)")
+                xlsx_file_req = requests.get(xlsx_file_url, stream=True)
+                if not xlsx_file_req.ok:
+                    logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
+                    continue
 
-        # Step 1. Download XLSX file.
-        attempt_count = 0
-        xlsx_file_path = os.path.join(crf_dir, 'crf.xlsx')
-        while True:
-            attempt_count += 1
-            logging.info(f"  Downloading XLSX file for {crf_id} from {xlsx_file_url} ... (attempt {attempt_count}/10)")
-            xlsx_file_req = requests.get(xlsx_file_url, stream=True)
-            if not xlsx_file_req.ok:
-                logging.error(f"  COULD NOT DOWNLOAD {xlsx_file_url}: {xlsx_file_req.status_code} {xlsx_file_req.text}")
-                continue
+                with open(xlsx_file_path, 'wb') as fd:
+                    count_xlsx += 1
+                    for chunk in xlsx_file_req.iter_content(chunk_size=128):
+                        fd.write(chunk)
 
-            with open(xlsx_file_path, 'wb') as fd:
-                count_xlsx += 1
-                for chunk in xlsx_file_req.iter_content(chunk_size=128):
-                    fd.write(chunk)
+                # Check if the file size of xlsx_file_path is 0.
+                if os.path.getsize(xlsx_file_path) >= 100:
+                    break
 
-            # Check if the file size of xlsx_file_path is 0.
-            if os.path.getsize(xlsx_file_path) >= 100:
-                break
+                # We got a near-empty file! If attempt_count <= 10, we'll try again.
+                logging.error(f"  XLSX file for {crf_id} at {xlsx_file_path} is near empty, retrying.")
+                if attempt_count > 10:
+                    raise RuntimeError(f"Could not download XLSX file for {crf_id} from {xlsx_file_url} after 10 attempts.")
+                else:
+                    sleep(10 * attempt_count)
+                    continue
 
-            # We got a near-empty file! If attempt_count <= 10, we'll try again.
-            logging.error(f"  XLSX file for {crf_id} at {xlsx_file_path} is near empty, retrying.")
-            if attempt_count > 10:
-                raise RuntimeError(f"Could not download XLSX file for {crf_id} from {xlsx_file_url} after 10 attempts.")
-            else:
-                sleep(10 * attempt_count)
-                continue
+            logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
 
-        logging.info(f"  Downloaded {xlsx_file_url} to {xlsx_file_path}.")
+            # Step 2. Convert to JSON.
+            crf_curie = HEALCDE_PREFIX + crf_id
 
-        # Step 2. Convert to JSON.
-        crf_curie = HEALCDE_PREFIX + crf_id
-
-        logging.info(f"  Converting {xlsx_file_path} to JSON ...")
-        json_data = convert_xlsx_to_json(xlsx_file_path, crf_curie)
-        if not json_data:
-            json_data = dict()
+            logging.info(f"  Converting {xlsx_file_path} to JSON ...")
+            json_data = convert_xlsx_to_json(xlsx_file_path, crf_curie)
+            if not json_data:
+                json_data = dict()
 
         # Add titles and descriptions.
         json_data['titles'] = titles
