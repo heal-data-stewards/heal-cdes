@@ -9,7 +9,7 @@
 # CONFIGURATION
 # These will be updated every time this script is run.
 PYTHON = uv run python
-OUTPUT_DIR = ./output-2026feb13
+OUTPUT_DIR = ./output-2026feb16
 LOGFILE = "$(OUTPUT_DIR)/logs/log.txt"
 MAPPINGS_DIR = ./mappings
 HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv
