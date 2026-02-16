@@ -12,7 +12,7 @@ PYTHON = uv run python
 OUTPUT_DIR = ./output-2026feb16
 LOGFILE = "$(OUTPUT_DIR)/logs/log.txt"
 MAPPINGS_DIR = ./mappings
-HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv
+HEAL_CDE_EXPORT_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-02-02T130104/Heal_CDE_data.csv
 HEAL_CDE_STUDY_HDPID_MAPPING_FILE=$(MAPPINGS_DIR)/study-crf-mappings/from-heal-cde-team/study-hdp-ids.csv
 HEAL_CDE_HEAL_CDE_IDS_MAPPING_FILE=mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv
 
