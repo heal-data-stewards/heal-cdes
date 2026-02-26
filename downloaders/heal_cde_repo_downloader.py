@@ -636,7 +636,7 @@ def heal_cde_repo_downloader(
 
 
     # Report 3. All variable/CDE mappings, with source information.
-    study_cde_mappings_report = os.path.join(report_dir, "study-cde-mappings.csv")
+    study_cde_mappings_report = os.path.join(report_dir, "study-variable-cde-mappings.csv")
     with open(study_cde_mappings_report, "w") as fout:
         writer = csv.DictWriter(fout, [
             'hdp_id',
