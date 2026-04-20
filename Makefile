@@ -30,7 +30,7 @@ all: $(OUTPUT_DIR)/download_done $(OUTPUT_DIR)/logs/errors.txt $(OUTPUT_DIR)/log
 
 clean:
 	rm -f $(OUTPUT_DIR)/download_done
-	rm -f $(MAPPINGS_DIR)/heal-cde-list/heal-cde-list.csv
+	rm -f $(HEAL_CDE_LIST_CSV)
 	rm -f $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv
 	rm -f $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
 	rm -f $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv
