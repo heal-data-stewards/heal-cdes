@@ -278,6 +278,10 @@ def heal_cde_repo_downloader(
         title_lc = re.sub("\\s+", "-", title.lower().replace('%20', ' ').replace('_', '-'))
         lang = 'en'
 
+        # If we find the RUCA codes tool, skip it -- it's not a CRF.
+        if title_lc == 'ruca-codes-tool.xlsx':
+            continue
+
         # At some point in the future, we'll have unique HEAL CDE identifiers that we can use to figure out which of the
         # files mentioned in heal_cde_csv refer to the same CDE. Until then, we can generate an "crf_id" ourselves based on the
         # unique stem of filenames.
@@ -389,14 +393,14 @@ def heal_cde_repo_downloader(
             crf_id = title_lc[0:-8]
         elif title_lc.endswith('-cde.xlsx'):
             crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-cde-.xlsx'):
+            crf_id = title_lc[0:-10]
         elif title_lc.endswith('-crf-.xlsx'):
             crf_id = title_lc[0:-10]
         elif title_lc.endswith('-cdes.xlsx'):
             crf_id = title_lc[0:-10]
         elif title_lc.endswith('-crf.xlsx'):
             crf_id = title_lc[0:-9]
-        elif title_lc.endswith('.xlsx'):
-            crf_id = title_lc[0:-5]
         else:
             raise RuntimeError(f"Could not generate an ID for CRF titled '{title_lc}'.")
 
