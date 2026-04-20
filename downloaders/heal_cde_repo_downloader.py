@@ -487,9 +487,18 @@ def heal_cde_repo_downloader(
             logging.warning(f"{crf_id} contains no XLSX files, skipping.")
             continue
         elif len(xlsx_files) > 1:
-            raise RuntimeError(
-                f"CRF {crf_id} contains more than one XLSX file, which is not currently supported: {xlsx_files}"
+            def _url_date(f):
+                m = re.search(r'/(\d{4}-\d{2})/', f['url'])
+                return m.group(1) if m else ''
+            xlsx_files_sorted = sorted(xlsx_files, key=_url_date, reverse=True)
+            chosen = xlsx_files_sorted[0]
+            others = xlsx_files_sorted[1:]
+            logging.warning(
+                f"{crf_id} has {len(xlsx_files)} XLSX files; "
+                f"choosing most recent ({_url_date(chosen) or 'no date in URL'}): {chosen['url']} — "
+                f"discarding: {', '.join(f['url'] for f in others)}"
             )
+            xlsx_files = [chosen]
 
         xlsx_file = xlsx_files[0]
         xlsx_file_url = xlsx_file['url']
