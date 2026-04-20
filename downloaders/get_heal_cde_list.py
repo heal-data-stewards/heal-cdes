@@ -80,14 +80,27 @@ def get_heal_cde_list(output, base_url):
             ext_counts[ext] += 1
             rows.append(row)
 
+    # Deduplicate rows where every field is identical.
+    total_scraped = len(rows)
+    seen = set()
+    deduped = []
+    for row in rows:
+        key = (row["Title"], row["Description"], row["File Language"], row["Link to File"])
+        if key in seen:
+            logging.warning(f"Skipping duplicate row: {row['Link to File']} ({row['Title']})")
+        else:
+            seen.add(key)
+            deduped.append(row)
+    duplicates_removed = total_scraped - len(deduped)
+
     with open(output, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=["Title", "Description", "File Language", "Link to File"])
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows(deduped)
 
-    total = len(rows)
     logging.info(
-        f"Wrote {total} files to {output} "
+        f"Scraped {total_scraped} files, removed {duplicates_removed} duplicate rows, "
+        f"wrote {len(deduped)} rows to {output} "
         f"({ext_counts.get('.xlsx', 0)} xlsx, "
         f"{ext_counts.get('.docx', 0)} docx, "
         f"{ext_counts.get('.pdf', 0)} pdf)"
