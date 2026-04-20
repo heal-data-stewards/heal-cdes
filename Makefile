@@ -23,12 +23,14 @@ HEAL_CDE_MAPPINGS=../heal-cde-mappings/
 
 # Additional inputs
 HEAL_CRF_ID_CSV = $(MAPPINGS_DIR)/heal-crf-ids/heal-crf-ids.csv
+HEAL_CDE_LIST_CSV = $(MAPPINGS_DIR)/heal-cde-list/heal-cde-list.csv
 
 # Overall targets
 all: $(OUTPUT_DIR)/download_done $(OUTPUT_DIR)/logs/errors.txt $(OUTPUT_DIR)/logs/warnings.txt
 
 clean:
 	rm -f $(OUTPUT_DIR)/download_done
+	rm -f $(MAPPINGS_DIR)/heal-cde-list/heal-cde-list.csv
 	rm -f $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv
 	rm -f $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
 	rm -f $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv
@@ -74,10 +76,16 @@ $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv: $(HEAL_CRF_ID_C
 	mkdir -p $(MAPPINGS_DIR)/platform-mds-mappings
 	@set -o pipefail; ${PYTHON} study-mappings/download-study-mappings-from-platform-mds.py --mappings $(HEAL_CRF_ID_CSV) --output "$@.tmp" 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
 
+# STEP 1.5: Download the list of CDEs from the HEAL CDE website
+$(HEAL_CDE_LIST_CSV): $(LOGFILE)
+	mkdir -p $(MAPPINGS_DIR)/heal-cde-list
+	@set -o pipefail; ${PYTHON} downloaders/get_heal_cde_list.py "$@.tmp" 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
+
 # STEP 2. Download data dictionaries.
-$(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
+$(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(HEAL_CDE_LIST_CSV) $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
 	mkdir -p $(OUTPUT_DIR)
 	PYTHONPATH=. set -o pipefail; ${PYTHON} downloaders/heal_cde_repo_downloader.py $(OUTPUT_DIR) \
+		--heal-cde-csv $(HEAL_CDE_LIST_CSV) \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv \
