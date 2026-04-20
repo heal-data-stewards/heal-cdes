@@ -57,7 +57,7 @@ MANUAL_VALIDATION_NA_VALUES = {
 }
 
 def is_candidate_mappings_file(filename):
-    filename_lower = filename.lower()
+    filename_lower = filename.lower().replace(' ', '_')
 
     if filename.startswith('~$'):
         # Excel temporary file, definitely not.
@@ -292,41 +292,42 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
             #
             # These should be easy to distinguish.
             file_path = Path(os.path.join(root, filename))
-            if is_candidate_mappings_file(filename):
-                hdp_ids = set()
-
-                # Figure out an HDP ID.
-                parent_name = file_path.parent.name
-                if re.fullmatch(r'^HDP\d+$', parent_name):
-                    # We're in the HEAL CDE Mappings repository.
-                    hdp_ids = {file_path.parent.name}
-                elif parent_name.lower() == 'cdes':
-                    # We're in the HEAL Data Dictionaries repository.
-                    project_dir = file_path.parent.parent
-                    metadata_yaml_files = list(get_metadata_files_in_project_directory(project_dir))
-
-                    if not metadata_yaml_files:
-                        raise RuntimeError(f"Could not find metadata.yaml file in {project_dir} for candidate mapping file {filename} in {file_path}.")
-
-                    count_candidate_files += 1
-
-                    hdp_ids = set()
-                    for metadata_yaml_file in metadata_yaml_files:
-                        with open(metadata_yaml_file, 'r') as yamlf:
-                            document = yaml.safe_load(yamlf)
-                            try:
-                                hdp_id = document.get('Project').get('HDP_ID')
-                            except KeyError:
-                                raise ValueError(f'Could not find HDP_ID in {metadata_yaml_file}: {document}')
-                            if not re.fullmatch(r'^HDP\d+$', hdp_id):
-                                raise ValueError(f"Invalid HDP ID {hdp_id} in path {file_path}.")
-                            hdp_ids.add(hdp_id)
-
-                logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_ids} (from path Path({file_path})')
-                mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids, crf_id_file.name))
-            else:
-                logging.debug(f"Ignoring non-candidate file {file_path}")
+            if not is_candidate_mappings_file(filename):
+                logging.warning(f"Ignoring non-candidate file {file_path}")
                 count_candidate_files_without_metadata += 1
+                continue
+
+            hdp_ids = set()
+
+            # Figure out an HDP ID.
+            parent_name = file_path.parent.name
+            if re.fullmatch(r'^HDP\d+$', parent_name):
+                # We're in the HEAL CDE Mappings repository.
+                hdp_ids = {file_path.parent.name}
+            elif parent_name.lower() == 'cdes':
+                # We're in the HEAL Data Dictionaries repository.
+                project_dir = file_path.parent.parent
+                metadata_yaml_files = list(get_metadata_files_in_project_directory(project_dir))
+
+                if not metadata_yaml_files:
+                    raise RuntimeError(f"Could not find metadata.yaml file in {project_dir} for candidate mapping file {filename} in {file_path}.")
+
+                count_candidate_files += 1
+
+                hdp_ids = set()
+                for metadata_yaml_file in metadata_yaml_files:
+                    with open(metadata_yaml_file, 'r') as yamlf:
+                        document = yaml.safe_load(yamlf)
+                        try:
+                            hdp_id = document.get('Project').get('HDP_ID')
+                        except KeyError:
+                            raise ValueError(f'Could not find HDP_ID in {metadata_yaml_file}: {document}')
+                        if not re.fullmatch(r'^HDP\d+$', hdp_id):
+                            raise ValueError(f"Invalid HDP ID {hdp_id} in path {file_path}.")
+                        hdp_ids.add(hdp_id)
+
+            logging.info(f'Found candidate DD_output file {file_path} with HDP ID {hdp_ids} (from path Path({file_path})')
+            mappings.extend(extract_mappings_from_dd_output_xlsx_file(file_path, hdp_ids, name_to_crf_ids, crf_id_file.name))
 
     logging.info(f'Found {len(mappings)} mappings in {count_candidate_files} DD_output files and {count_candidate_files_without_metadata} without metadata files.')
 
