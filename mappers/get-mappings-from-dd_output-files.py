@@ -293,8 +293,16 @@ def get_mappings_from_dd_output_files(input_dir, crf_id_file, output_file):
             # These should be easy to distinguish.
             file_path = Path(os.path.join(root, filename))
             if not is_candidate_mappings_file(filename):
-                logging.warning(f"Ignoring non-candidate file {file_path}")
                 count_candidate_files_without_metadata += 1
+
+                # Don't warn for some common files.
+                if filename.lower() not in {'.ds_store'}:
+                    continue
+
+                if (Path(filename).suffix or '').lower() not in {'csv', 'json', 'yaml'}:
+                    continue
+
+                logging.warning(f"Ignoring non-candidate file {file_path}")
                 continue
 
             hdp_ids = set()
