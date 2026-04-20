@@ -11,6 +11,7 @@ import csv
 import dataclasses
 import json
 import os
+import re
 from doctest import debug_script
 from time import sleep
 from typing import NamedTuple
@@ -257,88 +258,116 @@ def heal_cde_repo_downloader(
     heal_cde_entries = collections.defaultdict(list)
     for row in heal_cde_csv_reader:
         title = row['Title']
+        title_lc = re.sub("\\s+", "-", title.lower().replace('%20', ' '))
         lang = 'en'
 
         # At some point in the future, we'll have unique HEAL CDE identifiers that we can use to figure out which of the
         # files mentioned in heal_cde_csv refer to the same CDE. Until then, we can generate an "crf_id" ourselves based on the
         # unique stem of filenames.
-        if title.endswith('-spanish-crf.docx'):
-            crf_id = title[0:-17]
-        elif title.endswith('-crf-pediatric.docx'):
-            crf_id = title[0:-19]
-        elif title.endswith('-pediatric-crf.docx'):
-            crf_id = title[0:-19]
-        elif title.endswith('-cde-pediatric.xlsx'):
-            crf_id = title[0:-19]
-        elif title.endswith('-crf-pediatric-spanish.docx'):
-            crf_id = title[0:-27]
-        elif title.endswith('-crf-spanish.docx'):
-            crf_id = title[0:-17]
+        if title_lc.endswith('-spanish-crf.docx'):
+            crf_id = title_lc[0:-17]
+        elif title_lc.endswith('-crf-pediatric.docx'):
+            crf_id = title_lc[0:-19]
+        elif title_lc.endswith('-pediatric-crf.docx'):
+            crf_id = title_lc[0:-19]
+        elif title_lc.endswith('-cde-pediatric.xlsx'):
+            crf_id = title_lc[0:-19]
+        elif title_lc.endswith('-crf-pediatric-spanish.docx'):
+            crf_id = title_lc[0:-27]
+        elif title_lc.endswith('-crf-spanish.docx'):
+            crf_id = title_lc[0:-17]
             lang = 'es'
-        elif title.endswith('-crf-spanish.pdf'):
-            crf_id = title[0:-16]
+        elif title_lc.endswith('-crf-spanish.pdf'):
+            crf_id = title_lc[0:-16]
             lang = 'es'
-        elif title.endswith('-crf-swedish.pdf'):
-            crf_id = title[0:-16]
+        elif title_lc.endswith('-crf-swedish.pdf'):
+            crf_id = title_lc[0:-16]
             lang = 'sv'
-        elif title.endswith('-crf-swedish.docx'):
-            crf_id = title[0:-17]
+        elif title_lc.endswith('-crf-swedish.docx'):
+            crf_id = title_lc[0:-17]
             lang = 'sv'
-        elif title.endswith('-crf-swedish.pdf'):
-            crf_id = title[0:-16]
+        elif title_lc.endswith('-crf-swedish.pdf'):
+            crf_id = title_lc[0:-16]
             lang = 'sv'
-        elif title.endswith('-crf-japanese.docx'):
-            crf_id = title[0:-18]
+        elif title_lc.endswith('-crf-japanese.docx'):
+            crf_id = title_lc[0:-18]
             lang = 'ja'
-        elif title.endswith('-korean.docx'):
-            crf_id = title[0:-12]
+        elif title_lc.endswith('-korean.docx'):
+            crf_id = title_lc[0:-12]
             lang = 'ko'
-        elif title.endswith('-crf-simplified-chinese.docx'):
-            crf_id = title[0:-28]
+        elif title_lc.endswith('-crf-simplified-chinese.docx'):
+            crf_id = title_lc[0:-28]
             lang = 'zh-CN'
-        elif title.endswith('-crf-traditional-chinese.docx'):
-            crf_id = title[0:-29]
+        elif title_lc.endswith('-crf-traditional-chinese.docx'):
+            crf_id = title_lc[0:-29]
             lang = 'zh-TW'
-        elif title.endswith('-copyright-statement.docx'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copright-statement.docx'):
-            crf_id = title[0:-24]
-        elif title.endswith('-copyright_statement.docx'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copyright-statement.pdf'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copyright_statement.docx'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copyright-statement.pdf'):
-            crf_id = title[0:-24]
-        elif title.endswith('-copyright-statement_.docx'):
-            crf_id = title[0:-26]
-        elif title.endswith('-copyright-statment.docx'):
-            crf_id = title[0:-24]
-        elif title.endswith('-copyright-statement-pediatric.docx'):
-            crf_id = title[0:-35]
-        elif title.endswith('-crf.docx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-cde.docx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-cde.docx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-crf.pdf'):
-            crf_id = title[0:-8]
-        elif title.endswith('-cde.pdf'):
-            crf_id = title[0:-8]
-        elif title.endswith('-cde.xlsx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-crf-.xlsx'):
-            crf_id = title[0:-10]
-        elif title.endswith('-cde_.xlsx'):
-            crf_id = title[0:-10]
-        elif title.endswith('-cdes.xlsx'):
-            crf_id = title[0:-10]
-        elif title.endswith('-crf.xlsx'):
-            crf_id = title[0:-9]
+        elif title_lc.endswith('-crf-arabic.pdf'):
+            crf_id = title_lc[0:-15]
+            lang = 'ar'
+        elif title_lc.endswith('-crf-arabic.docx'):
+            crf_id = title_lc[0:-16]
+            lang = 'ar'
+        elif title_lc.endswith('-crf-somali.pdf'):
+            crf_id = title_lc[0:-15]
+            lang = 'so'
+        elif title_lc.endswith('-crf-somali.docx'):
+            crf_id = title_lc[0:-16]
+            lang = 'so'
+        elif title_lc.endswith('-crf-somali_0.docx'):
+            crf_id = title_lc[0:-18]
+            lang = 'so'
+        elif title_lc.endswith('-crf-polish.docx'):
+            crf_id = title_lc[0:-16]
+            lang = 'pl'
+        elif title_lc.endswith('-copyright-statement.docx'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copright-statement.docx'):
+            crf_id = title_lc[0:-24]
+        elif title_lc.endswith('-copyright_statement.docx'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copyright-statement.pdf'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copyright_statement.docx'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copyright-statement.pdf'):
+            crf_id = title_lc[0:-24]
+        elif title_lc.endswith('-copyright-statement_.docx'):
+            crf_id = title_lc[0:-26]
+        elif title_lc.endswith('-copyright-statement_0.docx'):
+            crf_id = title_lc[0:-27]
+        elif title_lc.endswith('-crf-spanish-copyright-statement_0.docx'):
+            crf_id = title_lc[0:-39]
+            lang = 'es'
+        elif title_lc.endswith('-copyright-statment.docx'):
+            crf_id = title_lc[0:-24]
+        elif title_lc.endswith('-copyright-statement-pediatric.docx'):
+            crf_id = title_lc[0:-35]
+        elif title_lc.endswith('-crf.docx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-cde.docx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-cde.docx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-crf.pdf'):
+            crf_id = title_lc[0:-8]
+        elif title_lc.endswith('-crf_0.pdf'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-cde.pdf'):
+            crf_id = title_lc[0:-8]
+        elif title_lc.endswith('-cde.xlsx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-crf-.xlsx'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-cde_.xlsx'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-cdes.xlsx'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-crf.xlsx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('.xlsx'):
+            crf_id = title_lc[0:-5]
         else:
-            raise RuntimeError(f"Could not generate an ID for CRF titled '{title}'.")
+            raise RuntimeError(f"Could not generate an ID for CRF titled '{title_lc}'.")
 
         description = row['Description']
         if row['File Language'] == 'English':
