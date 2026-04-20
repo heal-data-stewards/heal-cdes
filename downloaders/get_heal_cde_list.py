@@ -37,18 +37,29 @@ def get_last_page(soup):
 def parse_rows(soup, base_url):
     """Yield one dict per file found on the page."""
     for tr in soup.select("tr"):
-        desc_td = tr.find("td", class_="views-field-body")
-        files_td = tr.find("td", class_="views-field-field-cde-files")
+        desc_td     = tr.find("td", class_="views-field-body")
+        files_td    = tr.find("td", class_="views-field-field-cde-files")
         if not (desc_td and files_td):
             continue
         description = desc_td.get_text(strip=True)
+        category_td = tr.find("td", class_="views-field-field-cde-category")
+        topic_td    = tr.find("td", class_="views-field-field-heal-research-topic")
+        category    = category_td.get_text(strip=True) if category_td else ""
+        topic       = topic_td.get_text(strip=True)    if topic_td    else ""
         for a in files_td.find_all("a"):
             href = a.get("href", "")
             if not href:
                 continue
             url = href if href.startswith("http") else base_url + href
             title = url.rstrip("/").split("/")[-1]
-            yield {"Title": title, "Description": description, "File Language": "", "Link to File": url}
+            yield {
+                "Title": title,
+                "Description": description,
+                "File Language": "",
+                "Link to File": url,
+                "Core or Supplemental": category,
+                "CDE Topics": topic,
+            }
 
 
 @click.command()
@@ -85,7 +96,8 @@ def get_heal_cde_list(output, base_url):
     seen = set()
     deduped = []
     for row in rows:
-        key = (row["Title"], row["Description"], row["File Language"], row["Link to File"])
+        key = (row["Title"], row["Description"], row["File Language"], row["Link to File"],
+               row["Core or Supplemental"], row["CDE Topics"])
         if key in seen:
             logging.warning(f"Skipping duplicate row: {row['Link to File']} ({row['Title']})")
         else:
@@ -94,7 +106,10 @@ def get_heal_cde_list(output, base_url):
     duplicates_removed = total_scraped - len(deduped)
 
     with open(output, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["Title", "Description", "File Language", "Link to File"])
+        writer = csv.DictWriter(f, fieldnames=[
+            "Title", "Description", "File Language", "Link to File",
+            "Core or Supplemental", "CDE Topics",
+        ])
         writer.writeheader()
         writer.writerows(deduped)
 
@@ -105,6 +120,19 @@ def get_heal_cde_list(output, base_url):
         f"{ext_counts.get('.docx', 0)} docx, "
         f"{ext_counts.get('.pdf', 0)} pdf)"
     )
+
+    category_counts = collections.Counter()
+    topic_counts = collections.Counter()
+    for row in deduped:
+        for val in (v.strip() for v in row["Core or Supplemental"].split(",") if v.strip()):
+            category_counts[val] += 1
+        for val in (v.strip() for v in row["CDE Topics"].split(",") if v.strip()):
+            topic_counts[val] += 1
+
+    for val, count in sorted(category_counts.items()):
+        logging.info(f"  Core or Supplemental: {val!r} — {count} rows")
+    for val, count in sorted(topic_counts.items()):
+        logging.info(f"  CDE Topics: {val!r} — {count} rows")
 
 
 if __name__ == "__main__":
