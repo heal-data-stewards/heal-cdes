@@ -214,6 +214,8 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
         'numeric',
         # Calculated values.
         'numeric (calculated)',
+        'optional. sum responses',
+        'optional. use promis scoring instructions',
         # No type provided
         ''
     } or row_data_type.startswith('calculate') or row_data_type.startswith('derive'):
