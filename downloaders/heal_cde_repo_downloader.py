@@ -555,9 +555,11 @@ def heal_cde_repo_downloader(
             if 'row' in f and 'Core or Supplemental' in f['row']:
                 for cat in f['row']['Core or Supplemental'].split(', '):
                     categories.add(cat)
-            if 'row' in f and 'CDE Topics' in f['row']:
-                for topic in f['row']['CDE Topics'].split(', '):
-                    categories.add(topic)
+
+            # TODO: this is actually really useful, but HSS will need to be modified to use this properly.
+            # if 'row' in f and 'CDE Topics' in f['row']:
+            #     for topic in f['row']['CDE Topics'].split(', '):
+            #         categories.add(topic)
 
         json_data['categories'] = list(sorted(categories))
 
