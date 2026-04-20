@@ -90,7 +90,7 @@ $(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(HEAL_CDE_
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv \
-		--cde-corrections $(MAPPINGS_DIR)/heal-crf-ids/heal-cde-corrections.csv | tee -a $(LOGFILE) && touch $@
+		--cde-corrections $(MAPPINGS_DIR)/heal-crf-ids/heal-cde-corrections.csv 2>&1 | tee -a $(LOGFILE) && touch $@
 
 # FINAL STEP: write out error and warning logs
 $(OUTPUT_DIR)/logs/warnings.txt: $(LOGFILE) $(OUTPUT_DIR)/download_done
