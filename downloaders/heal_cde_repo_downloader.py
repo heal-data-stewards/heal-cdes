@@ -39,7 +39,18 @@ MIME_PDF = 'application/pdf'
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?_format=csv"
 
 # Sort order for languages
-LANGUAGE_ORDER = {'en': 1, 'es': 2, 'zh-CN': 3, 'zh-TW': 4, 'ja': 5, 'ko': 6, 'sv': 7}
+LANGUAGE_ORDER = {
+    'en': 1,
+    'es': 2,
+    'zh-CN': 3,
+    'zh-TW': 4,
+    'ar': 5,
+    'ja': 6,
+    'ko': 7,
+    'pl': 8,
+    'so': 9,
+    'sv': 10,
+}
 MIME_TYPE_ORDER = {MIME_DOCX: 1, MIME_PDF: 2, MIME_XLSX: 3}
 
 # Configure logging.
@@ -192,6 +203,12 @@ def get_url_description(url, cdes):
             language = 'Korean'
         case 'sv':
             language = 'Swedish'
+        case 'ar':
+            language = 'Arabic'
+        case 'pl':
+            language = 'Polish'
+        case 'so':
+            language = 'Somali'
         case _:
             raise RuntimeError(f"Unknown language '{url['lang']}' in URL entry: {url}")
     description = f"This is the {language} download of the "
