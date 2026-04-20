@@ -258,14 +258,21 @@ def heal_cde_repo_downloader(
     heal_cde_entries = collections.defaultdict(list)
     for row in heal_cde_csv_reader:
         title = row['Title']
-        title_lc = re.sub("\\s+", "-", title.lower().replace('%20', ' '))
+        title_lc = re.sub("\\s+", "-", title.lower().replace('%20', ' ').replace('_', '-'))
         lang = 'en'
 
         # At some point in the future, we'll have unique HEAL CDE identifiers that we can use to figure out which of the
         # files mentioned in heal_cde_csv refer to the same CDE. Until then, we can generate an "crf_id" ourselves based on the
         # unique stem of filenames.
-        if title_lc.endswith('-spanish-crf.docx'):
+        if title_lc.endswith('-crf-english.pdf'):
+            crf_id = title_lc[0:-16]
+            lang = 'en'
+        elif title_lc.endswith('-crf-english.docx'):
             crf_id = title_lc[0:-17]
+            lang = 'en'
+        elif title_lc.endswith('-spanish-crf.docx'):
+            crf_id = title_lc[0:-17]
+            lang = 'es'
         elif title_lc.endswith('-crf-pediatric.docx'):
             crf_id = title_lc[0:-19]
         elif title_lc.endswith('-pediatric-crf.docx'):
@@ -282,6 +289,9 @@ def heal_cde_repo_downloader(
             lang = 'es'
         elif title_lc.endswith('-crf-swedish.pdf'):
             crf_id = title_lc[0:-16]
+            lang = 'sv'
+        elif title_lc.endswith('-crf-swedish-0.pdf'):
+            crf_id = title_lc[0:-18]
             lang = 'sv'
         elif title_lc.endswith('-crf-swedish.docx'):
             crf_id = title_lc[0:-17]
@@ -301,6 +311,9 @@ def heal_cde_repo_downloader(
         elif title_lc.endswith('-crf-traditional-chinese.docx'):
             crf_id = title_lc[0:-29]
             lang = 'zh-TW'
+        elif title_lc.endswith('-crf-traditional-chinese-0.docx'):
+            crf_id = title_lc[0:-31]
+            lang = 'zh-TW'
         elif title_lc.endswith('-crf-arabic.pdf'):
             crf_id = title_lc[0:-15]
             lang = 'ar'
@@ -313,11 +326,14 @@ def heal_cde_repo_downloader(
         elif title_lc.endswith('-crf-somali.docx'):
             crf_id = title_lc[0:-16]
             lang = 'so'
-        elif title_lc.endswith('-crf-somali_0.docx'):
+        elif title_lc.endswith('-crf-somali-0.docx'):
             crf_id = title_lc[0:-18]
             lang = 'so'
         elif title_lc.endswith('-crf-polish.docx'):
             crf_id = title_lc[0:-16]
+            lang = 'pl'
+        elif title_lc.endswith('-crf-polish.pdf'):
+            crf_id = title_lc[0:-15]
             lang = 'pl'
         elif title_lc.endswith('-copyright-statement.docx'):
             crf_id = title_lc[0:-25]
@@ -331,11 +347,11 @@ def heal_cde_repo_downloader(
             crf_id = title_lc[0:-25]
         elif title_lc.endswith('-copyright-statement.pdf'):
             crf_id = title_lc[0:-24]
-        elif title_lc.endswith('-copyright-statement_.docx'):
+        elif title_lc.endswith('-copyright-statement-.docx'):
             crf_id = title_lc[0:-26]
-        elif title_lc.endswith('-copyright-statement_0.docx'):
+        elif title_lc.endswith('-copyright-statement-0.docx'):
             crf_id = title_lc[0:-27]
-        elif title_lc.endswith('-crf-spanish-copyright-statement_0.docx'):
+        elif title_lc.endswith('-crf-spanish-copyright-statement-0.docx'):
             crf_id = title_lc[0:-39]
             lang = 'es'
         elif title_lc.endswith('-copyright-statment.docx'):
@@ -350,15 +366,13 @@ def heal_cde_repo_downloader(
             crf_id = title_lc[0:-9]
         elif title_lc.endswith('-crf.pdf'):
             crf_id = title_lc[0:-8]
-        elif title_lc.endswith('-crf_0.pdf'):
+        elif title_lc.endswith('-crf-0.pdf'):
             crf_id = title_lc[0:-10]
         elif title_lc.endswith('-cde.pdf'):
             crf_id = title_lc[0:-8]
         elif title_lc.endswith('-cde.xlsx'):
             crf_id = title_lc[0:-9]
         elif title_lc.endswith('-crf-.xlsx'):
-            crf_id = title_lc[0:-10]
-        elif title_lc.endswith('-cde_.xlsx'):
             crf_id = title_lc[0:-10]
         elif title_lc.endswith('-cdes.xlsx'):
             crf_id = title_lc[0:-10]
