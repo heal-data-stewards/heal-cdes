@@ -448,13 +448,6 @@ def heal_cde_repo_downloader(
             'row': row
         }
 
-        # Add any CDE mappings.
-        if url in crf_study_mappings:
-            cde_json['studies'] = dict()
-            for (key, sources) in crf_study_mappings[url].items():
-                cde_json['studies'][key] = list(map(lambda s: dataclasses.asdict(s), sources))
-            unused_crf_urls.remove(url)
-
         heal_cde_entries[crf_id].append(cde_json)
 
     # Set up the output directory.
@@ -585,6 +578,7 @@ def heal_cde_repo_downloader(
 
         # Which studies have included this CRF?
         study_mappings = crf_study_mappings.get(crf_curie, {})
+        unused_crf_urls.discard(crf_curie)
         heal_studies_for_crf = study_mappings.keys()
         heal_studies_for_crf = sorted(map(lambda hdp_id: HDP_PREFIX + hdp_id, heal_studies_for_crf))
 
@@ -672,6 +666,20 @@ def heal_cde_repo_downloader(
             }, jsonf, indent=2)
 
     logging.info(f"Downloaded {count_xlsx} XLSX files to produce {count_json} JSON files.")
+
+    # Report any CURIEs from mapping files that were never matched to a downloaded CRF.
+    for curie in sorted(unused_crf_urls):
+        hdp_ids = sorted(hdp_id for hdp_id in crf_study_mappings[curie] if hdp_id != "_sources")
+        sources = set()
+        for hdp_id in crf_study_mappings[curie]:
+            for src in crf_study_mappings[curie][hdp_id].get("_sources", []):
+                sources.add(str(src))
+        logging.error(
+            f"CRF CURIE {curie!r} appears in mapping files but was not found in the downloaded "
+            f"repository — studies affected: {hdp_ids}; "
+            f"sources: {sorted(sources)}. "
+            f"Update the CURIE in a mapping file or add a correction."
+        )
 
     # Let's write out a bunch of reports.
     report_dir = os.path.join(output, "reports")
