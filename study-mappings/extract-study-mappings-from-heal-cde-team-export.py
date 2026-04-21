@@ -149,7 +149,7 @@ def extract_study_mappings(input_file, output, study_to_hdpid, measure_to_heal_c
         "paincatast_choice___1": "NA",
         "paincatast_choice___2": "NA",
         "physfunct_choice___1": "physical-function-6b",
-        "sleep_choice___1": "sleep-disturbance-6a",
+        "sleep_choice___1": "promis-sleep-disturbance-6a",
         "sleep_choice___2": "sleep-duration",
         "satisfy_choice___1": "pgic",
         "substance_choice___1": "NA",
