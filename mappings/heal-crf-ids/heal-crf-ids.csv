@@ -1,6 +1,6 @@
 CRF Name,HEAL CDE CURIE,HEAL Data Platform CURIE,Other Names
-PROMIS Item Bank v2.0 – Physical Function – Short Form 6b,HEALCDE:physical-function-6b,HEALDATAPLATFORM:HDPCDE5041,PROMIS Physical Function Pain|PROMIS PF Pain 6b|PROMIS PF Pain
-PROMIS Sleep Disturbance 6a,HEALCDE:sleep-disturbance-6a,,
+PROMIS Item Bank v2.0 – Physical Function – Short Form 6b,HEALCDE:physical-function-6b,HEALDATAPLATFORM:HDPCDE5041,PROMIS Physical Function Pain|PROMIS PF Pain 6b|PROMIS PF Pain|PROMIS PF Pain (PROMIS Physical Function Pain)
+PROMIS Sleep Disturbance 6a,HEALCDE:promis-sleep-disturbance-6a,,
 Pain Catastrophizing Scale 13,HEALCDE:pcs-13,,PCS 13|PCS (Pain Catastrophizing Scale)|Pain Catastrophizing Scale (PCS)|PCS13
 Patient Health Questionnaire (PHQ-8),HEALCDE:patient-health-questionnaire-8,HEALDATAPLATFORM:HDPCDE5361,PHQ 8|PHQ-8|PHQ8
 Demographics Adult,HEALCDE:adult-demographics,HEALDATAPLATFORM:HDPCDE00001,Demographics|demographics01.redcap
@@ -14,10 +14,10 @@ Patient Health Questionnaire (PHQ-9),HEALCDE:patient-health-questionnaire-9,HEAL
 Patient Global Impression of Change (PGIC),HEALCDE:pgic,HEALDATAPLATFORM:HDPCDE5016,Patient Global Impression of Change (PGIC) Pain|PGIC (Patient Global Impression of Change Pain)|PGIC Pain(Patient Global Impression of Change Pain)
 Pain Catastrophizing Scale - Parent (PCS-P),HEALCDE:pcs-parent,HEALDATAPLATFORM:HDPCDE4891,PCS Parent
 PEG Pain Screening Tool,HEALCDE:peg,HEALDATAPLATFORM:HDPCDE5111,PEG Pain
-Brief Pain Inventory (BPI),NA,HEALDATAPLATFORM:HDPCDE4956,Brief Pain Inventory (BPI)|Brief Pain Inventory|BPI Pain Interference
-Pain Catastrophizing Scale 6 (PCS-6),HEALCDE:pcs,,PCS6
+Brief Pain Inventory (BPI),HEALCDE:bpi-pain-interference,HEALDATAPLATFORM:HDPCDE4956,Brief Pain Inventory (BPI)|Brief Pain Inventory|BPI Pain Interference
+Pain Catastrophizing Scale 6 (PCS-6),HEALCDE:pcs6,,PCS6|PCS6 (Pain Catastrophizing Scale)
 PedsQL Inventory,HEALCDE:pedsql-inventory,,PedsQL|PedsQL (Pediatric Quality of Life Inventory)
-Adolescent Sleep Wake Scale 10 (AWS-10) and Sleep pattern/duration items,HEALCDE:sleep-asws-pediatric,,SleepASWS
-NIDA ASSIST ADA modified Levels 1 and 2,HEALCDE:nida-assist-ada-modified-levels-1-2,HEALDATAPLATFORM:HDPCDE4871,NIDAL2 (NIDA Modified ASSIST L2)
+Adolescent Sleep Wake Scale 10 (AWS-10) and Sleep pattern/duration items,HEALCDE:sleep-asws-pediatric,,SleepASWS|SleepASWS (Adolescent Sleep Wake Scale)
+NIDA ASSIST ADA modified Levels 1 and 2,HEALCDE:nida-modified-assist,HEALDATAPLATFORM:HDPCDE4871,NIDAL2 (NIDA Modified ASSIST L2)
 Pain Catastrophizing Scale - Child (PCS-C),HEALCDE:pcs-child,HEALDATAPLATFORM:HDPCDE4881,PCS Child
 Sleep Duration,HEALCDE:sleep-duration,HEALDATAPLATFORM:HDPCDE5061,Sleep Duration Pain

@@ -95,10 +95,10 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
 
     # Skip the CDISC warning line.
     crf_question_number = get_value(row, 'CRF Question #')
-    if crf_question_number.startswith('This CDE detail form is not CDISC compliant.') or crf_question_number.startswith("This CDE detail form\xa0is not CDISC compliant."):
+    if crf_question_number.startswith('This CDE detail form is not CDISC compliant') or crf_question_number.startswith("This CDE detail form\xa0is not CDISC compliant"):
         return None
 
-    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.') or get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
+    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant') or get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant"):
         return None
 
     definitions = []
@@ -214,6 +214,8 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
         'numeric',
         # Calculated values.
         'numeric (calculated)',
+        'optional. sum responses',
+        'optional. use promis scoring instructions',
         # No type provided
         ''
     } or row_data_type.startswith('calculate') or row_data_type.startswith('derive'):

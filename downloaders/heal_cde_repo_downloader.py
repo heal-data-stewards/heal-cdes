@@ -11,6 +11,7 @@ import csv
 import dataclasses
 import json
 import os
+import re
 from doctest import debug_script
 from time import sleep
 from typing import NamedTuple
@@ -38,7 +39,18 @@ MIME_PDF = 'application/pdf'
 HEAL_CDE_CSV_DOWNLOAD = "https://heal.nih.gov/data/common-data-elements-repository/export?_format=csv"
 
 # Sort order for languages
-LANGUAGE_ORDER = {'en': 1, 'es': 2, 'zh-CN': 3, 'zh-TW': 4, 'ja': 5, 'ko': 6, 'sv': 7}
+LANGUAGE_ORDER = {
+    'en': 1,
+    'es': 2,
+    'zh-CN': 3,
+    'zh-TW': 4,
+    'ar': 5,
+    'ja': 6,
+    'ko': 7,
+    'pl': 8,
+    'so': 9,
+    'sv': 10,
+}
 MIME_TYPE_ORDER = {MIME_DOCX: 1, MIME_PDF: 2, MIME_XLSX: 3}
 
 # Configure logging.
@@ -191,6 +203,12 @@ def get_url_description(url, cdes):
             language = 'Korean'
         case 'sv':
             language = 'Swedish'
+        case 'ar':
+            language = 'Arabic'
+        case 'pl':
+            language = 'Polish'
+        case 'so':
+            language = 'Somali'
         case _:
             raise RuntimeError(f"Unknown language '{url['lang']}' in URL entry: {url}")
     description = f"This is the {language} download of the "
@@ -257,88 +275,134 @@ def heal_cde_repo_downloader(
     heal_cde_entries = collections.defaultdict(list)
     for row in heal_cde_csv_reader:
         title = row['Title']
+        title_lc = re.sub("\\s+", "-", title.lower().replace('%20', ' ').replace('_', '-'))
         lang = 'en'
+
+        # If we find the RUCA codes tool, skip it -- it's not a CRF.
+        if title_lc == 'ruca-codes-tool.xlsx':
+            continue
 
         # At some point in the future, we'll have unique HEAL CDE identifiers that we can use to figure out which of the
         # files mentioned in heal_cde_csv refer to the same CDE. Until then, we can generate an "crf_id" ourselves based on the
         # unique stem of filenames.
-        if title.endswith('-spanish-crf.docx'):
-            crf_id = title[0:-17]
-        elif title.endswith('-crf-pediatric.docx'):
-            crf_id = title[0:-19]
-        elif title.endswith('-pediatric-crf.docx'):
-            crf_id = title[0:-19]
-        elif title.endswith('-cde-pediatric.xlsx'):
-            crf_id = title[0:-19]
-        elif title.endswith('-crf-pediatric-spanish.docx'):
-            crf_id = title[0:-27]
-        elif title.endswith('-crf-spanish.docx'):
-            crf_id = title[0:-17]
+        if title_lc.endswith('-crf-english.pdf'):
+            crf_id = title_lc[0:-16]
+            lang = 'en'
+        elif title_lc.endswith('-crf-english.docx'):
+            crf_id = title_lc[0:-17]
+            lang = 'en'
+        elif title_lc.endswith('-spanish-crf.docx'):
+            crf_id = title_lc[0:-17]
             lang = 'es'
-        elif title.endswith('-crf-spanish.pdf'):
-            crf_id = title[0:-16]
+        elif title_lc.endswith('-crf-pediatric.docx'):
+            crf_id = title_lc[0:-19]
+        elif title_lc.endswith('-pediatric-crf.docx'):
+            crf_id = title_lc[0:-19]
+        elif title_lc.endswith('-cde-pediatric.xlsx'):
+            crf_id = title_lc[0:-19]
+        elif title_lc.endswith('-crf-pediatric-spanish.docx'):
+            crf_id = title_lc[0:-27]
+        elif title_lc.endswith('-crf-spanish.docx'):
+            crf_id = title_lc[0:-17]
             lang = 'es'
-        elif title.endswith('-crf-swedish.pdf'):
-            crf_id = title[0:-16]
+        elif title_lc.endswith('-crf-spanish.pdf'):
+            crf_id = title_lc[0:-16]
+            lang = 'es'
+        elif title_lc.endswith('-crf-swedish.pdf'):
+            crf_id = title_lc[0:-16]
             lang = 'sv'
-        elif title.endswith('-crf-swedish.docx'):
-            crf_id = title[0:-17]
+        elif title_lc.endswith('-crf-swedish-0.pdf'):
+            crf_id = title_lc[0:-18]
             lang = 'sv'
-        elif title.endswith('-crf-swedish.pdf'):
-            crf_id = title[0:-16]
+        elif title_lc.endswith('-crf-swedish.docx'):
+            crf_id = title_lc[0:-17]
             lang = 'sv'
-        elif title.endswith('-crf-japanese.docx'):
-            crf_id = title[0:-18]
+        elif title_lc.endswith('-crf-swedish.pdf'):
+            crf_id = title_lc[0:-16]
+            lang = 'sv'
+        elif title_lc.endswith('-crf-japanese.docx'):
+            crf_id = title_lc[0:-18]
             lang = 'ja'
-        elif title.endswith('-korean.docx'):
-            crf_id = title[0:-12]
+        elif title_lc.endswith('-korean.docx'):
+            crf_id = title_lc[0:-12]
             lang = 'ko'
-        elif title.endswith('-crf-simplified-chinese.docx'):
-            crf_id = title[0:-28]
+        elif title_lc.endswith('-crf-simplified-chinese.docx'):
+            crf_id = title_lc[0:-28]
             lang = 'zh-CN'
-        elif title.endswith('-crf-traditional-chinese.docx'):
-            crf_id = title[0:-29]
+        elif title_lc.endswith('-crf-traditional-chinese.docx'):
+            crf_id = title_lc[0:-29]
             lang = 'zh-TW'
-        elif title.endswith('-copyright-statement.docx'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copright-statement.docx'):
-            crf_id = title[0:-24]
-        elif title.endswith('-copyright_statement.docx'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copyright-statement.pdf'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copyright_statement.docx'):
-            crf_id = title[0:-25]
-        elif title.endswith('-copyright-statement.pdf'):
-            crf_id = title[0:-24]
-        elif title.endswith('-copyright-statement_.docx'):
-            crf_id = title[0:-26]
-        elif title.endswith('-copyright-statment.docx'):
-            crf_id = title[0:-24]
-        elif title.endswith('-copyright-statement-pediatric.docx'):
-            crf_id = title[0:-35]
-        elif title.endswith('-crf.docx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-cde.docx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-cde.docx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-crf.pdf'):
-            crf_id = title[0:-8]
-        elif title.endswith('-cde.pdf'):
-            crf_id = title[0:-8]
-        elif title.endswith('-cde.xlsx'):
-            crf_id = title[0:-9]
-        elif title.endswith('-crf-.xlsx'):
-            crf_id = title[0:-10]
-        elif title.endswith('-cde_.xlsx'):
-            crf_id = title[0:-10]
-        elif title.endswith('-cdes.xlsx'):
-            crf_id = title[0:-10]
-        elif title.endswith('-crf.xlsx'):
-            crf_id = title[0:-9]
+        elif title_lc.endswith('-crf-traditional-chinese-0.docx'):
+            crf_id = title_lc[0:-31]
+            lang = 'zh-TW'
+        elif title_lc.endswith('-crf-arabic.pdf'):
+            crf_id = title_lc[0:-15]
+            lang = 'ar'
+        elif title_lc.endswith('-crf-arabic.docx'):
+            crf_id = title_lc[0:-16]
+            lang = 'ar'
+        elif title_lc.endswith('-crf-somali.pdf'):
+            crf_id = title_lc[0:-15]
+            lang = 'so'
+        elif title_lc.endswith('-crf-somali.docx'):
+            crf_id = title_lc[0:-16]
+            lang = 'so'
+        elif title_lc.endswith('-crf-somali-0.docx'):
+            crf_id = title_lc[0:-18]
+            lang = 'so'
+        elif title_lc.endswith('-crf-polish.docx'):
+            crf_id = title_lc[0:-16]
+            lang = 'pl'
+        elif title_lc.endswith('-crf-polish.pdf'):
+            crf_id = title_lc[0:-15]
+            lang = 'pl'
+        elif title_lc.endswith('-copyright-statement.docx'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copright-statement.docx'):
+            crf_id = title_lc[0:-24]
+        elif title_lc.endswith('-copyright_statement.docx'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copyright-statement.pdf'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copyright_statement.docx'):
+            crf_id = title_lc[0:-25]
+        elif title_lc.endswith('-copyright-statement.pdf'):
+            crf_id = title_lc[0:-24]
+        elif title_lc.endswith('-copyright-statement-.docx'):
+            crf_id = title_lc[0:-26]
+        elif title_lc.endswith('-copyright-statement-0.docx'):
+            crf_id = title_lc[0:-27]
+        elif title_lc.endswith('-crf-spanish-copyright-statement-0.docx'):
+            crf_id = title_lc[0:-39]
+            lang = 'es'
+        elif title_lc.endswith('-copyright-statment.docx'):
+            crf_id = title_lc[0:-24]
+        elif title_lc.endswith('-copyright-statement-pediatric.docx'):
+            crf_id = title_lc[0:-35]
+        elif title_lc.endswith('-crf.docx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-cde.docx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-cde.docx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-crf.pdf'):
+            crf_id = title_lc[0:-8]
+        elif title_lc.endswith('-crf-0.pdf'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-cde.pdf'):
+            crf_id = title_lc[0:-8]
+        elif title_lc.endswith('-cde.xlsx'):
+            crf_id = title_lc[0:-9]
+        elif title_lc.endswith('-cde-.xlsx'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-crf-.xlsx'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-cdes.xlsx'):
+            crf_id = title_lc[0:-10]
+        elif title_lc.endswith('-crf.xlsx'):
+            crf_id = title_lc[0:-9]
         else:
-            raise RuntimeError(f"Could not generate an ID for CRF titled '{title}'.")
+            raise RuntimeError(f"Could not generate an ID for CRF titled '{title_lc}'.")
 
         description = row['Description']
         if row['File Language'] == 'English':
@@ -384,13 +448,6 @@ def heal_cde_repo_downloader(
             'row': row
         }
 
-        # Add any CDE mappings.
-        if url in crf_study_mappings:
-            cde_json['studies'] = dict()
-            for (key, sources) in crf_study_mappings[url].items():
-                cde_json['studies'][key] = list(map(lambda s: dataclasses.asdict(s), sources))
-            unused_crf_urls.remove(url)
-
         heal_cde_entries[crf_id].append(cde_json)
 
     # Set up the output directory.
@@ -427,9 +484,18 @@ def heal_cde_repo_downloader(
             logging.warning(f"{crf_id} contains no XLSX files, skipping.")
             continue
         elif len(xlsx_files) > 1:
-            raise RuntimeError(
-                f"CRF {crf_id} contains more than one XLSX file, which is not currently supported: {xlsx_files}"
+            def _url_date(f):
+                m = re.search(r'/(\d{4}-\d{2})/', f['url'])
+                return m.group(1) if m else ''
+            xlsx_files_sorted = sorted(xlsx_files, key=_url_date, reverse=True)
+            chosen = xlsx_files_sorted[0]
+            others = xlsx_files_sorted[1:]
+            logging.warning(
+                f"{crf_id} has {len(xlsx_files)} XLSX files; "
+                f"choosing most recent ({_url_date(chosen) or 'no date in URL'}): {chosen['url']} — "
+                f"discarding: {', '.join(f['url'] for f in others)}"
             )
+            xlsx_files = [chosen]
 
         xlsx_file = xlsx_files[0]
         xlsx_file_url = xlsx_file['url']
@@ -482,9 +548,11 @@ def heal_cde_repo_downloader(
             if 'row' in f and 'Core or Supplemental' in f['row']:
                 for cat in f['row']['Core or Supplemental'].split(', '):
                     categories.add(cat)
-            if 'row' in f and 'CDE Topics' in f['row']:
-                for topic in f['row']['CDE Topics'].split(', '):
-                    categories.add(topic)
+
+            # TODO: this is actually really useful, but HSS will need to be modified to use this properly.
+            # if 'row' in f and 'CDE Topics' in f['row']:
+            #     for topic in f['row']['CDE Topics'].split(', '):
+            #         categories.add(topic)
 
         json_data['categories'] = list(sorted(categories))
 
@@ -510,6 +578,7 @@ def heal_cde_repo_downloader(
 
         # Which studies have included this CRF?
         study_mappings = crf_study_mappings.get(crf_curie, {})
+        unused_crf_urls.discard(crf_curie)
         heal_studies_for_crf = study_mappings.keys()
         heal_studies_for_crf = sorted(map(lambda hdp_id: HDP_PREFIX + hdp_id, heal_studies_for_crf))
 
@@ -598,6 +667,20 @@ def heal_cde_repo_downloader(
 
     logging.info(f"Downloaded {count_xlsx} XLSX files to produce {count_json} JSON files.")
 
+    # Report any CURIEs from mapping files that were never matched to a downloaded CRF.
+    for curie in sorted(unused_crf_urls):
+        hdp_ids = sorted(hdp_id for hdp_id in crf_study_mappings[curie] if hdp_id != "_sources")
+        sources = set()
+        for hdp_id in crf_study_mappings[curie]:
+            for src in crf_study_mappings[curie][hdp_id].get("_sources", []):
+                sources.add(str(src))
+        logging.error(
+            f"CRF CURIE {curie!r} appears in mapping files but was not found in the downloaded "
+            f"repository — studies affected: {hdp_ids}; "
+            f"sources: {sorted(sources)}. "
+            f"Update the CURIE in a mapping file or add a correction."
+        )
+
     # Let's write out a bunch of reports.
     report_dir = os.path.join(output, "reports")
     os.makedirs(report_dir)
@@ -636,7 +719,7 @@ def heal_cde_repo_downloader(
 
 
     # Report 3. All variable/CDE mappings, with source information.
-    study_cde_mappings_report = os.path.join(report_dir, "study-cde-mappings.csv")
+    study_cde_mappings_report = os.path.join(report_dir, "study-variable-cde-mappings.csv")
     with open(study_cde_mappings_report, "w") as fout:
         writer = csv.DictWriter(fout, [
             'hdp_id',
