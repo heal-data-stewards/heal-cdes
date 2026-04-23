@@ -53,7 +53,8 @@ MANUAL_VALIDATION_NA_VALUES = {
     "No HEAL CRF Match, related topic",
     "but related",
     "related topic",
-    "but close"
+    "but close",
+    ""
 }
 
 def is_candidate_mappings_file(filename):
@@ -129,7 +130,7 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
     crf_by_form_name = defaultdict(dict)
 
     rows = df.to_dict(orient='records')
-    for row in rows:
+    for row_index, row in enumerate(rows):
         logging.debug(f"{xlsx_filename}: {row}")
 
         # Make sure we actually have all three columns we need.
@@ -160,7 +161,7 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
                 crf_names = row.get(crf_name_column)
                 break
         if crf_names is None:
-            raise ValueError(f"Missing required column manual validation in {xlsx_filename} (one of: {CRF_NAME_COLUMNS} must be present): {row.keys()}")
+            raise ValueError(f"Missing required column manual validation in {xlsx_filename} (one of: {CRF_NAME_COLUMNS} must be present) in row: {row}")
 
         # Skip any NA values.
         if crf_names in MANUAL_VALIDATION_NA_VALUES:
@@ -180,6 +181,8 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
 
             crf_info = crf_by_form_name[crf_name]
             if form_name not in crf_info:
+                if not crf_name:
+                    raise ValueError(f"Found new form name {form_name} in {xlsx_filename} row index {row_index}, but no CRF name to match it (please add to {crf_id_filename}) to in row: {row}")
                 logging.debug(f"Found new {form_name} for {crf_name} in {xlsx_filename}.")
                 crf_info[form_name] = dict()
 
@@ -188,7 +191,9 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
 
                 # Is there a mapped variable name here too?
                 if 'Best Match CDE Name' in row:
-                    mapped_variable = row.get('Best Match CDE Name')
+                    mapped_variable = row.get('Best Match CDE Name', '').strip()
+                    if not mapped_variable:
+                        continue
 
                     if not 'Best Match Score' in row:
                         # If there isn't a score, we just trust the Best March CDE Name.
@@ -205,7 +210,7 @@ def extract_mappings_from_dd_output_xlsx_file(xlsx_filename, hdp_ids, name_to_cr
                             logging.warning(f"Best Match Score {best_match_score} is below threshold 0.80 for {mapped_variable} in {xlsx_filename}, skipping: {row}")
                             continue
 
-                    logging.info(f"Found mapped variable {mapped_variable} for {crf_name} in {xlsx_filename}.")
+                    logging.info(f"Found mapped variable '{mapped_variable}' for '{crf_name}' in {xlsx_filename}.")
                     if mapped_variable:
                         if '|' in mapped_variable or ',' in mapped_variable:
                             raise ValueError(f"Invalid mapped variable name '{mapped_variable}' in {xlsx_filename}: {row}")
