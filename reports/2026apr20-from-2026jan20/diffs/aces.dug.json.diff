@@ -1,0 +1,46 @@
+--- dug-data-model-2026apr20/aces.dug.json
++++ dug-data-model-2026jan20/aces.dug.json
+@@ -282,6 +282,5 @@
+     "id": "aces",
+     "parents": [
+-      "HDP00356",
+-      "HDP01660"
++      "HDP00356"
+     ],
+     "crf_id": "aces",
+@@ -314,5 +313,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7046"
+         },
+         {
+@@ -322,5 +321,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 11 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7036"
+         },
+         {
+@@ -330,5 +329,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8386"
+         }
+       ],
+@@ -337,13 +336,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01660": {
+-          "_sources": [
+-            [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

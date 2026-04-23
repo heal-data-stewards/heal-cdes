@@ -1,0 +1,6 @@
+promis-29-profile  <->  promis-29-profile-v2.1  (jaccard=0.60)
+promis-43-profile  <->  promis-43-profile-v2.1  (jaccard=0.60)
+promis-ability-to-participate-in-social-roles-and-activities-4a  <->  promis-ability-to-participate-in-social_roles-and-activities-4a  (jaccard=1.00)
+promis-ability-to-participate-in-social-roles-and-activities-8a  <->  promis-ability-to-participate-in-social_roles-and-activities-8a  (jaccard=1.00)
+promis-propr-292-profile  <->  promis-292-profile-v2.1-propr  (jaccard=0.67)
+promis-sleep-disturbance-6a  <->  sleep-disturbance-6a  (jaccard=0.75)

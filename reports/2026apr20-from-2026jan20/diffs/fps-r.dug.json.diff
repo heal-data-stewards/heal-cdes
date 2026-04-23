@@ -1,0 +1,31 @@
+--- dug-data-model-2026apr20/fps-r.dug.json
++++ dug-data-model-2026jan20/fps-r.dug.json
+@@ -57,5 +57,13 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7266"
++        },
++        {
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/fps-r-copyright-statement.docx",
++          "filename": "fps-r-copyright-statement.docx",
++          "lang": "en",
++          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
++          "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
++          "drupal_id": "8906"
+         },
+         {
+@@ -65,5 +73,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 1 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7261"
+         },
+         {
+@@ -73,5 +81,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8391"
+         }
+       ],

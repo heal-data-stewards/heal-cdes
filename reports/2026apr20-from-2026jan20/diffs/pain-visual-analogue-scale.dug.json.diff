@@ -1,0 +1,37 @@
+--- dug-data-model-2026apr20/pain-visual-analogue-scale.dug.json
++++ dug-data-model-2026jan20/pain-visual-analogue-scale.dug.json
+@@ -52,5 +52,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7631"
+         },
+         {
+@@ -60,5 +60,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 1 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7626"
+         }
+       ],
+@@ -67,5 +67,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -75,5 +75,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -83,5 +83,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

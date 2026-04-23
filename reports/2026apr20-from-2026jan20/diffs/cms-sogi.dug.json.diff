@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr20/cms-sogi.dug.json
++++ dug-data-model-2026jan20/cms-sogi.dug.json
+@@ -184,5 +184,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "9826"
+         },
+         {
+@@ -192,5 +192,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 6 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "9816"
+         }
+       ],

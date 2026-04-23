@@ -1,0 +1,51 @@
+--- dug-data-model-2026apr20/promis-pediatric-depressive-symptoms-8a.dug.json
++++ dug-data-model-2026jan20/promis-pediatric-depressive-symptoms-8a.dug.json
+@@ -324,5 +324,5 @@
+     "metadata": {
+       "categories": [
+-        "Core - Pediatric"
++        "Supplemental"
+       ],
+       "urls": [
+@@ -333,5 +333,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6096"
+         },
+         {
+@@ -341,5 +341,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 10 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "6081"
+         },
+         {
+@@ -349,5 +349,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6126"
+         }
+       ],
+@@ -356,5 +356,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -364,5 +364,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -372,5 +372,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

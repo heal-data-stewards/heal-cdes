@@ -1,0 +1,52 @@
+--- dug-data-model-2026apr20/psqi.dug.json
++++ dug-data-model-2026jan20/psqi.dug.json
+@@ -778,5 +778,5 @@
+     "crf_id": "psqi",
+     "name": "Pittsburgh Sleep Quality Index ",
+-    "description": "The Pittsburg Sleep Quality Index (PSQI) is a measure to indicate how frequently one has experienced certain sleep difficulties over the past month and to rate their overall sleep quality. Contains 30 CDEs.",
++    "description": "The Pittsburg Sleep Quality Index is a measure to indicate how frequently one has experienced certain sleep difficulties over the past month and to rate their overall sleep quality. Contains 30 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/psqi-crf.docx",
+     "is_crf": true,
+@@ -824,5 +824,13 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8256"
++        },
++        {
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/psqi-copyright-statement.docx",
++          "filename": "psqi-copyright-statement.docx",
++          "lang": "en",
++          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
++          "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
++          "drupal_id": "8961"
+         },
+         {
+@@ -832,5 +840,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 30 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "8251"
+         },
+         {
+@@ -840,5 +848,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8486"
+         }
+       ],
+@@ -847,5 +855,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -855,5 +863,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

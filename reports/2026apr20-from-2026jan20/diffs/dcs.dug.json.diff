@@ -1,0 +1,37 @@
+--- dug-data-model-2026apr20/dcs.dug.json
++++ dug-data-model-2026jan20/dcs.dug.json
+@@ -676,5 +676,5 @@
+     "crf_id": "dcs",
+     "name": "Decisional Conflict Scale",
+-    "description": "The Decisional Conflict Scale (DCS) assess uncertainty in choosing options unmodifiable factors contributing to uncertainty and effective decision making. Contains 22 CDEs.",
++    "description": "The Decisional Conlifct Scale (DCS) assess uncertainty in choosing options inmodifiable factors contributing to uncertainty and effective decision making. Contains 22 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/dcs-crf.docx",
+     "is_crf": true,
+@@ -714,5 +714,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "9836"
+         },
+         {
+@@ -722,5 +722,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 22 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "9831"
+         }
+       ],
+@@ -729,5 +729,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -737,5 +737,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

@@ -1,0 +1,44 @@
+--- dug-data-model-2026apr20/sni.dug.json
++++ dug-data-model-2026jan20/sni.dug.json
+@@ -774,10 +774,9 @@
+     "id": "sni",
+     "parents": [
+-      "HDP01176",
+-      "HDP01660"
++      "HDP01176"
+     ],
+     "crf_id": "sni",
+     "name": "Social Network Index- SNI",
+-    "description": "The Social Network Index (SNI) assesses participation in 12 types of social relationships. These include relationships with a spouse, parents, parents-in-law, children, other close family members, close neighbors, friends, workmates, schoolmates, fellow volunteers, members of groups without religious affiliation, and religious groups. Contains 24 CDEs.",
++    "description": "The Social Network Index (SNI) assesses participation in 12 types of social relationships. These include relationships with a spouse, parents, parents-in-law, children, other close family members, close neighbours, friends, workmates, schoolmates, fellow volunteers, members of groups without religious affiliation, and religious groups. Contains 24 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/sni-crf.docx",
+     "is_crf": true,
+@@ -819,5 +818,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "9721"
+         },
+         {
+@@ -827,5 +826,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 24 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "9726"
+         }
+       ],
+@@ -834,13 +833,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01660": {
+-          "_sources": [
+-            [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

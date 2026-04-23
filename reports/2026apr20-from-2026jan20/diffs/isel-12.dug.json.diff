@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr20/isel-12.dug.json
++++ dug-data-model-2026jan20/isel-12.dug.json
+@@ -470,5 +470,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7386"
+         },
+         {
+@@ -478,5 +478,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 16 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7381"
+         },
+         {
+@@ -486,5 +486,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8401"
+         }
+       ],

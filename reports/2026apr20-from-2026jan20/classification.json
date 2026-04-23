@@ -1,0 +1,3200 @@
+{
+  "dir_a": "dug-data-model-2026apr20",
+  "dir_b": "dug-data-model-2026jan20",
+  "only_in_a": [
+    "cali-9-proxy.dug.json",
+    "cali-9.dug.json",
+    "capd.dug.json",
+    "cds.dug.json",
+    "csdc-sf.dug.json",
+    "csq50.dug.json",
+    "fdi.dug.json",
+    "jfls.dug.json",
+    "maas-a.dug.json",
+    "nrs11.dug.json",
+    "nscap-rev.dug.json",
+    "ort.dug.json",
+    "pedmidas.dug.json",
+    "pgis-acute.dug.json",
+    "promis-29-profile.dug.json",
+    "promis-43-profile.dug.json",
+    "promis-ability-to-participate-in-social-roles-and-activities-4a.dug.json",
+    "promis-ability-to-participate-in-social-roles-and-activities-8a.dug.json",
+    "promis-ped-anxiety-8a-ec.dug.json",
+    "promis-ped-anxiety-8a-proxy.dug.json",
+    "promis-ped-anxiety-8a-self.dug.json",
+    "promis-ped-depressive-4a-ec.dug.json",
+    "promis-ped-depressive-6a-proxy.dug.json",
+    "promis-ped-depressive-8a-self.dug.json",
+    "promis-ped-global-health-8a-ec.dug.json",
+    "promis-ped-sleep-4a-ec.dug.json",
+    "promis-ped-sleep-8a-ec.dug.json",
+    "promis-ped-sleep-8a-proxy.dug.json",
+    "promis-ped-sleep-8a-self.dug.json",
+    "promis-ped-stress-4a.dug.json",
+    "promis-pf-8c-mod.dug.json",
+    "promis-propr-292-profile.dug.json",
+    "promis-sleep-disturbance-6a.dug.json",
+    "rass.dug.json",
+    "s2bi.dug.json",
+    "scd-hrss-sf.dug.json",
+    "sickle-cell-stress.dug.json",
+    "stoplight-pain.dug.json",
+    "tapes-r.dug.json",
+    "umss.dug.json"
+  ],
+  "only_in_b": [
+    "addiction-behaviors-checklist.dug.json",
+    "amps.dug.json",
+    "audit-interview.dug.json",
+    "audit-self-report.dug.json",
+    "cgic.dug.json",
+    "cirs.dug.json",
+    "csq-24.dug.json",
+    "fmi.dug.json",
+    "gcs.dug.json",
+    "gpaq.dug.json",
+    "keele-start-back.dug.json",
+    "microbiome-bristol-stool-chart.dug.json",
+    "mypas.dug.json",
+    "nida-assist-ada-modified-levels-1-2.dug.json",
+    "pcs-child.dug.json",
+    "pcs-parent.dug.json",
+    "promis-29-profile-v2.1.dug.json",
+    "promis-292-profile-v2.1-propr.dug.json",
+    "promis-43-profile-v2.1.dug.json",
+    "promis-ability-to-participate-in-social_roles-and-activities-4a.dug.json",
+    "promis-ability-to-participate-in-social_roles-and-activities-8a.dug.json",
+    "promis-alcohol-use-7a.dug.json",
+    "promis-appeal-of-substance-use-7a.dug.json",
+    "promis-gastrointestinal-constipation-9a.dug.json",
+    "promis-neuropathic-pain-quality-5a.dug.json",
+    "promis-pain-behavior-item-bank-v2.0.dug.json",
+    "promis-pain-behavior-parent-proxy-item-bank-v1.0.dug.json",
+    "promis-pediatric-anxiety-sf.dug.json",
+    "promis-prescription-pain-med-misuse-7a.dug.json",
+    "promis-severity-of-substance-use-7a.dug.json",
+    "promis-short-form-4a-fatigue.dug.json",
+    "rmdq.dug.json",
+    "sleep-disturbance-6a.dug.json",
+    "socrates.dug.json",
+    "taps2.dug.json",
+    "timeline-followback-90day.dug.json",
+    "timeline-followback.dug.json",
+    "whodas-2.dug.json"
+  ],
+  "common_count": 195,
+  "bucket_counts": {
+    "trivial_only": 139,
+    "record_changes": 56
+  },
+  "by_file": {
+    "2-minute-walk.dug.json": {
+      "kind": "trivial_only"
+    },
+    "30-second-chair-stand-assessment.dug.json": {
+      "kind": "trivial_only"
+    },
+    "6-minute-walk.dug.json": {
+      "kind": "trivial_only"
+    },
+    "aaqsa.dug.json": {
+      "kind": "trivial_only"
+    },
+    "aces.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "aces"
+        ]
+      ],
+      "field_change_counts": {
+        "parents": 1,
+        "metadata.study_mappings.HDP01660": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "aces"
+          ],
+          "{'parents', 'metadata.study_mappings.HDP01660'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "adult-demographics.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [
+        [
+          "variable",
+          "EDULVL"
+        ],
+        [
+          "variable",
+          "ETHNIC"
+        ],
+        [
+          "variable",
+          "PAINDUR_acute"
+        ]
+      ],
+      "records_only_in_b": [
+        [
+          "variable",
+          "EDULEVEL"
+        ],
+        [
+          "variable",
+          "GENIDENT"
+        ],
+        [
+          "variable",
+          "GENIDENTOTH"
+        ],
+        [
+          "variable",
+          "HI_LA"
+        ],
+        [
+          "variable",
+          "MENA"
+        ]
+      ],
+      "records_changed": [
+        [
+          "section",
+          "adult-demographics"
+        ],
+        [
+          "variable",
+          "AI_AN"
+        ],
+        [
+          "variable",
+          "Age"
+        ],
+        [
+          "variable",
+          "AgeU"
+        ],
+        [
+          "variable",
+          "Asian"
+        ],
+        [
+          "variable",
+          "Bl_AA"
+        ],
+        [
+          "variable",
+          "NH_PI"
+        ],
+        [
+          "variable",
+          "Not_Rep"
+        ],
+        [
+          "variable",
+          "PAINDUR"
+        ],
+        [
+          "variable",
+          "SDOH_Childcare"
+        ],
+        [
+          "variable",
+          "SDOH_Clothing"
+        ],
+        [
+          "variable",
+          "SDOH_Food"
+        ],
+        [
+          "variable",
+          "SDOH_Housing"
+        ],
+        [
+          "variable",
+          "SDOH_Internet"
+        ],
+        [
+          "variable",
+          "SDOH_MedHlthcare"
+        ],
+        [
+          "variable",
+          "SDOH_NotAnswer"
+        ],
+        [
+          "variable",
+          "SDOH_Other"
+        ],
+        [
+          "variable",
+          "SDOH_Phone"
+        ],
+        [
+          "variable",
+          "SDOH_Transportation"
+        ],
+        [
+          "variable",
+          "SDOH_Utilities"
+        ],
+        [
+          "variable",
+          "Sex"
+        ],
+        [
+          "variable",
+          "Unkn"
+        ],
+        [
+          "variable",
+          "White"
+        ],
+        [
+          "variable",
+          "demRUCA1"
+        ],
+        [
+          "variable",
+          "demRUCA2"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.short_description": 9,
+        "metadata.question_text": 11,
+        "metadata.study_variable_mappings.HDP01233": 1,
+        "metadata.instructions": 14,
+        "metadata.permissible_values.0": 7,
+        "description": 8,
+        "metadata.permissible_values.1": 7,
+        "metadata.study_variable_mappings.HDP01456": 5,
+        "metadata.study_mappings.HDP00909._sources": 1,
+        "metadata.study_mappings.HDP01373._sources": 1,
+        "metadata.study_mappings.HDP01672": 1,
+        "metadata.study_mappings.HDP00210._sources": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP01011._sources": 1,
+        "metadata.study_mappings.HDP01193.EDULEVEL": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP01239._sources": 1,
+        "metadata.study_mappings.HDP00253.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP00464._sources": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP00104._sources": 1,
+        "metadata.study_mappings.HDP00908._sources": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP00253.EDULVL": 1,
+        "metadata.study_mappings.HDP00971._sources": 1,
+        "metadata.study_mappings.HDP00825._sources": 1,
+        "metadata.study_mappings.HDP01148._sources": 1,
+        "metadata.study_mappings.HDP01368._sources": 1,
+        "metadata.study_mappings.HDP01456": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP01061._sources": 1,
+        "metadata.study_mappings.HDP01498.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01018._sources": 1,
+        "metadata.study_mappings.HDP01312": 1,
+        "metadata.study_mappings.HDP00980._sources": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP01392": 1,
+        "metadata.study_mappings.HDP01166._sources": 1,
+        "metadata.study_mappings.HDP01695": 1,
+        "metadata.study_mappings.HDP01493._sources": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP00293._sources": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP00980.EDULVL": 1,
+        "metadata.study_mappings.HDP01246._sources": 1,
+        "metadata.study_mappings.HDP01340.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP01490": 1,
+        "metadata.study_mappings.HDP00920._sources": 1,
+        "metadata.study_mappings.HDP01237._sources": 1,
+        "metadata.study_mappings.HDP01048": 1,
+        "metadata.study_mappings.HDP00927._sources": 1,
+        "metadata.study_mappings.HDP01412._sources": 1,
+        "metadata.study_mappings.HDP00996._sources": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP00974._sources": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP00111._sources": 1,
+        "metadata.study_mappings.HDP01068._sources": 1,
+        "metadata.study_mappings.HDP01176._sources": 1,
+        "metadata.study_mappings.HDP01112._sources": 1,
+        "metadata.study_mappings.HDP00476._sources": 1,
+        "metadata.study_mappings.HDP00280._sources": 1,
+        "metadata.study_mappings.HDP01543": 1,
+        "metadata.study_mappings.HDP01193.EDULVL": 1,
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP00366._sources": 1,
+        "metadata.study_mappings.HDP00476.EDULVL": 1,
+        "metadata.study_mappings.HDP01287._sources": 1,
+        "metadata.study_mappings.HDP01446._sources": 1,
+        "metadata.study_mappings.HDP00308._sources": 1,
+        "metadata.study_mappings.HDP01057._sources": 1,
+        "metadata.study_mappings.HDP00994._sources": 1,
+        "metadata.study_mappings.HDP01329.EDULVL": 1,
+        "metadata.study_mappings.HDP01694": 1,
+        "metadata.study_mappings.HDP00902._sources": 1,
+        "metadata.study_mappings.HDP01155._sources": 1,
+        "metadata.study_mappings.HDP00435": 1,
+        "metadata.study_mappings.HDP01233.demRUCA1": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "variable_list": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP01265._sources": 1,
+        "metadata.urls": 1,
+        "metadata.study_mappings.HDP00541._sources": 1,
+        "metadata.study_mappings.HDP00893": 1,
+        "metadata.study_mappings.HDP00221._sources": 1,
+        "metadata.study_mappings.HDP01498.EDULVL": 1,
+        "metadata.study_mappings.HDP00369._sources": 1,
+        "metadata.study_mappings.HDP01113._sources": 1,
+        "metadata.study_mappings.HDP00476.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01476._sources": 1,
+        "metadata.study_mappings.HDP00066._sources": 1,
+        "metadata.study_mappings.HDP00924._sources": 1,
+        "metadata.study_mappings.HDP00253._sources": 1,
+        "metadata.study_mappings.HDP00904": 1,
+        "metadata.study_mappings.HDP01495._sources": 1,
+        "metadata.study_mappings.HDP01105._sources": 1,
+        "metadata.study_mappings.HDP00890._sources": 1,
+        "metadata.study_mappings.HDP00360": 1,
+        "metadata.study_mappings.HDP01474": 1,
+        "metadata.study_mappings.HDP01464": 1,
+        "metadata.study_mappings.HDP01004._sources": 1,
+        "metadata.study_mappings.HDP00982._sources": 1,
+        "metadata.study_mappings.HDP01077._sources": 1,
+        "metadata.study_mappings.HDP00002._sources": 1,
+        "metadata.study_mappings.HDP01329.EDULEVEL": 1,
+        "metadata.study_mappings.HDP00223._sources": 1,
+        "metadata.study_mappings.HDP00097": 1,
+        "metadata.study_mappings.HDP01288._sources": 1,
+        "metadata.study_mappings.HDP01032._sources": 1,
+        "metadata.study_mappings.HDP00033._sources": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00929": 1,
+        "metadata.study_mappings.HDP01433": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP00221.Sex": 1,
+        "metadata.study_mappings.HDP00201._sources": 1,
+        "metadata.study_mappings.HDP00937._sources": 1,
+        "metadata.study_mappings.HDP01494._sources": 1,
+        "metadata.study_mappings.HDP01351._sources": 1,
+        "metadata.study_mappings.HDP00946._sources": 1,
+        "metadata.study_mappings.HDP01050._sources": 1,
+        "metadata.study_mappings.HDP00911": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01284._sources": 1,
+        "metadata.study_mappings.HDP00941._sources": 1,
+        "metadata.study_mappings.HDP01108._sources": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP00980.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01029._sources": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP00960._sources": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP01416._sources": 1,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP01340.EDULVL": 1,
+        "metadata.study_variable_mappings.HDP00221": 1,
+        "metadata.enum": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "demRUCA2"
+          ],
+          "{'metadata.short_description', 'metadata.question_text'}"
+        ],
+        [
+          [
+            "variable",
+            "demRUCA1"
+          ],
+          "{'metadata.short_description', 'metadata.question_text', 'metadata.study_variable_mappings.HDP01233'}"
+        ],
+        [
+          [
+            "variable",
+            "SDOH_Internet"
+          ],
+          "{'metadata.instructions'}"
+        ],
+        [
+          [
+            "variable",
+            "Bl_AA"
+          ],
+          "{'metadata.short_description', 'metadata.permissible_values.0', 'description', 'metadata.permissible_values.1', 'metadata.question_text', 'metadata.study_variable_mappings.HDP01456'}"
+        ],
+        [
+          [
+            "variable",
+            "SDOH_NotAnswer"
+          ],
+          "{'metadata.instructions'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "arcs-protect.dug.json": {
+      "kind": "trivial_only"
+    },
+    "arsma-1-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "arsma-2-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "arthritis-self-efficacy-scale-pain-scale-1-item.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "arthritis-self-efficacy-scale-pain-scale-1-item"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.categories": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "arthritis-self-efficacy-scale-pain-scale-1-item"
+          ],
+          "{'metadata.categories'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "asc12-ictal.dug.json": {
+      "kind": "trivial_only"
+    },
+    "asc12-interictal.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ascq-me-pain-episode-frequency-and-severity.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "ascq-me-pain-episode-frequency-and-severity"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP01629": 1,
+        "parents": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "ascq-me-pain-episode-frequency-and-severity"
+          ],
+          "{'metadata.study_mappings.HDP01629', 'parents'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "ascq-pain-impact.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "ascq-pain-impact"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP01629": 1,
+        "parents": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "ascq-pain-impact"
+          ],
+          "{'metadata.study_mappings.HDP01629', 'parents'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "barc-10.dug.json": {
+      "kind": "trivial_only"
+    },
+    "bpi-pain-severity-7d.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "bpi-pain-severity-7d"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1,
+        "metadata.categories": 1,
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "bpi-pain-severity-7d"
+          ],
+          "{'description', 'metadata.categories', 'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "bpi-pain-severity.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "bpi-pain-severity"
+        ]
+      ],
+      "field_change_counts": {
+        "parents": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01672": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "bpi-pain-severity"
+          ],
+          "{'parents', 'metadata.categories', 'metadata.study_mappings.HDP01672'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "brief-cope.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cbib.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cbq-vsf.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cerq.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cesd.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cms-sogi.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cows.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cpaq-8.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cpaq-a8.dug.json": {
+      "kind": "trivial_only"
+    },
+    "cpaq.dug.json": {
+      "kind": "trivial_only"
+    },
+    "craving-scale-3-item.dug.json": {
+      "kind": "trivial_only"
+    },
+    "csespr.dug.json": {
+      "kind": "trivial_only"
+    },
+    "csessr.dug.json": {
+      "kind": "trivial_only"
+    },
+    "csi.dug.json": {
+      "kind": "trivial_only"
+    },
+    "dc-tmd-diagnostic.dug.json": {
+      "kind": "trivial_only"
+    },
+    "dc-tmd-exam-form.dug.json": {
+      "kind": "trivial_only"
+    },
+    "dcs.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "dcs"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "dcs"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "dialysis-symptom-index.dug.json": {
+      "kind": "trivial_only"
+    },
+    "domain-specific-life-satisfaction-18.dug.json": {
+      "kind": "trivial_only"
+    },
+    "dsm5-crosscutting.dug.json": {
+      "kind": "trivial_only"
+    },
+    "everyday-discrimination-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "fabq-physical-activity.dug.json": {
+      "kind": "trivial_only"
+    },
+    "fabq.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "fabq"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "fabq"
+          ],
+          "{'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "fear-avoidance-1-question.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "fear-avoidance-1-question"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1,
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "fear-avoidance-1-question"
+          ],
+          "{'description', 'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "fear-of-daily-activities.dug.json": {
+      "kind": "trivial_only"
+    },
+    "feges.dug.json": {
+      "kind": "trivial_only"
+    },
+    "fibser.dug.json": {
+      "kind": "trivial_only"
+    },
+    "fps-r.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "fps-r"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "fps-r"
+          ],
+          "{'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "functional-disability-index-pediatric.dug.json": {
+      "kind": "trivial_only"
+    },
+    "gad2.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "gad2"
+        ],
+        [
+          "variable",
+          "GAD2FeelNervScale"
+        ],
+        [
+          "variable",
+          "GAD2NotStopWryScale"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_variable_mappings.HDP01233": 2,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP00933": 1,
+        "metadata.study_mappings.HDP00097": 1,
+        "metadata.study_mappings.HDP00221._sources": 1,
+        "metadata.study_mappings.HDP00330": 1,
+        "metadata.study_mappings.HDP01497": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00221.GAD2NotStopWryScale": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP00895": 1,
+        "metadata.study_mappings.HDP01233": 1,
+        "metadata.urls": 1,
+        "metadata.study_variable_mappings.HDP00221": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "GAD2FeelNervScale"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ],
+        [
+          [
+            "section",
+            "gad2"
+          ],
+          "{'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP00221._sources', 'metadata.study_mappings.HDP00330', 'metadata.study_mappings.HDP01497', 'parents', 'metadata.study_mappings.HDP00221.GAD2NotStopWryScale', 'metadata.categories', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP01233', 'metadata.urls'}"
+        ],
+        [
+          [
+            "variable",
+            "GAD2NotStopWryScale"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233', 'metadata.study_variable_mappings.HDP00221'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "generalized-anxiety-disorder-7.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "generalized-anxiety-disorder-7"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP01327._sources": 1,
+        "metadata.study_mappings.HDP00223._sources": 1,
+        "metadata.study_mappings.HDP01068": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP01660": 1,
+        "metadata.study_mappings.HDP01476": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP00104._sources": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP01392._sources": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "generalized-anxiety-disorder-7"
+          ],
+          "{'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP01327._sources', 'metadata.study_mappings.HDP00223._sources', 'metadata.study_mappings.HDP01068', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01660', 'metadata.study_mappings.HDP01476', 'parents', 'metadata.study_mappings.HDP00337._sources', 'metadata.categories', 'metadata.study_mappings.HDP00104._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP01392._sources'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "gq-6.dug.json": {
+      "kind": "trivial_only"
+    },
+    "graded-chronic-pain.dug.json": {
+      "kind": "trivial_only"
+    },
+    "gss-8.dug.json": {
+      "kind": "trivial_only"
+    },
+    "hi.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "hi"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "hi"
+          ],
+          "{'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "hyperacusis-questionnaire.dug.json": {
+      "kind": "trivial_only"
+    },
+    "idi.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ipaq-lf.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ipaq-sf.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ipip-5.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ipip-neo.dug.json": {
+      "kind": "trivial_only"
+    },
+    "isel-12.dug.json": {
+      "kind": "trivial_only"
+    },
+    "koos-12.dug.json": {
+      "kind": "trivial_only"
+    },
+    "lec-5.dug.json": {
+      "kind": "trivial_only"
+    },
+    "lotr.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "lotr"
+        ]
+      ],
+      "field_change_counts": {
+        "parents": 1,
+        "metadata.study_mappings.HDP01660": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "lotr"
+          ],
+          "{'parents', 'metadata.study_mappings.HDP01660'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "maia-2.dug.json": {
+      "kind": "trivial_only"
+    },
+    "mbm.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "mbm"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1,
+        "description": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01660": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "mbm"
+          ],
+          "{'metadata.urls', 'description', 'parents', 'metadata.study_mappings.HDP01660'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "midas.dug.json": {
+      "kind": "trivial_only"
+    },
+    "misci.dug.json": {
+      "kind": "trivial_only"
+    },
+    "mobile-application-rating-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "mos-sleep-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "moscs.dug.json": {
+      "kind": "trivial_only"
+    },
+    "mpfi.dug.json": {
+      "kind": "trivial_only"
+    },
+    "msas-sf.dug.json": {
+      "kind": "trivial_only"
+    },
+    "mspss.dug.json": {
+      "kind": "trivial_only"
+    },
+    "nida-modified-assist.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "nida-modified-assist"
+        ],
+        [
+          "variable",
+          "NIDAL2AnyAlchlScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugClubDrgScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugCocaineScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugHallcngnScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugHeroinScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugInhlntScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugMethScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugMrjnaScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugOthrMedScl"
+        ],
+        [
+          "variable",
+          "NIDAL2DrugSteroidScl"
+        ],
+        [
+          "variable",
+          "NIDAL2ExtntAlchlScl"
+        ],
+        [
+          "variable",
+          "NIDAL2MedPainScl"
+        ],
+        [
+          "variable",
+          "NIDAL2MedSedtvScl"
+        ],
+        [
+          "variable",
+          "NIDAL2MedStimScl"
+        ],
+        [
+          "variable",
+          "NIDAL2TobacPrdctScl"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_variable_mappings": 15,
+        "metadata.study_mappings.HDP00253": 1,
+        "parents": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01288": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "NIDAL2DrugOthrMedScl"
+          ],
+          "{'metadata.study_variable_mappings'}"
+        ],
+        [
+          [
+            "variable",
+            "NIDAL2DrugCocaineScl"
+          ],
+          "{'metadata.study_variable_mappings'}"
+        ],
+        [
+          [
+            "section",
+            "nida-modified-assist"
+          ],
+          "{'metadata.study_mappings.HDP00253', 'parents', 'metadata.categories', 'metadata.study_mappings.HDP01288'}"
+        ],
+        [
+          [
+            "variable",
+            "NIDAL2MedPainScl"
+          ],
+          "{'metadata.study_variable_mappings'}"
+        ],
+        [
+          [
+            "variable",
+            "NIDAL2ExtntAlchlScl"
+          ],
+          "{'metadata.study_variable_mappings'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "nsi.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ohq.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "ohq"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "ohq"
+          ],
+          "{'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "oms-hc.dug.json": {
+      "kind": "trivial_only"
+    },
+    "opioid-mme.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "opioid-mme"
+        ],
+        [
+          "variable",
+          "mme_bup_film_mcg_mme"
+        ],
+        [
+          "variable",
+          "mme_bup_filmtab_mme"
+        ],
+        [
+          "variable",
+          "mme_hydrocodone_mme"
+        ],
+        [
+          "variable",
+          "mme_hydromor_mme"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.instructions": 4,
+        "parents": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01543": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "mme_hydromor_mme"
+          ],
+          "{'metadata.instructions'}"
+        ],
+        [
+          [
+            "variable",
+            "mme_bup_film_mcg_mme"
+          ],
+          "{'metadata.instructions'}"
+        ],
+        [
+          [
+            "section",
+            "opioid-mme"
+          ],
+          "{'parents', 'metadata.categories', 'metadata.study_mappings.HDP01543'}"
+        ],
+        [
+          [
+            "variable",
+            "mme_bup_filmtab_mme"
+          ],
+          "{'metadata.instructions'}"
+        ],
+        [
+          [
+            "variable",
+            "mme_hydrocodone_mme"
+          ],
+          "{'metadata.instructions'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "opioid-risk-tool.dug.json": {
+      "kind": "trivial_only"
+    },
+    "osproyf.dug.json": {
+      "kind": "trivial_only"
+    },
+    "osu-tbi.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "osu-tbi"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.categories": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "osu-tbi"
+          ],
+          "{'metadata.categories'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pain-resilience.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pain-vas-nrs.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pain-visual-analogue-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "paq.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pass.dug.json": {
+      "kind": "trivial_only"
+    },
+    "patient-health-questionnaire-8.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "patient-health-questionnaire-8"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP00941": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP01176": 1,
+        "parents": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP00924": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00980": 1,
+        "metadata.study_mappings.HDP00890": 1,
+        "metadata.study_mappings.HDP01148": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP00033": 1,
+        "metadata.study_mappings.HDP01498": 1,
+        "metadata.study_mappings.HDP01011": 1,
+        "metadata.study_mappings.HDP01476": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP01018": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "patient-health-questionnaire-8"
+          ],
+          "{'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01176', 'parents', 'metadata.categories', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP01148', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00033', 'metadata.study_mappings.HDP01498', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP01476', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP01018'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "patient-health-questionnaire-9.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "patient-health-questionnaire-9"
+        ],
+        [
+          "variable",
+          "PHQAbnrmlDietScore"
+        ],
+        [
+          "variable",
+          "PHQConcntrtnImprmntScore"
+        ],
+        [
+          "variable",
+          "PHQDeprssnScore"
+        ],
+        [
+          "variable",
+          "PHQDiffcltyPerfScl"
+        ],
+        [
+          "variable",
+          "PHQFlngFailrScore"
+        ],
+        [
+          "variable",
+          "PHQMovmntSpchImprmntScore"
+        ],
+        [
+          "variable",
+          "PHQSleepImpairScore"
+        ],
+        [
+          "variable",
+          "PHQTirdLittleEnrgyScore"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_variable_mappings.HDP00221": 8,
+        "metadata.study_mappings.HDP00221.PHQAbnrmlDietScore": 1,
+        "metadata.study_mappings.HDP01327._sources": 1,
+        "metadata.study_mappings.HDP01494": 1,
+        "metadata.study_mappings.HDP00974": 1,
+        "metadata.study_mappings.HDP00223._sources": 1,
+        "metadata.study_mappings.HDP00221.PHQDiffcltyPerfScl": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01495": 1,
+        "metadata.study_mappings.HDP00221.PHQTirdLittleEnrgyScore": 1,
+        "metadata.study_mappings.HDP00982": 1,
+        "metadata.study_mappings.HDP00221.PHQFlngFailrScore": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP00221.PHQConcntrtnImprmntScore": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP00104._sources": 1,
+        "metadata.study_mappings.HDP01446": 1,
+        "metadata.study_mappings.HDP01112": 1,
+        "metadata.study_mappings.HDP01464._sources": 1,
+        "metadata.study_mappings.HDP00221._sources": 1,
+        "metadata.study_mappings.HDP01061": 1,
+        "metadata.study_mappings.HDP01032": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01155": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP01105": 1,
+        "metadata.study_mappings.HDP01373": 1,
+        "metadata.study_mappings.HDP00221.PHQDeprssnScore": 1,
+        "metadata.study_mappings.HDP01237": 1,
+        "metadata.study_mappings.HDP00221.PHQMovmntSpchImprmntScore": 1,
+        "metadata.study_mappings.HDP01113": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP00221.PHQSleepImpairScore": 1,
+        "metadata.study_mappings.HDP01312": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "PHQConcntrtnImprmntScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP00221'}"
+        ],
+        [
+          [
+            "variable",
+            "PHQTirdLittleEnrgyScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP00221'}"
+        ],
+        [
+          [
+            "variable",
+            "PHQMovmntSpchImprmntScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP00221'}"
+        ],
+        [
+          [
+            "variable",
+            "PHQAbnrmlDietScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP00221'}"
+        ],
+        [
+          [
+            "variable",
+            "PHQSleepImpairScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP00221'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pbhq-as.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "pbhq-as"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.categories": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "pbhq-as"
+          ],
+          "{'metadata.categories'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pc-ptsd-5.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pcl-5.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pediatric-demographic.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [
+        [
+          "variable",
+          "EDULVL"
+        ],
+        [
+          "variable",
+          "EDULVLspouse"
+        ],
+        [
+          "variable",
+          "ETHNIC"
+        ],
+        [
+          "variable",
+          "PAINDUR_acute"
+        ],
+        [
+          "variable",
+          "ethnic_p"
+        ]
+      ],
+      "records_only_in_b": [
+        [
+          "variable",
+          "EDULEVEL"
+        ],
+        [
+          "variable",
+          "EDULEVELspouse"
+        ],
+        [
+          "variable",
+          "GENIDENT"
+        ],
+        [
+          "variable",
+          "GENIDENTOTH"
+        ],
+        [
+          "variable",
+          "HI_LA"
+        ],
+        [
+          "variable",
+          "HI_LA_p"
+        ],
+        [
+          "variable",
+          "MENA"
+        ],
+        [
+          "variable",
+          "MENA_p"
+        ]
+      ],
+      "records_changed": [
+        [
+          "section",
+          "pediatric-demographic"
+        ],
+        [
+          "variable",
+          "AI_AN"
+        ],
+        [
+          "variable",
+          "AI_AN_p"
+        ],
+        [
+          "variable",
+          "Age"
+        ],
+        [
+          "variable",
+          "AgeU"
+        ],
+        [
+          "variable",
+          "AgeUparent"
+        ],
+        [
+          "variable",
+          "Ageparent"
+        ],
+        [
+          "variable",
+          "Asian"
+        ],
+        [
+          "variable",
+          "Asian_p"
+        ],
+        [
+          "variable",
+          "BRTHDTC"
+        ],
+        [
+          "variable",
+          "Bl_AA"
+        ],
+        [
+          "variable",
+          "Bl_AA_p"
+        ],
+        [
+          "variable",
+          "NH_PI"
+        ],
+        [
+          "variable",
+          "NH_PI_p"
+        ],
+        [
+          "variable",
+          "Not_Rep"
+        ],
+        [
+          "variable",
+          "Not_Rep_p"
+        ],
+        [
+          "variable",
+          "PAINDUR"
+        ],
+        [
+          "variable",
+          "ProxyRelationship"
+        ],
+        [
+          "variable",
+          "ProxyRelationshipOTH"
+        ],
+        [
+          "variable",
+          "SDOH_Childcare"
+        ],
+        [
+          "variable",
+          "SDOH_Clothing"
+        ],
+        [
+          "variable",
+          "SDOH_Food"
+        ],
+        [
+          "variable",
+          "SDOH_Housing"
+        ],
+        [
+          "variable",
+          "SDOH_Internet"
+        ],
+        [
+          "variable",
+          "SDOH_MedHlthcare"
+        ],
+        [
+          "variable",
+          "SDOH_NotAnswer"
+        ],
+        [
+          "variable",
+          "SDOH_Other"
+        ],
+        [
+          "variable",
+          "SDOH_OtherSpecify"
+        ],
+        [
+          "variable",
+          "SDOH_Phone"
+        ],
+        [
+          "variable",
+          "SDOH_Transportation"
+        ],
+        [
+          "variable",
+          "SDOH_Utilities"
+        ],
+        [
+          "variable",
+          "Sex"
+        ],
+        [
+          "variable",
+          "Unkn"
+        ],
+        [
+          "variable",
+          "Unkn_p"
+        ],
+        [
+          "variable",
+          "White"
+        ],
+        [
+          "variable",
+          "White_p"
+        ],
+        [
+          "variable",
+          "demRUCA1"
+        ],
+        [
+          "variable",
+          "demRUCA2"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.short_description": 17,
+        "metadata.instructions": 30,
+        "metadata.permissible_values.0": 14,
+        "description": 16,
+        "metadata.permissible_values.1": 14,
+        "metadata.question_text": 22,
+        "metadata.enum": 2,
+        "metadata.study_mappings.HDP01629": 1,
+        "parents": 1,
+        "metadata.categories": 1,
+        "variable_list": 1,
+        "metadata.study_mappings.HDP01660": 1,
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "Bl_AA_p"
+          ],
+          "{'metadata.short_description', 'metadata.instructions', 'metadata.permissible_values.0', 'description', 'metadata.permissible_values.1', 'metadata.question_text'}"
+        ],
+        [
+          [
+            "variable",
+            "demRUCA2"
+          ],
+          "{'metadata.short_description', 'metadata.question_text'}"
+        ],
+        [
+          [
+            "variable",
+            "demRUCA1"
+          ],
+          "{'metadata.short_description', 'metadata.question_text'}"
+        ],
+        [
+          [
+            "variable",
+            "SDOH_Internet"
+          ],
+          "{'metadata.instructions'}"
+        ],
+        [
+          [
+            "variable",
+            "ProxyRelationshipOTH"
+          ],
+          "{'metadata.instructions'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "peg.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "peg"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP00909._sources": 1,
+        "metadata.study_mappings.HDP01373._sources": 1,
+        "metadata.study_mappings.HDP01672": 1,
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP00366._sources": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP01011._sources": 1,
+        "metadata.study_mappings.HDP00308._sources": 1,
+        "metadata.study_mappings.HDP01446._sources": 1,
+        "metadata.study_mappings.HDP00994._sources": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP00902._sources": 1,
+        "metadata.study_mappings.HDP01155._sources": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP00464._sources": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP00971._sources": 1,
+        "metadata.study_mappings.HDP01113._sources": 1,
+        "metadata.study_mappings.HDP01148._sources": 1,
+        "metadata.study_mappings.HDP01368._sources": 1,
+        "metadata.study_mappings.HDP00924._sources": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP01495._sources": 1,
+        "metadata.study_mappings.HDP01105._sources": 1,
+        "metadata.study_mappings.HDP00890._sources": 1,
+        "metadata.study_mappings.HDP01018._sources": 1,
+        "metadata.study_mappings.HDP01004._sources": 1,
+        "metadata.study_mappings.HDP00982._sources": 1,
+        "metadata.study_mappings.HDP01077._sources": 1,
+        "metadata.study_mappings.HDP01032._sources": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00980._sources": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP01166._sources": 1,
+        "metadata.study_mappings.HDP01493._sources": 1,
+        "metadata.study_mappings.HDP00937._sources": 1,
+        "metadata.study_mappings.HDP01494._sources": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP01246._sources": 1,
+        "metadata.study_mappings.HDP01351._sources": 1,
+        "metadata.study_mappings.HDP01050._sources": 1,
+        "metadata.study_mappings.HDP00946._sources": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP00920._sources": 1,
+        "metadata.study_mappings.HDP01237._sources": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP01048": 1,
+        "metadata.study_mappings.HDP01464._sources": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00996._sources": 1,
+        "metadata.study_mappings.HDP01284._sources": 1,
+        "metadata.study_mappings.HDP00941._sources": 1,
+        "metadata.study_mappings.HDP01108._sources": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP00974._sources": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP01029._sources": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP00960._sources": 1,
+        "metadata.study_mappings.HDP01176._sources": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP01112._sources": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP01416._sources": 1,
+        "metadata.study_mappings.HDP00280._sources": 1,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP01543": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "peg"
+          ],
+          "{'metadata.study_mappings.HDP00909._sources', 'metadata.study_mappings.HDP01373._sources', 'metadata.study_mappings.HDP01672', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP00366._sources', 'metadata.categories', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01011._sources', 'metadata.study_mappings.HDP00308._sources', 'metadata.study_mappings.HDP01446._sources', 'metadata.study_mappings.HDP00994._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00902._sources', 'metadata.study_mappings.HDP01155._sources', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP00464._sources', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP00971._sources', 'metadata.study_mappings.HDP01113._sources', 'metadata.study_mappings.HDP01148._sources', 'metadata.study_mappings.HDP01368._sources', 'metadata.study_mappings.HDP00924._sources', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01495._sources', 'metadata.study_mappings.HDP01105._sources', 'metadata.study_mappings.HDP00890._sources', 'metadata.study_mappings.HDP01018._sources', 'metadata.study_mappings.HDP01004._sources', 'metadata.study_mappings.HDP00982._sources', 'metadata.study_mappings.HDP01077._sources', 'metadata.study_mappings.HDP01032._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00980._sources', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01166._sources', 'metadata.study_mappings.HDP01493._sources', 'metadata.study_mappings.HDP00937._sources', 'metadata.study_mappings.HDP01494._sources', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP01246._sources', 'metadata.study_mappings.HDP01351._sources', 'metadata.study_mappings.HDP01050._sources', 'metadata.study_mappings.HDP00946._sources', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP00920._sources', 'metadata.study_mappings.HDP01237._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01464._sources', 'parents', 'metadata.study_mappings.HDP00996._sources', 'metadata.study_mappings.HDP01284._sources', 'metadata.study_mappings.HDP00941._sources', 'metadata.study_mappings.HDP01108._sources', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00974._sources', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01029._sources', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00960._sources', 'metadata.study_mappings.HDP01176._sources', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01112._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01416._sources', 'metadata.study_mappings.HDP00280._sources', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01543'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pgcs.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pgic.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "pgic"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP00909._sources": 1,
+        "metadata.study_mappings.HDP01373._sources": 1,
+        "metadata.study_mappings.HDP01672": 1,
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP00366._sources": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP01011._sources": 1,
+        "metadata.study_mappings.HDP01446._sources": 1,
+        "metadata.study_mappings.HDP00308._sources": 1,
+        "metadata.study_mappings.HDP00994._sources": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP00902._sources": 1,
+        "metadata.study_mappings.HDP01155._sources": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP00464._sources": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.urls": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP00971._sources": 1,
+        "metadata.study_mappings.HDP00369._sources": 1,
+        "metadata.study_mappings.HDP01148._sources": 1,
+        "metadata.study_mappings.HDP01113._sources": 1,
+        "metadata.study_mappings.HDP01368._sources": 1,
+        "metadata.study_mappings.HDP00924._sources": 1,
+        "metadata.study_mappings.HDP01061._sources": 1,
+        "metadata.study_mappings.HDP01495._sources": 1,
+        "metadata.study_mappings.HDP01105._sources": 1,
+        "metadata.study_mappings.HDP00890._sources": 1,
+        "metadata.study_mappings.HDP01018._sources": 1,
+        "metadata.study_mappings.HDP01004._sources": 1,
+        "metadata.study_mappings.HDP00982._sources": 1,
+        "metadata.study_mappings.HDP01077._sources": 1,
+        "metadata.study_mappings.HDP01327._sources": 1,
+        "metadata.study_mappings.HDP01032._sources": 1,
+        "metadata.study_mappings.HDP00033._sources": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00980._sources": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP01166._sources": 1,
+        "metadata.study_mappings.HDP01493._sources": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP00937._sources": 1,
+        "metadata.study_mappings.HDP00293._sources": 1,
+        "metadata.study_mappings.HDP01494._sources": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP01246._sources": 1,
+        "metadata.study_mappings.HDP01351._sources": 1,
+        "metadata.study_mappings.HDP00946._sources": 1,
+        "metadata.study_mappings.HDP01050._sources": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP00920._sources": 1,
+        "metadata.study_mappings.HDP01237._sources": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP01048": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01412._sources": 1,
+        "metadata.study_mappings.HDP00996._sources": 1,
+        "metadata.study_mappings.HDP01284._sources": 1,
+        "metadata.study_mappings.HDP00941._sources": 1,
+        "metadata.study_mappings.HDP01108._sources": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP00974._sources": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP01029._sources": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP00960._sources": 1,
+        "metadata.study_mappings.HDP00111._sources": 1,
+        "metadata.study_mappings.HDP01176._sources": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP01112._sources": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP01416._sources": 1,
+        "metadata.study_mappings.HDP00280._sources": 1,
+        "metadata.study_mappings.HDP00429._sources": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "pgic"
+          ],
+          "{'metadata.study_mappings.HDP00909._sources', 'metadata.study_mappings.HDP01373._sources', 'metadata.study_mappings.HDP01672', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP00366._sources', 'metadata.categories', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01011._sources', 'metadata.study_mappings.HDP01446._sources', 'metadata.study_mappings.HDP00308._sources', 'metadata.study_mappings.HDP00994._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00902._sources', 'metadata.study_mappings.HDP01155._sources', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP00464._sources', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.urls', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP00971._sources', 'metadata.study_mappings.HDP00369._sources', 'metadata.study_mappings.HDP01148._sources', 'metadata.study_mappings.HDP01113._sources', 'metadata.study_mappings.HDP01368._sources', 'metadata.study_mappings.HDP00924._sources', 'metadata.study_mappings.HDP01061._sources', 'metadata.study_mappings.HDP01495._sources', 'metadata.study_mappings.HDP01105._sources', 'metadata.study_mappings.HDP00890._sources', 'metadata.study_mappings.HDP01018._sources', 'metadata.study_mappings.HDP01004._sources', 'metadata.study_mappings.HDP00982._sources', 'metadata.study_mappings.HDP01077._sources', 'metadata.study_mappings.HDP01327._sources', 'metadata.study_mappings.HDP01032._sources', 'metadata.study_mappings.HDP00033._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00980._sources', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01166._sources', 'metadata.study_mappings.HDP01493._sources', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP00937._sources', 'metadata.study_mappings.HDP00293._sources', 'metadata.study_mappings.HDP01494._sources', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP01246._sources', 'metadata.study_mappings.HDP01351._sources', 'metadata.study_mappings.HDP00946._sources', 'metadata.study_mappings.HDP01050._sources', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP00920._sources', 'metadata.study_mappings.HDP01237._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01499', 'parents', 'metadata.study_mappings.HDP01412._sources', 'metadata.study_mappings.HDP00996._sources', 'metadata.study_mappings.HDP01284._sources', 'metadata.study_mappings.HDP00941._sources', 'metadata.study_mappings.HDP01108._sources', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00974._sources', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01029._sources', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00960._sources', 'metadata.study_mappings.HDP00111._sources', 'metadata.study_mappings.HDP01176._sources', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01112._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01416._sources', 'metadata.study_mappings.HDP00280._sources', 'metadata.study_mappings.HDP00429._sources'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pgis.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [
+        [
+          "variable",
+          "PGIS7d"
+        ],
+        [
+          "variable",
+          "PGIS7dPP"
+        ]
+      ],
+      "records_only_in_b": [
+        [
+          "variable",
+          "PGISSeverityScale"
+        ]
+      ],
+      "records_changed": [
+        [
+          "section",
+          "pgis"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1,
+        "name": 1,
+        "metadata.categories": 1,
+        "variable_list": 1,
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "pgis"
+          ],
+          "{'description', 'name', 'metadata.categories', 'variable_list', 'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "phq-4.dug.json": {
+      "kind": "trivial_only"
+    },
+    "phq-m.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "phq-m"
+        ]
+      ],
+      "field_change_counts": {
+        "parents": 1,
+        "metadata.study_mappings.HDP01660": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "phq-m"
+          ],
+          "{'parents', 'metadata.study_mappings.HDP01660'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "phq2.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "phq2"
+        ],
+        [
+          "variable",
+          "PHQDeprssnScore"
+        ],
+        [
+          "variable",
+          "PHQLitIntrstScore"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_variable_mappings.HDP01233": 2,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP01288._sources": 1,
+        "metadata.categories": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP00895": 1,
+        "metadata.study_mappings.HDP01233": 1,
+        "metadata.study_mappings.HDP00330": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "PHQDeprssnScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ],
+        [
+          [
+            "variable",
+            "PHQLitIntrstScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ],
+        [
+          [
+            "section",
+            "phq2"
+          ],
+          "{'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01288._sources', 'metadata.categories', 'parents', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP00330'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "physical-function-6b.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "physical-function-6b"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP00825": 1,
+        "metadata.study_mappings.HDP01193": 1,
+        "metadata.study_mappings.HDP00097": 1,
+        "metadata.study_mappings.HDP01672": 1,
+        "parents": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP01543": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "physical-function-6b"
+          ],
+          "{'metadata.study_mappings.HDP00825', 'metadata.study_mappings.HDP01193', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP01672', 'parents', 'metadata.categories', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01543'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pips.dug.json": {
+      "kind": "trivial_only"
+    },
+    "poem.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ppfq-10.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pppm.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [
+        [
+          "variable",
+          "PPPMSF_score"
+        ]
+      ],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "pppm"
+        ],
+        [
+          "variable",
+          "PPPM_complain"
+        ]
+      ],
+      "field_change_counts": {
+        "variable_list": 1,
+        "description": 1,
+        "metadata.urls": 1,
+        "metadata.permissible_values.0": 1,
+        "metadata.permissible_values.1": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "pppm"
+          ],
+          "{'variable_list', 'description', 'metadata.urls'}"
+        ],
+        [
+          [
+            "variable",
+            "PPPM_complain"
+          ],
+          "{'metadata.permissible_values.0', 'metadata.permissible_values.1'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-anger-sf-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-anxiety-sf-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-anxiety-sf-8a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-anxiety-sf-8a"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-anxiety-sf-8a"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-bank-anxiety-cat.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-bank-anxiety-cat"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-bank-anxiety-cat"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-cognitive-function-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-cognitive-function-ability-6a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-companionship-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-emotional-distress-depression-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-emotional-distress-depression-8b.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-emotional-distress-depression-item-bank.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-emotional-distress-depression-item-bank"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-emotional-distress-depression-item-bank"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-emotional-support-4a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-emotional-support-4a"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1,
+        "action": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-emotional-support-4a"
+          ],
+          "{'metadata.urls', 'action'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-emotional-support-6a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-emotional-support-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-fatigue-6a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-fatigue-7a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-fatigue-7b.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-fatigue-8a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-fatigue-8a"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.categories": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-fatigue-8a"
+          ],
+          "{'metadata.categories'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-general-self-efficacy-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-global-health-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-instrumental-support-6a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-instrumental-support-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-mobility.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-nociceptive-pain-quality-5a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pain-behavior-item-bank-v1.0.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pain-behavior-pediatric-item-bank-v1.0.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pain-intensity-1a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pain-intensity-3a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pain-interference-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pain-interference-6a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pain-interference-8a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-pain-interference-8a"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-pain-interference-8a"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-pain-interference-cat.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-parent-proxy-bank-pain-interference.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-bank-pain-interference.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-depressive-symptoms-8a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-pediatric-depressive-symptoms-8a"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.categories": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-pediatric-depressive-symptoms-8a"
+          ],
+          "{'metadata.categories'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-pediatric-fatigue-10a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-global-health.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-mobility-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-pain-intensity-1a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-pain-quality-sensory-8a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-pediatric-pain-quality-sensory-8a"
+        ]
+      ],
+      "field_change_counts": {
+        "parents": 1,
+        "metadata.study_mappings.HDP01660": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-pediatric-pain-quality-sensory-8a"
+          ],
+          "{'parents', 'metadata.study_mappings.HDP01660'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-pediatric-peer-relationships-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-sleep-related-impairment-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-pediatric-upper-extremity-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-physical-function-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-physical-function-8b.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-physical-functional-cat.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-positive-affect.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-psychosocial-illness-impact-negative-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-psychosocial-illness-impact-positive-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-satisfaction-with-social-roles-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-self-efficacy-managing-daily-activities-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-self-efficacy-managing-emotions-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-self-efficacy-managing-emotions-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-self-efficacy-managing-medications-treatment-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-self-efficacy-managing-social-interaction-4a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-self-efficacy-managing-social-interaction-4a"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.categories": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-self-efficacy-managing-social-interaction-4a"
+          ],
+          "{'metadata.categories'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-self-efficacy-managing-social-interaction-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-self-efficacy-managing-symptoms-4a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-self-efficacy-managing-symptoms-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-short-form-13a-fatigue.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-sleep-disturbance-4a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-sleep-disturbance-4a"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP01629": 1,
+        "parents": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-sleep-disturbance-4a"
+          ],
+          "{'metadata.study_mappings.HDP01629', 'parents'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-sleep-disturbance-8a.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "promis-sleep-disturbance-8a"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "promis-sleep-disturbance-8a"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "promis-sleep-related-impairment-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-sleep-related-impairment-cat.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-social-isolation-8a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "promis-upper-extremity-7a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "pseq-10.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "pseq-10"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "pseq-10"
+          ],
+          "{'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pseq-2.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "pseq-2"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.categories": 1,
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "pseq-2"
+          ],
+          "{'metadata.categories', 'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "psocq-a.dug.json": {
+      "kind": "trivial_only"
+    },
+    "psqi.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "psqi"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1,
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "psqi"
+          ],
+          "{'description', 'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "pubertal-developmental-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "rapa.dug.json": {
+      "kind": "trivial_only"
+    },
+    "ruca-codes.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "ruca-codes"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "ruca-codes"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "scat.dug.json": {
+      "kind": "trivial_only"
+    },
+    "scim.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "scim"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.urls": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "scim"
+          ],
+          "{'metadata.urls'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "scq.dug.json": {
+      "kind": "trivial_only"
+    },
+    "scs-sf.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "scs-sf"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "scs-sf"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "short-physical-performance-battery.dug.json": {
+      "kind": "trivial_only"
+    },
+    "sickle-cell-disease-self-efficacy-scale.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "sickle-cell-disease-self-efficacy-scale"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP01629": 1,
+        "parents": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "sickle-cell-disease-self-efficacy-scale"
+          ],
+          "{'metadata.study_mappings.HDP01629', 'parents'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "six-item-screener.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "six-item-screener"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "six-item-screener"
+          ],
+          "{'description'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "sleep-asws-pediatric.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "sleep-asws-pediatric"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1,
+        "metadata.categories": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "sleep-asws-pediatric"
+          ],
+          "{'description', 'metadata.categories'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "sleep-duration.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "sleep-duration"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP01029": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP00980": 1,
+        "metadata.study_mappings.HDP00920": 1,
+        "metadata.study_mappings.HDP01246": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP01498": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP00895": 1,
+        "metadata.study_mappings.HDP00996": 1,
+        "metadata.study_mappings.HDP00337": 1,
+        "metadata.urls": 1,
+        "metadata.study_mappings.HDP00941": 1,
+        "metadata.study_mappings.HDP00971": 1,
+        "metadata.study_mappings.HDP01004": 1,
+        "metadata.study_mappings.HDP00330": 1,
+        "metadata.study_mappings.HDP01176": 1,
+        "metadata.study_mappings.HDP00110": 1,
+        "metadata.study_mappings.HDP01166": 1,
+        "metadata.study_mappings.HDP00369": 1,
+        "metadata.study_mappings.HDP00111": 1,
+        "metadata.study_mappings.HDP01368": 1,
+        "metadata.study_mappings.HDP00960": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP00933": 1,
+        "metadata.study_mappings.HDP00293": 1,
+        "metadata.study_mappings.HDP01237": 1,
+        "metadata.study_mappings.HDP01351": 1,
+        "metadata.study_mappings.HDP01113": 1,
+        "metadata.study_mappings.HDP01077": 1,
+        "metadata.study_mappings.HDP01494": 1,
+        "metadata.study_mappings.HDP01284": 1,
+        "metadata.study_mappings.HDP00974": 1,
+        "metadata.study_mappings.HDP00909": 1,
+        "metadata.study_mappings.HDP01495": 1,
+        "metadata.study_mappings.HDP01050": 1,
+        "metadata.study_mappings.HDP01233": 1,
+        "metadata.study_mappings.HDP00982": 1,
+        "metadata.study_mappings.HDP00946": 1,
+        "metadata.study_mappings.HDP00366": 1,
+        "metadata.study_mappings.HDP00890": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP01412": 1,
+        "metadata.study_mappings.HDP01011": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP01048": 1,
+        "metadata.study_mappings.HDP01112": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00902": 1,
+        "metadata.study_mappings.HDP00308": 1,
+        "metadata.study_mappings.HDP00924": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01155": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP00280": 1,
+        "metadata.study_mappings.HDP00994": 1,
+        "metadata.study_mappings.HDP01329": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP00033": 1,
+        "action": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP01018": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "sleep-duration"
+          ],
+          "{'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01029', 'metadata.categories', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP00920', 'metadata.study_mappings.HDP01246', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP01498', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP00996', 'metadata.study_mappings.HDP00337', 'metadata.urls', 'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP00971', 'metadata.study_mappings.HDP01004', 'metadata.study_mappings.HDP00330', 'metadata.study_mappings.HDP01176', 'metadata.study_mappings.HDP00110', 'metadata.study_mappings.HDP01166', 'metadata.study_mappings.HDP00369', 'metadata.study_mappings.HDP00111', 'metadata.study_mappings.HDP01368', 'metadata.study_mappings.HDP00960', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP00293', 'metadata.study_mappings.HDP01237', 'metadata.study_mappings.HDP01351', 'metadata.study_mappings.HDP01113', 'metadata.study_mappings.HDP01077', 'metadata.study_mappings.HDP01494', 'metadata.study_mappings.HDP01284', 'metadata.study_mappings.HDP00974', 'metadata.study_mappings.HDP00909', 'metadata.study_mappings.HDP01495', 'metadata.study_mappings.HDP01050', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP00982', 'metadata.study_mappings.HDP00946', 'metadata.study_mappings.HDP00366', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP01412', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01112', 'parents', 'metadata.study_mappings.HDP00902', 'metadata.study_mappings.HDP00308', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01155', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00280', 'metadata.study_mappings.HDP00994', 'metadata.study_mappings.HDP01329', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00033', 'action', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01018'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "snaith-hamilton-pleasure-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "sni.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "sni"
+        ]
+      ],
+      "field_change_counts": {
+        "description": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01660": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "sni"
+          ],
+          "{'description', 'parents', 'metadata.study_mappings.HDP01660'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "spq.dug.json": {
+      "kind": "trivial_only"
+    },
+    "srrs.dug.json": {
+      "kind": "trivial_only"
+    },
+    "tampa-scale-for-kinesiophobia-11.dug.json": {
+      "kind": "trivial_only"
+    },
+    "taps.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "taps"
+        ],
+        [
+          "variable",
+          "TAPSDrugUseScl"
+        ],
+        [
+          "variable",
+          "TAPSPrescriptionMedUseScl"
+        ],
+        [
+          "variable",
+          "TAPSTobaccoProductScl"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_variable_mappings.HDP01233": 3,
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP01029": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP00980": 1,
+        "metadata.study_mappings.HDP00920": 1,
+        "metadata.study_mappings.HDP01148": 1,
+        "metadata.study_mappings.HDP01246": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP00996": 1,
+        "metadata.study_mappings.HDP00941": 1,
+        "metadata.study_mappings.HDP01446": 1,
+        "metadata.study_mappings.HDP00971": 1,
+        "metadata.study_mappings.HDP01004": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP01176": 1,
+        "metadata.study_mappings.HDP01166": 1,
+        "metadata.study_mappings.HDP00937": 1,
+        "metadata.study_mappings.HDP00369": 1,
+        "metadata.study_mappings.HDP00111": 1,
+        "metadata.study_mappings.HDP01368": 1,
+        "metadata.study_mappings.HDP01105": 1,
+        "metadata.study_mappings.HDP00960": 1,
+        "metadata.study_mappings.HDP01373": 1,
+        "metadata.study_mappings.HDP00933": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP01108": 1,
+        "metadata.study_mappings.HDP00293": 1,
+        "metadata.study_mappings.HDP01237": 1,
+        "metadata.study_mappings.HDP01351": 1,
+        "metadata.study_mappings.HDP01113": 1,
+        "metadata.study_mappings.HDP01077": 1,
+        "metadata.study_mappings.HDP01494": 1,
+        "metadata.study_mappings.HDP00330._sources": 1,
+        "metadata.study_mappings.HDP01284": 1,
+        "metadata.study_mappings.HDP00974": 1,
+        "metadata.study_mappings.HDP01416": 1,
+        "metadata.study_mappings.HDP00097": 1,
+        "metadata.study_mappings.HDP00909": 1,
+        "metadata.study_mappings.HDP01495": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP01050": 1,
+        "metadata.study_mappings.HDP01233": 1,
+        "metadata.study_mappings.HDP00982": 1,
+        "metadata.study_mappings.HDP00946": 1,
+        "metadata.study_mappings.HDP00366": 1,
+        "metadata.study_mappings.HDP00890": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP01493": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP01412": 1,
+        "metadata.study_mappings.HDP01011": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP01048": 1,
+        "metadata.study_mappings.HDP01112": 1,
+        "metadata.study_mappings.HDP01464._sources": 1,
+        "metadata.study_mappings.HDP01061": 1,
+        "metadata.study_mappings.HDP01032": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00902": 1,
+        "metadata.study_mappings.HDP00308": 1,
+        "metadata.study_mappings.HDP00924": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01155": 1,
+        "metadata.study_mappings.HDP01288": 1,
+        "metadata.study_mappings.HDP00994": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP00280": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP00033": 1,
+        "metadata.study_mappings.HDP00464": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP01018": 1,
+        "metadata.study_mappings.HDP00429._sources": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "variable",
+            "TAPSTobaccoProductScl"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ],
+        [
+          [
+            "section",
+            "taps"
+          ],
+          "{'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01029', 'metadata.study_mappings.HDP00895._sources', 'metadata.categories', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP00920', 'metadata.study_mappings.HDP01148', 'metadata.study_mappings.HDP01246', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00996', 'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP01446', 'metadata.study_mappings.HDP00971', 'metadata.study_mappings.HDP01004', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01176', 'metadata.study_mappings.HDP01166', 'metadata.study_mappings.HDP00937', 'metadata.study_mappings.HDP00369', 'metadata.study_mappings.HDP00111', 'metadata.study_mappings.HDP01368', 'metadata.study_mappings.HDP01105', 'metadata.study_mappings.HDP00960', 'metadata.study_mappings.HDP01373', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01108', 'metadata.study_mappings.HDP00293', 'metadata.study_mappings.HDP01237', 'metadata.study_mappings.HDP01351', 'metadata.study_mappings.HDP01113', 'metadata.study_mappings.HDP01077', 'metadata.study_mappings.HDP01494', 'metadata.study_mappings.HDP00330._sources', 'metadata.study_mappings.HDP01284', 'metadata.study_mappings.HDP00974', 'metadata.study_mappings.HDP01416', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP00909', 'metadata.study_mappings.HDP01495', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP01050', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP00982', 'metadata.study_mappings.HDP00946', 'metadata.study_mappings.HDP00366', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP01493', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP01412', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01112', 'metadata.study_mappings.HDP01464._sources', 'metadata.study_mappings.HDP01061', 'metadata.study_mappings.HDP01032', 'parents', 'metadata.study_mappings.HDP00902', 'metadata.study_mappings.HDP00308', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01155', 'metadata.study_mappings.HDP01288', 'metadata.study_mappings.HDP00994', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00280', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00033', 'metadata.study_mappings.HDP00464', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01018', 'metadata.study_mappings.HDP00429._sources'}"
+        ],
+        [
+          [
+            "variable",
+            "TAPSDrugUseScl"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ],
+        [
+          [
+            "variable",
+            "TAPSPrescriptionMedUseScl"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "thq.dug.json": {
+      "kind": "trivial_only"
+    },
+    "tuq.dug.json": {
+      "kind": "trivial_only"
+    },
+    "visual-analogue-fatigue-scale.dug.json": {
+      "kind": "trivial_only"
+    },
+    "whodas-12-item.dug.json": {
+      "kind": "trivial_only"
+    },
+    "whoqol-2.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "whoqol-2"
+        ]
+      ],
+      "field_change_counts": {
+        "parents": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01543": 1,
+        "metadata.urls": 1,
+        "metadata.study_mappings.HDP01672": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "whoqol-2"
+          ],
+          "{'parents', 'metadata.categories', 'metadata.study_mappings.HDP01543', 'metadata.urls', 'metadata.study_mappings.HDP01672'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    },
+    "whoqol-bref.dug.json": {
+      "kind": "record_changes",
+      "records_only_in_a": [],
+      "records_only_in_b": [],
+      "records_changed": [
+        [
+          "section",
+          "whoqol-bref"
+        ]
+      ],
+      "field_change_counts": {
+        "metadata.study_mappings.HDP01629": 1,
+        "parents": 1
+      },
+      "sample_changes": [
+        [
+          [
+            "section",
+            "whoqol-bref"
+          ],
+          "{'metadata.study_mappings.HDP01629', 'parents'}"
+        ]
+      ],
+      "unkeyed_a": 0,
+      "unkeyed_b": 0
+    }
+  }
+}

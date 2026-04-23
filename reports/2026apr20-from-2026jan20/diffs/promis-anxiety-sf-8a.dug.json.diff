@@ -1,0 +1,30 @@
+--- dug-data-model-2026apr20/promis-anxiety-sf-8a.dug.json
++++ dug-data-model-2026jan20/promis-anxiety-sf-8a.dug.json
+@@ -307,5 +307,5 @@
+     "crf_id": "promis-anxiety-sf-8a",
+     "name": "Emotional Distress - Anxiety - Short Form 8a (EDA8) ",
+-    "description": "The PROMIS Emotional Distress Anxiety 8a assess self-reported fear (fearfulness, panic), anxious misery (worry, dread) and hyperarousal (tension, nervousness, restlessness). Contains 10 CDEs.",
++    "description": "The PROMIS Emotional Distress Anxiety SF 8a assess self-reported fear (fearfulness, panic), anxious misery (worry, dread) and hyperarousal (tension, nervousness, restlessness). Contains 10 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/promis-anxiety-sf-8a-crf.pdf",
+     "is_crf": true,
+@@ -333,5 +333,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5651"
+         },
+         {
+@@ -341,5 +341,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 10 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7801"
+         },
+         {
+@@ -349,5 +349,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5686"
+         }
+       ],

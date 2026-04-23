@@ -1,0 +1,9 @@
+--- dug-data-model-2026apr20/promis-cognitive-function-ability-6a.dug.json
++++ dug-data-model-2026jan20/promis-cognitive-function-ability-6a.dug.json
+@@ -263,5 +263,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 8 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5996"
+         }
+       ],

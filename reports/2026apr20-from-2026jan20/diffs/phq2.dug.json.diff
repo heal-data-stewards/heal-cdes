@@ -1,0 +1,188 @@
+--- dug-data-model-2026apr20/phq2.dug.json
++++ dug-data-model-2026jan20/phq2.dug.json
+@@ -37,7 +37,4 @@
+         "HDP00429": [
+           "phq01"
+-        ],
+-        "HDP01233": [
+-          "phqlitintrstscore"
+         ]
+       }
+@@ -86,7 +83,4 @@
+           "phq02"
+         ],
+-        "HDP01233": [
+-          "phqdeprssnscore"
+-        ],
+         "HDP00221": [
+           "bl_phq2",
+@@ -124,7 +118,8 @@
+       "HDP00221",
+       "HDP00253",
++      "HDP00330",
+       "HDP00429",
++      "HDP00895",
+       "HDP00933",
+-      "HDP01233",
+       "HDP01288",
+       "HDP01340"
+@@ -142,5 +137,8 @@
+     "metadata": {
+       "categories": [
+-        "Core - Adult & Pediatric"
++        "Adult Acute",
++        "Adult Chronic",
++        "All Core",
++        "Pediatrics"
+       ],
+       "urls": [
+@@ -151,5 +149,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4931"
+         },
+         {
+@@ -159,5 +157,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 3 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "4936"
+         },
+         {
+@@ -167,22 +165,18 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4861"
+         }
+       ],
+       "study_mappings": {
+         "HDP01288": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP01288/HDP01288_CTN0093_DataDictionary_clean.vlmd_2025-08-05_matches_confirmed_vlmd_cdesearch_20250905_132630.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP01288/HDP01288_CTN0093_DataDictionary_clean.vlmd_2026-02-16_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+           "PHQLitIntrstScore": [
+             "phq2_interest"
+           ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP01288/HDP01288_CTN0093_DataDictionary_clean.vlmd_2025-08-05_matches_confirmed_vlmd_cdesearch_20250905_132630.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
+           "PHQDeprssnScore": [
+             "phq2_depressed"
+@@ -190,17 +184,13 @@
+         },
+         "HDP00933": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00933/HDP00933_DataDictionary_2025-04-21.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250902_092856.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00933/HDP00933_DataDictionary_2025-04-21.vlmd_2026-02-12_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+           "PHQLitIntrstScore": [
+             "phq2_interestloss"
+           ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00933/HDP00933_DataDictionary_2025-04-21.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250902_092856.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
+           "PHQDeprssnScore": [
+             "phq2_depressed"
+@@ -208,29 +198,25 @@
+         },
+         "HDP00253": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00253/SPRINT_2020-12-16_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_103649.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+           "PHQDeprssnScore": [
+             "c_phq_2",
+             "p_phq_2"
++          ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00253/SPRINT_2020-12-16_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_103649.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
+           ]
+         },
+         "HDP00429": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00429/HDP00429_HDP00429_BACPAC.redcap.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250902_093347.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00429/HDP00429_HDP00429_BACPAC.redcap.vlmd_2026-02-12_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+           "PHQLitIntrstScore": [
+             "phq01"
+           ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00429/HDP00429_HDP00429_BACPAC.redcap.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250902_093347.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
+           "PHQDeprssnScore": [
+             "phq02"
+@@ -247,18 +233,4 @@
+               "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+             ]
+-          ]
+-        },
+-        "HDP01233": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP01233/HDP01233_combined_DD_2026-04-16_matches_confirmed_vlmd_cdesearch_20260416_144204.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "PHQLitIntrstScore": [
+-            "phqlitintrstscore"
+-          ],
+-          "PHQDeprssnScore": [
+-            "phqdeprssnscore"
+           ]
+         },
+@@ -274,4 +246,20 @@
+             ]
+           ]
++        },
++        "HDP00330": {
++          "_sources": [
++            [
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
++              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00895": {
++          "_sources": [
++            [
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
++              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++            ]
++          ]
+         }
+       }
