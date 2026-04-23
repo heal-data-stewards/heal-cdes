@@ -47,7 +47,7 @@ def parse_listing_page(soup):
         yield title, a["href"]
 
 
-def parse_node_page(soup):
+def parse_node_page(soup, default_category="Supplemental"):
     """Return (description, category, topic, [(filename, language, url)])."""
     body_div = soup.find("div", class_="field--name-body")
     description = body_div.get_text(" ", strip=True) if body_div else ""
@@ -56,7 +56,7 @@ def parse_node_page(soup):
     category = ", ".join(
         item.get_text(strip=True)
         for item in cat_div.select("div.field__item")
-    ) if cat_div else "Supplemental"
+    ) if cat_div else default_category
 
     topic_div = soup.find("div", class_="field--name-field-heal-research-topic")
     topic = ", ".join(
@@ -87,7 +87,9 @@ def parse_node_page(soup):
               show_default=True, help="Taxonomy listing URL")
 @click.option("--delay", default=0.3, show_default=True,
               help="Seconds to wait between node-page requests")
-def get_heal_cde_taxonomy(output, input_csv, taxonomy_url, delay):
+@click.option("--default-category", default="Supplemental", show_default=True,
+              help="Fallback category when a node page has no category field")
+def get_heal_cde_taxonomy(output, input_csv, taxonomy_url, delay, default_category):
     """Backstop: extend get_heal_cde_list.py output with taxonomy-only CDEs."""
     session = requests.Session()
     session.headers["User-Agent"] = "heal-cdes/1.0 (research)"
@@ -123,7 +125,7 @@ def get_heal_cde_taxonomy(output, input_csv, taxonomy_url, delay):
         node_url = BASE_URL + path
         try:
             node_soup = fetch_soup(session, node_url)
-            description, category, topic, files = parse_node_page(node_soup)
+            description, category, topic, files = parse_node_page(node_soup, default_category)
         except Exception as e:
             logging.warning(f"[{i}/{len(nodes)}] Failed to fetch {node_url}: {e}")
             if delay:
