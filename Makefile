@@ -24,6 +24,7 @@ HEAL_CDE_MAPPINGS=../heal-cde-mappings/
 # Additional inputs
 HEAL_CRF_ID_CSV = $(MAPPINGS_DIR)/heal-crf-ids/heal-crf-ids.csv
 HEAL_CDE_LIST_CSV = $(MAPPINGS_DIR)/heal-cde-list/heal-cde-list.csv
+HEAL_CDE_FINAL_CSV = $(MAPPINGS_DIR)/heal-cde-list/heal-cde-list-final.csv
 
 # Overall targets
 all: $(OUTPUT_DIR)/download_done $(OUTPUT_DIR)/logs/errors.txt $(OUTPUT_DIR)/logs/warnings.txt
@@ -31,6 +32,7 @@ all: $(OUTPUT_DIR)/download_done $(OUTPUT_DIR)/logs/errors.txt $(OUTPUT_DIR)/log
 clean:
 	rm -f $(OUTPUT_DIR)/download_done
 	rm -f $(HEAL_CDE_LIST_CSV)
+	rm -f $(HEAL_CDE_FINAL_CSV)
 	rm -f $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv
 	rm -f $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv
 	rm -f $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv
@@ -81,11 +83,16 @@ $(HEAL_CDE_LIST_CSV): | $(LOGFILE)
 	mkdir -p $(MAPPINGS_DIR)/heal-cde-list
 	@set -o pipefail; ${PYTHON} downloaders/get_heal_cde_list.py "$@.tmp" 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
 
+# STEP 1.6: Extend the CDE list with any taxonomy nodes not in the table above
+$(HEAL_CDE_FINAL_CSV): downloaders/get_heal_cde_taxonomy.py $(HEAL_CDE_LIST_CSV) | $(LOGFILE)
+	@set -o pipefail; ${PYTHON} downloaders/get_heal_cde_taxonomy.py "$@.tmp" \
+		--input-csv $(HEAL_CDE_LIST_CSV) 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
+
 # STEP 2. Download data dictionaries.
-$(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(HEAL_CDE_LIST_CSV) $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv | $(LOGFILE)
+$(OUTPUT_DIR)/download_done: downloaders/heal_cde_repo_downloader.py $(HEAL_CDE_FINAL_CSV) $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv $(MAPPINGS_DIR)/platform-mds-mappings/platform-mds-mappings.csv | $(LOGFILE)
 	mkdir -p $(OUTPUT_DIR)
 	PYTHONPATH=. set -o pipefail; ${PYTHON} downloaders/heal_cde_repo_downloader.py $(OUTPUT_DIR) \
-		--heal-cde-csv $(HEAL_CDE_LIST_CSV) \
+		--heal-cde-csv $(HEAL_CDE_FINAL_CSV) \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-data-dictionaries.csv \
 		--mappings $(MAPPINGS_DIR)/heal-data-dictionaries-mappings/heal-cde-mappings.csv \
 		--mappings $(MAPPINGS_DIR)/study-crf-mappings/study-crf-mappings.csv \

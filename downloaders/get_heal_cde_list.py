@@ -66,7 +66,9 @@ def parse_rows(soup, base_url):
 @click.argument("output", type=click.Path())
 @click.option("--base-url", default="https://www.nih.gov", show_default=True,
               help="Base URL for the NIH website")
-def get_heal_cde_list(output, base_url):
+@click.option("--raw-csv", type=click.Path(), default=None,
+              help="Write all scraped rows (with page number, before deduplication) to this CSV")
+def get_heal_cde_list(output, base_url, raw_csv):
     """Download the HEAL CDE repository list and write a CSV file."""
     session = requests.Session()
     session.headers["User-Agent"] = "heal-cdes/1.0 (research)"
@@ -89,13 +91,25 @@ def get_heal_cde_list(output, base_url):
                 logging.warning(f"Skipping file with unexpected extension: {row['Link to File']}")
                 continue
             ext_counts[ext] += 1
+            row["Page"] = page_num
             rows.append(row)
+
+    if raw_csv:
+        with open(raw_csv, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=[
+                "Page", "Title", "Description", "File Language", "Link to File",
+                "Core or Supplemental", "CDE Topics",
+            ])
+            writer.writeheader()
+            writer.writerows(rows)
+        logging.info(f"Wrote {len(rows)} raw rows (before deduplication) to {raw_csv}")
 
     # Deduplicate rows where every field is identical.
     total_scraped = len(rows)
     seen = set()
     deduped = []
     for row in rows:
+        row.pop("Page", None)
         key = (row["Title"], row["Description"], row["File Language"], row["Link to File"],
                row["Core or Supplemental"], row["CDE Topics"])
         if key in seen:
