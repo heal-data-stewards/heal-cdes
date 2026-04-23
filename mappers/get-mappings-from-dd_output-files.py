@@ -72,6 +72,9 @@ def is_candidate_mappings_file(filename):
     elif '_matches_confirmed_vlmd_cdesearch_' in filename_lower:
         # File containing variable mappings
         return True
+    elif '_matches_confirmed vlmd_cdesearch_' in filename_lower:
+        # File containing variable mappings
+        return True
     else:
         return False
 
