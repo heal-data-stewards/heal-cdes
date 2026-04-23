@@ -1,6 +1,8 @@
 {
   "dir_a": "dug-data-model-2026apr20",
   "dir_b": "dug-data-model-2026jan20",
+  "label_a": "2026apr20",
+  "label_b": "2026jan20",
   "only_in_a": [
     "cali-9-proxy.dug.json",
     "cali-9.dug.json",
@@ -269,180 +271,173 @@
       ],
       "field_change_counts": {
         "metadata.short_description": 9,
-        "metadata.question_text": 11,
-        "metadata.study_variable_mappings.HDP01233": 1,
-        "metadata.instructions": 14,
-        "metadata.permissible_values.0": 7,
-        "description": 8,
         "metadata.permissible_values.1": 7,
+        "description": 8,
         "metadata.study_variable_mappings.HDP01456": 5,
-        "metadata.study_mappings.HDP00909._sources": 1,
+        "metadata.permissible_values.0": 7,
+        "metadata.question_text": 11,
+        "metadata.instructions": 14,
         "metadata.study_mappings.HDP01373._sources": 1,
-        "metadata.study_mappings.HDP01672": 1,
-        "metadata.study_mappings.HDP00210._sources": 1,
-        "metadata.study_mappings.HDP00895._sources": 1,
-        "metadata.study_mappings.HDP01011._sources": 1,
-        "metadata.study_mappings.HDP01193.EDULEVEL": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP01051": 1,
-        "metadata.study_mappings.HDP01239._sources": 1,
-        "metadata.study_mappings.HDP00253.EDULEVEL": 1,
-        "metadata.study_mappings.HDP01492": 1,
         "metadata.study_mappings.HDP00464._sources": 1,
-        "metadata.study_mappings.HDP00728": 1,
-        "metadata.study_mappings.HDP00104._sources": 1,
-        "metadata.study_mappings.HDP00908._sources": 1,
-        "metadata.study_mappings.HDP01329._sources": 1,
-        "metadata.study_mappings.HDP00253.EDULVL": 1,
-        "metadata.study_mappings.HDP00971._sources": 1,
-        "metadata.study_mappings.HDP00825._sources": 1,
-        "metadata.study_mappings.HDP01148._sources": 1,
-        "metadata.study_mappings.HDP01368._sources": 1,
-        "metadata.study_mappings.HDP01456": 1,
-        "metadata.study_mappings.HDP01337": 1,
-        "metadata.study_mappings.HDP01061._sources": 1,
-        "metadata.study_mappings.HDP01498.EDULEVEL": 1,
-        "metadata.study_mappings.HDP01018._sources": 1,
-        "metadata.study_mappings.HDP01312": 1,
-        "metadata.study_mappings.HDP00980._sources": 1,
-        "metadata.study_mappings.HDP00239": 1,
-        "metadata.study_mappings.HDP01392": 1,
-        "metadata.study_mappings.HDP01166._sources": 1,
-        "metadata.study_mappings.HDP01695": 1,
-        "metadata.study_mappings.HDP01493._sources": 1,
-        "metadata.study_mappings.HDP01491": 1,
-        "metadata.study_mappings.HDP00293._sources": 1,
-        "metadata.study_mappings.HDP01508": 1,
-        "metadata.study_mappings.HDP00933._sources": 1,
-        "metadata.study_mappings.HDP00980.EDULVL": 1,
-        "metadata.study_mappings.HDP01246._sources": 1,
-        "metadata.study_mappings.HDP01340.EDULEVEL": 1,
-        "metadata.study_mappings.HDP01498._sources": 1,
-        "metadata.study_mappings.HDP01490": 1,
-        "metadata.study_mappings.HDP00920._sources": 1,
-        "metadata.study_mappings.HDP01237._sources": 1,
+        "metadata.study_mappings.HDP00210._sources": 1,
         "metadata.study_mappings.HDP01048": 1,
-        "metadata.study_mappings.HDP00927._sources": 1,
-        "metadata.study_mappings.HDP01412._sources": 1,
-        "metadata.study_mappings.HDP00996._sources": 1,
-        "metadata.study_mappings.HDP01046": 1,
-        "metadata.study_mappings.HDP00974._sources": 1,
-        "metadata.study_mappings.HDP00387": 1,
-        "metadata.study_mappings.HDP01489": 1,
-        "metadata.study_mappings.HDP00111._sources": 1,
-        "metadata.study_mappings.HDP01068._sources": 1,
-        "metadata.study_mappings.HDP01176._sources": 1,
-        "metadata.study_mappings.HDP01112._sources": 1,
-        "metadata.study_mappings.HDP00476._sources": 1,
-        "metadata.study_mappings.HDP00280._sources": 1,
-        "metadata.study_mappings.HDP01543": 1,
-        "metadata.study_mappings.HDP01193.EDULVL": 1,
-        "metadata.study_mappings.HDP01497": 1,
-        "metadata.study_mappings.HDP00366._sources": 1,
-        "metadata.study_mappings.HDP00476.EDULVL": 1,
-        "metadata.study_mappings.HDP01287._sources": 1,
-        "metadata.study_mappings.HDP01446._sources": 1,
-        "metadata.study_mappings.HDP00308._sources": 1,
-        "metadata.study_mappings.HDP01057._sources": 1,
-        "metadata.study_mappings.HDP00994._sources": 1,
-        "metadata.study_mappings.HDP01329.EDULVL": 1,
-        "metadata.study_mappings.HDP01694": 1,
-        "metadata.study_mappings.HDP00902._sources": 1,
-        "metadata.study_mappings.HDP01155._sources": 1,
-        "metadata.study_mappings.HDP00435": 1,
-        "metadata.study_mappings.HDP01233.demRUCA1": 1,
-        "metadata.study_mappings.HDP01338": 1,
-        "variable_list": 1,
-        "metadata.study_mappings.HDP01488": 1,
-        "metadata.study_mappings.HDP01265._sources": 1,
-        "metadata.urls": 1,
-        "metadata.study_mappings.HDP00541._sources": 1,
-        "metadata.study_mappings.HDP00893": 1,
-        "metadata.study_mappings.HDP00221._sources": 1,
-        "metadata.study_mappings.HDP01498.EDULVL": 1,
-        "metadata.study_mappings.HDP00369._sources": 1,
-        "metadata.study_mappings.HDP01113._sources": 1,
-        "metadata.study_mappings.HDP00476.EDULEVEL": 1,
-        "metadata.study_mappings.HDP01476._sources": 1,
-        "metadata.study_mappings.HDP00066._sources": 1,
-        "metadata.study_mappings.HDP00924._sources": 1,
-        "metadata.study_mappings.HDP00253._sources": 1,
-        "metadata.study_mappings.HDP00904": 1,
-        "metadata.study_mappings.HDP01495._sources": 1,
-        "metadata.study_mappings.HDP01105._sources": 1,
-        "metadata.study_mappings.HDP00890._sources": 1,
-        "metadata.study_mappings.HDP00360": 1,
-        "metadata.study_mappings.HDP01474": 1,
-        "metadata.study_mappings.HDP01464": 1,
-        "metadata.study_mappings.HDP01004._sources": 1,
-        "metadata.study_mappings.HDP00982._sources": 1,
-        "metadata.study_mappings.HDP01077._sources": 1,
-        "metadata.study_mappings.HDP00002._sources": 1,
-        "metadata.study_mappings.HDP01329.EDULEVEL": 1,
-        "metadata.study_mappings.HDP00223._sources": 1,
-        "metadata.study_mappings.HDP00097": 1,
-        "metadata.study_mappings.HDP01288._sources": 1,
-        "metadata.study_mappings.HDP01032._sources": 1,
-        "metadata.study_mappings.HDP00033._sources": 1,
-        "metadata.study_mappings.HDP00110._sources": 1,
-        "metadata.study_mappings.HDP00929": 1,
-        "metadata.study_mappings.HDP01433": 1,
-        "metadata.study_mappings.HDP01340._sources": 1,
-        "metadata.study_mappings.HDP00221.Sex": 1,
-        "metadata.study_mappings.HDP00201._sources": 1,
-        "metadata.study_mappings.HDP00937._sources": 1,
-        "metadata.study_mappings.HDP01494._sources": 1,
-        "metadata.study_mappings.HDP01351._sources": 1,
         "metadata.study_mappings.HDP00946._sources": 1,
-        "metadata.study_mappings.HDP01050._sources": 1,
-        "metadata.study_mappings.HDP00911": 1,
-        "metadata.study_mappings.HDP00962": 1,
-        "metadata.study_mappings.HDP01499": 1,
-        "parents": 1,
-        "metadata.study_mappings.HDP01284._sources": 1,
-        "metadata.study_mappings.HDP00941._sources": 1,
-        "metadata.study_mappings.HDP01108._sources": 1,
-        "metadata.study_mappings.HDP01045": 1,
-        "metadata.study_mappings.HDP00980.EDULEVEL": 1,
-        "metadata.study_mappings.HDP01029._sources": 1,
-        "metadata.study_mappings.HDP00349": 1,
-        "metadata.study_mappings.HDP00960._sources": 1,
-        "metadata.study_mappings.HDP00337._sources": 1,
-        "metadata.study_mappings.HDP00233": 1,
+        "metadata.urls": 1,
+        "metadata.study_mappings.HDP01148._sources": 1,
+        "metadata.study_mappings.HDP01287._sources": 1,
+        "metadata.study_mappings.HDP00893": 1,
         "metadata.study_mappings.HDP01416._sources": 1,
+        "metadata.study_mappings.HDP00111._sources": 1,
+        "metadata.study_mappings.HDP01368._sources": 1,
+        "metadata.study_mappings.HDP01233.demRUCA1": 1,
+        "metadata.study_mappings.HDP00221.Sex": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01265._sources": 1,
+        "metadata.study_mappings.HDP01239._sources": 1,
+        "metadata.study_mappings.HDP01329.EDULVL": 1,
+        "metadata.study_mappings.HDP00293._sources": 1,
+        "metadata.study_mappings.HDP01456": 1,
+        "metadata.study_mappings.HDP00904": 1,
+        "metadata.study_mappings.HDP00253.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01392": 1,
+        "metadata.study_mappings.HDP01112._sources": 1,
+        "metadata.study_mappings.HDP00980._sources": 1,
+        "metadata.study_mappings.HDP01446._sources": 1,
+        "metadata.study_mappings.HDP00994._sources": 1,
+        "metadata.study_mappings.HDP01351._sources": 1,
+        "metadata.study_mappings.HDP01464": 1,
+        "metadata.study_mappings.HDP01476._sources": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP01340.EDULEVEL": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01312": 1,
+        "metadata.study_mappings.HDP01237._sources": 1,
+        "metadata.study_mappings.HDP01494._sources": 1,
+        "metadata.study_mappings.HDP00909._sources": 1,
         "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP00974._sources": 1,
+        "metadata.study_mappings.HDP01695": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP01412._sources": 1,
+        "metadata.study_mappings.HDP01672": 1,
+        "metadata.study_mappings.HDP00924._sources": 1,
+        "metadata.study_mappings.HDP01543": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP01498.EDULVL": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP00476.EDULEVEL": 1,
+        "metadata.study_mappings.HDP00104._sources": 1,
+        "metadata.study_mappings.HDP00253.EDULVL": 1,
+        "metadata.study_mappings.HDP01288._sources": 1,
         "metadata.study_mappings.HDP01340.EDULVL": 1,
+        "metadata.study_mappings.HDP01032._sources": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP01011._sources": 1,
+        "metadata.study_mappings.HDP00221._sources": 1,
+        "metadata.study_mappings.HDP00280._sources": 1,
+        "metadata.study_mappings.HDP01490": 1,
+        "metadata.study_mappings.HDP00980.EDULVL": 1,
+        "metadata.study_mappings.HDP00435": 1,
+        "metadata.study_mappings.HDP00366._sources": 1,
+        "metadata.study_mappings.HDP00890._sources": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP00066._sources": 1,
+        "metadata.study_mappings.HDP01193.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01050._sources": 1,
+        "metadata.study_mappings.HDP00541._sources": 1,
+        "metadata.study_mappings.HDP00960._sources": 1,
+        "metadata.study_mappings.HDP00911": 1,
+        "metadata.study_mappings.HDP00253._sources": 1,
+        "metadata.study_mappings.HDP01113._sources": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP00996._sources": 1,
+        "metadata.study_mappings.HDP01166._sources": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP01495._sources": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP01108._sources": 1,
+        "metadata.study_mappings.HDP01068._sources": 1,
+        "metadata.study_mappings.HDP01029._sources": 1,
+        "metadata.study_mappings.HDP00982._sources": 1,
+        "metadata.study_mappings.HDP00476._sources": 1,
+        "metadata.study_mappings.HDP00360": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP00369._sources": 1,
+        "metadata.study_mappings.HDP00825._sources": 1,
+        "metadata.study_mappings.HDP01061._sources": 1,
+        "metadata.study_mappings.HDP00476.EDULVL": 1,
+        "variable_list": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP01433": 1,
+        "metadata.study_mappings.HDP00929": 1,
+        "metadata.study_mappings.HDP01474": 1,
+        "metadata.study_mappings.HDP00308._sources": 1,
+        "metadata.study_mappings.HDP01004._sources": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP00223._sources": 1,
+        "metadata.study_mappings.HDP01329.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01498.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01057._sources": 1,
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP01694": 1,
+        "metadata.study_mappings.HDP01155._sources": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP00927._sources": 1,
+        "metadata.study_mappings.HDP01193.EDULVL": 1,
+        "metadata.study_mappings.HDP00033._sources": 1,
+        "metadata.study_mappings.HDP00097": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP00902._sources": 1,
+        "metadata.study_mappings.HDP00941._sources": 1,
+        "metadata.study_mappings.HDP01176._sources": 1,
+        "metadata.study_mappings.HDP00002._sources": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP00908._sources": 1,
+        "metadata.study_mappings.HDP00971._sources": 1,
+        "metadata.study_mappings.HDP00920._sources": 1,
+        "metadata.study_mappings.HDP01018._sources": 1,
+        "metadata.study_mappings.HDP01077._sources": 1,
+        "metadata.study_mappings.HDP00980.EDULEVEL": 1,
+        "metadata.study_mappings.HDP01105._sources": 1,
+        "metadata.study_mappings.HDP01284._sources": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP01246._sources": 1,
+        "metadata.study_mappings.HDP00937._sources": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP01493._sources": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP00201._sources": 1,
         "metadata.study_variable_mappings.HDP00221": 1,
+        "metadata.study_variable_mappings.HDP01233": 1,
         "metadata.enum": 1
       },
       "sample_changes": [
         [
           [
             "variable",
-            "demRUCA2"
-          ],
-          "{'metadata.short_description', 'metadata.question_text'}"
-        ],
-        [
-          [
-            "variable",
-            "demRUCA1"
-          ],
-          "{'metadata.short_description', 'metadata.question_text', 'metadata.study_variable_mappings.HDP01233'}"
-        ],
-        [
-          [
-            "variable",
-            "SDOH_Internet"
-          ],
-          "{'metadata.instructions'}"
-        ],
-        [
-          [
-            "variable",
             "Bl_AA"
           ],
-          "{'metadata.short_description', 'metadata.permissible_values.0', 'description', 'metadata.permissible_values.1', 'metadata.question_text', 'metadata.study_variable_mappings.HDP01456'}"
+          "{'metadata.short_description', 'metadata.permissible_values.1', 'description', 'metadata.study_variable_mappings.HDP01456', 'metadata.permissible_values.0', 'metadata.question_text'}"
+        ],
+        [
+          [
+            "variable",
+            "Not_Rep"
+          ],
+          "{'metadata.instructions', 'metadata.short_description', 'metadata.permissible_values.1', 'description', 'metadata.permissible_values.0', 'metadata.question_text'}"
+        ],
+        [
+          [
+            "variable",
+            "NH_PI"
+          ],
+          "{'metadata.short_description', 'metadata.permissible_values.1', 'description', 'metadata.study_variable_mappings.HDP01456', 'metadata.permissible_values.0', 'metadata.question_text'}"
         ],
         [
           [
@@ -450,6 +445,13 @@
             "SDOH_NotAnswer"
           ],
           "{'metadata.instructions'}"
+        ],
+        [
+          [
+            "section",
+            "adult-demographics"
+          ],
+          "{'metadata.study_mappings.HDP01373._sources', 'metadata.study_mappings.HDP00464._sources', 'metadata.study_mappings.HDP00210._sources', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP00946._sources', 'metadata.urls', 'metadata.study_mappings.HDP01148._sources', 'metadata.study_mappings.HDP01287._sources', 'metadata.study_mappings.HDP00893', 'metadata.study_mappings.HDP01416._sources', 'metadata.study_mappings.HDP00111._sources', 'metadata.study_mappings.HDP01368._sources', 'metadata.study_mappings.HDP01233.demRUCA1', 'metadata.study_mappings.HDP00221.Sex', 'parents', 'metadata.study_mappings.HDP01265._sources', 'metadata.study_mappings.HDP01239._sources', 'metadata.study_mappings.HDP01329.EDULVL', 'metadata.study_mappings.HDP00293._sources', 'metadata.study_mappings.HDP01456', 'metadata.study_mappings.HDP00904', 'metadata.study_mappings.HDP00253.EDULEVEL', 'metadata.study_mappings.HDP01392', 'metadata.study_mappings.HDP01112._sources', 'metadata.study_mappings.HDP00980._sources', 'metadata.study_mappings.HDP01446._sources', 'metadata.study_mappings.HDP00994._sources', 'metadata.study_mappings.HDP01351._sources', 'metadata.study_mappings.HDP01464', 'metadata.study_mappings.HDP01476._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01340.EDULEVEL', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01312', 'metadata.study_mappings.HDP01237._sources', 'metadata.study_mappings.HDP01494._sources', 'metadata.study_mappings.HDP00909._sources', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00974._sources', 'metadata.study_mappings.HDP01695', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01412._sources', 'metadata.study_mappings.HDP01672', 'metadata.study_mappings.HDP00924._sources', 'metadata.study_mappings.HDP01543', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01498.EDULVL', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP00476.EDULEVEL', 'metadata.study_mappings.HDP00104._sources', 'metadata.study_mappings.HDP00253.EDULVL', 'metadata.study_mappings.HDP01288._sources', 'metadata.study_mappings.HDP01340.EDULVL', 'metadata.study_mappings.HDP01032._sources', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP01011._sources', 'metadata.study_mappings.HDP00221._sources', 'metadata.study_mappings.HDP00280._sources', 'metadata.study_mappings.HDP01490', 'metadata.study_mappings.HDP00980.EDULVL', 'metadata.study_mappings.HDP00435', 'metadata.study_mappings.HDP00366._sources', 'metadata.study_mappings.HDP00890._sources', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP00066._sources', 'metadata.study_mappings.HDP01193.EDULEVEL', 'metadata.study_mappings.HDP01050._sources', 'metadata.study_mappings.HDP00541._sources', 'metadata.study_mappings.HDP00960._sources', 'metadata.study_mappings.HDP00911', 'metadata.study_mappings.HDP00253._sources', 'metadata.study_mappings.HDP01113._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00996._sources', 'metadata.study_mappings.HDP01166._sources', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01495._sources', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP01108._sources', 'metadata.study_mappings.HDP01068._sources', 'metadata.study_mappings.HDP01029._sources', 'metadata.study_mappings.HDP00982._sources', 'metadata.study_mappings.HDP00476._sources', 'metadata.study_mappings.HDP00360', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00369._sources', 'metadata.study_mappings.HDP00825._sources', 'metadata.study_mappings.HDP01061._sources', 'metadata.study_mappings.HDP00476.EDULVL', 'variable_list', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01433', 'metadata.study_mappings.HDP00929', 'metadata.study_mappings.HDP01474', 'metadata.study_mappings.HDP00308._sources', 'metadata.study_mappings.HDP01004._sources', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP00223._sources', 'metadata.study_mappings.HDP01329.EDULEVEL', 'metadata.study_mappings.HDP01498.EDULEVEL', 'metadata.study_mappings.HDP01057._sources', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01694', 'metadata.study_mappings.HDP01155._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP00927._sources', 'metadata.study_mappings.HDP01193.EDULVL', 'metadata.study_mappings.HDP00033._sources', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP00902._sources', 'metadata.study_mappings.HDP00941._sources', 'metadata.study_mappings.HDP01176._sources', 'metadata.study_mappings.HDP00002._sources', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00908._sources', 'metadata.study_mappings.HDP00971._sources', 'metadata.study_mappings.HDP00920._sources', 'metadata.study_mappings.HDP01018._sources', 'metadata.study_mappings.HDP01077._sources', 'description', 'metadata.study_mappings.HDP00980.EDULEVEL', 'metadata.study_mappings.HDP01105._sources', 'metadata.study_mappings.HDP01284._sources', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP01246._sources', 'metadata.study_mappings.HDP00937._sources', 'metadata.categories', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01493._sources', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP00201._sources'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -506,8 +508,8 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP01629": 1,
-        "parents": 1
+        "parents": 1,
+        "metadata.study_mappings.HDP01629": 1
       },
       "sample_changes": [
         [
@@ -515,7 +517,7 @@
             "section",
             "ascq-me-pain-episode-frequency-and-severity"
           ],
-          "{'metadata.study_mappings.HDP01629', 'parents'}"
+          "{'parents', 'metadata.study_mappings.HDP01629'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -532,8 +534,8 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP01629": 1,
-        "parents": 1
+        "parents": 1,
+        "metadata.study_mappings.HDP01629": 1
       },
       "sample_changes": [
         [
@@ -541,7 +543,7 @@
             "section",
             "ascq-pain-impact"
           ],
-          "{'metadata.study_mappings.HDP01629', 'parents'}"
+          "{'parents', 'metadata.study_mappings.HDP01629'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -561,9 +563,9 @@
         ]
       ],
       "field_change_counts": {
+        "metadata.urls": 1,
         "description": 1,
-        "metadata.categories": 1,
-        "metadata.urls": 1
+        "metadata.categories": 1
       },
       "sample_changes": [
         [
@@ -571,7 +573,7 @@
             "section",
             "bpi-pain-severity-7d"
           ],
-          "{'description', 'metadata.categories', 'metadata.urls'}"
+          "{'metadata.urls', 'description', 'metadata.categories'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -588,9 +590,9 @@
         ]
       ],
       "field_change_counts": {
-        "parents": 1,
+        "metadata.study_mappings.HDP01672": 1,
         "metadata.categories": 1,
-        "metadata.study_mappings.HDP01672": 1
+        "parents": 1
       },
       "sample_changes": [
         [
@@ -598,7 +600,7 @@
             "section",
             "bpi-pain-severity"
           ],
-          "{'parents', 'metadata.categories', 'metadata.study_mappings.HDP01672'}"
+          "{'metadata.study_mappings.HDP01672', 'metadata.categories', 'parents'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -728,8 +730,8 @@
         ]
       ],
       "field_change_counts": {
-        "description": 1,
-        "metadata.urls": 1
+        "metadata.urls": 1,
+        "description": 1
       },
       "sample_changes": [
         [
@@ -737,7 +739,7 @@
             "section",
             "fear-avoidance-1-question"
           ],
-          "{'description', 'metadata.urls'}"
+          "{'metadata.urls', 'description'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -799,35 +801,35 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_variable_mappings.HDP01233": 2,
-        "metadata.study_mappings.HDP00429._sources": 1,
-        "metadata.study_mappings.HDP00933": 1,
-        "metadata.study_mappings.HDP00097": 1,
-        "metadata.study_mappings.HDP00221._sources": 1,
         "metadata.study_mappings.HDP00330": 1,
-        "metadata.study_mappings.HDP01497": 1,
-        "parents": 1,
-        "metadata.study_mappings.HDP00221.GAD2NotStopWryScale": 1,
+        "metadata.study_mappings.HDP00429._sources": 1,
         "metadata.categories": 1,
         "metadata.study_mappings.HDP00895": 1,
+        "metadata.study_mappings.HDP00097": 1,
         "metadata.study_mappings.HDP01233": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00933": 1,
+        "metadata.study_mappings.HDP01497": 1,
         "metadata.urls": 1,
+        "metadata.study_mappings.HDP00221.GAD2NotStopWryScale": 1,
+        "metadata.study_mappings.HDP00221._sources": 1,
+        "metadata.study_variable_mappings.HDP01233": 2,
         "metadata.study_variable_mappings.HDP00221": 1
       },
       "sample_changes": [
+        [
+          [
+            "section",
+            "gad2"
+          ],
+          "{'metadata.study_mappings.HDP00330', 'metadata.study_mappings.HDP00429._sources', 'metadata.categories', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP01233', 'parents', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP01497', 'metadata.urls', 'metadata.study_mappings.HDP00221.GAD2NotStopWryScale', 'metadata.study_mappings.HDP00221._sources'}"
+        ],
         [
           [
             "variable",
             "GAD2FeelNervScale"
           ],
           "{'metadata.study_variable_mappings.HDP01233'}"
-        ],
-        [
-          [
-            "section",
-            "gad2"
-          ],
-          "{'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP00221._sources', 'metadata.study_mappings.HDP00330', 'metadata.study_mappings.HDP01497', 'parents', 'metadata.study_mappings.HDP00221.GAD2NotStopWryScale', 'metadata.categories', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP01233', 'metadata.urls'}"
         ],
         [
           [
@@ -851,19 +853,19 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP01498._sources": 1,
-        "metadata.study_mappings.HDP01327._sources": 1,
-        "metadata.study_mappings.HDP00223._sources": 1,
-        "metadata.study_mappings.HDP01068": 1,
+        "metadata.categories": 1,
         "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP00104._sources": 1,
+        "parents": 1,
         "metadata.study_mappings.HDP01660": 1,
         "metadata.study_mappings.HDP01476": 1,
-        "parents": 1,
-        "metadata.study_mappings.HDP00337._sources": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP00104._sources": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP01327._sources": 1,
+        "metadata.study_mappings.HDP01392._sources": 1,
+        "metadata.study_mappings.HDP01068": 1,
         "metadata.study_mappings.HDP00110._sources": 1,
-        "metadata.study_mappings.HDP01392._sources": 1
+        "metadata.study_mappings.HDP00223._sources": 1
       },
       "sample_changes": [
         [
@@ -871,7 +873,7 @@
             "section",
             "generalized-anxiety-disorder-7"
           ],
-          "{'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP01327._sources', 'metadata.study_mappings.HDP00223._sources', 'metadata.study_mappings.HDP01068', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01660', 'metadata.study_mappings.HDP01476', 'parents', 'metadata.study_mappings.HDP00337._sources', 'metadata.categories', 'metadata.study_mappings.HDP00104._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP01392._sources'}"
+          "{'metadata.categories', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP00104._sources', 'parents', 'metadata.study_mappings.HDP01660', 'metadata.study_mappings.HDP01476', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP01327._sources', 'metadata.study_mappings.HDP01392._sources', 'metadata.study_mappings.HDP01068', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00223._sources'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -978,10 +980,10 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.urls": 1,
-        "description": 1,
         "parents": 1,
-        "metadata.study_mappings.HDP01660": 1
+        "metadata.urls": 1,
+        "metadata.study_mappings.HDP01660": 1,
+        "description": 1
       },
       "sample_changes": [
         [
@@ -989,7 +991,7 @@
             "section",
             "mbm"
           ],
-          "{'metadata.urls', 'description', 'parents', 'metadata.study_mappings.HDP01660'}"
+          "{'parents', 'metadata.urls', 'metadata.study_mappings.HDP01660', 'description'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -1091,16 +1093,30 @@
       ],
       "field_change_counts": {
         "metadata.study_variable_mappings": 15,
-        "metadata.study_mappings.HDP00253": 1,
-        "parents": 1,
+        "metadata.study_mappings.HDP01288": 1,
         "metadata.categories": 1,
-        "metadata.study_mappings.HDP01288": 1
+        "parents": 1,
+        "metadata.study_mappings.HDP00253": 1
       },
       "sample_changes": [
         [
           [
             "variable",
-            "NIDAL2DrugOthrMedScl"
+            "NIDAL2DrugMrjnaScl"
+          ],
+          "{'metadata.study_variable_mappings'}"
+        ],
+        [
+          [
+            "section",
+            "nida-modified-assist"
+          ],
+          "{'metadata.study_mappings.HDP01288', 'metadata.categories', 'parents', 'metadata.study_mappings.HDP00253'}"
+        ],
+        [
+          [
+            "variable",
+            "NIDAL2AnyAlchlScl"
           ],
           "{'metadata.study_variable_mappings'}"
         ],
@@ -1113,22 +1129,8 @@
         ],
         [
           [
-            "section",
-            "nida-modified-assist"
-          ],
-          "{'metadata.study_mappings.HDP00253', 'parents', 'metadata.categories', 'metadata.study_mappings.HDP01288'}"
-        ],
-        [
-          [
             "variable",
-            "NIDAL2MedPainScl"
-          ],
-          "{'metadata.study_variable_mappings'}"
-        ],
-        [
-          [
-            "variable",
-            "NIDAL2ExtntAlchlScl"
+            "NIDAL2DrugHallcngnScl"
           ],
           "{'metadata.study_variable_mappings'}"
         ]
@@ -1196,8 +1198,8 @@
       "field_change_counts": {
         "metadata.instructions": 4,
         "parents": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP01543": 1
+        "metadata.study_mappings.HDP01543": 1,
+        "metadata.categories": 1
       },
       "sample_changes": [
         [
@@ -1210,7 +1212,7 @@
         [
           [
             "variable",
-            "mme_bup_film_mcg_mme"
+            "mme_bup_filmtab_mme"
           ],
           "{'metadata.instructions'}"
         ],
@@ -1219,12 +1221,12 @@
             "section",
             "opioid-mme"
           ],
-          "{'parents', 'metadata.categories', 'metadata.study_mappings.HDP01543'}"
+          "{'parents', 'metadata.study_mappings.HDP01543', 'metadata.categories'}"
         ],
         [
           [
             "variable",
-            "mme_bup_filmtab_mme"
+            "mme_bup_film_mcg_mme"
           ],
           "{'metadata.instructions'}"
         ],
@@ -1296,23 +1298,23 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP00941": 1,
-        "metadata.study_mappings.HDP01329._sources": 1,
-        "metadata.study_mappings.HDP01176": 1,
-        "parents": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP00924": 1,
-        "metadata.study_mappings.HDP00110._sources": 1,
-        "metadata.study_mappings.HDP00980": 1,
-        "metadata.study_mappings.HDP00890": 1,
-        "metadata.study_mappings.HDP01148": 1,
-        "metadata.study_mappings.HDP01489": 1,
-        "metadata.study_mappings.HDP00033": 1,
-        "metadata.study_mappings.HDP01498": 1,
         "metadata.study_mappings.HDP01011": 1,
+        "metadata.study_mappings.HDP01018": 1,
+        "metadata.study_mappings.HDP00033": 1,
+        "metadata.study_mappings.HDP01148": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00941": 1,
+        "metadata.study_mappings.HDP00890": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "parents": 1,
         "metadata.study_mappings.HDP01476": 1,
+        "metadata.study_mappings.HDP01489": 1,
         "metadata.study_mappings.HDP01488": 1,
-        "metadata.study_mappings.HDP01018": 1
+        "metadata.study_mappings.HDP01498": 1,
+        "metadata.study_mappings.HDP00924": 1,
+        "metadata.study_mappings.HDP00980": 1,
+        "metadata.study_mappings.HDP01176": 1
       },
       "sample_changes": [
         [
@@ -1320,7 +1322,7 @@
             "section",
             "patient-health-questionnaire-8"
           ],
-          "{'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01176', 'parents', 'metadata.categories', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP01148', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00033', 'metadata.study_mappings.HDP01498', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP01476', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP01018'}"
+          "{'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP01018', 'metadata.study_mappings.HDP00033', 'metadata.study_mappings.HDP01148', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP00890', 'metadata.categories', 'metadata.study_mappings.HDP01329._sources', 'parents', 'metadata.study_mappings.HDP01476', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP01498', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP01176'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -1370,61 +1372,47 @@
       ],
       "field_change_counts": {
         "metadata.study_variable_mappings.HDP00221": 8,
-        "metadata.study_mappings.HDP00221.PHQAbnrmlDietScore": 1,
-        "metadata.study_mappings.HDP01327._sources": 1,
-        "metadata.study_mappings.HDP01494": 1,
-        "metadata.study_mappings.HDP00974": 1,
-        "metadata.study_mappings.HDP00223._sources": 1,
-        "metadata.study_mappings.HDP00221.PHQDiffcltyPerfScl": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP01495": 1,
-        "metadata.study_mappings.HDP00221.PHQTirdLittleEnrgyScore": 1,
-        "metadata.study_mappings.HDP00982": 1,
-        "metadata.study_mappings.HDP00221.PHQFlngFailrScore": 1,
-        "metadata.study_mappings.HDP01340._sources": 1,
-        "metadata.study_mappings.HDP01492": 1,
-        "metadata.study_mappings.HDP00221.PHQConcntrtnImprmntScore": 1,
         "metadata.study_mappings.HDP00728": 1,
-        "metadata.study_mappings.HDP00104._sources": 1,
-        "metadata.study_mappings.HDP01446": 1,
-        "metadata.study_mappings.HDP01112": 1,
+        "metadata.study_mappings.HDP00221.PHQDeprssnScore": 1,
         "metadata.study_mappings.HDP01464._sources": 1,
-        "metadata.study_mappings.HDP00221._sources": 1,
+        "metadata.study_mappings.HDP01105": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01495": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01112": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP01494": 1,
+        "metadata.study_mappings.HDP00221.PHQDiffcltyPerfScl": 1,
         "metadata.study_mappings.HDP01061": 1,
         "metadata.study_mappings.HDP01032": 1,
-        "parents": 1,
-        "metadata.study_mappings.HDP01046": 1,
-        "metadata.study_mappings.HDP01155": 1,
-        "metadata.study_mappings.HDP01045": 1,
-        "metadata.study_mappings.HDP01105": 1,
         "metadata.study_mappings.HDP01373": 1,
-        "metadata.study_mappings.HDP00221.PHQDeprssnScore": 1,
-        "metadata.study_mappings.HDP01237": 1,
-        "metadata.study_mappings.HDP00221.PHQMovmntSpchImprmntScore": 1,
+        "metadata.study_mappings.HDP00104._sources": 1,
         "metadata.study_mappings.HDP01113": 1,
-        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP00982": 1,
+        "metadata.study_mappings.HDP00221.PHQTirdLittleEnrgyScore": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP01155": 1,
+        "metadata.study_mappings.HDP00221.PHQFlngFailrScore": 1,
+        "metadata.study_mappings.HDP01327._sources": 1,
+        "metadata.study_mappings.HDP00221.PHQMovmntSpchImprmntScore": 1,
+        "metadata.study_mappings.HDP01312": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP00221._sources": 1,
+        "metadata.categories": 1,
         "metadata.study_mappings.HDP00221.PHQSleepImpairScore": 1,
-        "metadata.study_mappings.HDP01312": 1
+        "metadata.study_mappings.HDP01237": 1,
+        "metadata.study_mappings.HDP01446": 1,
+        "metadata.study_mappings.HDP00221.PHQConcntrtnImprmntScore": 1,
+        "metadata.study_mappings.HDP00974": 1,
+        "metadata.study_mappings.HDP00221.PHQAbnrmlDietScore": 1,
+        "metadata.study_mappings.HDP00223._sources": 1
       },
       "sample_changes": [
         [
           [
             "variable",
-            "PHQConcntrtnImprmntScore"
-          ],
-          "{'metadata.study_variable_mappings.HDP00221'}"
-        ],
-        [
-          [
-            "variable",
-            "PHQTirdLittleEnrgyScore"
-          ],
-          "{'metadata.study_variable_mappings.HDP00221'}"
-        ],
-        [
-          [
-            "variable",
-            "PHQMovmntSpchImprmntScore"
+            "PHQDeprssnScore"
           ],
           "{'metadata.study_variable_mappings.HDP00221'}"
         ],
@@ -1438,9 +1426,23 @@
         [
           [
             "variable",
-            "PHQSleepImpairScore"
+            "PHQTirdLittleEnrgyScore"
           ],
           "{'metadata.study_variable_mappings.HDP00221'}"
+        ],
+        [
+          [
+            "variable",
+            "PHQFlngFailrScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP00221'}"
+        ],
+        [
+          [
+            "section",
+            "patient-health-questionnaire-9"
+          ],
+          "{'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP00221.PHQDeprssnScore', 'metadata.study_mappings.HDP01464._sources', 'metadata.study_mappings.HDP01105', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01495', 'parents', 'metadata.study_mappings.HDP01112', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP01494', 'metadata.study_mappings.HDP00221.PHQDiffcltyPerfScl', 'metadata.study_mappings.HDP01061', 'metadata.study_mappings.HDP01032', 'metadata.study_mappings.HDP01373', 'metadata.study_mappings.HDP00104._sources', 'metadata.study_mappings.HDP01113', 'metadata.study_mappings.HDP00982', 'metadata.study_mappings.HDP00221.PHQTirdLittleEnrgyScore', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP01155', 'metadata.study_mappings.HDP00221.PHQFlngFailrScore', 'metadata.study_mappings.HDP01327._sources', 'metadata.study_mappings.HDP00221.PHQMovmntSpchImprmntScore', 'metadata.study_mappings.HDP01312', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP00221._sources', 'metadata.categories', 'metadata.study_mappings.HDP00221.PHQSleepImpairScore', 'metadata.study_mappings.HDP01237', 'metadata.study_mappings.HDP01446', 'metadata.study_mappings.HDP00221.PHQConcntrtnImprmntScore', 'metadata.study_mappings.HDP00974', 'metadata.study_mappings.HDP00221.PHQAbnrmlDietScore', 'metadata.study_mappings.HDP00223._sources'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -1690,53 +1692,53 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.short_description": 17,
         "metadata.instructions": 30,
-        "metadata.permissible_values.0": 14,
-        "description": 16,
+        "metadata.short_description": 17,
         "metadata.permissible_values.1": 14,
+        "description": 16,
+        "metadata.permissible_values.0": 14,
         "metadata.question_text": 22,
-        "metadata.enum": 2,
-        "metadata.study_mappings.HDP01629": 1,
-        "parents": 1,
         "metadata.categories": 1,
         "variable_list": 1,
+        "metadata.study_mappings.HDP01629": 1,
+        "parents": 1,
+        "metadata.urls": 1,
         "metadata.study_mappings.HDP01660": 1,
-        "metadata.urls": 1
+        "metadata.enum": 2
       },
       "sample_changes": [
         [
           [
             "variable",
-            "Bl_AA_p"
+            "Bl_AA"
           ],
-          "{'metadata.short_description', 'metadata.instructions', 'metadata.permissible_values.0', 'description', 'metadata.permissible_values.1', 'metadata.question_text'}"
+          "{'metadata.instructions', 'metadata.short_description', 'metadata.permissible_values.1', 'description', 'metadata.permissible_values.0', 'metadata.question_text'}"
         ],
         [
           [
             "variable",
-            "demRUCA2"
+            "ProxyRelationship"
           ],
-          "{'metadata.short_description', 'metadata.question_text'}"
+          "{'metadata.question_text'}"
         ],
         [
           [
             "variable",
-            "demRUCA1"
+            "Not_Rep"
           ],
-          "{'metadata.short_description', 'metadata.question_text'}"
+          "{'metadata.instructions', 'metadata.short_description', 'metadata.permissible_values.1', 'description', 'metadata.permissible_values.0', 'metadata.question_text'}"
         ],
         [
           [
             "variable",
-            "SDOH_Internet"
+            "NH_PI"
           ],
-          "{'metadata.instructions'}"
+          "{'metadata.instructions', 'metadata.short_description', 'metadata.permissible_values.1', 'description', 'metadata.permissible_values.0', 'metadata.question_text'}"
         ],
         [
           [
             "variable",
-            "ProxyRelationshipOTH"
+            "SDOH_NotAnswer"
           ],
           "{'metadata.instructions'}"
         ]
@@ -1755,82 +1757,82 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP00909._sources": 1,
+        "metadata.study_mappings.HDP00960._sources": 1,
         "metadata.study_mappings.HDP01373._sources": 1,
-        "metadata.study_mappings.HDP01672": 1,
-        "metadata.study_mappings.HDP01497": 1,
-        "metadata.study_mappings.HDP00366._sources": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP00895._sources": 1,
-        "metadata.study_mappings.HDP01011._sources": 1,
-        "metadata.study_mappings.HDP00308._sources": 1,
-        "metadata.study_mappings.HDP01446._sources": 1,
-        "metadata.study_mappings.HDP00994._sources": 1,
-        "metadata.study_mappings.HDP01051": 1,
-        "metadata.study_mappings.HDP00902._sources": 1,
-        "metadata.study_mappings.HDP01155._sources": 1,
-        "metadata.study_mappings.HDP01492": 1,
         "metadata.study_mappings.HDP00464._sources": 1,
-        "metadata.study_mappings.HDP01338": 1,
-        "metadata.study_mappings.HDP00728": 1,
-        "metadata.study_mappings.HDP01488": 1,
-        "metadata.study_mappings.HDP01329._sources": 1,
-        "metadata.study_mappings.HDP00971._sources": 1,
-        "metadata.study_mappings.HDP01113._sources": 1,
-        "metadata.study_mappings.HDP01148._sources": 1,
-        "metadata.study_mappings.HDP01368._sources": 1,
-        "metadata.study_mappings.HDP00924._sources": 1,
-        "metadata.study_mappings.HDP01337": 1,
-        "metadata.study_mappings.HDP01495._sources": 1,
-        "metadata.study_mappings.HDP01105._sources": 1,
-        "metadata.study_mappings.HDP00890._sources": 1,
-        "metadata.study_mappings.HDP01018._sources": 1,
-        "metadata.study_mappings.HDP01004._sources": 1,
-        "metadata.study_mappings.HDP00982._sources": 1,
-        "metadata.study_mappings.HDP01077._sources": 1,
-        "metadata.study_mappings.HDP01032._sources": 1,
-        "metadata.study_mappings.HDP00110._sources": 1,
-        "metadata.study_mappings.HDP00980._sources": 1,
-        "metadata.study_mappings.HDP01340._sources": 1,
-        "metadata.study_mappings.HDP00239": 1,
-        "metadata.study_mappings.HDP01166._sources": 1,
-        "metadata.study_mappings.HDP01493._sources": 1,
-        "metadata.study_mappings.HDP00937._sources": 1,
-        "metadata.study_mappings.HDP01494._sources": 1,
-        "metadata.study_mappings.HDP01508": 1,
-        "metadata.study_mappings.HDP00933._sources": 1,
-        "metadata.study_mappings.HDP01246._sources": 1,
-        "metadata.study_mappings.HDP01351._sources": 1,
-        "metadata.study_mappings.HDP01050._sources": 1,
         "metadata.study_mappings.HDP00946._sources": 1,
-        "metadata.study_mappings.HDP01498._sources": 1,
-        "metadata.study_mappings.HDP00920._sources": 1,
-        "metadata.study_mappings.HDP01237._sources": 1,
-        "metadata.study_mappings.HDP00962": 1,
-        "metadata.study_mappings.HDP01499": 1,
         "metadata.study_mappings.HDP01048": 1,
         "metadata.study_mappings.HDP01464._sources": 1,
+        "metadata.study_mappings.HDP01113._sources": 1,
+        "metadata.study_mappings.HDP01148._sources": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP01416._sources": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP01368._sources": 1,
         "parents": 1,
         "metadata.study_mappings.HDP00996._sources": 1,
-        "metadata.study_mappings.HDP01284._sources": 1,
-        "metadata.study_mappings.HDP00941._sources": 1,
-        "metadata.study_mappings.HDP01108._sources": 1,
-        "metadata.study_mappings.HDP01046": 1,
-        "metadata.study_mappings.HDP01045": 1,
-        "metadata.study_mappings.HDP00974._sources": 1,
-        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01166._sources": 1,
         "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP01495._sources": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP01108._sources": 1,
         "metadata.study_mappings.HDP01029._sources": 1,
-        "metadata.study_mappings.HDP00349": 1,
-        "metadata.study_mappings.HDP00960._sources": 1,
-        "metadata.study_mappings.HDP01176._sources": 1,
-        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP00982._sources": 1,
         "metadata.study_mappings.HDP01112._sources": 1,
-        "metadata.study_mappings.HDP00233": 1,
-        "metadata.study_mappings.HDP01416._sources": 1,
-        "metadata.study_mappings.HDP00280._sources": 1,
+        "metadata.study_mappings.HDP00980._sources": 1,
+        "metadata.study_mappings.HDP01446._sources": 1,
+        "metadata.study_mappings.HDP01351._sources": 1,
+        "metadata.study_mappings.HDP00994._sources": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01237._sources": 1,
+        "metadata.study_mappings.HDP01494._sources": 1,
+        "metadata.study_mappings.HDP00909._sources": 1,
         "metadata.study_mappings.HDP00429._sources": 1,
-        "metadata.study_mappings.HDP01543": 1
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP00308._sources": 1,
+        "metadata.study_mappings.HDP01004._sources": 1,
+        "metadata.study_mappings.HDP00974._sources": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP01672": 1,
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP01155._sources": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP00924._sources": 1,
+        "metadata.study_mappings.HDP01543": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP00902._sources": 1,
+        "metadata.study_mappings.HDP01176._sources": 1,
+        "metadata.study_mappings.HDP00941._sources": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP00971._sources": 1,
+        "metadata.study_mappings.HDP00920._sources": 1,
+        "metadata.study_mappings.HDP01018._sources": 1,
+        "metadata.study_mappings.HDP01077._sources": 1,
+        "metadata.study_mappings.HDP01032._sources": 1,
+        "metadata.study_mappings.HDP01105._sources": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP01284._sources": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP01011._sources": 1,
+        "metadata.study_mappings.HDP01246._sources": 1,
+        "metadata.study_mappings.HDP00280._sources": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00937._sources": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP00366._sources": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP01493._sources": 1,
+        "metadata.study_mappings.HDP00890._sources": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP01050._sources": 1,
+        "metadata.study_mappings.HDP00239": 1
       },
       "sample_changes": [
         [
@@ -1838,7 +1840,7 @@
             "section",
             "peg"
           ],
-          "{'metadata.study_mappings.HDP00909._sources', 'metadata.study_mappings.HDP01373._sources', 'metadata.study_mappings.HDP01672', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP00366._sources', 'metadata.categories', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01011._sources', 'metadata.study_mappings.HDP00308._sources', 'metadata.study_mappings.HDP01446._sources', 'metadata.study_mappings.HDP00994._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00902._sources', 'metadata.study_mappings.HDP01155._sources', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP00464._sources', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP00971._sources', 'metadata.study_mappings.HDP01113._sources', 'metadata.study_mappings.HDP01148._sources', 'metadata.study_mappings.HDP01368._sources', 'metadata.study_mappings.HDP00924._sources', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01495._sources', 'metadata.study_mappings.HDP01105._sources', 'metadata.study_mappings.HDP00890._sources', 'metadata.study_mappings.HDP01018._sources', 'metadata.study_mappings.HDP01004._sources', 'metadata.study_mappings.HDP00982._sources', 'metadata.study_mappings.HDP01077._sources', 'metadata.study_mappings.HDP01032._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00980._sources', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01166._sources', 'metadata.study_mappings.HDP01493._sources', 'metadata.study_mappings.HDP00937._sources', 'metadata.study_mappings.HDP01494._sources', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP01246._sources', 'metadata.study_mappings.HDP01351._sources', 'metadata.study_mappings.HDP01050._sources', 'metadata.study_mappings.HDP00946._sources', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP00920._sources', 'metadata.study_mappings.HDP01237._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01464._sources', 'parents', 'metadata.study_mappings.HDP00996._sources', 'metadata.study_mappings.HDP01284._sources', 'metadata.study_mappings.HDP00941._sources', 'metadata.study_mappings.HDP01108._sources', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00974._sources', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01029._sources', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00960._sources', 'metadata.study_mappings.HDP01176._sources', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01112._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01416._sources', 'metadata.study_mappings.HDP00280._sources', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01543'}"
+          "{'metadata.study_mappings.HDP00960._sources', 'metadata.study_mappings.HDP01373._sources', 'metadata.study_mappings.HDP00464._sources', 'metadata.study_mappings.HDP00946._sources', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01464._sources', 'metadata.study_mappings.HDP01113._sources', 'metadata.study_mappings.HDP01148._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP01416._sources', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP01368._sources', 'parents', 'metadata.study_mappings.HDP00996._sources', 'metadata.study_mappings.HDP01166._sources', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01495._sources', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP01108._sources', 'metadata.study_mappings.HDP01029._sources', 'metadata.study_mappings.HDP00982._sources', 'metadata.study_mappings.HDP01112._sources', 'metadata.study_mappings.HDP00980._sources', 'metadata.study_mappings.HDP01446._sources', 'metadata.study_mappings.HDP01351._sources', 'metadata.study_mappings.HDP00994._sources', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01237._sources', 'metadata.study_mappings.HDP01494._sources', 'metadata.study_mappings.HDP00909._sources', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00308._sources', 'metadata.study_mappings.HDP01004._sources', 'metadata.study_mappings.HDP00974._sources', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01672', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01155._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP00924._sources', 'metadata.study_mappings.HDP01543', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP00902._sources', 'metadata.study_mappings.HDP01176._sources', 'metadata.study_mappings.HDP00941._sources', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00971._sources', 'metadata.study_mappings.HDP00920._sources', 'metadata.study_mappings.HDP01018._sources', 'metadata.study_mappings.HDP01077._sources', 'metadata.study_mappings.HDP01032._sources', 'metadata.study_mappings.HDP01105._sources', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP01284._sources', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP01011._sources', 'metadata.study_mappings.HDP01246._sources', 'metadata.study_mappings.HDP00280._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00937._sources', 'metadata.categories', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP00366._sources', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01493._sources', 'metadata.study_mappings.HDP00890._sources', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01050._sources', 'metadata.study_mappings.HDP00239'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -1858,88 +1860,88 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP00909._sources": 1,
+        "metadata.study_mappings.HDP00960._sources": 1,
         "metadata.study_mappings.HDP01373._sources": 1,
+        "metadata.study_mappings.HDP00464._sources": 1,
+        "metadata.study_mappings.HDP00946._sources": 1,
+        "metadata.study_mappings.HDP01048": 1,
+        "metadata.urls": 1,
+        "metadata.study_mappings.HDP01113._sources": 1,
+        "metadata.study_mappings.HDP01148._sources": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP01416._sources": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP00111._sources": 1,
+        "metadata.study_mappings.HDP01368._sources": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP00996._sources": 1,
+        "metadata.study_mappings.HDP01166._sources": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP01495._sources": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP00293._sources": 1,
+        "metadata.study_mappings.HDP01108._sources": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP01029._sources": 1,
+        "metadata.study_mappings.HDP00982._sources": 1,
+        "metadata.study_mappings.HDP01112._sources": 1,
+        "metadata.study_mappings.HDP00980._sources": 1,
+        "metadata.study_mappings.HDP01446._sources": 1,
+        "metadata.study_mappings.HDP00994._sources": 1,
+        "metadata.study_mappings.HDP01351._sources": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP00369._sources": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP01327._sources": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01061._sources": 1,
+        "metadata.study_mappings.HDP01237._sources": 1,
+        "metadata.study_mappings.HDP01494._sources": 1,
+        "metadata.study_mappings.HDP00909._sources": 1,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP00308._sources": 1,
+        "metadata.study_mappings.HDP01004._sources": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP00974._sources": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP01412._sources": 1,
         "metadata.study_mappings.HDP01672": 1,
         "metadata.study_mappings.HDP01497": 1,
-        "metadata.study_mappings.HDP00366._sources": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP00895._sources": 1,
-        "metadata.study_mappings.HDP01011._sources": 1,
-        "metadata.study_mappings.HDP01446._sources": 1,
-        "metadata.study_mappings.HDP00308._sources": 1,
-        "metadata.study_mappings.HDP00994._sources": 1,
-        "metadata.study_mappings.HDP01051": 1,
-        "metadata.study_mappings.HDP00902._sources": 1,
         "metadata.study_mappings.HDP01155._sources": 1,
-        "metadata.study_mappings.HDP01492": 1,
-        "metadata.study_mappings.HDP00464._sources": 1,
-        "metadata.study_mappings.HDP01338": 1,
-        "metadata.study_mappings.HDP00728": 1,
-        "metadata.study_mappings.HDP01488": 1,
-        "metadata.urls": 1,
-        "metadata.study_mappings.HDP01329._sources": 1,
-        "metadata.study_mappings.HDP00971._sources": 1,
-        "metadata.study_mappings.HDP00369._sources": 1,
-        "metadata.study_mappings.HDP01148._sources": 1,
-        "metadata.study_mappings.HDP01113._sources": 1,
-        "metadata.study_mappings.HDP01368._sources": 1,
-        "metadata.study_mappings.HDP00924._sources": 1,
-        "metadata.study_mappings.HDP01061._sources": 1,
-        "metadata.study_mappings.HDP01495._sources": 1,
-        "metadata.study_mappings.HDP01105._sources": 1,
-        "metadata.study_mappings.HDP00890._sources": 1,
-        "metadata.study_mappings.HDP01018._sources": 1,
-        "metadata.study_mappings.HDP01004._sources": 1,
-        "metadata.study_mappings.HDP00982._sources": 1,
-        "metadata.study_mappings.HDP01077._sources": 1,
-        "metadata.study_mappings.HDP01327._sources": 1,
-        "metadata.study_mappings.HDP01032._sources": 1,
-        "metadata.study_mappings.HDP00033._sources": 1,
-        "metadata.study_mappings.HDP00110._sources": 1,
-        "metadata.study_mappings.HDP00980._sources": 1,
-        "metadata.study_mappings.HDP01340._sources": 1,
-        "metadata.study_mappings.HDP00239": 1,
-        "metadata.study_mappings.HDP01166._sources": 1,
-        "metadata.study_mappings.HDP01493._sources": 1,
-        "metadata.study_mappings.HDP01491": 1,
-        "metadata.study_mappings.HDP00937._sources": 1,
-        "metadata.study_mappings.HDP00293._sources": 1,
-        "metadata.study_mappings.HDP01494._sources": 1,
-        "metadata.study_mappings.HDP01508": 1,
-        "metadata.study_mappings.HDP00933._sources": 1,
-        "metadata.study_mappings.HDP01246._sources": 1,
-        "metadata.study_mappings.HDP01351._sources": 1,
-        "metadata.study_mappings.HDP00946._sources": 1,
-        "metadata.study_mappings.HDP01050._sources": 1,
-        "metadata.study_mappings.HDP01498._sources": 1,
-        "metadata.study_mappings.HDP00920._sources": 1,
-        "metadata.study_mappings.HDP01237._sources": 1,
-        "metadata.study_mappings.HDP00962": 1,
-        "metadata.study_mappings.HDP01048": 1,
-        "metadata.study_mappings.HDP01499": 1,
-        "parents": 1,
-        "metadata.study_mappings.HDP01412._sources": 1,
-        "metadata.study_mappings.HDP00996._sources": 1,
-        "metadata.study_mappings.HDP01284._sources": 1,
-        "metadata.study_mappings.HDP00941._sources": 1,
-        "metadata.study_mappings.HDP01108._sources": 1,
-        "metadata.study_mappings.HDP01046": 1,
-        "metadata.study_mappings.HDP01045": 1,
-        "metadata.study_mappings.HDP00974._sources": 1,
-        "metadata.study_mappings.HDP00387": 1,
-        "metadata.study_mappings.HDP01489": 1,
-        "metadata.study_mappings.HDP01029._sources": 1,
-        "metadata.study_mappings.HDP00349": 1,
-        "metadata.study_mappings.HDP00960._sources": 1,
-        "metadata.study_mappings.HDP00111._sources": 1,
-        "metadata.study_mappings.HDP01176._sources": 1,
-        "metadata.study_mappings.HDP00337._sources": 1,
-        "metadata.study_mappings.HDP01112._sources": 1,
         "metadata.study_mappings.HDP00233": 1,
-        "metadata.study_mappings.HDP01416._sources": 1,
+        "metadata.study_mappings.HDP00924._sources": 1,
+        "metadata.study_mappings.HDP00033._sources": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP00902._sources": 1,
+        "metadata.study_mappings.HDP00941._sources": 1,
+        "metadata.study_mappings.HDP01176._sources": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP00971._sources": 1,
+        "metadata.study_mappings.HDP00920._sources": 1,
+        "metadata.study_mappings.HDP01018._sources": 1,
+        "metadata.study_mappings.HDP01077._sources": 1,
+        "metadata.study_mappings.HDP01032._sources": 1,
+        "metadata.study_mappings.HDP01105._sources": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP01284._sources": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP01011._sources": 1,
+        "metadata.study_mappings.HDP01246._sources": 1,
         "metadata.study_mappings.HDP00280._sources": 1,
-        "metadata.study_mappings.HDP00429._sources": 1
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP00937._sources": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP00366._sources": 1,
+        "metadata.study_mappings.HDP01493._sources": 1,
+        "metadata.study_mappings.HDP00890._sources": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP01050._sources": 1
       },
       "sample_changes": [
         [
@@ -1947,7 +1949,7 @@
             "section",
             "pgic"
           ],
-          "{'metadata.study_mappings.HDP00909._sources', 'metadata.study_mappings.HDP01373._sources', 'metadata.study_mappings.HDP01672', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP00366._sources', 'metadata.categories', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01011._sources', 'metadata.study_mappings.HDP01446._sources', 'metadata.study_mappings.HDP00308._sources', 'metadata.study_mappings.HDP00994._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00902._sources', 'metadata.study_mappings.HDP01155._sources', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP00464._sources', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.urls', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP00971._sources', 'metadata.study_mappings.HDP00369._sources', 'metadata.study_mappings.HDP01148._sources', 'metadata.study_mappings.HDP01113._sources', 'metadata.study_mappings.HDP01368._sources', 'metadata.study_mappings.HDP00924._sources', 'metadata.study_mappings.HDP01061._sources', 'metadata.study_mappings.HDP01495._sources', 'metadata.study_mappings.HDP01105._sources', 'metadata.study_mappings.HDP00890._sources', 'metadata.study_mappings.HDP01018._sources', 'metadata.study_mappings.HDP01004._sources', 'metadata.study_mappings.HDP00982._sources', 'metadata.study_mappings.HDP01077._sources', 'metadata.study_mappings.HDP01327._sources', 'metadata.study_mappings.HDP01032._sources', 'metadata.study_mappings.HDP00033._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00980._sources', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01166._sources', 'metadata.study_mappings.HDP01493._sources', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP00937._sources', 'metadata.study_mappings.HDP00293._sources', 'metadata.study_mappings.HDP01494._sources', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP01246._sources', 'metadata.study_mappings.HDP01351._sources', 'metadata.study_mappings.HDP00946._sources', 'metadata.study_mappings.HDP01050._sources', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP00920._sources', 'metadata.study_mappings.HDP01237._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01499', 'parents', 'metadata.study_mappings.HDP01412._sources', 'metadata.study_mappings.HDP00996._sources', 'metadata.study_mappings.HDP01284._sources', 'metadata.study_mappings.HDP00941._sources', 'metadata.study_mappings.HDP01108._sources', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00974._sources', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01029._sources', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00960._sources', 'metadata.study_mappings.HDP00111._sources', 'metadata.study_mappings.HDP01176._sources', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01112._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01416._sources', 'metadata.study_mappings.HDP00280._sources', 'metadata.study_mappings.HDP00429._sources'}"
+          "{'metadata.study_mappings.HDP00960._sources', 'metadata.study_mappings.HDP01373._sources', 'metadata.study_mappings.HDP00464._sources', 'metadata.study_mappings.HDP00946._sources', 'metadata.study_mappings.HDP01048', 'metadata.urls', 'metadata.study_mappings.HDP01113._sources', 'metadata.study_mappings.HDP01148._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP01416._sources', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00111._sources', 'metadata.study_mappings.HDP01368._sources', 'parents', 'metadata.study_mappings.HDP00996._sources', 'metadata.study_mappings.HDP01166._sources', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP01495._sources', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00293._sources', 'metadata.study_mappings.HDP01108._sources', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP01029._sources', 'metadata.study_mappings.HDP00982._sources', 'metadata.study_mappings.HDP01112._sources', 'metadata.study_mappings.HDP00980._sources', 'metadata.study_mappings.HDP01446._sources', 'metadata.study_mappings.HDP00994._sources', 'metadata.study_mappings.HDP01351._sources', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00369._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01327._sources', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01061._sources', 'metadata.study_mappings.HDP01237._sources', 'metadata.study_mappings.HDP01494._sources', 'metadata.study_mappings.HDP00909._sources', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00308._sources', 'metadata.study_mappings.HDP01004._sources', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP00974._sources', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01412._sources', 'metadata.study_mappings.HDP01672', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01155._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP00924._sources', 'metadata.study_mappings.HDP00033._sources', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP00902._sources', 'metadata.study_mappings.HDP00941._sources', 'metadata.study_mappings.HDP01176._sources', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00971._sources', 'metadata.study_mappings.HDP00920._sources', 'metadata.study_mappings.HDP01018._sources', 'metadata.study_mappings.HDP01077._sources', 'metadata.study_mappings.HDP01032._sources', 'metadata.study_mappings.HDP01105._sources', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP01284._sources', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP01011._sources', 'metadata.study_mappings.HDP01246._sources', 'metadata.study_mappings.HDP00280._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00937._sources', 'metadata.categories', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP00366._sources', 'metadata.study_mappings.HDP01493._sources', 'metadata.study_mappings.HDP00890._sources', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01050._sources'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -1978,10 +1980,10 @@
         ]
       ],
       "field_change_counts": {
-        "description": 1,
-        "name": 1,
         "metadata.categories": 1,
         "variable_list": 1,
+        "description": 1,
+        "name": 1,
         "metadata.urls": 1
       },
       "sample_changes": [
@@ -1990,7 +1992,7 @@
             "section",
             "pgis"
           ],
-          "{'description', 'name', 'metadata.categories', 'variable_list', 'metadata.urls'}"
+          "{'metadata.categories', 'variable_list', 'description', 'name', 'metadata.urls'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2045,23 +2047,16 @@
       ],
       "field_change_counts": {
         "metadata.study_variable_mappings.HDP01233": 2,
+        "metadata.study_mappings.HDP00330": 1,
         "metadata.study_mappings.HDP00429._sources": 1,
-        "metadata.study_mappings.HDP01288._sources": 1,
         "metadata.categories": 1,
-        "parents": 1,
-        "metadata.study_mappings.HDP00933._sources": 1,
         "metadata.study_mappings.HDP00895": 1,
         "metadata.study_mappings.HDP01233": 1,
-        "metadata.study_mappings.HDP00330": 1
+        "parents": 1,
+        "metadata.study_mappings.HDP00933._sources": 1,
+        "metadata.study_mappings.HDP01288._sources": 1
       },
       "sample_changes": [
-        [
-          [
-            "variable",
-            "PHQDeprssnScore"
-          ],
-          "{'metadata.study_variable_mappings.HDP01233'}"
-        ],
         [
           [
             "variable",
@@ -2071,10 +2066,17 @@
         ],
         [
           [
+            "variable",
+            "PHQDeprssnScore"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ],
+        [
+          [
             "section",
             "phq2"
           ],
-          "{'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01288._sources', 'metadata.categories', 'parents', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP00330'}"
+          "{'metadata.study_mappings.HDP00330', 'metadata.study_mappings.HDP00429._sources', 'metadata.categories', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP01233', 'parents', 'metadata.study_mappings.HDP00933._sources', 'metadata.study_mappings.HDP01288._sources'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2091,16 +2093,16 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP00825": 1,
-        "metadata.study_mappings.HDP01193": 1,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP01543": 1,
+        "metadata.categories": 1,
         "metadata.study_mappings.HDP00097": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
         "metadata.study_mappings.HDP01672": 1,
         "parents": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP00895._sources": 1,
-        "metadata.study_mappings.HDP00110._sources": 1,
-        "metadata.study_mappings.HDP00429._sources": 1,
-        "metadata.study_mappings.HDP01543": 1
+        "metadata.study_mappings.HDP01193": 1,
+        "metadata.study_mappings.HDP00825": 1,
+        "metadata.study_mappings.HDP00110._sources": 1
       },
       "sample_changes": [
         [
@@ -2108,7 +2110,7 @@
             "section",
             "physical-function-6b"
           ],
-          "{'metadata.study_mappings.HDP00825', 'metadata.study_mappings.HDP01193', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP01672', 'parents', 'metadata.categories', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01543'}"
+          "{'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP01543', 'metadata.categories', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01672', 'parents', 'metadata.study_mappings.HDP01193', 'metadata.study_mappings.HDP00825', 'metadata.study_mappings.HDP00110._sources'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2143,11 +2145,11 @@
         ]
       ],
       "field_change_counts": {
+        "metadata.urls": 1,
         "variable_list": 1,
         "description": 1,
-        "metadata.urls": 1,
-        "metadata.permissible_values.0": 1,
-        "metadata.permissible_values.1": 1
+        "metadata.permissible_values.1": 1,
+        "metadata.permissible_values.0": 1
       },
       "sample_changes": [
         [
@@ -2155,14 +2157,14 @@
             "section",
             "pppm"
           ],
-          "{'variable_list', 'description', 'metadata.urls'}"
+          "{'metadata.urls', 'variable_list', 'description'}"
         ],
         [
           [
             "variable",
             "PPPM_complain"
           ],
-          "{'metadata.permissible_values.0', 'metadata.permissible_values.1'}"
+          "{'metadata.permissible_values.1', 'metadata.permissible_values.0'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2275,8 +2277,8 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.urls": 1,
-        "action": 1
+        "action": 1,
+        "metadata.urls": 1
       },
       "sample_changes": [
         [
@@ -2284,7 +2286,7 @@
             "section",
             "promis-emotional-support-4a"
           ],
-          "{'metadata.urls', 'action'}"
+          "{'action', 'metadata.urls'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2553,8 +2555,8 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP01629": 1,
-        "parents": 1
+        "parents": 1,
+        "metadata.study_mappings.HDP01629": 1
       },
       "sample_changes": [
         [
@@ -2562,7 +2564,7 @@
             "section",
             "promis-sleep-disturbance-4a"
           ],
-          "{'metadata.study_mappings.HDP01629', 'parents'}"
+          "{'parents', 'metadata.study_mappings.HDP01629'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2641,8 +2643,8 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.categories": 1,
-        "metadata.urls": 1
+        "metadata.urls": 1,
+        "metadata.categories": 1
       },
       "sample_changes": [
         [
@@ -2650,7 +2652,7 @@
             "section",
             "pseq-2"
           ],
-          "{'metadata.categories', 'metadata.urls'}"
+          "{'metadata.urls', 'metadata.categories'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2670,8 +2672,8 @@
         ]
       ],
       "field_change_counts": {
-        "description": 1,
-        "metadata.urls": 1
+        "metadata.urls": 1,
+        "description": 1
       },
       "sample_changes": [
         [
@@ -2679,7 +2681,7 @@
             "section",
             "psqi"
           ],
-          "{'description', 'metadata.urls'}"
+          "{'metadata.urls', 'description'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2786,8 +2788,8 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP01629": 1,
-        "parents": 1
+        "parents": 1,
+        "metadata.study_mappings.HDP01629": 1
       },
       "sample_changes": [
         [
@@ -2795,7 +2797,7 @@
             "section",
             "sickle-cell-disease-self-efficacy-scale"
           ],
-          "{'metadata.study_mappings.HDP01629', 'parents'}"
+          "{'parents', 'metadata.study_mappings.HDP01629'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2837,8 +2839,8 @@
         ]
       ],
       "field_change_counts": {
-        "description": 1,
-        "metadata.categories": 1
+        "metadata.categories": 1,
+        "description": 1
       },
       "sample_changes": [
         [
@@ -2846,7 +2848,7 @@
             "section",
             "sleep-asws-pediatric"
           ],
-          "{'description', 'metadata.categories'}"
+          "{'metadata.categories', 'description'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2863,77 +2865,77 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP01497": 1,
-        "metadata.study_mappings.HDP01029": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP01051": 1,
-        "metadata.study_mappings.HDP00980": 1,
-        "metadata.study_mappings.HDP00920": 1,
-        "metadata.study_mappings.HDP01246": 1,
-        "metadata.study_mappings.HDP01492": 1,
-        "metadata.study_mappings.HDP01498": 1,
-        "metadata.study_mappings.HDP01338": 1,
-        "metadata.study_mappings.HDP00728": 1,
-        "metadata.study_mappings.HDP01488": 1,
-        "metadata.study_mappings.HDP00895": 1,
-        "metadata.study_mappings.HDP00996": 1,
+        "metadata.study_mappings.HDP01018": 1,
+        "metadata.study_mappings.HDP01048": 1,
         "metadata.study_mappings.HDP00337": 1,
         "metadata.urls": 1,
+        "metadata.study_mappings.HDP01051": 1,
         "metadata.study_mappings.HDP00941": 1,
-        "metadata.study_mappings.HDP00971": 1,
-        "metadata.study_mappings.HDP01004": 1,
-        "metadata.study_mappings.HDP00330": 1,
-        "metadata.study_mappings.HDP01176": 1,
-        "metadata.study_mappings.HDP00110": 1,
+        "metadata.study_mappings.HDP00349": 1,
         "metadata.study_mappings.HDP01166": 1,
-        "metadata.study_mappings.HDP00369": 1,
-        "metadata.study_mappings.HDP00111": 1,
-        "metadata.study_mappings.HDP01368": 1,
-        "metadata.study_mappings.HDP00960": 1,
-        "metadata.study_mappings.HDP01337": 1,
-        "metadata.study_mappings.HDP00933": 1,
-        "metadata.study_mappings.HDP00293": 1,
-        "metadata.study_mappings.HDP01237": 1,
-        "metadata.study_mappings.HDP01351": 1,
-        "metadata.study_mappings.HDP01113": 1,
-        "metadata.study_mappings.HDP01077": 1,
-        "metadata.study_mappings.HDP01494": 1,
-        "metadata.study_mappings.HDP01284": 1,
-        "metadata.study_mappings.HDP00974": 1,
-        "metadata.study_mappings.HDP00909": 1,
-        "metadata.study_mappings.HDP01495": 1,
-        "metadata.study_mappings.HDP01050": 1,
-        "metadata.study_mappings.HDP01233": 1,
-        "metadata.study_mappings.HDP00982": 1,
-        "metadata.study_mappings.HDP00946": 1,
-        "metadata.study_mappings.HDP00366": 1,
         "metadata.study_mappings.HDP00890": 1,
-        "metadata.study_mappings.HDP00239": 1,
-        "metadata.study_mappings.HDP01491": 1,
-        "metadata.study_mappings.HDP01412": 1,
-        "metadata.study_mappings.HDP01011": 1,
-        "metadata.study_mappings.HDP01508": 1,
-        "metadata.study_mappings.HDP00962": 1,
-        "metadata.study_mappings.HDP01499": 1,
-        "metadata.study_mappings.HDP01048": 1,
+        "metadata.study_mappings.HDP01233": 1,
+        "metadata.study_mappings.HDP01495": 1,
+        "metadata.study_mappings.HDP00902": 1,
         "metadata.study_mappings.HDP01112": 1,
         "parents": 1,
-        "metadata.study_mappings.HDP00902": 1,
-        "metadata.study_mappings.HDP00308": 1,
-        "metadata.study_mappings.HDP00924": 1,
-        "metadata.study_mappings.HDP01046": 1,
-        "metadata.study_mappings.HDP01155": 1,
-        "metadata.study_mappings.HDP01045": 1,
-        "metadata.study_mappings.HDP00280": 1,
-        "metadata.study_mappings.HDP00994": 1,
-        "metadata.study_mappings.HDP01329": 1,
-        "metadata.study_mappings.HDP00387": 1,
         "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP00920": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP01494": 1,
+        "metadata.study_mappings.HDP01029": 1,
+        "metadata.study_mappings.HDP01011": 1,
+        "metadata.study_mappings.HDP00111": 1,
+        "metadata.study_mappings.HDP01284": 1,
         "metadata.study_mappings.HDP00033": 1,
-        "action": 1,
-        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP01113": 1,
+        "metadata.study_mappings.HDP00110": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01004": 1,
+        "metadata.study_mappings.HDP00895": 1,
+        "metadata.study_mappings.HDP01368": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP01412": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP00366": 1,
+        "metadata.study_mappings.HDP01176": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP00369": 1,
+        "metadata.study_mappings.HDP00280": 1,
+        "metadata.study_mappings.HDP00971": 1,
+        "metadata.study_mappings.HDP01497": 1,
         "metadata.study_mappings.HDP00233": 1,
-        "metadata.study_mappings.HDP01018": 1
+        "metadata.study_mappings.HDP00996": 1,
+        "metadata.study_mappings.HDP01329": 1,
+        "metadata.study_mappings.HDP00308": 1,
+        "metadata.study_mappings.HDP00960": 1,
+        "action": 1,
+        "metadata.study_mappings.HDP00909": 1,
+        "metadata.study_mappings.HDP01077": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01246": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP00980": 1,
+        "metadata.study_mappings.HDP01050": 1,
+        "metadata.study_mappings.HDP01351": 1,
+        "metadata.study_mappings.HDP00982": 1,
+        "metadata.study_mappings.HDP00933": 1,
+        "metadata.study_mappings.HDP00946": 1,
+        "metadata.study_mappings.HDP01155": 1,
+        "metadata.study_mappings.HDP00293": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.study_mappings.HDP00330": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP01498": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP01237": 1,
+        "metadata.study_mappings.HDP00924": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP00974": 1,
+        "metadata.study_mappings.HDP00994": 1
       },
       "sample_changes": [
         [
@@ -2941,7 +2943,7 @@
             "section",
             "sleep-duration"
           ],
-          "{'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01029', 'metadata.categories', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP00920', 'metadata.study_mappings.HDP01246', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP01498', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP00996', 'metadata.study_mappings.HDP00337', 'metadata.urls', 'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP00971', 'metadata.study_mappings.HDP01004', 'metadata.study_mappings.HDP00330', 'metadata.study_mappings.HDP01176', 'metadata.study_mappings.HDP00110', 'metadata.study_mappings.HDP01166', 'metadata.study_mappings.HDP00369', 'metadata.study_mappings.HDP00111', 'metadata.study_mappings.HDP01368', 'metadata.study_mappings.HDP00960', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP00293', 'metadata.study_mappings.HDP01237', 'metadata.study_mappings.HDP01351', 'metadata.study_mappings.HDP01113', 'metadata.study_mappings.HDP01077', 'metadata.study_mappings.HDP01494', 'metadata.study_mappings.HDP01284', 'metadata.study_mappings.HDP00974', 'metadata.study_mappings.HDP00909', 'metadata.study_mappings.HDP01495', 'metadata.study_mappings.HDP01050', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP00982', 'metadata.study_mappings.HDP00946', 'metadata.study_mappings.HDP00366', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP01412', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01112', 'parents', 'metadata.study_mappings.HDP00902', 'metadata.study_mappings.HDP00308', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01155', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00280', 'metadata.study_mappings.HDP00994', 'metadata.study_mappings.HDP01329', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00033', 'action', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01018'}"
+          "{'metadata.study_mappings.HDP01018', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP00337', 'metadata.urls', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP01166', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP01495', 'metadata.study_mappings.HDP00902', 'metadata.study_mappings.HDP01112', 'parents', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00920', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP01494', 'metadata.study_mappings.HDP01029', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP00111', 'metadata.study_mappings.HDP01284', 'metadata.study_mappings.HDP00033', 'metadata.study_mappings.HDP01113', 'metadata.study_mappings.HDP00110', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01004', 'metadata.study_mappings.HDP00895', 'metadata.study_mappings.HDP01368', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP01412', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP00366', 'metadata.study_mappings.HDP01176', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP00369', 'metadata.study_mappings.HDP00280', 'metadata.study_mappings.HDP00971', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP00996', 'metadata.study_mappings.HDP01329', 'metadata.study_mappings.HDP00308', 'metadata.study_mappings.HDP00960', 'action', 'metadata.study_mappings.HDP00909', 'metadata.study_mappings.HDP01077', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01246', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP01050', 'metadata.study_mappings.HDP01351', 'metadata.study_mappings.HDP00982', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP00946', 'metadata.study_mappings.HDP01155', 'metadata.study_mappings.HDP00293', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP00330', 'metadata.categories', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01498', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01237', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP00974', 'metadata.study_mappings.HDP00994'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -2961,9 +2963,9 @@
         ]
       ],
       "field_change_counts": {
-        "description": 1,
         "parents": 1,
-        "metadata.study_mappings.HDP01660": 1
+        "metadata.study_mappings.HDP01660": 1,
+        "description": 1
       },
       "sample_changes": [
         [
@@ -2971,7 +2973,7 @@
             "section",
             "sni"
           ],
-          "{'description', 'parents', 'metadata.study_mappings.HDP01660'}"
+          "{'parents', 'metadata.study_mappings.HDP01660', 'description'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -3010,106 +3012,106 @@
       ],
       "field_change_counts": {
         "metadata.study_variable_mappings.HDP01233": 3,
-        "metadata.study_mappings.HDP01497": 1,
-        "metadata.study_mappings.HDP01029": 1,
-        "metadata.study_mappings.HDP00895._sources": 1,
-        "metadata.categories": 1,
-        "metadata.study_mappings.HDP01051": 1,
-        "metadata.study_mappings.HDP00980": 1,
-        "metadata.study_mappings.HDP00920": 1,
-        "metadata.study_mappings.HDP01148": 1,
-        "metadata.study_mappings.HDP01246": 1,
-        "metadata.study_mappings.HDP01492": 1,
-        "metadata.study_mappings.HDP01338": 1,
-        "metadata.study_mappings.HDP00728": 1,
-        "metadata.study_mappings.HDP01488": 1,
-        "metadata.study_mappings.HDP00996": 1,
-        "metadata.study_mappings.HDP00941": 1,
-        "metadata.study_mappings.HDP01446": 1,
-        "metadata.study_mappings.HDP00971": 1,
-        "metadata.study_mappings.HDP01004": 1,
-        "metadata.study_mappings.HDP01329._sources": 1,
-        "metadata.study_mappings.HDP01176": 1,
-        "metadata.study_mappings.HDP01166": 1,
-        "metadata.study_mappings.HDP00937": 1,
-        "metadata.study_mappings.HDP00369": 1,
-        "metadata.study_mappings.HDP00111": 1,
-        "metadata.study_mappings.HDP01368": 1,
-        "metadata.study_mappings.HDP01105": 1,
-        "metadata.study_mappings.HDP00960": 1,
-        "metadata.study_mappings.HDP01373": 1,
-        "metadata.study_mappings.HDP00933": 1,
-        "metadata.study_mappings.HDP01337": 1,
-        "metadata.study_mappings.HDP01108": 1,
-        "metadata.study_mappings.HDP00293": 1,
-        "metadata.study_mappings.HDP01237": 1,
-        "metadata.study_mappings.HDP01351": 1,
-        "metadata.study_mappings.HDP01113": 1,
-        "metadata.study_mappings.HDP01077": 1,
-        "metadata.study_mappings.HDP01494": 1,
-        "metadata.study_mappings.HDP00330._sources": 1,
-        "metadata.study_mappings.HDP01284": 1,
-        "metadata.study_mappings.HDP00974": 1,
-        "metadata.study_mappings.HDP01416": 1,
-        "metadata.study_mappings.HDP00097": 1,
-        "metadata.study_mappings.HDP00909": 1,
-        "metadata.study_mappings.HDP01495": 1,
-        "metadata.study_mappings.HDP00110._sources": 1,
-        "metadata.study_mappings.HDP01050": 1,
-        "metadata.study_mappings.HDP01233": 1,
-        "metadata.study_mappings.HDP00982": 1,
-        "metadata.study_mappings.HDP00946": 1,
-        "metadata.study_mappings.HDP00366": 1,
-        "metadata.study_mappings.HDP00890": 1,
-        "metadata.study_mappings.HDP01340._sources": 1,
-        "metadata.study_mappings.HDP01493": 1,
-        "metadata.study_mappings.HDP00239": 1,
-        "metadata.study_mappings.HDP01491": 1,
-        "metadata.study_mappings.HDP01412": 1,
-        "metadata.study_mappings.HDP01011": 1,
-        "metadata.study_mappings.HDP01508": 1,
-        "metadata.study_mappings.HDP01498._sources": 1,
-        "metadata.study_mappings.HDP00962": 1,
-        "metadata.study_mappings.HDP01499": 1,
-        "metadata.study_mappings.HDP01048": 1,
-        "metadata.study_mappings.HDP01112": 1,
-        "metadata.study_mappings.HDP01464._sources": 1,
-        "metadata.study_mappings.HDP01061": 1,
-        "metadata.study_mappings.HDP01032": 1,
-        "parents": 1,
-        "metadata.study_mappings.HDP00902": 1,
-        "metadata.study_mappings.HDP00308": 1,
-        "metadata.study_mappings.HDP00924": 1,
-        "metadata.study_mappings.HDP01046": 1,
-        "metadata.study_mappings.HDP01155": 1,
-        "metadata.study_mappings.HDP01288": 1,
-        "metadata.study_mappings.HDP00994": 1,
-        "metadata.study_mappings.HDP01045": 1,
-        "metadata.study_mappings.HDP00280": 1,
-        "metadata.study_mappings.HDP00387": 1,
-        "metadata.study_mappings.HDP01489": 1,
-        "metadata.study_mappings.HDP00033": 1,
-        "metadata.study_mappings.HDP00464": 1,
-        "metadata.study_mappings.HDP00349": 1,
-        "metadata.study_mappings.HDP00337._sources": 1,
-        "metadata.study_mappings.HDP00233": 1,
         "metadata.study_mappings.HDP01018": 1,
-        "metadata.study_mappings.HDP00429._sources": 1
+        "metadata.study_mappings.HDP01048": 1,
+        "metadata.study_mappings.HDP01464._sources": 1,
+        "metadata.study_mappings.HDP01051": 1,
+        "metadata.study_mappings.HDP00464": 1,
+        "metadata.study_mappings.HDP00941": 1,
+        "metadata.study_mappings.HDP01416": 1,
+        "metadata.study_mappings.HDP00349": 1,
+        "metadata.study_mappings.HDP01166": 1,
+        "metadata.study_mappings.HDP00890": 1,
+        "metadata.study_mappings.HDP01495": 1,
+        "metadata.study_mappings.HDP01233": 1,
+        "metadata.study_mappings.HDP00902": 1,
+        "metadata.study_mappings.HDP01112": 1,
+        "parents": 1,
+        "metadata.study_mappings.HDP01489": 1,
+        "metadata.study_mappings.HDP00920": 1,
+        "metadata.study_mappings.HDP01494": 1,
+        "metadata.study_mappings.HDP01045": 1,
+        "metadata.study_mappings.HDP01498._sources": 1,
+        "metadata.study_mappings.HDP01061": 1,
+        "metadata.study_mappings.HDP01029": 1,
+        "metadata.study_mappings.HDP01032": 1,
+        "metadata.study_mappings.HDP01011": 1,
+        "metadata.study_mappings.HDP00111": 1,
+        "metadata.study_mappings.HDP01284": 1,
+        "metadata.study_mappings.HDP00033": 1,
+        "metadata.study_mappings.HDP01373": 1,
+        "metadata.study_mappings.HDP01113": 1,
+        "metadata.study_mappings.HDP01340._sources": 1,
+        "metadata.study_mappings.HDP00962": 1,
+        "metadata.study_mappings.HDP00387": 1,
+        "metadata.study_mappings.HDP01004": 1,
+        "metadata.study_mappings.HDP00429._sources": 1,
+        "metadata.study_mappings.HDP00895._sources": 1,
+        "metadata.study_mappings.HDP01368": 1,
+        "metadata.study_mappings.HDP01338": 1,
+        "metadata.study_mappings.HDP01446": 1,
+        "metadata.study_mappings.HDP01412": 1,
+        "metadata.study_mappings.HDP00366": 1,
+        "metadata.study_mappings.HDP01491": 1,
+        "metadata.study_mappings.HDP01176": 1,
+        "metadata.study_mappings.HDP00728": 1,
+        "metadata.study_mappings.HDP00369": 1,
+        "metadata.study_mappings.HDP01108": 1,
+        "metadata.study_mappings.HDP00280": 1,
+        "metadata.study_mappings.HDP00971": 1,
+        "metadata.study_mappings.HDP01497": 1,
+        "metadata.study_mappings.HDP01105": 1,
+        "metadata.study_mappings.HDP00233": 1,
+        "metadata.study_mappings.HDP01288": 1,
+        "metadata.study_mappings.HDP00996": 1,
+        "metadata.study_mappings.HDP00308": 1,
+        "metadata.study_mappings.HDP00960": 1,
+        "metadata.study_mappings.HDP00909": 1,
+        "metadata.study_mappings.HDP00337._sources": 1,
+        "metadata.study_mappings.HDP01077": 1,
+        "metadata.study_mappings.HDP00097": 1,
+        "metadata.study_mappings.HDP01046": 1,
+        "metadata.study_mappings.HDP01246": 1,
+        "metadata.study_mappings.HDP01508": 1,
+        "metadata.study_mappings.HDP01488": 1,
+        "metadata.study_mappings.HDP00980": 1,
+        "metadata.study_mappings.HDP01050": 1,
+        "metadata.study_mappings.HDP01351": 1,
+        "metadata.study_mappings.HDP00330._sources": 1,
+        "metadata.study_mappings.HDP00937": 1,
+        "metadata.study_mappings.HDP00982": 1,
+        "metadata.study_mappings.HDP00933": 1,
+        "metadata.study_mappings.HDP00946": 1,
+        "metadata.study_mappings.HDP01155": 1,
+        "metadata.study_mappings.HDP01148": 1,
+        "metadata.study_mappings.HDP01493": 1,
+        "metadata.study_mappings.HDP00293": 1,
+        "metadata.study_mappings.HDP00110._sources": 1,
+        "metadata.study_mappings.HDP01492": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01329._sources": 1,
+        "metadata.study_mappings.HDP01337": 1,
+        "metadata.study_mappings.HDP01499": 1,
+        "metadata.study_mappings.HDP01237": 1,
+        "metadata.study_mappings.HDP00924": 1,
+        "metadata.study_mappings.HDP00239": 1,
+        "metadata.study_mappings.HDP00974": 1,
+        "metadata.study_mappings.HDP00994": 1
       },
       "sample_changes": [
+        [
+          [
+            "variable",
+            "TAPSPrescriptionMedUseScl"
+          ],
+          "{'metadata.study_variable_mappings.HDP01233'}"
+        ],
         [
           [
             "variable",
             "TAPSTobaccoProductScl"
           ],
           "{'metadata.study_variable_mappings.HDP01233'}"
-        ],
-        [
-          [
-            "section",
-            "taps"
-          ],
-          "{'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01029', 'metadata.study_mappings.HDP00895._sources', 'metadata.categories', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP00920', 'metadata.study_mappings.HDP01148', 'metadata.study_mappings.HDP01246', 'metadata.study_mappings.HDP01492', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00996', 'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP01446', 'metadata.study_mappings.HDP00971', 'metadata.study_mappings.HDP01004', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01176', 'metadata.study_mappings.HDP01166', 'metadata.study_mappings.HDP00937', 'metadata.study_mappings.HDP00369', 'metadata.study_mappings.HDP00111', 'metadata.study_mappings.HDP01368', 'metadata.study_mappings.HDP01105', 'metadata.study_mappings.HDP00960', 'metadata.study_mappings.HDP01373', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01108', 'metadata.study_mappings.HDP00293', 'metadata.study_mappings.HDP01237', 'metadata.study_mappings.HDP01351', 'metadata.study_mappings.HDP01113', 'metadata.study_mappings.HDP01077', 'metadata.study_mappings.HDP01494', 'metadata.study_mappings.HDP00330._sources', 'metadata.study_mappings.HDP01284', 'metadata.study_mappings.HDP00974', 'metadata.study_mappings.HDP01416', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP00909', 'metadata.study_mappings.HDP01495', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP01050', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP00982', 'metadata.study_mappings.HDP00946', 'metadata.study_mappings.HDP00366', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP01493', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP01412', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01112', 'metadata.study_mappings.HDP01464._sources', 'metadata.study_mappings.HDP01061', 'metadata.study_mappings.HDP01032', 'parents', 'metadata.study_mappings.HDP00902', 'metadata.study_mappings.HDP00308', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01155', 'metadata.study_mappings.HDP01288', 'metadata.study_mappings.HDP00994', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP00280', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00033', 'metadata.study_mappings.HDP00464', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01018', 'metadata.study_mappings.HDP00429._sources'}"
         ],
         [
           [
@@ -3120,10 +3122,10 @@
         ],
         [
           [
-            "variable",
-            "TAPSPrescriptionMedUseScl"
+            "section",
+            "taps"
           ],
-          "{'metadata.study_variable_mappings.HDP01233'}"
+          "{'metadata.study_mappings.HDP01018', 'metadata.study_mappings.HDP01048', 'metadata.study_mappings.HDP01464._sources', 'metadata.study_mappings.HDP01051', 'metadata.study_mappings.HDP00464', 'metadata.study_mappings.HDP00941', 'metadata.study_mappings.HDP01416', 'metadata.study_mappings.HDP00349', 'metadata.study_mappings.HDP01166', 'metadata.study_mappings.HDP00890', 'metadata.study_mappings.HDP01495', 'metadata.study_mappings.HDP01233', 'metadata.study_mappings.HDP00902', 'metadata.study_mappings.HDP01112', 'parents', 'metadata.study_mappings.HDP01489', 'metadata.study_mappings.HDP00920', 'metadata.study_mappings.HDP01494', 'metadata.study_mappings.HDP01045', 'metadata.study_mappings.HDP01498._sources', 'metadata.study_mappings.HDP01061', 'metadata.study_mappings.HDP01029', 'metadata.study_mappings.HDP01032', 'metadata.study_mappings.HDP01011', 'metadata.study_mappings.HDP00111', 'metadata.study_mappings.HDP01284', 'metadata.study_mappings.HDP00033', 'metadata.study_mappings.HDP01373', 'metadata.study_mappings.HDP01113', 'metadata.study_mappings.HDP01340._sources', 'metadata.study_mappings.HDP00962', 'metadata.study_mappings.HDP00387', 'metadata.study_mappings.HDP01004', 'metadata.study_mappings.HDP00429._sources', 'metadata.study_mappings.HDP00895._sources', 'metadata.study_mappings.HDP01368', 'metadata.study_mappings.HDP01338', 'metadata.study_mappings.HDP01446', 'metadata.study_mappings.HDP01412', 'metadata.study_mappings.HDP00366', 'metadata.study_mappings.HDP01491', 'metadata.study_mappings.HDP01176', 'metadata.study_mappings.HDP00728', 'metadata.study_mappings.HDP00369', 'metadata.study_mappings.HDP01108', 'metadata.study_mappings.HDP00280', 'metadata.study_mappings.HDP00971', 'metadata.study_mappings.HDP01497', 'metadata.study_mappings.HDP01105', 'metadata.study_mappings.HDP00233', 'metadata.study_mappings.HDP01288', 'metadata.study_mappings.HDP00996', 'metadata.study_mappings.HDP00308', 'metadata.study_mappings.HDP00960', 'metadata.study_mappings.HDP00909', 'metadata.study_mappings.HDP00337._sources', 'metadata.study_mappings.HDP01077', 'metadata.study_mappings.HDP00097', 'metadata.study_mappings.HDP01046', 'metadata.study_mappings.HDP01246', 'metadata.study_mappings.HDP01508', 'metadata.study_mappings.HDP01488', 'metadata.study_mappings.HDP00980', 'metadata.study_mappings.HDP01050', 'metadata.study_mappings.HDP01351', 'metadata.study_mappings.HDP00330._sources', 'metadata.study_mappings.HDP00937', 'metadata.study_mappings.HDP00982', 'metadata.study_mappings.HDP00933', 'metadata.study_mappings.HDP00946', 'metadata.study_mappings.HDP01155', 'metadata.study_mappings.HDP01148', 'metadata.study_mappings.HDP01493', 'metadata.study_mappings.HDP00293', 'metadata.study_mappings.HDP00110._sources', 'metadata.study_mappings.HDP01492', 'metadata.categories', 'metadata.study_mappings.HDP01329._sources', 'metadata.study_mappings.HDP01337', 'metadata.study_mappings.HDP01499', 'metadata.study_mappings.HDP01237', 'metadata.study_mappings.HDP00924', 'metadata.study_mappings.HDP00239', 'metadata.study_mappings.HDP00974', 'metadata.study_mappings.HDP00994'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -3152,11 +3154,11 @@
         ]
       ],
       "field_change_counts": {
-        "parents": 1,
-        "metadata.categories": 1,
         "metadata.study_mappings.HDP01543": 1,
+        "metadata.categories": 1,
+        "metadata.study_mappings.HDP01672": 1,
         "metadata.urls": 1,
-        "metadata.study_mappings.HDP01672": 1
+        "parents": 1
       },
       "sample_changes": [
         [
@@ -3164,7 +3166,7 @@
             "section",
             "whoqol-2"
           ],
-          "{'parents', 'metadata.categories', 'metadata.study_mappings.HDP01543', 'metadata.urls', 'metadata.study_mappings.HDP01672'}"
+          "{'metadata.study_mappings.HDP01543', 'metadata.categories', 'metadata.study_mappings.HDP01672', 'metadata.urls', 'parents'}"
         ]
       ],
       "unkeyed_a": 0,
@@ -3181,8 +3183,8 @@
         ]
       ],
       "field_change_counts": {
-        "metadata.study_mappings.HDP01629": 1,
-        "parents": 1
+        "parents": 1,
+        "metadata.study_mappings.HDP01629": 1
       },
       "sample_changes": [
         [
@@ -3190,7 +3192,7 @@
             "section",
             "whoqol-bref"
           ],
-          "{'metadata.study_mappings.HDP01629', 'parents'}"
+          "{'parents', 'metadata.study_mappings.HDP01629'}"
         ]
       ],
       "unkeyed_a": 0,

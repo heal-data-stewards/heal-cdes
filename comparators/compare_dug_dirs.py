@@ -166,12 +166,21 @@ def unified_diff_text(a_path, b_path):
     "--glob", default="*.dug.json", help="File pattern to compare (default: *.dug.json)"
 )
 @click.option(
+    "--label-a", default=None, help="Short label for DIR_A (default: dir name)"
+)
+@click.option(
+    "--label-b", default=None, help="Short label for DIR_B (default: dir name)"
+)
+@click.option(
     "--write-diffs/--no-write-diffs",
     default=True,
     help="Write per-file unified diffs to <report_dir>/diffs/",
 )
-def main(dir_a, dir_b, report_dir, glob, write_diffs):
+def main(dir_a, dir_b, report_dir, glob, label_a, label_b, write_diffs):
     """Compare Dug JSON files in DIR_A against DIR_B and write a report to REPORT_DIR."""
+    label_a = label_a or dir_a.name
+    label_b = label_b or dir_b.name
+
     report_dir.mkdir(parents=True, exist_ok=True)
     diffs_dir = report_dir / "diffs"
     if write_diffs:
@@ -209,6 +218,8 @@ def main(dir_a, dir_b, report_dir, glob, write_diffs):
             {
                 "dir_a": str(dir_a),
                 "dir_b": str(dir_b),
+                "label_a": label_a,
+                "label_b": label_b,
                 "only_in_a": only_a,
                 "only_in_b": only_b,
                 "common_count": len(common),
@@ -221,27 +232,31 @@ def main(dir_a, dir_b, report_dir, glob, write_diffs):
         encoding="utf-8",
     )
 
-    write_summary(report_dir / "summary.md", dir_a, dir_b, only_a, only_b, buckets)
-    write_detail(report_dir / "detail.md", dir_a, dir_b, classifications, buckets)
+    write_summary(
+        report_dir / "summary.md", dir_a, dir_b, label_a, label_b, only_a, only_b, buckets
+    )
+    write_detail(
+        report_dir / "detail.md", dir_a, dir_b, label_a, label_b, classifications, buckets
+    )
 
     click.echo(f"Report written to {report_dir}")
-    click.echo(f"  only in A: {len(only_a)}")
-    click.echo(f"  only in B: {len(only_b)}")
+    click.echo(f"  only in {label_a}: {len(only_a)}")
+    click.echo(f"  only in {label_b}: {len(only_b)}")
     for kind, files in sorted(buckets.items()):
         click.echo(f"  {kind}: {len(files)}")
 
 
-def write_summary(path, dir_a, dir_b, only_a, only_b, buckets):
+def write_summary(path, dir_a, dir_b, label_a, label_b, only_a, only_b, buckets):
     lines = [
         f"# Comparison summary",
         "",
-        f"- A: `{dir_a}`",
-        f"- B: `{dir_b}`",
+        f"- {label_a}: `{dir_a}`",
+        f"- {label_b}: `{dir_b}`",
         "",
         "## Counts",
         "",
-        f"- Files only in A: **{len(only_a)}**",
-        f"- Files only in B: **{len(only_b)}**",
+        f"- Files only in {label_a}: **{len(only_a)}**",
+        f"- Files only in {label_b}: **{len(only_b)}**",
         f"- Common files: **{sum(len(v) for v in buckets.values())}**",
         "",
     ]
@@ -265,12 +280,12 @@ def write_summary(path, dir_a, dir_b, only_a, only_b, buckets):
     lines.append("")
 
     if only_a:
-        lines.append(f"## Files only in A ({len(only_a)})")
+        lines.append(f"## Files only in {label_a} ({len(only_a)})")
         lines.append("")
         lines.extend(f"- `{f}`" for f in only_a)
         lines.append("")
     if only_b:
-        lines.append(f"## Files only in B ({len(only_b)})")
+        lines.append(f"## Files only in {label_b} ({len(only_b)})")
         lines.append("")
         lines.extend(f"- `{f}`" for f in only_b)
         lines.append("")
@@ -278,12 +293,12 @@ def write_summary(path, dir_a, dir_b, only_a, only_b, buckets):
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
-def write_detail(path, dir_a, dir_b, classifications, buckets):
+def write_detail(path, dir_a, dir_b, label_a, label_b, classifications, buckets):
     lines = [
         f"# Detailed comparison",
         "",
-        f"- A: `{dir_a}`",
-        f"- B: `{dir_b}`",
+        f"- {label_a}: `{dir_a}`",
+        f"- {label_b}: `{dir_b}`",
         "",
     ]
 
@@ -330,19 +345,19 @@ def write_detail(path, dir_a, dir_b, classifications, buckets):
             lines.append(f"### `{name}`")
             lines.append("")
             lines.append(
-                f"- Records only in A: **{len(only_a_recs)}**, "
-                f"only in B: **{len(only_b_recs)}**, "
+                f"- Records only in {label_a}: **{len(only_a_recs)}**, "
+                f"only in {label_b}: **{len(only_b_recs)}**, "
                 f"changed: **{len(recs_changed)}**"
             )
             if only_a_recs:
                 lines.append(
-                    f"  - Only in A: "
+                    f"  - Only in {label_a}: "
                     + ", ".join(f"`{t}:{i}`" for t, i in only_a_recs[:10])
                     + (" …" if len(only_a_recs) > 10 else "")
                 )
             if only_b_recs:
                 lines.append(
-                    f"  - Only in B: "
+                    f"  - Only in {label_b}: "
                     + ", ".join(f"`{t}:{i}`" for t, i in only_b_recs[:10])
                     + (" …" if len(only_b_recs) > 10 else "")
                 )

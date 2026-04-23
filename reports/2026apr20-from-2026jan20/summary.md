@@ -1,12 +1,12 @@
 # Comparison summary
 
-- A: `dug-data-model-2026apr20`
-- B: `dug-data-model-2026jan20`
+- 2026apr20: `dug-data-model-2026apr20`
+- 2026jan20: `dug-data-model-2026jan20`
 
 ## Counts
 
-- Files only in A: **40**
-- Files only in B: **38**
+- Files only in 2026apr20: **40**
+- Files only in 2026jan20: **38**
 - Common files: **195**
 
   - `trivial_only`: 139
@@ -18,7 +18,7 @@
 - **trivial_only** — differs only in volatile fields (`drupal_id`, HEAL CDE export timestamp, NIH CDE upload month).
 - **record_changes** — at least one record was added, removed, or has semantic field changes beyond the volatile fields above.
 
-## Files only in A (40)
+## Files only in 2026apr20 (40)
 
 - `cali-9-proxy.dug.json`
 - `cali-9.dug.json`
@@ -61,7 +61,7 @@
 - `tapes-r.dug.json`
 - `umss.dug.json`
 
-## Files only in B (38)
+## Files only in 2026jan20 (38)
 
 - `addiction-behaviors-checklist.dug.json`
 - `amps.dug.json`
