@@ -91,12 +91,13 @@ $(HEAL_CDE_LIST_CSV): | $(LOGFILE)
 $(HEAL_CDE_CORE_CSV): downloaders/get_heal_cde_taxonomy.py $(HEAL_CDE_LIST_CSV) | $(LOGFILE)
 	@set -o pipefail; ${PYTHON} downloaders/get_heal_cde_taxonomy.py "$@.tmp" \
 		--input-csv $(HEAL_CDE_LIST_CSV) \
-		--taxonomy-url $(BASE_URL)/taxonomy/term/971 \
+		--taxonomy-url "https://www.nih.gov/taxonomy/term/971 \
 		--default-category "Core" 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
 
 # STEP II.3: Backstop supplemental CDEs from the supplemental taxonomy listing
 $(HEAL_CDE_FINAL_CSV): downloaders/get_heal_cde_taxonomy.py $(HEAL_CDE_CORE_CSV) | $(LOGFILE)
 	@set -o pipefail; ${PYTHON} downloaders/get_heal_cde_taxonomy.py "$@.tmp" \
+		--taxonomy-url "https://www.nih.gov/taxonomy/term/1441" \
 		--input-csv $(HEAL_CDE_CORE_CSV) 2>&1 | tee -a $(LOGFILE) && mv "$@.tmp" $@
 
 # STAGE III. DOWNLOAD
