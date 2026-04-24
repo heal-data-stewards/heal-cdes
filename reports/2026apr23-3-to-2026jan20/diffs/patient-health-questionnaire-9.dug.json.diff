@@ -1,0 +1,563 @@
+--- dug-data-model-2026apr23-3/patient-health-questionnaire-9.dug.json
++++ dug-data-model-2026jan20/patient-health-questionnaire-9.dug.json
+@@ -95,8 +95,4 @@
+         "HDP01193": [
+           "d1"
+-        ],
+-        "HDP00221": [
+-          "bl_phq2",
+-          "phq2_1m"
+         ]
+       }
+@@ -142,5 +138,4 @@
+         ],
+         "HDP00221": [
+-          "bl_phq3",
+           "phq3_1m"
+         ]
+@@ -188,8 +183,4 @@
+         "HDP01340": [
+           "PHQTirdLittleEnrgyScore"
+-        ],
+-        "HDP00221": [
+-          "bl_phq4",
+-          "phq4_1m"
+         ]
+       }
+@@ -238,6 +229,5 @@
+         ],
+         "HDP00221": [
+-          "bl_phq5",
+-          "phq5_1m"
++          "bl_phq5"
+         ]
+       }
+@@ -286,5 +276,4 @@
+         ],
+         "HDP00221": [
+-          "bl_phq6",
+           "phq6_1m"
+         ]
+@@ -334,5 +323,4 @@
+         ],
+         "HDP00221": [
+-          "bl_phq7",
+           "phq7_1m"
+         ]
+@@ -377,8 +365,4 @@
+         "HDP00337": [
+           "phqmovmntspchimprmntscore"
+-        ],
+-        "HDP00221": [
+-          "bl_phq8",
+-          "phq8_1m"
+         ]
+       }
+@@ -488,5 +472,4 @@
+         ],
+         "HDP00221": [
+-          "bl_phq10",
+           "phq10_1m"
+         ]
+@@ -503,26 +486,8 @@
+       "HDP00253",
+       "HDP00337",
+-      "HDP00728",
+-      "HDP00974",
+-      "HDP00982",
+-      "HDP01032",
+-      "HDP01045",
+-      "HDP01046",
+-      "HDP01061",
+-      "HDP01105",
+-      "HDP01112",
+-      "HDP01113",
+-      "HDP01155",
+       "HDP01193",
+-      "HDP01237",
+-      "HDP01312",
+       "HDP01327",
+       "HDP01340",
+-      "HDP01373",
+-      "HDP01446",
+       "HDP01464",
+-      "HDP01492",
+-      "HDP01494",
+-      "HDP01495",
+       "HDP01498"
+     ],
+@@ -547,4 +512,8 @@
+     "metadata": {
+       "categories": [
++        "Adult Acute",
++        "Adult Chronic",
++        "All Core",
++        "Pediatrics",
+         "Supplemental"
+       ],
+@@ -556,5 +525,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5371"
+         },
+         {
+@@ -564,5 +533,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 11 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5376"
+         },
+         {
+@@ -572,9 +541,12 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5386"
+         }
+       ],
+       "study_mappings": {
+         "HDP01498": {
++          "PHQLitIntrstScore": [
++            "phqlitintrstscore"
++          ],
+           "_sources": [
+             [
+@@ -583,4 +555,71 @@
+             ]
+           ],
++          "PHQDeprssnScore": [
++            "phqdeprssnscore"
++          ],
++          "PHQSleepImpairScore": [
++            "phqsleepimpairscore"
++          ],
++          "PHQTirdLittleEnrgyScore": [
++            "phqtirdlittleenrgyscore"
++          ],
++          "PHQAbnrmlDietScore": [
++            "phqabnrmldietscore"
++          ],
++          "PHQConcntrtnImprmntScore": [
++            "phqconcntrtnimprmntscore"
++          ],
++          "PHQFlngFailrScore": [
++            "phqflngfailrscore"
++          ],
++          "PHQMovmntSpchImprmntScore": [
++            "phqmovmntspchimprmntscore"
++          ]
++        },
++        "HDP00223": {
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00223/HDP00223_WholeHealth_REDCap.vlmd_2025-08-14_matches_confirmed_vlmd_cdesearch_20250828_095735.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
++          "PHQLitIntrstScore": [
++            "phq901_phq9_1"
++          ],
++          "PHQDeprssnScore": [
++            "phq901_phq9_2"
++          ],
++          "PHQSleepImpairScore": [
++            "phq901_phq9_3"
++          ],
++          "PHQTirdLittleEnrgyScore": [
++            "phq901_phq9_4"
++          ],
++          "PHQAbnrmlDietScore": [
++            "phq901_phq9_5"
++          ],
++          "PHQFlngFailrScore": [
++            "phq901_phq9_6"
++          ],
++          "PHQConcntrtnImprmntScore": [
++            "phq901_phq9_7"
++          ],
++          "PHQMovmntSpchImprmntScore": [
++            "phq901_phq9_8"
++          ],
++          "PHQBttrDdThghtScore": [
++            "phq901_phq9_9"
++          ],
++          "PHQDiffcltyPerfScl": [
++            "phq901_phq9_10"
++          ]
++        },
++        "HDP00337": {
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00337/HDP00337_BSCIP1_DataDictionary_2023-08-07.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250905_135102.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
+           "PHQLitIntrstScore": [
+             "phqlitintrstscore"
+@@ -598,86 +637,12 @@
+             "phqabnrmldietscore"
+           ],
++          "PHQFlngFailrScore": [
++            "phqflngfailrscore"
++          ],
+           "PHQConcntrtnImprmntScore": [
+             "phqconcntrtnimprmntscore"
+           ],
+-          "PHQFlngFailrScore": [
+-            "phqflngfailrscore"
+-          ],
+           "PHQMovmntSpchImprmntScore": [
+             "phqmovmntspchimprmntscore"
+-          ]
+-        },
+-        "HDP00223": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00223/HDP00223_WholeHealth_REDCap.vlmd_2025-08-14_matches_confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00223/HDP00223_WholeHealth_REDCap.vlmd_2025-08-14_matches_confirmed_vlmd_cdesearch_20250828_095735.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "PHQLitIntrstScore": [
+-            "phq901_phq9_1"
+-          ],
+-          "PHQDeprssnScore": [
+-            "phq901_phq9_2"
+-          ],
+-          "PHQSleepImpairScore": [
+-            "phq901_phq9_3"
+-          ],
+-          "PHQTirdLittleEnrgyScore": [
+-            "phq901_phq9_4"
+-          ],
+-          "PHQAbnrmlDietScore": [
+-            "phq901_phq9_5"
+-          ],
+-          "PHQFlngFailrScore": [
+-            "phq901_phq9_6"
+-          ],
+-          "PHQConcntrtnImprmntScore": [
+-            "phq901_phq9_7"
+-          ],
+-          "PHQMovmntSpchImprmntScore": [
+-            "phq901_phq9_8"
+-          ],
+-          "PHQBttrDdThghtScore": [
+-            "phq901_phq9_9"
+-          ],
+-          "PHQDiffcltyPerfScl": [
+-            "phq901_phq9_10"
+-          ]
+-        },
+-        "HDP00337": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+-          "PHQLitIntrstScore": [
+-            "phqlitintrstscore"
+-          ],
+-          "PHQDeprssnScore": [
+-            "phqdeprssnscore"
+-          ],
+-          "PHQSleepImpairScore": [
+-            "phqsleepimpairscore"
+-          ],
+-          "PHQTirdLittleEnrgyScore": [
+-            "phqtirdlittleenrgyscore"
+-          ],
+-          "PHQAbnrmlDietScore": [
+-            "phqabnrmldietscore"
+-          ],
+-          "PHQFlngFailrScore": [
+-            "phqflngfailrscore"
+-          ],
+-          "PHQConcntrtnImprmntScore": [
+-            "phqconcntrtnimprmntscore"
+-          ],
+-          "PHQMovmntSpchImprmntScore": [
+-            "phqmovmntspchimprmntscore"
+           ],
+           "PHQBttrDdThghtScore": [
+@@ -689,13 +654,13 @@
+         },
+         "HDP00253": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00253/SPRINT_2020-12-16_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_103649.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+           "PHQLitIntrstScore": [
+             "c_phq_1",
+             "p_phq_1"
++          ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00253/SPRINT_2020-12-16_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_103649.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
+           ]
+         },
+@@ -703,6 +668,10 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "../heal-cde-mappings/HDP01340/HDP01340_wide_data_dictionary_2024_12_20.redcap.vlmd_2025-08-14_matches_confirmed.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ],
++            [
++              "../heal-cde-mappings/HDP01340/HDP01340_wide_data_dictionary_2024_12_20.redcap.vlmd_2025-08-26_matches_confirmed_vlmd_cdesearch_20250828_095120.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+             ]
+           ],
+@@ -726,17 +695,8 @@
+           ]
+         },
+-        "HDP01312": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP01312/HDP01312-fixed-src-visits_2025-12-18_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP01312/HDP01312-fixed-src-visits_2025-12-18_matches confirmed_vlmd_cdesearch_20251218_093332.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ]
+-        },
+         "HDP01193": {
++          "PHQDeprssnScore": [
++            "d1"
++          ],
+           "_sources": [
+             [
+@@ -744,7 +704,4 @@
+               "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+             ]
+-          ],
+-          "PHQDeprssnScore": [
+-            "d1"
+           ],
+           "PHQLitIntrstScore": [
+@@ -761,17 +718,8 @@
+               "../heal-cde-mappings/HDP00221/ThePersistStudy_DataDictionary_2023-09-15_2025-08-07_matches_confirmed_vlmd_cdesearch_20250814_153652.xlsx",
+               "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00221/ThePersistStudy_DataDictionary_2023-09-15_2025-11-19_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00221/ThePersistStudy_DataDictionary_2023-09-15_2025-11-19_matches confirmed_vlmd_cdesearch_20251119_133540.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+             ]
+           ],
+           "PHQAbnrmlDietScore": [
+-            "bl_phq5",
+-            "phq5_1m"
++            "bl_phq5"
+           ],
+           "PHQBttrDdThghtScore": [
+@@ -780,30 +728,14 @@
+           ],
+           "PHQSleepImpairScore": [
+-            "bl_phq3",
+             "phq3_1m"
+           ],
+           "PHQFlngFailrScore": [
+-            "bl_phq6",
+             "phq6_1m"
+           ],
+           "PHQConcntrtnImprmntScore": [
+-            "bl_phq7",
+             "phq7_1m"
+           ],
+           "PHQDiffcltyPerfScl": [
+-            "bl_phq10",
+             "phq10_1m"
+-          ],
+-          "PHQDeprssnScore": [
+-            "bl_phq2",
+-            "phq2_1m"
+-          ],
+-          "PHQTirdLittleEnrgyScore": [
+-            "bl_phq4",
+-            "phq4_1m"
+-          ],
+-          "PHQMovmntSpchImprmntScore": [
+-            "bl_phq8",
+-            "phq8_1m"
+           ]
+         },
+@@ -811,157 +743,21 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]
+           ]
+         },
+-        "HDP00728": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++        "HDP01327": {
++          "_sources": [
++            [
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]
+           ]
+         },
+-        "HDP00974": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00982": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01032": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01045": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01046": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01061": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01105": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01112": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01113": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01155": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01237": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01327": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01373": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01446": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+         "HDP01464": {
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01492": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01494": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01495": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]

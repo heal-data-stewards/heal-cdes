@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/arthritis-self-efficacy-scale-pain-scale-1-item.dug.json
++++ dug-data-model-2026jan20/arthritis-self-efficacy-scale-pain-scale-1-item.dug.json
+@@ -48,5 +48,5 @@
+     "metadata": {
+       "categories": [
+-        ""
++        "Supplemental"
+       ],
+       "urls": [
+@@ -57,5 +57,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7071"
+         },
+         {
+@@ -65,5 +65,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 1 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7061"
+         }
+       ],

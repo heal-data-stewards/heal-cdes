@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/promis-psychosocial-illness-impact-negative-8a.dug.json
++++ dug-data-model-2026jan20/promis-psychosocial-illness-impact-negative-8a.dug.json
+@@ -588,5 +588,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8051"
+         },
+         {
+@@ -596,5 +596,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 18 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "8046"
+         }
+       ],

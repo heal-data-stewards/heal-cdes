@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/pgcs.dug.json
++++ dug-data-model-2026jan20/pgcs.dug.json
+@@ -280,5 +280,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5976"
+         },
+         {
+@@ -288,5 +288,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 8 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5971"
+         }
+       ],

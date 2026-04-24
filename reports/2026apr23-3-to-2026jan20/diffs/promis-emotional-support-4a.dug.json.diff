@@ -1,0 +1,51 @@
+--- dug-data-model-2026apr23-3/promis-emotional-support-4a.dug.json
++++ dug-data-model-2026jan20/promis-emotional-support-4a.dug.json
+@@ -179,5 +179,5 @@
+     "name": "PROMIS Emotional Support Short Form 4a",
+     "description": "The PROMIS Emotional Support 4a assesses perceived feelings of being cared for and valued as a person. Contains 6 CDEs.",
+-    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-04/promis-emotional-support-4a-crf_0.pdf",
++    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/promis-emotional-support-4a-crf.pdf",
+     "is_crf": true,
+     "variable_list": [
+@@ -195,10 +195,10 @@
+       "urls": [
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-04/promis-emotional-support-4a-crf_0.pdf",
+-          "filename": "promis-emotional-support-4a-crf_0.pdf",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/promis-emotional-support-4a-crf.pdf",
++          "filename": "promis-emotional-support-4a-crf.pdf",
+           "lang": "en",
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6176"
+         },
+         {
+@@ -208,5 +208,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 6 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "6171"
+         },
+         {
+@@ -216,5 +216,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6211"
+         }
+       ],
+@@ -223,5 +223,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -231,5 +231,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

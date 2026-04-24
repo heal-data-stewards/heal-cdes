@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/promis-emotional-distress-depression-8b.dug.json
++++ dug-data-model-2026jan20/promis-emotional-distress-depression-8b.dug.json
+@@ -333,5 +333,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6086"
+         },
+         {
+@@ -341,5 +341,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 10 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "6076"
+         },
+         {
+@@ -349,5 +349,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6121"
+         }
+       ],

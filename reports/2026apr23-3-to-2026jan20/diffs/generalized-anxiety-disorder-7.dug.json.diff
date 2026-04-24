@@ -1,0 +1,329 @@
+--- dug-data-model-2026apr23-3/generalized-anxiety-disorder-7.dug.json
++++ dug-data-model-2026jan20/generalized-anxiety-disorder-7.dug.json
+@@ -2,6 +2,6 @@
+   {
+     "type": "variable",
+-    "id": "GAD2FeelNervScale",
+-    "name": "GAD2FeelNervScale",
++    "id": "GAD2FeelNervScl",
++    "name": "GAD2FeelNervScl",
+     "description": "Scale describing how often participant/subject has been bothered by feeling nervous, anxious or on edge, as a part of Generalized Anxiety Disorder (GAD-7).",
+     "data_type": "integer",
+@@ -48,7 +48,4 @@
+           "GAD2FeelNervScl"
+         ],
+-        "HDP00619": [
+-          "gad701"
+-        ],
+         "HDP00110": [
+           "easy_annoyed_v2",
+@@ -61,6 +58,6 @@
+   {
+     "type": "variable",
+-    "id": "GAD2NotStopWryScale",
+-    "name": "GAD2NotStopWryScale",
++    "id": "GAD2NotStopWryScl",
++    "name": "GAD2NotStopWryScl",
+     "description": "Scale describing how often participant/subject has not been able to stop or control worrying, as a part of Generalized Anxiety Disorder (GAD-7).",
+     "data_type": "integer",
+@@ -214,4 +211,5 @@
+         ],
+         "HDP00619": [
++          "gad701",
+           "gad704"
+         ],
+@@ -413,11 +411,10 @@
+       "HDP00619",
+       "HDP00933",
+-      "HDP01068",
+       "HDP01327",
+       "HDP01329",
+       "HDP01340",
+       "HDP01392",
+-      "HDP01498",
+-      "HDP01660"
++      "HDP01476",
++      "HDP01498"
+     ],
+     "crf_id": "generalized-anxiety-disorder-7",
+@@ -427,6 +424,6 @@
+     "is_crf": true,
+     "variable_list": [
+-      "GAD2FeelNervScale",
+-      "GAD2NotStopWryScale",
++      "GAD2FeelNervScl",
++      "GAD2NotStopWryScl",
+       "GAD7WryTooMchScl",
+       "GAD7TroubRelxScl",
+@@ -438,4 +435,8 @@
+     "metadata": {
+       "categories": [
++        "Adult Acute",
++        "Adult Chronic",
++        "All Core",
++        "Pediatrics",
+         "Supplemental"
+       ],
+@@ -447,5 +448,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5356"
+         },
+         {
+@@ -455,5 +456,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 8 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5351"
+         },
+         {
+@@ -463,23 +464,19 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5396"
+         }
+       ],
+       "study_mappings": {
+         "HDP01329": {
++          "GAD2FeelNervScl": [
++            "gad2feelnervscl"
++          ],
+           "_sources": [
+             [
+               "../heal-cde-mappings/HDP01329/HDP01329_HDP01329_EQUIPD_DataDictionary.redcap.vlmd_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_194717.xlsx",
+               "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP01329/HDP01329_HDP01329_EQUIPD_DataDictionary.redcap.vlmd_2026-02-16_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "GAD2FeelNervScale": [
+-            "gad2feelnervscl"
+-          ],
+-          "GAD2NotStopWryScale": [
++            ]
++          ],
++          "GAD2NotStopWryScl": [
+             "gad2notstopwryscl"
+           ],
+@@ -501,19 +498,15 @@
+         },
+         "HDP01498": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP01498/HDP01498_FMTIPSDataEntry202308071358RED_DataDictionary_2023-08-22.vlmd_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_104348.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP01498/HDP01498_FMTIPSDataEntry202308071358RED_DataDictionary_2023-08-22.vlmd_2026-02-16_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "GAD2FeelNervScale": [
++          "GAD2FeelNervScl": [
+             "gad7feelnervscl",
+             "gad7troubrelxscl"
+           ],
+-          "GAD2NotStopWryScale": [
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP01498/HDP01498_FMTIPSDataEntry202308071358RED_DataDictionary_2023-08-22.vlmd_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_104348.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
++          "GAD2NotStopWryScl": [
+             "gad7notstopwryscl"
+           ],
+@@ -531,13 +524,8 @@
+           ]
+         },
+-        "HDP01068": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP01068/HDP01068_HERO_RedCap_Codebook_2025-02-11.redcap.vlmd_2026-02-16_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ]
+-        },
+         "HDP00933": {
++          "GAD2FeelNervScl": [
++            "gad2_nervous"
++          ],
+           "_sources": [
+             [
+@@ -546,8 +534,5 @@
+             ]
+           ],
+-          "GAD2FeelNervScale": [
+-            "gad2_nervous"
+-          ],
+-          "GAD2NotStopWryScale": [
++          "GAD2NotStopWryScl": [
+             "gad2_worry"
+           ]
+@@ -556,16 +541,12 @@
+           "_sources": [
+             [
+-              "../heal-cde-mappings/HDP00223/HDP00223_WholeHealth_REDCap.vlmd_2025-08-14_matches_confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+               "../heal-cde-mappings/HDP00223/HDP00223_WholeHealth_REDCap.vlmd_2025-08-14_matches_confirmed_vlmd_cdesearch_20250828_095735.xlsx",
+               "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+             ]
+           ],
+-          "GAD2FeelNervScale": [
++          "GAD2FeelNervScl": [
+             "gad7_gad7_1"
+           ],
+-          "GAD2NotStopWryScale": [
++          "GAD2NotStopWryScl": [
+             "gad7_gad7_2"
+           ],
+@@ -591,14 +572,10 @@
+               "../heal-cde-mappings/HDP00337/HDP00337_BSCIP1_DataDictionary_2023-08-07.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250905_135102.xlsx",
+               "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00337/HDP00337_BSCIP1_DataDictionary_2023-08-07.vlmd_2026-02-12_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "GAD2FeelNervScale": [
++            ]
++          ],
++          "GAD2FeelNervScl": [
+             "gad7feelnervscl"
+           ],
+-          "GAD2NotStopWryScale": [
++          "GAD2NotStopWryScl": [
+             "gad7notstopwryscl"
+           ],
+@@ -630,8 +607,8 @@
+             ]
+           ],
+-          "GAD2FeelNervScale": [
++          "GAD2FeelNervScl": [
+             "GAD2FeelNervScl"
+           ],
+-          "GAD2NotStopWryScale": [
++          "GAD2NotStopWryScl": [
+             "GAD2NotStopWryScl"
+           ],
+@@ -655,12 +632,17 @@
+           "_sources": [
+             [
+-              "../heal-cde-mappings/HDP00619/ProjectThought_DataDictionary_2023-09-25_2026-04-21_matches_confirmed_vlmd_cdesearch_20260421_150102_lfosedits.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "GAD2FeelNervScale": [
+-            "gad701"
+-          ],
+-          "GAD2NotStopWryScale": [
++              "../heal-cde-mappings/HDP00619/ProjectThought_DataDictionary_2023-09-25_2025-08-05_matches_confirmed.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ],
++            [
++              "../heal-cde-mappings/HDP00619/ProjectThought_DataDictionary_2023-09-25_2025-08-28_matches_confirmed_vlmd_cdesearch_20250828_100146.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
++          "GAD7TroubRelxScl": [
++            "gad701",
++            "gad704"
++          ],
++          "GAD2NotStopWryScl": [
+             "gad702"
+           ],
+@@ -668,7 +650,4 @@
+             "gad703"
+           ],
+-          "GAD7TroubRelxScl": [
+-            "gad704"
+-          ],
+           "GAD7RstlessScl": [
+             "gad705"
+@@ -682,19 +661,15 @@
+         },
+         "HDP00110": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00110/HDP00110_PRECICEV2_DataDictionary_2023-08-11.vlmd_2025-08-26_matches_confirmed_vlmd_cdesearch_20250828_095015.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00110/HDP00110_PRECICEV2_DataDictionary_2023-08-11.vlmd_2026-02-11_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "GAD2FeelNervScale": [
++          "GAD2FeelNervScl": [
+             "easy_annoyed_v2",
+             "nervous_edge",
+             "nervous_edge_v2"
+           ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00110/HDP00110_PRECICEV2_DataDictionary_2023-08-11.vlmd_2025-08-26_matches_confirmed_vlmd_cdesearch_20250828_095015.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
+           "GAD7TroubRelxScl": [
+             "trouble_relaxing",
+@@ -712,5 +687,5 @@
+             "afraid_awful_v2"
+           ],
+-          "GAD2NotStopWryScale": [
++          "GAD2NotStopWryScl": [
+             "not_able_to_control",
+             "not_able_to_control_v2"
+@@ -721,5 +696,5 @@
+         },
+         "HDP00221": {
+-          "GAD2NotStopWryScale": [
++          "GAD2NotStopWryScl": [
+             "gad_2_1m"
+           ],
+@@ -731,8 +706,8 @@
+           ]
+         },
+-        "HDP01660": {
+-          "_sources": [
+-            [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++        "HDP01392": {
++          "_sources": [
++            [
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -742,5 +717,5 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]
+@@ -750,13 +725,13 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]
+           ]
+         },
+-        "HDP01392": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++        "HDP01476": {
++          "_sources": [
++            [
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]

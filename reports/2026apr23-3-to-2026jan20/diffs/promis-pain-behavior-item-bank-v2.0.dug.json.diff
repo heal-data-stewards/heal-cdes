@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/promis-pain-behavior-item-bank-v2.0.dug.json
++++ dug-data-model-2026jan20/promis-pain-behavior-item-bank-v2.0.dug.json
+@@ -768,5 +768,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7891"
+         },
+         {
+@@ -776,5 +776,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 22 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7886"
+         }
+       ],

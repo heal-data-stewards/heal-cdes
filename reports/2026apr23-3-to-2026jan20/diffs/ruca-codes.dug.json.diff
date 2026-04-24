@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/ruca-codes.dug.json
++++ dug-data-model-2026jan20/ruca-codes.dug.json
+@@ -116,5 +116,5 @@
+     "crf_id": "ruca-codes",
+     "name": "Rural-Urban Commuting Area (RUCA) Codes",
+-    "description": "The Rural-Urban Commuting Area (RUCA) codes classify U.S. census tracts by population density, urbanization, and commuting patterns, and the RUCA tool enables mapping between ZIP codes and RUCA codes. Contains 2 CDEs.",
++    "description": "The  Rural-Urban Commuting Area (RUCA) codes measures population density, levels of urbanization and journey-to-work commuting to characterize U.S. census tracts. Contains 2 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/ruca-codes-crf.docx",
+     "is_crf": true,
+@@ -134,5 +134,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6101"
+         },
+         {
+@@ -142,5 +142,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 2 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "6091"
+         }
+       ],

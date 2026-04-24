@@ -1,0 +1,861 @@
+--- dug-data-model-2026apr23-3/taps.dug.json
++++ dug-data-model-2026jan20/taps.dug.json
+@@ -265,87 +265,13 @@
+     "id": "taps",
+     "parents": [
+-      "HDP00033",
+-      "HDP00097",
+       "HDP00110",
+-      "HDP00111",
+-      "HDP00233",
+-      "HDP00239",
+-      "HDP00280",
+-      "HDP00293",
+-      "HDP00308",
+       "HDP00330",
+       "HDP00337",
+-      "HDP00349",
+-      "HDP00366",
+-      "HDP00369",
+-      "HDP00387",
+       "HDP00429",
+-      "HDP00464",
+-      "HDP00728",
+-      "HDP00890",
+       "HDP00895",
+-      "HDP00902",
+-      "HDP00909",
+-      "HDP00920",
+-      "HDP00924",
+-      "HDP00933",
+-      "HDP00937",
+-      "HDP00941",
+-      "HDP00946",
+-      "HDP00960",
+-      "HDP00962",
+-      "HDP00971",
+-      "HDP00974",
+-      "HDP00980",
+-      "HDP00982",
+-      "HDP00994",
+-      "HDP00996",
+-      "HDP01004",
+-      "HDP01011",
+-      "HDP01018",
+-      "HDP01029",
+-      "HDP01032",
+-      "HDP01045",
+-      "HDP01046",
+-      "HDP01048",
+-      "HDP01050",
+-      "HDP01051",
+-      "HDP01061",
+-      "HDP01077",
+-      "HDP01105",
+-      "HDP01108",
+-      "HDP01112",
+-      "HDP01113",
+-      "HDP01148",
+-      "HDP01155",
+-      "HDP01166",
+-      "HDP01176",
+-      "HDP01233",
+-      "HDP01237",
+-      "HDP01246",
+-      "HDP01284",
+-      "HDP01288",
+       "HDP01329",
+-      "HDP01337",
+-      "HDP01338",
+       "HDP01340",
+-      "HDP01351",
+-      "HDP01368",
+-      "HDP01373",
+-      "HDP01412",
+-      "HDP01416",
+-      "HDP01446",
+       "HDP01464",
+-      "HDP01488",
+-      "HDP01489",
+-      "HDP01491",
+-      "HDP01492",
+-      "HDP01493",
+-      "HDP01494",
+-      "HDP01495",
+-      "HDP01497",
+-      "HDP01498",
+-      "HDP01499",
+-      "HDP01508"
++      "HDP01498"
+     ],
+     "crf_id": "taps",
+@@ -364,5 +290,7 @@
+     "metadata": {
+       "categories": [
+-        "Core - Adult"
++        "Adult Acute",
++        "Adult Chronic",
++        "All Core"
+       ],
+       "urls": [
+@@ -373,5 +301,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5076"
+         },
+         {
+@@ -381,5 +309,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 6 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5071"
+         },
+         {
+@@ -389,25 +317,17 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4981"
+         }
+       ],
+       "study_mappings": {
+-        "HDP01288": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP01288/HDP01288_CTN0093_DataDictionary_clean.vlmd_2026-02-16_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ]
+-        },
+         "HDP01329": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+           "TAPSTobaccoProductScl": [
+             "tapstobaccoproductscl"
++          ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP01329/HDP01329_HDP01329_EQUIPD_DataDictionary.redcap.vlmd_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_194717.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
+           ],
+           "TAPSAlcoholUseMaleScl": [
+@@ -426,14 +346,14 @@
+         },
+         "HDP01498": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+           "TAPSTobaccoProductScl": [
+             "tapsalcoholusefemalescl",
+             "tapstobaccoproductscl"
+           ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP01498/HDP01498_FMTIPSDataEntry202308071358RED_DataDictionary_2023-08-22.vlmd_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_104348.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
+           "TAPSAlcoholUseMaleScl": [
+             "tapsalcoholusemalescl"
+@@ -443,22 +363,14 @@
+           ]
+         },
+-        "HDP00933": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+         "HDP00337": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+           "TAPSAlcoholUseMaleScl": [
+             "tapsalcoholusefemalescl"
+           ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00337/HDP00337_BSCIP1_DataDictionary_2023-08-07.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250905_135102.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
+           "TAPSDrugUseScl": [
+             "tapsdrugusescl"
+@@ -472,16 +384,12 @@
+         },
+         "HDP00429": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00429/HDP00429_HDP00429_BACPAC.redcap.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250902_093347.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ],
+-            [
+-              "../heal-cde-mappings/HDP00429/HDP00429_HDP00429_BACPAC.redcap.vlmd_2026-02-12_matches confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+           "TAPSTobaccoProductScl": [
+             "taps1q1"
++          ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00429/HDP00429_HDP00429_BACPAC.redcap.vlmd_2025-07-30_matches_confirmed_vlmd_cdesearch_20250902_093347.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
+           ],
+           "TAPSAlcoholUseMaleScl": [
+@@ -499,26 +407,22 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01233": {
+-          "_sources": [
+-            [
+-              "../heal-data-dictionaries/data-dictionaries/HDP01233/CDEs/HDP01233_combined_DD_2026-04-16_matches_confirmed.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-data-dictionaries.csv"
++              "../heal-cde-mappings/HDP01340/HDP01340_wide_data_dictionary_2024_12_20.redcap.vlmd_2025-08-14_matches_confirmed.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ],
++            [
++              "../heal-cde-mappings/HDP01340/HDP01340_wide_data_dictionary_2024_12_20.redcap.vlmd_2025-08-26_matches_confirmed_vlmd_cdesearch_20250828_095120.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+             ]
+           ]
+         },
+         "HDP00110": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+           "TAPSTobaccoProductScl": [
+             "tobacco_product"
++          ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00110/HDP00110_PRECICEV2_DataDictionary_2023-08-11.vlmd_2025-08-26_matches_confirmed_vlmd_cdesearch_20250828_095015.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
+           ],
+           "TAPSAlcoholUseMaleScl": [
+@@ -530,592 +434,24 @@
+           ]
+         },
+-        "HDP00033": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++        "HDP00330": {
++          "_sources": [
++            [
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]
+           ]
+         },
+-        "HDP00097": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++        "HDP00895": {
++          "_sources": [
++            [
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]
+           ]
+         },
+-        "HDP00111": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00233": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00239": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00280": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00293": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00308": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00330": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00349": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00366": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00369": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00387": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00464": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00728": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00890": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00895": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00902": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00909": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00920": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00924": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00937": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00941": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00946": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00960": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00962": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00971": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00974": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00980": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00982": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00994": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00996": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01004": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01011": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01018": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01029": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01032": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01045": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01046": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01048": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01050": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01051": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01061": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01077": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01105": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01108": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01112": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01113": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01148": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01155": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01166": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01176": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01237": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01246": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01284": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01337": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01338": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01351": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01368": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01373": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01412": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01416": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01446": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+         "HDP01464": {
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01488": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01489": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01491": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01492": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01493": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01494": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01495": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01497": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01499": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01508": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-23T18:07:15.319177+00:00",
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]

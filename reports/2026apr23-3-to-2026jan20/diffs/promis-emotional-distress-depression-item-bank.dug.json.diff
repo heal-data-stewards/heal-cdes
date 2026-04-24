@@ -1,0 +1,30 @@
+--- dug-data-model-2026apr23-3/promis-emotional-distress-depression-item-bank.dug.json
++++ dug-data-model-2026jan20/promis-emotional-distress-depression-item-bank.dug.json
+@@ -1009,5 +1009,5 @@
+     "crf_id": "promis-emotional-distress-depression-item-bank",
+     "name": "PROMIS - Ca Item Bank v1.0 - Emotional Distress - Depression",
+-    "description": "The PROMIS Cancer Emotional Distress Depression Item bank assesses depression in subjects who have or have had cancer. Contains 32 CDEs.",
++    "description": "The PROMIS Cancer Emotional Distress Depression Item bank assesses despression in subjects who have or have had cancer. Contains 32 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/promis-emotional-distress-depression-item-bank-crf.pdf",
+     "is_crf": true,
+@@ -1057,5 +1057,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "9706"
+         },
+         {
+@@ -1065,5 +1065,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 32 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "9701"
+         }
+       ],
+@@ -1072,5 +1072,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

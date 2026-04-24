@@ -1,0 +1,38 @@
+--- dug-data-model-2026apr23-3/phq-m.dug.json
++++ dug-data-model-2026jan20/phq-m.dug.json
+@@ -406,7 +406,5 @@
+     "type": "section",
+     "id": "phq-m",
+-    "parents": [
+-      "HDP01660"
+-    ],
++    "parents": [],
+     "crf_id": "phq-m",
+     "name": "Patient Health Questionnaire modified for Adolescents (PHQ-A)",
+@@ -441,5 +439,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "9461"
+         },
+         {
+@@ -449,17 +447,8 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 14 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "9456"
+         }
+       ],
+-      "study_mappings": {
+-        "HDP01660": {
+-          "_sources": [
+-            [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        }
+-      }
++      "study_mappings": {}
+     }
+   }

@@ -1,0 +1,31 @@
+--- dug-data-model-2026apr23-3/fear-avoidance-1-question.dug.json
++++ dug-data-model-2026jan20/fear-avoidance-1-question.dug.json
+@@ -32,5 +32,5 @@
+     "crf_id": "fear-avoidance-1-question",
+     "name": "Acu-OA Study-Fear Avoidance Question",
+-    "description": "The Fear Avoidance 1 item measures the avoidance of low back pain. Contains 1 CDEs.",
++    "description": "The Fear Avoidance - 1 item measures the avoidance of low back pain. Contains 1 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/fear-avoidance-1-question-crf.docx",
+     "is_crf": true,
+@@ -49,5 +49,13 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6291"
++        },
++        {
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/fear-avoidance-1-question-copyright-statement.docx",
++          "filename": "fear-avoidance-1-question-copyright-statement.docx",
++          "lang": "en",
++          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
++          "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
++          "drupal_id": "8896"
+         },
+         {
+@@ -57,5 +65,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 1 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "6276"
+         }
+       ],

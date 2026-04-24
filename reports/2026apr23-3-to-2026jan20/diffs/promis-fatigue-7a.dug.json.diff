@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/promis-fatigue-7a.dug.json
++++ dug-data-model-2026jan20/promis-fatigue-7a.dug.json
+@@ -291,5 +291,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6331"
+         },
+         {
+@@ -299,5 +299,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 9 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "6326"
+         },
+         {
+@@ -307,5 +307,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6406"
+         }
+       ],

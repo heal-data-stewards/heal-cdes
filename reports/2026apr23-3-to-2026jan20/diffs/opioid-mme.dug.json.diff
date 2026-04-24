@@ -1,0 +1,208 @@
+--- dug-data-model-2026apr23-3/opioid-mme.dug.json
++++ dug-data-model-2026jan20/opioid-mme.dug.json
+@@ -563,5 +563,5 @@
+       "question_text": "Buprenorphine sublingual calculated MME ",
+       "references": "Dowell D, Ragan KR, Jones CM, Baldwin GT, Chou R. CDC Clinical Practice Guideline for Prescribing Opioids for Pain \u2014 United States. MMWR Recomm Rep 2022;71(No. RR-3):1\u201395. DOI: http://dx.doi.org/10.15585/mmwr.rr7103a1;\nDasgupta N, Wang Y, Bae J, et al. Inches, Centimeters, and Yards: overlooked Definition Choices Inhibit Interpretation of Morphine Equivalence. Clin J Pain 2021;37:565-574",
+-      "instructions": "Calculate MME for buprenorphine film/tablet (mg).  \nConversion factor = 38.8\nValue = 38.8 * dose * number of doses in 24h * duration (days)\nif not applicable, value = 0"
++      "instructions": "Calculate MME for buprenorphine film/tablet (mg).  \nConversion factor = 40\nValue = 40 * dose * number of doses in 24h * duration (days)\nif not applicable, value = 0"
+     }
+   },
+@@ -777,5 +777,5 @@
+       "question_text": "Buprenorphine buccal calculated MME",
+       "references": "Dowell D, Ragan KR, Jones CM, Baldwin GT, Chou R. CDC Clinical Practice Guideline for Prescribing Opioids for Pain \u2014 United States. MMWR Recomm Rep 2022;71(No. RR-3):1\u201395. DOI: http://dx.doi.org/10.15585/mmwr.rr7103a1;\nDasgupta N, Wang Y, Bae J, et al. Inches, Centimeters, and Yards: overlooked Definition Choices Inhibit Interpretation of Morphine Equivalence. Clin J Pain 2021;37:565-574",
+-      "instructions": "Calculate MME for Buprenorphine buccal film\nConversion factor = 0.039\nvalue = 0.039 * dose * number of doses in 24h * duration (days)\nif not applicable, value = 0"
++      "instructions": "Calculate MME for Buprenorphine buccal film\nConversion factor = 0.03\nvalue = 0.03 * dose * number of doses in 24h * duration (days)\nif not applicable, value = 0"
+     }
+   },
+@@ -1581,5 +1581,5 @@
+       "question_text": "Hydrocodone calculated MME",
+       "references": "Dowell D, Ragan KR, Jones CM, Baldwin GT, Chou R. CDC Clinical Practice Guideline for Prescribing Opioids for Pain \u2014 United States. MMWR Recomm Rep 2022;71(No. RR-3):1\u201395. DOI: http://dx.doi.org/10.15585/mmwr.rr7103a1;\nDasgupta N, Wang Y, Bae J, et al. Inches, Centimeters, and Yards: overlooked Definition Choices Inhibit Interpretation of Morphine Equivalence. Clin J Pain 2021;37:565-574",
+-      "instructions": "Calculate MME for hydrocodone\nConversion factor = 1\nvalue = sum (add) the MME for short acting (1 * dose * number of doses in 24h * duration) and long acting (1 * dose * number of doses in 24h * duration) formulations\nIf not applicable, value = 0"
++      "instructions": "Calculate MME for hydrocodone\nConversion factor = 1\nvalue = sum (add) the MME for short acting (1 * dose * number of doses in 24h * duration) and long acting ((1 * dose * number of doses in 24h * duration) formulations\nIf not applicable, value = 0"
+     }
+   },
+@@ -1759,5 +1759,5 @@
+       "question_text": "Hydromorphone calculated MME",
+       "references": "Dowell D, Ragan KR, Jones CM, Baldwin GT, Chou R. CDC Clinical Practice Guideline for Prescribing Opioids for Pain \u2014 United States. MMWR Recomm Rep 2022;71(No. RR-3):1\u201395. DOI: http://dx.doi.org/10.15585/mmwr.rr7103a1;\nDasgupta N, Wang Y, Bae J, et al. Inches, Centimeters, and Yards: overlooked Definition Choices Inhibit Interpretation of Morphine Equivalence. Clin J Pain 2021;37:565-574",
+-      "instructions": "Calculate MME for hydromorphone\nConversion factor = 5\nvalue = sum (add) the MME for short acting (5 * dose * number of doses in 24h * duration (days)) and long acting (5 * dose * number of doses in 24h * duration (days)) formulations\nif not applicable, value = 0"
++      "instructions": "Calculate MME for hydromorphone\nConversion factor = 5\nvalue = sum (add) the MME for short acting (5 * dose * number of doses in 24h * duration (days)) and long acting ((5 * dose * number of doses in 24h * duration (days)) formulations\nif not applicable, value = 0"
+     }
+   },
+@@ -3321,11 +3321,10 @@
+       "HDP01416",
+       "HDP01446",
+-      "HDP01526",
+-      "HDP01543"
++      "HDP01526"
+     ],
+     "crf_id": "opioid-mme",
+     "name": "Opioid MME Calculation",
+     "description": "The Opioid MME is the amount of milligrams of morphine an opioid dose is equal to when prescribed. Calculating MME accounts for differences in opioid drug type and strength. Contains 166 CDEs.",
+-    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-03/opioid-mme-crf.docx",
++    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/opioid-mme-crf.docx",
+     "is_crf": true,
+     "variable_list": [
+@@ -3499,22 +3498,24 @@
+     "metadata": {
+       "categories": [
+-        "Core - Adult & Pediatric"
++        "Adult Acute",
++        "Adult Chronic",
++        "All Core"
+       ],
+       "urls": [
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/opioid-mme-crf.docx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/opioid-mme-crf.docx",
+           "filename": "opioid-mme-crf.docx",
+           "lang": "en",
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "9441"
+         },
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/opioid-mme-cde.xlsx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/opioid-mme-cde.xlsx",
+           "filename": "opioid-mme-cde.xlsx",
+           "lang": "en",
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 166 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "9436"
+         }
+       ],
+@@ -3523,5 +3524,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3531,5 +3532,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3539,5 +3540,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3547,5 +3548,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3555,5 +3556,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3563,5 +3564,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3571,5 +3572,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3579,5 +3580,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3587,5 +3588,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3595,5 +3596,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3603,5 +3604,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3611,5 +3612,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3619,5 +3620,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3627,5 +3628,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3635,5 +3636,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3643,5 +3644,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3651,5 +3652,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -3659,13 +3660,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01543": {
+-          "_sources": [
+-            [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

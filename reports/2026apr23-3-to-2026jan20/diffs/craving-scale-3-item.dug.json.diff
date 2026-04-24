@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/craving-scale-3-item.dug.json
++++ dug-data-model-2026jan20/craving-scale-3-item.dug.json
+@@ -150,5 +150,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "10001"
+         },
+         {
+@@ -158,5 +158,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 4 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "10006"
+         }
+       ],

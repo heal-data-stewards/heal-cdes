@@ -1,0 +1,127 @@
+--- dug-data-model-2026apr23-3/pgis.dug.json
++++ dug-data-model-2026jan20/pgis.dug.json
+@@ -2,7 +2,7 @@
+   {
+     "type": "variable",
+-    "id": "PGIS7d",
++    "id": "PGISSeverityScale",
+     "name": "Patient Global Impression of Severity (PGIS) pain severity scale",
+-    "description": "Single item scale describing the participant/subject perception about overall pain severity in the past 7 days",
++    "description": "Single item scale describing the participant/subject perception about overall pain severity",
+     "data_type": "integer",
+     "is_cde": true,
+@@ -11,7 +11,7 @@
+     ],
+     "metadata": {
+-      "short_description": "PGIS scale past 7 days",
+-      "crf_name": "Patient Global Impression of Severity (PGIS) - Chronic",
+-      "question_text": "Please choose the response that best describes the severity of your pain over the past 7 days.",
++      "short_description": "Scale describing the participant/subject perception about overall pain severity",
++      "crf_name": "Patient Global Impression of Severity (PGIS)",
++      "question_text": "Please choose the response that best describes the severity of your pain over the past week.",
+       "references": "Yalcin I, Bump R. Validation of two global impression questionnaires for incontinence. Am J Obstet Gynecol 2003;189:98-101; US Food and Drug Administration (FDA). Patient-Focused Drug 2 Development Public Workshop. October 15-16 2018.; See also https://www.fda.gov/media/116281/download; ",
+       "enum": [
+@@ -31,90 +31,44 @@
+   },
+   {
+-    "type": "variable",
+-    "id": "PGIS7dPP",
+-    "name": "Patient Global Impression of Severity (PGIS) pain severity scale PARENT PROXY",
+-    "description": "Single item scale describing the parent proxy  perception about the participant/subject overall pain severity in the past 7 days",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pgis"
+-    ],
+-    "metadata": {
+-      "short_description": "PGIS past 7 days parent proxy report",
+-      "crf_name": "Patient Global Impression of Severity (PGIS) - Chronic",
+-      "question_text": "Please choose the response that best describes the severity of your child's pain over the past 7 days.",
+-      "references": "Yalcin I, Bump R. Validation of two global impression questionnaires for incontinence. Am J Obstet Gynecol 2003;189:98-101; US Food and Drug Administration (FDA). Patient-Focused Drug 2 Development Public Workshop. October 15-16 2018.; See also https://www.fda.gov/media/116281/download; ",
+-      "enum": [
+-        "1",
+-        "2",
+-        "3",
+-        "4"
+-      ],
+-      "permissible_values": {
+-        "1": "None",
+-        "2": "Mild",
+-        "3": "Moderate",
+-        "4": " Severe"
+-      },
+-      "instructions": "Choose one. OPTIONAL PARENT PROXY REPORT"
+-    }
+-  },
+-  {
+     "type": "section",
+     "id": "pgis",
+     "parents": [],
+     "crf_id": "pgis",
+-    "name": "Patient Global Impression of Severity (PGIS) - Chronic",
+-    "description": "The Patient Global Impression of Severity (PGIS) measures the severity of a specific condition (a single-state scale). Contains 2 CDEs.",
+-    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pgis-crf.docx",
++    "name": "Patient Global Impression of Severity (PGIS)",
++    "description": "The Patient Global Impression of Severity (PGIS) measures the severity of a specific condition (a single-state scale). Contains 1 CDEs.",
++    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pgis-crf.docx",
+     "is_crf": true,
+     "variable_list": [
+-      "PGIS7d",
+-      "PGIS7dPP"
++      "PGISSeverityScale"
+     ],
+     "metadata": {
+       "categories": [
+-        "Core - Adult & Pediatric"
++        "All Core",
++        "Pediatrics"
+       ],
+       "urls": [
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pgis-crf.docx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pgis-crf.docx",
+           "filename": "pgis-crf.docx",
+           "lang": "en",
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4921"
+         },
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pgis-cdes.xlsx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pgis-cdes.xlsx",
+           "filename": "pgis-cdes.xlsx",
+           "lang": "en",
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+-          "description": "This is the Excel file that describes the 2 CDEs present in this CRF.",
+-          "drupal_id": null
++          "description": "This is the Excel file that describes the 1 CDEs present in this CRF.",
++          "drupal_id": "4926"
+         },
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pgis-crf-spanish.docx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pgis-crf-spanish.docx",
+           "filename": "pgis-crf-spanish.docx",
+           "lang": "es",
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
+-        },
+-        {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pgis-crf-arabic.docx",
+-          "filename": "pgis-crf-arabic.docx",
+-          "lang": "ar",
+-          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+-          "description": "This is the Arabic download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
+-        },
+-        {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pgis-crf-somali.docx",
+-          "filename": "pgis-crf-somali.docx",
+-          "lang": "so",
+-          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+-          "description": "This is the Somali download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4856"
+         }
+       ],

@@ -1,0 +1,47 @@
+--- dug-data-model-2026apr23-3/bpi-pain-severity-7d.dug.json
++++ dug-data-model-2026jan20/bpi-pain-severity-7d.dug.json
+@@ -168,5 +168,5 @@
+     "crf_id": "bpi-pain-severity-7d",
+     "name": "Brief Pain Inventory Pain Severity 7 day",
+-    "description": "The Brief Pain Inventory (BPI) pain severity subscale assess the severity of the participants pain in the past 7 days. Contains 5 CDEs.",
++    "description": "The Brief Pain Inventory (BPI) pain severity questions assess the severity of the participants pain in the past 7 days. Contains 5 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/bpi-pain-severity-7d-crf-pediatric.docx",
+     "is_crf": true,
+@@ -180,5 +180,6 @@
+     "metadata": {
+       "categories": [
+-        "Core - Adult & Pediatric"
++        "All Core",
++        "Pediatrics"
+       ],
+       "urls": [
+@@ -189,13 +190,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
+-        },
+-        {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/bpi-pain-severity-7d-crf-pediatric-spanish.docx",
+-          "filename": "bpi-pain-severity-7d-crf-pediatric-spanish.docx",
+-          "lang": "en",
+-          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+-          "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4961"
+         },
+         {
+@@ -205,5 +198,13 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 5 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "4956"
++        },
++        {
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/bpi-pain-severity-7d-crf-pediatric-spanish.docx",
++          "filename": "bpi-pain-severity-7d-crf-pediatric-spanish.docx",
++          "lang": "es",
++          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
++          "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
++          "drupal_id": "4826"
+         }
+       ],

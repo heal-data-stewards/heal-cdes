@@ -82,7 +82,7 @@ def diff_records(a_idx, b_idx):
     return only_a, only_b, changed
 
 
-def classify(a_obj, b_obj):
+def classify(a_obj, b_obj, max_samples=5):
     """Classify the difference between two Dug files.
 
     Returns (kind, payload) where kind is one of:
@@ -112,7 +112,7 @@ def classify(a_obj, b_obj):
         changed_fields = diff_fields(a_rec, b_rec)
         for fld in changed_fields:
             field_changes[fld] += 1
-        if len(sample_changes) < 5:
+        if len(sample_changes) < max_samples:
             sample_changes.append((key, changed_fields))
 
     return "record_changes", {
@@ -154,40 +154,47 @@ def unified_diff_text(a_path, b_path):
 
 @click.command()
 @click.argument(
-    "dir_a",
+    "new_dir",
+    metavar="NEW_DIR",
     type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path),
 )
 @click.argument(
-    "dir_b",
+    "old_dir",
+    metavar="OLD_DIR",
     type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path),
 )
 @click.argument("report_dir", type=click.Path(path_type=Path))
 @click.option(
-    "--glob", default="*.dug.json", help="File pattern to compare (default: *.dug.json)"
+    "--glob", default="*.dug.json", show_default=True,
+    help="File pattern to compare.",
 )
 @click.option(
-    "--label-a", default=None, help="Short label for DIR_A (default: dir name)"
+    "--new-label", default=None, help="Short label for NEW_DIR (default: dir name)."
 )
 @click.option(
-    "--label-b", default=None, help="Short label for DIR_B (default: dir name)"
+    "--old-label", default=None, help="Short label for OLD_DIR (default: dir name)."
 )
 @click.option(
-    "--write-diffs/--no-write-diffs",
+    "--diffs/--no-diffs",
     default=True,
-    help="Write per-file unified diffs to <report_dir>/diffs/",
+    help="Write per-file unified diffs to <report_dir>/diffs/.",
 )
-def main(dir_a, dir_b, report_dir, glob, label_a, label_b, write_diffs):
-    """Compare Dug JSON files in DIR_A against DIR_B and write a report to REPORT_DIR."""
-    label_a = label_a or dir_a.name
-    label_b = label_b or dir_b.name
+@click.option(
+    "--max-samples", default=5, show_default=True,
+    help="Max sample changed records to include per file in detail.md.",
+)
+def main(new_dir, old_dir, report_dir, glob, new_label, old_label, diffs, max_samples):
+    """Compare Dug JSON files in NEW_DIR against OLD_DIR and write a report to REPORT_DIR."""
+    label_a = new_label or new_dir.name
+    label_b = old_label or old_dir.name
 
     report_dir.mkdir(parents=True, exist_ok=True)
     diffs_dir = report_dir / "diffs"
-    if write_diffs:
+    if diffs:
         diffs_dir.mkdir(exist_ok=True)
 
-    a_files = {p.name for p in dir_a.glob(glob)}
-    b_files = {p.name for p in dir_b.glob(glob)}
+    a_files = {p.name for p in new_dir.glob(glob)}
+    b_files = {p.name for p in old_dir.glob(glob)}
 
     only_a = sorted(a_files - b_files)
     only_b = sorted(b_files - a_files)
@@ -198,26 +205,26 @@ def main(dir_a, dir_b, report_dir, glob, label_a, label_b, write_diffs):
 
     for name in common:
         try:
-            a_obj = load(dir_a / name)
-            b_obj = load(dir_b / name)
+            a_obj = load(new_dir / name)
+            b_obj = load(old_dir / name)
         except json.JSONDecodeError as e:
             classifications[name] = {"kind": "parse_error", "error": str(e)}
             buckets["parse_error"].append(name)
             continue
 
-        kind, payload = classify(a_obj, b_obj)
+        kind, payload = classify(a_obj, b_obj, max_samples=max_samples)
         classifications[name] = {"kind": kind, **payload}
         buckets[kind].append(name)
 
-        if write_diffs and kind != "identical":
-            diff_text = unified_diff_text(dir_a / name, dir_b / name)
+        if diffs and kind != "identical":
+            diff_text = unified_diff_text(new_dir / name, old_dir / name)
             (diffs_dir / f"{name}.diff").write_text(diff_text, encoding="utf-8")
 
     (report_dir / "classification.json").write_text(
         json.dumps(
             {
-                "dir_a": str(dir_a),
-                "dir_b": str(dir_b),
+                "new_dir": str(new_dir),
+                "old_dir": str(old_dir),
                 "label_a": label_a,
                 "label_b": label_b,
                 "only_in_a": only_a,
@@ -233,15 +240,15 @@ def main(dir_a, dir_b, report_dir, glob, label_a, label_b, write_diffs):
     )
 
     write_summary(
-        report_dir / "summary.md", dir_a, dir_b, label_a, label_b, only_a, only_b, buckets
+        report_dir / "summary.md", new_dir, old_dir, label_a, label_b, only_a, only_b, buckets
     )
     write_detail(
-        report_dir / "detail.md", dir_a, dir_b, label_a, label_b, classifications, buckets
+        report_dir / "detail.md", new_dir, old_dir, label_a, label_b, classifications, buckets
     )
 
     click.echo(f"Report written to {report_dir}")
-    click.echo(f"  only in {label_a}: {len(only_a)}")
-    click.echo(f"  only in {label_b}: {len(only_b)}")
+    click.echo(f"  only in {label_a} (new): {len(only_a)}")
+    click.echo(f"  only in {label_b} (old): {len(only_b)}")
     for kind, files in sorted(buckets.items()):
         click.echo(f"  {kind}: {len(files)}")
 

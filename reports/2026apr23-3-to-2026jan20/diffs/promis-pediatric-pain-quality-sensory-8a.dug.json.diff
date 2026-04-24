@@ -1,0 +1,38 @@
+--- dug-data-model-2026apr23-3/promis-pediatric-pain-quality-sensory-8a.dug.json
++++ dug-data-model-2026jan20/promis-pediatric-pain-quality-sensory-8a.dug.json
+@@ -295,7 +295,5 @@
+     "type": "section",
+     "id": "promis-pediatric-pain-quality-sensory-8a",
+-    "parents": [
+-      "HDP01660"
+-    ],
++    "parents": [],
+     "crf_id": "promis-pediatric-pain-quality-sensory-8a",
+     "name": "PROMIS\u00ae Pediatric Item Bank v2.0 - Pain Quality-Sensory \u2013 Short Form 8a ",
+@@ -326,5 +324,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7996"
+         },
+         {
+@@ -334,17 +332,8 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 10 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7986"
+         }
+       ],
+-      "study_mappings": {
+-        "HDP01660": {
+-          "_sources": [
+-            [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        }
+-      }
++      "study_mappings": {}
+     }
+   }
