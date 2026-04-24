@@ -15,7 +15,6 @@ HEALCDE:pcs-parent,PCSCNothingCanDoScale,PCSPNothingCanDoScale,"PCSC refers to p
 HEALCDE:pcs-parent,PCSCNeverGetBetterScale,PCSPNeverGetBetterScale,"PCSC refers to pcs-child, not pcs-parent"
 HEALCDE:pcs-parent,PCSCCantStandPainScale,PCSPCantStandPainScale,"PCSC refers to pcs-child, not pcs-parent"
 HEALCDE:pcs-parent,PCSCCantGoOnScale,PCSPCantGoOnScale,"PCSC refers to pcs-child, not pcs-parent"
-HEALCDE:adult-demographics,ETHNIC,SKIP,Multiple ethnic fields in adult-demographics
 HEALCDE:gad2,GAD2NotStopWryScl,GAD2NotStopWryScale,"GAD7 variables found in GAD2, but it's spelled differently here."
 HEALCDE:adult-demographics,EDULEVELspouse,SKIP,No such field
 HEALCDE:adult-demographics,EDULEVEL,EDULVL,
