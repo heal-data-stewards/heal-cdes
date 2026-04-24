@@ -255,11 +255,24 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     if disease_specific_instructions is not None and disease_specific_instructions != '':
         metadata['instructions'] = disease_specific_instructions
 
+    # Manual fixups for GAD2/GAD7
+    fixed_element_id = str(element_id)
+    if fixed_element_id == "GAD2FeelNervScl":
+        fixed_element_id = "GAD2FeelNervScale"
+    if fixed_element_id == "GAD2NotStopWryScl":
+        fixed_element_id = "GAD2NotStopWryScale"
+
+    fixed_element_name = str(element_name)
+    if fixed_element_name == "GAD2FeelNervScl":
+        fixed_element_name = "GAD2FeelNervScale"
+    if fixed_element_name == "GAD2NotStopWryScl":
+        fixed_element_name = "GAD2NotStopWryScale"
+
     # Should conform to DugVariable
     form_element = {
         'type': 'variable',
-        'id': str(element_id),
-        'name': str(element_name),
+        'id': fixed_element_id,
+        'name': fixed_element_name,
         'description': str(element_description),
         'data_type': data_type,
         'is_cde': True,
