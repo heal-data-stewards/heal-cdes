@@ -95,10 +95,10 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
 
     # Skip the CDISC warning line.
     crf_question_number = get_value(row, 'CRF Question #')
-    if crf_question_number.startswith('This CDE detail form is not CDISC compliant.') or crf_question_number.startswith("This CDE detail form\xa0is not CDISC compliant."):
+    if crf_question_number.startswith('This CDE detail form is not CDISC compliant') or crf_question_number.startswith("This CDE detail form\xa0is not CDISC compliant"):
         return None
 
-    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant.') or get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant."):
+    if get_value(row, colname_varname).startswith('This CDE detail form is not CDISC compliant') or get_value(row, colname_varname).startswith("This CDE detail form\xa0is not CDISC compliant"):
         return None
 
     definitions = []
@@ -214,6 +214,8 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
         'numeric',
         # Calculated values.
         'numeric (calculated)',
+        'optional. sum responses',
+        'optional. use promis scoring instructions',
         # No type provided
         ''
     } or row_data_type.startswith('calculate') or row_data_type.startswith('derive'):
@@ -253,11 +255,24 @@ def convert_question_to_formelement(row, crf_curie, colname_varname='CDE Name'):
     if disease_specific_instructions is not None and disease_specific_instructions != '':
         metadata['instructions'] = disease_specific_instructions
 
+    # Manual fixups for GAD2/GAD7
+    fixed_element_id = str(element_id)
+    if fixed_element_id == "GAD2FeelNervScl":
+        fixed_element_id = "GAD2FeelNervScale"
+    if fixed_element_id == "GAD2NotStopWryScl":
+        fixed_element_id = "GAD2NotStopWryScale"
+
+    fixed_element_name = str(element_name)
+    if fixed_element_name == "GAD2FeelNervScl":
+        fixed_element_name = "GAD2FeelNervScale"
+    if fixed_element_name == "GAD2NotStopWryScl":
+        fixed_element_name = "GAD2NotStopWryScale"
+
     # Should conform to DugVariable
     form_element = {
         'type': 'variable',
-        'id': str(element_id),
-        'name': str(element_name),
+        'id': fixed_element_id,
+        'name': fixed_element_name,
         'description': str(element_description),
         'data_type': data_type,
         'is_cde': True,

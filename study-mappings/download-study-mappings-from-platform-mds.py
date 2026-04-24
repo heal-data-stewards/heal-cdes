@@ -20,8 +20,9 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s %(asctime)s: %(mes
 @click.command()
 @click.option('--output', '-o', required=False, type=click.File('w'), default=sys.stdout, help='Output file to write mappings to.')
 @click.option('--mds-url', required=False, default=DEFAULT_MDS_URL, help='URL of the Platform MDS.')
+@click.option('--mds-version', required=False, default=None, help='The Platform MDS version to write out in the mappings file. Defaults to today\'s date.')
 @click.option('--heal-crf-ids-mappings', '--mappings', default=DEFAULT_CRF_IDS_MAPPINGS_FILE, required=True, type=click.Path(exists=True), help='File containing the HEAL CRF IDs to CDE and HDPCDE IDs mappings.')
-def download_study_mappings_from_platform_mds(output, mds_url, heal_crf_ids_mappings):
+def download_study_mappings_from_platform_mds(output, mds_url, mds_version, heal_crf_ids_mappings):
     """
     Download study mappings from the HEAL Platform MDS.
     \f
@@ -94,7 +95,10 @@ def download_study_mappings_from_platform_mds(output, mds_url, heal_crf_ids_mapp
         'source'
     ])
     writer.writeheader()
-    source = f"Downloaded from Platform MDS at {datetime.datetime.now(datetime.UTC).isoformat()}"
+
+    if not mds_version:
+        mds_version = datetime.datetime.now().strftime('%Y%b%d').lower() # e.g. 2026apr23
+    source = f"Downloaded from Platform MDS version {mds_version}"
 
     count_dds = 0
     count_cdes = 0
