@@ -1,0 +1,30 @@
+--- dug-data-model-2026apr23-3/mypas.dug.json
++++ dug-data-model-2026jan20/mypas.dug.json
+@@ -234,5 +234,5 @@
+     "crf_id": "mypas",
+     "name": "Modified Yale Preoperative Anxiety Scale (mYPAS)",
+-    "description": "The modified Yale Preoperative Anxiety Scale (mYPAS) assesses child anxiety during induction of anesthesia. Contains 8 CDEs.",
++    "description": "The modified Yale Preoperative Anxiety Scale (mYPAS)  assesses child anxiety during induction of anesthesia. Contains 8 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/mypas-crf.docx",
+     "is_crf": true,
+@@ -258,5 +258,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5616"
+         },
+         {
+@@ -266,5 +266,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 8 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5611"
+         }
+       ],
+@@ -273,5 +273,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

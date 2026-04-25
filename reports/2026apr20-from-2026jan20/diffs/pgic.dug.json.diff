@@ -1,0 +1,1119 @@
+--- dug-data-model-2026apr20/pgic.dug.json
++++ dug-data-model-2026jan20/pgic.dug.json
+@@ -62,6 +62,4 @@
+       "HDP00110",
+       "HDP00111",
+-      "HDP00233",
+-      "HDP00239",
+       "HDP00253",
+       "HDP00280",
+@@ -70,13 +68,10 @@
+       "HDP00325",
+       "HDP00337",
+-      "HDP00349",
+       "HDP00356",
+       "HDP00366",
+       "HDP00369",
+-      "HDP00387",
+       "HDP00429",
+       "HDP00464",
+       "HDP00498",
+-      "HDP00728",
+       "HDP00890",
+       "HDP00895",
+@@ -90,5 +85,4 @@
+       "HDP00946",
+       "HDP00960",
+-      "HDP00962",
+       "HDP00971",
+       "HDP00974",
+@@ -102,9 +96,5 @@
+       "HDP01029",
+       "HDP01032",
+-      "HDP01045",
+-      "HDP01046",
+-      "HDP01048",
+       "HDP01050",
+-      "HDP01051",
+       "HDP01061",
+       "HDP01077",
+@@ -125,5 +115,4 @@
+       "HDP01327",
+       "HDP01329",
+-      "HDP01338",
+       "HDP01340",
+       "HDP01351",
+@@ -135,17 +124,9 @@
+       "HDP01446",
+       "HDP01479",
+-      "HDP01488",
+-      "HDP01489",
+-      "HDP01491",
+-      "HDP01492",
+       "HDP01493",
+       "HDP01494",
+       "HDP01495",
+-      "HDP01497",
+       "HDP01498",
+-      "HDP01499",
+-      "HDP01508",
+-      "HDP01526",
+-      "HDP01672"
++      "HDP01526"
+     ],
+     "crf_id": "pgic",
+@@ -159,5 +140,8 @@
+     "metadata": {
+       "categories": [
+-        "Core - Adult & Pediatric"
++        "Adult Acute",
++        "Adult Chronic",
++        "All Core",
++        "Pediatrics"
+       ],
+       "urls": [
+@@ -168,5 +152,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5026"
+         },
+         {
+@@ -176,5 +160,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 1 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5016"
+         },
+         {
+@@ -184,13 +168,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
+-        },
+-        {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pgic-crf-polish.docx",
+-          "filename": "pgic-crf-polish.docx",
+-          "lang": "pl",
+-          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+-          "description": "This is the Polish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5001"
+         },
+         {
+@@ -200,45 +176,60 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Swedish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8741"
+         }
+       ],
+       "study_mappings": {
+         "HDP01329": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+           "PGICSymptomChangeStatVal": [
+             "pgicsymptomchangestatval"
++          ],
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
+           ]
+         },
+         "HDP01498": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+           "PGICSymptomChangeStatVal": [
+             "pgicsymptomchangestatval"
++          ],
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
+           ]
+         },
+         "HDP00337": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ],
+           "PGICSymptomChangeStatVal": [
+             "pgicsymptomchangestatval"
++          ],
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
+           ]
+         },
+         "HDP00253": {
++          "PGICSymptomChangeStatVal": [
++            "pgic_1"
++          ],
+           "_sources": [
+             [
+               "../heal-cde-mappings/HDP00253/SPRINT_2020-12-16_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_103649.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ]
++        },
++        "HDP01340": {
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP01340/HDP01340_wide_data_dictionary_2024_12_20.redcap.vlmd_2025-08-14_matches_confirmed.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ],
++            [
++              "../heal-cde-mappings/HDP01340/HDP01340_wide_data_dictionary_2024_12_20.redcap.vlmd_2025-08-26_matches_confirmed_vlmd_cdesearch_20250828_095120.xlsx",
+               "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+             ]
+@@ -248,217 +239,214 @@
+           ]
+         },
+-        "HDP01340": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
++        "HDP00033": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00111": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00369": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00946": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00971": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP01050": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00994": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP01018": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP01032": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00937": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00974": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP01029": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00366": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ],
++            [
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00039": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ],
++            [
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00308": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00902": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00464": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP01011": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP01061": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00924": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00429": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ],
++            [
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00920": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00980": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00909": {
++          "_sources": [
++            [
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00895": {
++          "_sources": [
++            [
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]
+-          ],
+-          "PGICSymptomChangeStatVal": [
+-            "pgic_1"
+-          ]
+-        },
+-        "HDP00033": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00111": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00369": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00946": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00971": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01050": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00994": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01018": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01032": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00937": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00974": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01029": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00366": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00039": {
+-          "_sources": [
+-            [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ],
+-            [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00308": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00902": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00464": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01011": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01061": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00924": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00429": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00920": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00980": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00909": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00895": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+           ]
+         },
+@@ -466,6 +454,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -474,6 +462,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -482,6 +470,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -490,6 +478,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -498,6 +486,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -506,5 +494,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -514,6 +502,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -522,6 +510,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -530,6 +518,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -538,6 +526,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -546,5 +534,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -554,6 +542,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -562,6 +550,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -570,5 +558,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -578,6 +566,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -586,6 +574,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -594,6 +582,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -602,6 +590,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -610,6 +598,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -618,5 +606,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -626,6 +614,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -634,6 +622,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -642,5 +630,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -650,6 +638,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -658,6 +646,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -666,6 +654,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -674,5 +662,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -682,6 +670,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -690,6 +678,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -698,6 +686,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -706,6 +694,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -714,5 +702,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -722,6 +710,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -730,5 +718,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -738,6 +726,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -746,6 +734,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -754,6 +742,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -762,6 +750,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -770,6 +758,6 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -778,5 +766,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -786,94 +774,6 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01672": {
+-          "_sources": [
+-            [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00233": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00239": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00349": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00387": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00728": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00962": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01045": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01046": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01048": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01051": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
++              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+           ]
+@@ -882,69 +782,5 @@
+           "_sources": [
+             [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01338": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01488": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01489": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01491": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01492": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01497": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01499": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
+-              "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01508": {
+-          "_sources": [
+-            [
+-              "Downloaded from Platform MDS at 2026-04-21T00:39:11.785488+00:00",
++              "Downloaded from Platform MDS at 2026-01-20T23:53:16.729542+00:00",
+               "./mappings/platform-mds-mappings/platform-mds-mappings.csv"
+             ]

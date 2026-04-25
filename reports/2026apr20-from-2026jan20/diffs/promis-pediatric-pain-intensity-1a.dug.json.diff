@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr20/promis-pediatric-pain-intensity-1a.dug.json
++++ dug-data-model-2026jan20/promis-pediatric-pain-intensity-1a.dug.json
+@@ -65,5 +65,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7981"
+         },
+         {
+@@ -73,5 +73,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 1 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7976"
+         }
+       ],

@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/hyperacusis-questionnaire.dug.json
++++ dug-data-model-2026jan20/hyperacusis-questionnaire.dug.json
+@@ -493,5 +493,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7336"
+         },
+         {
+@@ -501,5 +501,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 16 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7331"
+         }
+       ],

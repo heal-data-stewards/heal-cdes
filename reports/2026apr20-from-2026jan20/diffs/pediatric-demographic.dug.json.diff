@@ -1,0 +1,1846 @@
+--- dug-data-model-2026apr20/pediatric-demographic.dug.json
++++ dug-data-model-2026jan20/pediatric-demographic.dug.json
+@@ -13,5 +13,5 @@
+       "short_description": "Date (and time, if applicable and known) the participant/subject child was born",
+       "crf_name": "Demographics",
+-      "question_text": "What is your child's date of birth?",
++      "question_text": "Date of birth",
+       "references": "None",
+       "instructions": "Record the date (and time, if applicable and known) according to the ISO 8601, the International Standard for the representation of dates and times (http://www.iso.org/iso/home.html).  The date (and time, if applicable and known) should be recorded to the level of granularity known (e.g., year, year and month, complete date plus hours and minutes, etc.).  Recording date of birth will give the most detailed information required for calculation of age and is recommended as first choice. However, in some studies recording date of birth may elicit discussions on a potential violation of privacy legislation and specifically HIPAA regulations. In these cases, the calculated age should be recorded."
+@@ -31,7 +31,7 @@
+       "short_description": "Value for participant/subject child age, calculated as elapsed time since birth.",
+       "crf_name": "Demographics",
+-      "question_text": "What is your child's age?",
+-      "references": "None",
+-      "instructions": "It is recommended that age be calculated from date of birth and the study enrollment date. However, if age needs to be collected directly (e.g., full date of birth is not allowed to be collected) then it should be recorded in months and years."
++      "question_text": "Age",
++      "references": "None",
++      "instructions": "It is recommended that age be calculated from date of birth and the study enrollment date. However, if age needs to be collected (e.g., full date of birth is not allowed to be collected) then it should be recorded in months and years."
+     }
+   },
+@@ -53,5 +53,8 @@
+       "enum": [
+         "years",
+-        "months"
++        "months",
++        "weeks",
++        "days",
++        "hours"
+       ],
+       "instructions": "It is recommended that age be calculated from date of birth and the study enrollment date. However, if age needs to be collected (e.g., full date of birth is not allowed to be collected) then it should be recorded in months and years as applicable for the participant."
+@@ -62,14 +65,14 @@
+     "id": "Sex",
+     "name": "Sex",
+-    "description": "Self-reported (or parent reported) participant/subject child's sex . The assemblage of physical properties or qualities by which male is distinguished from female; the physical difference between male and female; the distinguishing peculiarity of male or female.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Child's sex. ",
+-      "crf_name": "Demographics",
+-      "question_text": "What sex is your child?",
++    "description": "Self-reported (or parent reported) participant/subject child's sex at birth. The assemblage of physical properties or qualities by which male is distinguished from female; the physical difference between male and female; the distinguishing peculiarity of male or female.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Child's sex at birth. ",
++      "crf_name": "Demographics",
++      "question_text": "Sex at birth",
+       "references": "None",
+       "enum": [
+@@ -90,16 +93,16 @@
+   {
+     "type": "variable",
+-    "id": "ETHNIC",
+-    "name": "ETHNIC",
+-    "description": "Participant/subject self declared (or parent reported) ethnic origination using OMB approved categories.  Hispanic or Latino includes individuals of Mexican, Puerto Rican, Salvadoran, Cuban, Dominican, Guatemalan, and other Central or South American or Spanish culture or origin",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Ethnicity",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's ethnicity?",
++    "id": "GENIDENT",
++    "name": "GENIDENT",
++    "description": "Self-reported (or parent reported) participant's/subject child's internally held sense of their gender, which may or may not correspond to the individual's genotypic or phenotypic sex.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Child's gender identity",
++      "crf_name": "Demographics",
++      "question_text": "Gender identity",
+       "references": "None",
+       "enum": [
+@@ -110,10 +113,27 @@
+       ],
+       "permissible_values": {
+-        "1": "Hispanic or Latino",
+-        "2": "Not Hispanic or Latino",
++        "1": "Male",
++        "2": "Female",
+         "3": "Unknown",
+-        "4": "Not Reported"
++        "4": "Other, specify"
+       },
+       "instructions": "Choose one."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "GENIDENTOTH",
++    "name": "GENIDENTOTH",
++    "description": "The free-text field related to Gender idenitification other.",
++    "data_type": "string",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "The free-text field related to Gender idenitification other. ",
++      "crf_name": "Demographics",
++      "question_text": "Other, specify",
++      "references": "None"
+     }
+   },
+@@ -122,24 +142,24 @@
+     "id": "AI_AN",
+     "name": "AI_AN",
+-    "description": "Participant/subject child self declared (or parent reported) racial origination using OMB approved categories is American Indian or Alaska Native; Individuals with origins in any of the original peoples of North, Central, and South America, including, for example, Navajo Nation, Blackfeet Tribe of the Blackfeet Indian Reservation of Montana, Native Village of Barrow Inupiat Traditional Government, Nome Eskimo Community, Aztec, and Maya.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: American Indian or Alaska Native",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's race?\nAmerican Indian or Alaska Native",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Participant/subject child self declared (or parent reported) racial and/or ethnic origination using OMB approved categories is American Indian or Alaska Native; Individuals with origins in any of the original peoples of North, Central, and South America, including, for example, Navajo Nation, Blackfeet Tribe of the Blackfeet Indian Reservation of Montana, Native Village of Barrow Inupiat Traditional Government, Nome Eskimo Community, Aztec, and Maya.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: American Indian or Alaska Native",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nAmerican Indian or Alaska Native",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -148,24 +168,24 @@
+     "id": "Asian",
+     "name": "Asian",
+-    "description": "Participant/subject child self declared (or parent reported) racial origination using OMB approved categories is Asian, Individuals with origins in any of the original peoples of Central or East Asia, Southeast Asia, or South Asia, including, for example, Chinese, Asian Indian, Filipino, Vietnamese, Korean, and Japanese.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Asian",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's race?\nAsian",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Participant/subject child self declared (or parent reported) racial and/or ethnic origination using OMB approved categories is Asian, Individuals with origins in any of the original peoples of Central or East Asia, Southeast Asia, or South Asia, including, for example, Chinese, Asian Indian, Filipino, Vietnamese, Korean, and Japanese.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Asian",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nAsian",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -174,22 +194,74 @@
+     "id": "Bl_AA",
+     "name": "Bl_AA",
+-    "description": "Participant/subject child self declared (or parent reported) racial origination using OMB approved categories is Black or African-American, Individuals with origins in any of the Black racial groups of Africa, including, for example, African American, Jamaican, Haitian, Nigerian, Ethiopian, and Somali.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Black or African American",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's race?\nBlack or African American",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
++    "description": "Participant/subject child self declared (or parent reported) racial and/or ethnic origination using OMB approved categories is Black or African-American, Individuals with origins in any of the Black racial groups of Africa, including, for example, African American, Jamaican, Haitian, Nigerian, Ethiopian, and Somali.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Black or African American",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nBlack or African American",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
++    }
++  },
++  {
++    "type": "variable",
++    "id": "HI_LA",
++    "name": "HI_LA",
++    "description": "Participant/subject self declared (or parent reported) racial and/or ethnic origination using OMB approved categories is Hispanic or Latino. Includes individuals of Mexican, Puerto Rican, Salvadoran, Cuban, Dominican, Guatemalan, and other Central or South American or Spanish culture or origin",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Hispanic or Latino",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nHispanic or Latino",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "Select all that apply."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "MENA",
++    "name": "MENA",
++    "description": "Participant/subject self declared (or parent reported) racial and/or ethnic origination using OMB approved categories is is Middle Eastern or North African; Individuals with origins in any of the original peoples of the Middle East or North Africa, including, for example, Lebanese, Iranian, Egyptian, Syrian, Iraqi, and Israeli",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Middle Eastern or North African",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nMiddle Eastern or North African",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
+       },
+       "instructions": "Select all that apply."
+@@ -200,24 +272,24 @@
+     "id": "NH_PI",
+     "name": "NH_PI",
+-    "description": "Participant/subject child self declared (or parent reported) racial origination using OMB approved categories is Native Hawaiian or Pacific Islander, Individuals with origins in any of the original peoples of Hawaii, Guam,\nSamoa, or other Pacific Islands, including, for example, Native Hawaiian, Samoan, Chamorro, Tongan, Fijian, and Marshallese",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Native Hawaiian or Pacific Islander",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's race?\nNative Hawaiian or Pacific Islander",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Participant/subject self declared racial and/or ethnic origination using OMB approved categories is  Native Hawaiian or Pacific Islander, Individuals with origins in any of the original peoples of Hawaii, Guam,\nSamoa, or other Pacific Islands, including, for example, Native Hawaiian, Samoan, Chamorro, Tongan, Fijian, and Marshallese",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Native Hawaiian or Pacific Islander",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nNative Hawaiian or Pacific Islander",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -226,24 +298,24 @@
+     "id": "White",
+     "name": "White",
+-    "description": "Participant/subject child self declared (or parent reported) racial origination using OMB approved categories is White, Individuals with origins in any of the original peoples of Europe, including, for example, English, German, Irish, Italian, Polish, and Scottish",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: White",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's race?\nWhite",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Participant/subject self declared racial and/or ethnic origination using OMB approved categories is  White, Individuals with origins in any of the original peoples of Europe, including, for example, English, German, Irish, Italian, Polish, and Scottish",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: White",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nWhite",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -252,24 +324,24 @@
+     "id": "Unkn",
+     "name": "Unkn",
+-    "description": "Participant/subject child self declared (or parent reported) racial origination using OMB approved categories is Unknown",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Unknown",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's race?\nUnknown",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Participant/subject self declared racial and/or ethnic origination using OMB approved categories is Unknown",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Unknown",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nUnknown",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -278,72 +350,24 @@
+     "id": "Not_Rep",
+     "name": "Not_Rep",
+-    "description": "Participant/subject child self declared (or parent reported) racial origination using OMB approved categories is Not Reported, not observed, not recorded, or refused",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Not reported",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your child's race?\nNot reported",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "The question text may also be presented as \"Decline to state\""
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "PAINDUR",
+-    "name": "PAINDUR",
+-    "description": "Duration in months participant/subject has experienced pain",
+-    "data_type": "number",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Duration in months participant/subject has experienced pain",
+-      "crf_name": "Demographics",
+-      "question_text": "How long has your child had the type of pain for which they are enrolled in this study? If one month or more, please list the number of months",
+-      "references": "None",
+-      "instructions": "If pain duration is one month or longer, please list the number of months."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "PAINDUR_acute",
+-    "name": "PAINDUR_acute",
+-    "description": "Duration in partial month that participant/subject has experienced pain, if duration is less than one month",
+-    "data_type": "number",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Pain duration - partial month",
+-      "crf_name": "Demographics",
+-      "question_text": "How long has your child had the type of pain for which they are enrolled in this study? If less than one month, choose one of the following",
+-      "references": "None",
+-      "enum": [
+-        "0.75",
+-        "0.5",
+-        "0.25",
+-        "0"
+-      ],
+-      "permissible_values": {
+-        "0.75": "3 weeks",
+-        "0.5": "2 weeks",
+-        "0.25": "1 week",
+-        "0": "less than one week"
+-      },
+-      "instructions": "Choose one if pain duration is less than one month."
++    "description": "Participant/subject self declared racial and/or ethnic origination using OMB approved categories is Not Reported, not observed, not recorded, or refused",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Not reported",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nNot reported",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races. The question text may also be presented as \"Decline to state\""
+     }
+   },
+@@ -361,5 +385,5 @@
+       "short_description": "Parent/respondent age",
+       "crf_name": "Demographics",
+-      "question_text": "What is your age?",
++      "question_text": "Age",
+       "references": "None",
+       "instructions": "It is recommended that age be calculated from date of birth and the study enrollment date. However, if age needs to be collected (e.g., full date of birth is not allowed to be collected) then it should be recorded in months and years."
+@@ -382,7 +406,11 @@
+       "references": "None",
+       "enum": [
+-        "years"
+-      ],
+-      "instructions": "For adults - default value of \"years\" may be assumed"
++        "years",
++        "months",
++        "weeks",
++        "days",
++        "hours"
++      ],
++      "instructions": "For adults - default value of \"years\" may be used."
+     }
+   },
+@@ -400,5 +428,5 @@
+       "short_description": "Parent/responent's relationship to the study participant/subject child",
+       "crf_name": "Demographics",
+-      "question_text": "What is your relationship to the child/teen participating in the study?",
++      "question_text": "Proxy Relationship (What is your relationship to the child/teen participating in the study?)",
+       "references": "None",
+       "enum": [
+@@ -434,35 +462,5 @@
+       "question_text": "If other, please specify",
+       "references": "None",
+-      "instructions": "Please write in a response."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "ethnic_p",
+-    "name": "ethnic_p",
+-    "description": "Participant/subject self declared (or parent reported) ethnic origination using OMB approved categories.  Hispanic or Latino includes individuals of Mexican, Puerto Rican, Salvadoran, Cuban, Dominican, Guatemalan, and other Central or South American or Spanish culture or origin",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Ethnicity",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your ethnicity?",
+-      "references": "None",
+-      "enum": [
+-        "1",
+-        "2",
+-        "3",
+-        "4"
+-      ],
+-      "permissible_values": {
+-        "1": "Hispanic or Latino",
+-        "2": "Not Hispanic or Latino",
+-        "3": "Unknown",
+-        "4": "Not Reported"
+-      },
+-      "instructions": "Choose one."
++      "instructions": "Please write in a response"
+     }
+   },
+@@ -471,24 +469,24 @@
+     "id": "AI_AN_p",
+     "name": "AI_AN_p",
+-    "description": "Parent/respondent self declared racial origination using OMB approved categories is American Indian or Alaska Native; Individuals with origins in any of the original peoples of North, Central, and South America, including, for example, Navajo Nation, Blackfeet Tribe of the Blackfeet Indian Reservation of Montana, Native Village of Barrow Inupiat Traditional Government, Nome Eskimo Community, Aztec, and Maya.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: American Indian or Alaska Native",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your race?\nAmerican Indian or Alaska Native",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is American Indian or Alaska Native; Individuals with origins in any of the original peoples of North, Central, and South America, including, for example, Navajo Nation, Blackfeet Tribe of the Blackfeet Indian Reservation of Montana, Native Village of Barrow Inupiat Traditional Government, Nome Eskimo Community, Aztec, and Maya.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: American Indian or Alaska Native",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nAmerican Indian or Alaska Native",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -497,24 +495,24 @@
+     "id": "Asian_p",
+     "name": "Asian_p",
+-    "description": "Parent/respondent self declared racial origination using OMB approved categories is Asian, Individuals with origins in any of the original peoples of Central or East Asia, Southeast Asia, or South Asia, including, for example, Chinese, Asian Indian, Filipino, Vietnamese, Korean, and Japanese.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Asian",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your race?\nAsian",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is Asian, Individuals with origins in any of the original peoples of Central or East Asia, Southeast Asia, or South Asia, including, for example, Chinese, Asian Indian, Filipino, Vietnamese, Korean, and Japanese.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Asian",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nAsian",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -523,22 +521,74 @@
+     "id": "Bl_AA_p",
+     "name": "Bl_AA_p",
+-    "description": "Parent/respondent self declared racial origination using OMB approved categories is Black or African-American, Individuals with origins in any of the Black racial groups of Africa, including, for example, African American, Jamaican, Haitian, Nigerian, Ethiopian, and Somali.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Black or African American",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your race?\nBlack or African American",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is Black or African-American, Individuals with origins in any of the Black racial groups of Africa, including, for example, African American, Jamaican, Haitian, Nigerian, Ethiopian, and Somali.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Black or African American",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nBlack or African American",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
++    }
++  },
++  {
++    "type": "variable",
++    "id": "HI_LA_p",
++    "name": "HI_LA_p",
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is Hispanic or Latino. Includes individuals of Mexican, Puerto Rican, Salvadoran, Cuban, Dominican, Guatemalan, and other Central or South American or Spanish culture or origin",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Hispanic or Latino",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nHispanic or Latino",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "Select all that apply."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "MENA_p",
++    "name": "MENA_p",
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is is Middle Eastern or North African; Individuals with origins in any of the original peoples of the Middle East or North Africa, including, for example, Lebanese, Iranian, Egyptian, Syrian, Iraqi, and Israeli",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Middle Eastern or North African",
++      "crf_name": "Demographics",
++      "question_text": "Child's Race and/or Ethnicity\nMiddle Eastern or North African",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
+       },
+       "instructions": "Select all that apply."
+@@ -549,24 +599,24 @@
+     "id": "NH_PI_p",
+     "name": "NH_PI_p",
+-    "description": "Parent/respondent self declared racial origination using OMB approved categories is Native Hawaiian or Pacific Islander, Individuals with origins in any of the original peoples of Hawaii, Guam, Samoa, or other Pacific Islands, including, for example, Native Hawaiian, Samoan, Chamorro, Tongan, Fijian, and Marshallese",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Native Hawaiian or Pacific Islander",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your race?\nNative Hawaiian or Pacific Islander",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is  Native Hawaiian or Pacific Islander, Individuals with origins in any of the original peoples of Hawaii, Guam, Samoa, or other Pacific Islands, including, for example, Native Hawaiian, Samoan, Chamorro, Tongan, Fijian, and Marshallese",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Native Hawaiian or Pacific Islander",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nNative Hawaiian or Pacific Islander",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -575,24 +625,24 @@
+     "id": "White_p",
+     "name": "White_p",
+-    "description": "Parent/respondent self declared racial origination using OMB approved categories is White, Individuals with origins in any of the original peoples of Europe, including, for example, English, German, Irish, Italian, Polish, and Scottish",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: White",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your race?\nWhite",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is  White, Individuals with origins in any of the original peoples of Europe, including, for example, English, German, Irish, Italian, Polish, and Scottish",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: White",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nWhite",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -601,24 +651,24 @@
+     "id": "Unkn_p",
+     "name": "Unkn_p",
+-    "description": "Parent/respondent self declared racial origination using OMB approved categories is Unknown",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Unknown",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your race?\nUnknown",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is Unknown",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Unknown",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nUnknown",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races"
+     }
+   },
+@@ -627,30 +677,30 @@
+     "id": "Not_Rep_p",
+     "name": "Not_Rep_p",
+-    "description": "Parent/respondent self declared racial origination using OMB approved categories is Not Reported, not observed, not recorded, or refused",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Race: Not reported",
+-      "crf_name": "Demographics",
+-      "question_text": "What is your race?\nNot reported",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "The question text may also be presented as \"Decline to state\"."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "EDULVL",
+-    "name": "EDULVL",
++    "description": "Parent/respondent self declared racial and/or ethnic origination using OMB approved categories is Not Reported, not observed, not recorded, or refused",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Race and/or Ethnicity: Not reported",
++      "crf_name": "Demographics",
++      "question_text": "Parent Race and/or Ethnicity\nNot reported",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "not checked",
++        "1": "checked"
++      },
++      "instructions": "The participant can select one or more races. The question text may also be presented as \"Decline to State\""
++    }
++  },
++  {
++    "type": "variable",
++    "id": "EDULEVEL",
++    "name": "EDULEVEL",
+     "description": "Highest level of education parent/respondent has completed or the highest degree received",
+     "data_type": "integer",
+@@ -673,7 +723,7 @@
+       ],
+       "permissible_values": {
+-        "1": "Less than High School",
+-        "2": "Some High School education",
+-        "3": "High School Degree Complete (or equivalent, e.g., G.E.D.)",
++        "1": "Did not complete Secondary School or less than High School",
++        "2": "Some Secondary School or High School education",
++        "3": "High School or Secondary School degree complete",
+         "4": "Associate's or Technical Degree complete",
+         "5": "College or Baccalaureate degree complete",
+@@ -747,6 +797,6 @@
+   {
+     "type": "variable",
+-    "id": "EDULVLspouse",
+-    "name": "EDULVLspouse",
++    "id": "EDULEVELspouse",
++    "name": "EDULEVELspouse",
+     "description": "Highest level of education the spouse/partner of the parent/respondent has completed or the highest degree received",
+     "data_type": "integer",
+@@ -769,7 +819,7 @@
+       ],
+       "permissible_values": {
+-        "1": "Less than High School",
+-        "2": "Some High School education",
+-        "3": "High School Degree Complete (or equivalent, e.g., G.E.D.)",
++        "1": "Did not complete Secondary School or less than High School",
++        "2": "Some Secondary School or High School education",
++        "3": "High School or Secondary School degree complete",
+         "4": "Associate's or Technical Degree complete",
+         "5": "College or Baccalaureate degree complete",
+@@ -851,304 +901,18 @@
+   {
+     "type": "variable",
+-    "id": "SDOH_Childcare",
+-    "name": "SDOH_Childcare",
+-    "description": "Indicator the participant or any of the participants family members was unable to get childcare that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need - Childcare",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nChildcare",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Clothing",
+-    "name": "SDOH_Clothing",
+-    "description": "Indicator the participant or any of the participants family members was unable to get clothing that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Clothing",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nClothing",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Food",
+-    "name": "SDOH_Food",
+-    "description": "Indicator the participant or any of the participants family members was unable to get food that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Food",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nFood",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Housing",
+-    "name": "SDOH_Housing",
+-    "description": "Indicator the participant or any of the participants family members was unable to get housing that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Housing",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nHousing",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Internet",
+-    "name": "SDOH_Internet",
+-    "description": "Indicator the participant or any of the participants family members was unable to get internet that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Internet/ Broadband",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nInternet/ Broadband",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Phone",
+-    "name": "SDOH_Phone",
+-    "description": "Indicator the participant or any of the participants family members was unable to get phone that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Phone (e.g., mobile or landline)",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nPhone (e.g., mobile or landline)",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Transportation",
+-    "name": "SDOH_Transportation",
+-    "description": "Indicator the participant or any of the participants family members was unable to get transportation that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Transportation (e.g., private or public)",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nTransportation (e.g., private or public)",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Utilities",
+-    "name": "SDOH_Utilities",
+-    "description": "Indicator the participant or any of the participants family members was unable to get utilities that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Utilities (e.g., gas, electric, propane, natural gas, etc.)",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nUtilities (e.g., gas, electric, propane, natural gas, etc.)",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_MedHlthcare",
+-    "name": "SDOH_MedHlthcare",
+-    "description": "Indicator the participant or any of the participants family members was unable to get medcine that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Medicine or any health care (medical, dental, mental health, vision)",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nMedicine or any health care (medical, dental, mental health, vision)",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_Other",
+-    "name": "SDOH_Other",
+-    "description": "Indicator the participant or any of the participants family members was unable to get an item or service they needed that was not listed above within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Other",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nOther",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "Select all that apply."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_OtherSpecify",
+-    "name": "SDOH_OtherSpecify",
+-    "description": "Description of the item or service the participant or any of the participants family members was unable to get that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "string",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -If other, specify ",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nIf other, specify",
+-      "references": "None",
+-      "instructions": "Specify, if SDOH_Other was checked."
+-    }
+-  },
+-  {
+-    "type": "variable",
+-    "id": "SDOH_NotAnswer",
+-    "name": "SDOH_NotAnswer",
+-    "description": "Indicator the participant prefers not to answer if they or any of the participants family members was unable to get an item or service that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
+-    "data_type": "integer",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pediatric-demographic"
+-    ],
+-    "metadata": {
+-      "short_description": "Economic Stability - Social Need -Prefer not to answer",
+-      "crf_name": "Demographics",
+-      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nPrefer not to answer",
+-      "references": "None",
+-      "enum": [
+-        "0",
+-        "1"
+-      ],
+-      "permissible_values": {
+-        "0": "Unchecked",
+-        "1": "Checked"
+-      },
+-      "instructions": "The question text may also be presented as \"Decline to state\"."
++    "id": "PAINDUR",
++    "name": "PAINDUR",
++    "description": "Duration in months participant/subject has experienced pain",
++    "data_type": "number",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Duration in months participant/subject has experienced pain",
++      "crf_name": "Demographics",
++      "question_text": "How long have you [has your child] had the type of pain for which you [your child] are enrolled in this study?",
++      "references": "None",
++      "instructions": "Enter value in months. If no pain or pain less than 1 month, enter 0"
+     }
+   },
+@@ -1191,4 +955,308 @@
+   {
+     "type": "variable",
++    "id": "SDOH_Childcare",
++    "name": "SDOH_Childcare",
++    "description": "Indicator the participant or any of the participants family members was unable to get childcare that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need - Childcare",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nChildcare",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Clothing",
++    "name": "SDOH_Clothing",
++    "description": "Indicator the participant or any of the participants family members was unable to get clothing that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Clothing",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nClothing",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Food",
++    "name": "SDOH_Food",
++    "description": "Indicator the participant or any of the participants family members was unable to get food that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Food",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nFood",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Housing",
++    "name": "SDOH_Housing",
++    "description": "Indicator the participant or any of the participants family members was unable to get housing that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Housing",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nHousing",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Internet",
++    "name": "SDOH_Internet",
++    "description": "Indicator the participant or any of the participants family members was unable to get internet that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Internet/ Broadband",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nInternet/ Broadband",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Phone",
++    "name": "SDOH_Phone",
++    "description": "Indicator the participant or any of the participants family members was unable to get phone that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Phone (e.g., mobile or landline)",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nPhone (e.g., mobile or landline)",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Transportation",
++    "name": "SDOH_Transportation",
++    "description": "Indicator the participant or any of the participants family members was unable to get transportation that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Transportation (e.g., private or public)",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nTransportation (e.g., private or public)",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Utilities",
++    "name": "SDOH_Utilities",
++    "description": "Indicator the participant or any of the participants family members was unable to get utilities that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Utilities (e.g., gas, electric, propane, natural gas, etc.)",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nUtilities (e.g., gas, electric, propane, natural gas, etc.)",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_MedHlthcare",
++    "name": "SDOH_MedHlthcare",
++    "description": "Indicator the participant or any of the participants family members was unable to get medcine that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Medicine or any health care (medical, dental, mental health, vision)",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nMedicine or any health care (medical, dental, mental health, vision)",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_Other",
++    "name": "SDOH_Other",
++    "description": "Indicator the participant or any of the participants family members was unable to get an item or service they needed that was not listed above within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Other",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nOther",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_OtherSpecify",
++    "name": "SDOH_OtherSpecify",
++    "description": "Description of the item or service the participant or any of the participants family members was unable to get that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "string",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -If other, specify ",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nIf other, specify",
++      "references": "None",
++      "instructions": "Specify, if SDOH_Other was checked"
++    }
++  },
++  {
++    "type": "variable",
++    "id": "SDOH_NotAnswer",
++    "name": "SDOH_NotAnswer",
++    "description": "Indicator the participant prefers not to answer if they or any of the participants family members was unable to get an item or service that they really needed within the past year, as a part of the HEAL CDE pain core demographics.",
++    "data_type": "integer",
++    "is_cde": true,
++    "parents": [
++      "HEALCDE:pediatric-demographic"
++    ],
++    "metadata": {
++      "short_description": "Economic Stability - Social Need -Prefer not to answer",
++      "crf_name": "Demographics",
++      "question_text": "In the past year, have you or any family members you live with been unable to get any of the following when it was really needed? \nPrefer not to answer",
++      "references": "None",
++      "enum": [
++        "0",
++        "1"
++      ],
++      "permissible_values": {
++        "0": "Unchecked",
++        "1": "Checked"
++      },
++      "instructions": "The participant can select one or more SDOH indicators."
++    }
++  },
++  {
++    "type": "variable",
+     "id": "demRUCA1",
+     "name": "demRUCA1",
+@@ -1200,7 +1268,7 @@
+     ],
+     "metadata": {
+-      "short_description": "RUCA code \u2013 Primary",
+-      "crf_name": "Demographics",
+-      "question_text": "RUCA code \u2013 Primary",
++      "short_description": "RUCA code: Primary",
++      "crf_name": "Demographics",
++      "question_text": "RUCA code",
+       "references": "None",
+       "enum": [
+@@ -1244,7 +1312,7 @@
+     ],
+     "metadata": {
+-      "short_description": "RUCA code \u2013 Secondary",
+-      "crf_name": "Demographics",
+-      "question_text": "RUCA code \u2013 Secondary",
++      "short_description": "RUCA code: Secondary ",
++      "crf_name": "Demographics",
++      "question_text": "RUCA code",
+       "references": "None",
+       "enum": [
+@@ -1313,12 +1381,10 @@
+       "HDP01474",
+       "HDP01476",
+-      "HDP01490",
+-      "HDP01629",
+-      "HDP01660"
++      "HDP01490"
+     ],
+     "crf_id": "pediatric-demographic",
+     "name": "Demographics",
+-    "description": "The Pediatric Demographics are a set of demographic questions to gain background information on pediatric participants. Contains 47 CDEs.",
+-    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pediatric-demographic-crf.docx",
++    "description": "The Pediatric Demographics are a set of demographic questions to gain background information on pediatric participants. Contains 50 CDEs.",
++    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pediatric-demographic-crf.docx",
+     "is_crf": true,
+     "variable_list": [
+@@ -1327,32 +1393,36 @@
+       "AgeU",
+       "Sex",
+-      "ETHNIC",
++      "GENIDENT",
++      "GENIDENTOTH",
+       "AI_AN",
+       "Asian",
+       "Bl_AA",
++      "HI_LA",
++      "MENA",
+       "NH_PI",
+       "White",
+       "Unkn",
+       "Not_Rep",
+-      "PAINDUR",
+-      "PAINDUR_acute",
+       "Ageparent",
+       "AgeUparent",
+       "ProxyRelationship",
+       "ProxyRelationshipOTH",
+-      "ethnic_p",
+       "AI_AN_p",
+       "Asian_p",
+       "Bl_AA_p",
++      "HI_LA_p",
++      "MENA_p",
+       "NH_PI_p",
+       "White_p",
+       "Unkn_p",
+       "Not_Rep_p",
+-      "EDULVL",
++      "EDULEVEL",
+       "EMPSTAT",
+       "MARISTAT",
+-      "EDULVLspouse",
++      "EDULEVELspouse",
+       "EMPSTATspouse",
+       "INCMLVL",
++      "PAINDUR",
++      "SurveyLanguage",
+       "SDOH_Childcare",
+       "SDOH_Clothing",
+@@ -1367,5 +1437,4 @@
+       "SDOH_OtherSpecify",
+       "SDOH_NotAnswer",
+-      "SurveyLanguage",
+       "demRUCA1",
+       "demRUCA2"
+@@ -1373,30 +1442,31 @@
+     "metadata": {
+       "categories": [
+-        "Core - Pediatric"
++        "All Core",
++        "Pediatrics"
+       ],
+       "urls": [
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pediatric-demographic-crf.docx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pediatric-demographic-crf.docx",
+           "filename": "pediatric-demographic-crf.docx",
+           "lang": "en",
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5136"
+         },
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pediatric-demographic-cdes.xlsx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pediatric-demographic-cdes.xlsx",
+           "filename": "pediatric-demographic-cdes.xlsx",
+           "lang": "en",
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+-          "description": "This is the Excel file that describes the 47 CDEs present in this CRF.",
+-          "drupal_id": null
++          "description": "This is the Excel file that describes the 50 CDEs present in this CRF.",
++          "drupal_id": "5131"
+         },
+         {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pediatric-demographic-crf-spanish.docx",
++          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pediatric-demographic-crf-spanish.docx",
+           "filename": "pediatric-demographic-crf-spanish.docx",
+           "lang": "es",
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5116"
+         }
+       ],
+@@ -1405,5 +1475,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1413,5 +1483,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1421,5 +1491,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1429,5 +1499,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1437,5 +1507,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1445,5 +1515,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1453,5 +1523,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1461,5 +1531,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1469,5 +1539,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1477,5 +1547,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -1485,21 +1555,5 @@
+           "_sources": [
+             [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01660": {
+-          "_sources": [
+-            [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP01629": {
+-          "_sources": [
+-            [
+-              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "Internal header_crf_mappings column mappings; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

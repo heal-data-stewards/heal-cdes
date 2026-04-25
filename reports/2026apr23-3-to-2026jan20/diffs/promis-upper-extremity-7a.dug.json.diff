@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/promis-upper-extremity-7a.dug.json
++++ dug-data-model-2026jan20/promis-upper-extremity-7a.dug.json
+@@ -300,5 +300,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8211"
+         },
+         {
+@@ -308,5 +308,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 9 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "8201"
+         }
+       ],

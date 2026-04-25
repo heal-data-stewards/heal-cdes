@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/promis-companionship-4a.dug.json
++++ dug-data-model-2026jan20/promis-companionship-4a.dug.json
+@@ -197,5 +197,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7811"
+         },
+         {
+@@ -205,5 +205,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 6 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7806"
+         },
+         {
+@@ -213,5 +213,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8431"
+         }
+       ],

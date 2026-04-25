@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/promis-instrumental-support-6a.dug.json
++++ dug-data-model-2026jan20/promis-instrumental-support-6a.dug.json
+@@ -263,5 +263,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7831"
+         },
+         {
+@@ -271,5 +271,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 8 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7826"
+         },
+         {
+@@ -279,5 +279,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8436"
+         }
+       ],

@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/promis-pain-interference-6a.dug.json
++++ dug-data-model-2026jan20/promis-pain-interference-6a.dug.json
+@@ -220,5 +220,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "7941"
+         },
+         {
+@@ -228,5 +228,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 6 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7936"
+         }
+       ],

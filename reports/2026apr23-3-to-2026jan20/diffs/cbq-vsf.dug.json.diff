@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr23-3/cbq-vsf.dug.json
++++ dug-data-model-2026jan20/cbq-vsf.dug.json
+@@ -1518,5 +1518,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5751"
+         },
+         {
+@@ -1526,5 +1526,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 40 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5746"
+         }
+       ],

@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/promis-pediatric-global-health.dug.json
++++ dug-data-model-2026jan20/promis-pediatric-global-health.dug.json
+@@ -296,5 +296,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6551"
+         },
+         {
+@@ -304,5 +304,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 9 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "6541"
+         },
+         {
+@@ -312,5 +312,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "6561"
+         }
+       ],

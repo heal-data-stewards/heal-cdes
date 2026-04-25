@@ -1,0 +1,16 @@
+--- dug-data-model-2026apr20/promis-self-efficacy-managing-medications-treatment-8a.dug.json
++++ dug-data-model-2026jan20/promis-self-efficacy-managing-medications-treatment-8a.dug.json
+@@ -333,5 +333,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8111"
+         },
+         {
+@@ -341,5 +341,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 10 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "8106"
+         }
+       ],

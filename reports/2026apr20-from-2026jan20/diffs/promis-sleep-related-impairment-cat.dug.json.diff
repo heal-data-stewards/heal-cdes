@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr20/promis-sleep-related-impairment-cat.dug.json
++++ dug-data-model-2026jan20/promis-sleep-related-impairment-cat.dug.json
+@@ -593,5 +593,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the English download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8191"
+         },
+         {
+@@ -601,5 +601,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 18 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "8181"
+         },
+         {
+@@ -609,5 +609,5 @@
+           "mime-type": "application/pdf",
+           "description": "This is the Spanish download of the PDF document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8476"
+         }
+       ],

@@ -1,0 +1,272 @@
+--- dug-data-model-2026apr23-3/nida-assist-ada-modified-levels-1-2.dug.json
++++ dug-data-model-2026jan20/nida-assist-ada-modified-levels-1-2.dug.json
+@@ -55,5 +55,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one\nAsk if response to question 1 is YES"
++      "instructions": "Choose one\nAsk if response to question 1 is YES",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_1"
++        ]
++      }
+     }
+   },
+@@ -87,5 +92,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one\nAsk if response to question 1 is YES"
++      "instructions": "Choose one\nAsk if response to question 1 is YES",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_2"
++        ]
++      }
+     }
+   },
+@@ -145,5 +155,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one\nAsk if response to question 2 is YES"
++      "instructions": "Choose one\nAsk if response to question 2 is YES",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_3"
++        ]
++      }
+     }
+   },
+@@ -203,5 +218,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_4"
++        ]
++      }
+     }
+   },
+@@ -235,5 +255,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_5"
++        ]
++      }
+     }
+   },
+@@ -267,5 +292,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_6"
++        ]
++      }
+     }
+   },
+@@ -299,5 +329,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_7"
++        ]
++      }
+     }
+   },
+@@ -331,5 +366,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_8"
++        ]
++      }
+     }
+   },
+@@ -389,5 +429,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_9"
++        ]
++      }
+     }
+   },
+@@ -421,5 +466,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_10"
++        ]
++      }
+     }
+   },
+@@ -453,5 +503,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_11"
++        ]
++      }
+     }
+   },
+@@ -485,5 +540,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_12"
++        ]
++      }
+     }
+   },
+@@ -517,5 +577,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_13"
++        ]
++      }
+     }
+   },
+@@ -549,5 +614,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_14"
++        ]
++      }
+     }
+   },
+@@ -581,5 +651,10 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Choose one"
++      "instructions": "Choose one",
++      "study_variable_mappings": {
++        "HDP00253": [
++          "nida_15"
++        ]
++      }
+     }
+   },
+@@ -795,5 +870,8 @@
+     "type": "section",
+     "id": "nida-assist-ada-modified-levels-1-2",
+-    "parents": [],
++    "parents": [
++      "HDP00253",
++      "HDP01288"
++    ],
+     "crf_id": "nida-assist-ada-modified-levels-1-2",
+     "name": "NIDA Modified ASSIST Level 1 + Level 2  adolescent",
+@@ -841,5 +919,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "5791"
+         },
+         {
+@@ -849,8 +927,70 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 27 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5786"
+         }
+       ],
+-      "study_mappings": {}
++      "study_mappings": {
++        "HDP01288": {
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP01288/HDP01288_CTN0093_DataDictionary_clean.vlmd_2025-08-05_matches_confirmed_vlmd_cdesearch_20250905_132630.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ]
++        },
++        "HDP00253": {
++          "NIDAL2AnyAlchlScl": [
++            "nida_1"
++          ],
++          "_sources": [
++            [
++              "../heal-cde-mappings/HDP00253/SPRINT_2020-12-16_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_103649.xlsx",
++              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
++            ]
++          ],
++          "NIDAL2ExtntAlchlScl": [
++            "nida_2"
++          ],
++          "NIDAL2TobacPrdctScl": [
++            "nida_3"
++          ],
++          "NIDAL2MedPainScl": [
++            "nida_4"
++          ],
++          "NIDAL2MedStimScl": [
++            "nida_5"
++          ],
++          "NIDAL2MedSedtvScl": [
++            "nida_6"
++          ],
++          "NIDAL2DrugSteroidScl": [
++            "nida_7"
++          ],
++          "NIDAL2DrugOthrMedScl": [
++            "nida_8"
++          ],
++          "NIDAL2DrugMrjnaScl": [
++            "nida_9"
++          ],
++          "NIDAL2DrugCocaineScl": [
++            "nida_10"
++          ],
++          "NIDAL2DrugClubDrgScl": [
++            "nida_11"
++          ],
++          "NIDAL2DrugHallcngnScl": [
++            "nida_12"
++          ],
++          "NIDAL2DrugHeroinScl": [
++            "nida_13"
++          ],
++          "NIDAL2DrugInhlntScl": [
++            "nida_14"
++          ],
++          "NIDAL2DrugMethScl": [
++            "nida_15"
++          ]
++        }
++      }
+     }
+   }

@@ -1,0 +1,46 @@
+--- dug-data-model-2026apr20/sleep-asws-pediatric.dug.json
++++ dug-data-model-2026jan20/sleep-asws-pediatric.dug.json
+@@ -784,5 +784,5 @@
+     "crf_id": "sleep-asws-pediatric",
+     "name": "Adolescent Sleep Wake Scale (ASWS) + items from Children\u2019s Report of Sleep Patterns (CRSP) ",
+-    "description": "The Adolescent Sleep Wake Scale 10 (ASWS-10) measures pediatric participants sleep behaviors and patterns. Contains 22 CDEs.",
++    "description": "The Adolescent Sleep Wake Scale 10 (AWS-10) and Sleep pattern/duration items from the Children's Report of Sleep Patterns (CRSP) measures pediatric participants sleep behaviors and patterns. Contains 22 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/sleep-asws-pediatric-cdes.xlsx",
+     "is_crf": true,
+@@ -813,5 +813,6 @@
+     "metadata": {
+       "categories": [
+-        "Core - Pediatric"
++        "All Core",
++        "Pediatrics"
+       ],
+       "urls": [
+@@ -822,5 +823,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 22 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "5401"
+         },
+         {
+@@ -830,9 +831,12 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4866"
+         }
+       ],
+       "study_mappings": {
+         "HDP00253": {
++          "ASWSStayUpScale": [
++            "awsw_1"
++          ],
+           "_sources": [
+             [
+@@ -841,7 +845,4 @@
+             ]
+           ],
+-          "ASWSStayUpScale": [
+-            "awsw_1"
+-          ],
+           "ASWSReadyGoBedScale": [
+             "awsw_2"

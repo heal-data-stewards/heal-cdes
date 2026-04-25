@@ -1,0 +1,287 @@
+--- dug-data-model-2026apr20/nida-modified-assist.dug.json
++++ dug-data-model-2026jan20/nida-modified-assist.dug.json
+@@ -29,10 +29,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "The questions below ask about your use of the following substances in the past two (2) weeks. During the past TWO (2) weeks about how often did you \u2026",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_1"
+-        ]
+-      }
++      "instructions": "The questions below ask about your use of the following substances in the past two (2) weeks. During the past TWO (2) weeks about how often did you \u2026"
+     }
+   },
+@@ -66,10 +61,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "The questions below ask about your use of the following substances in the past two (2) weeks. During the past TWO (2) weeks about how often did you \u2026",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_2"
+-        ]
+-      }
++      "instructions": "The questions below ask about your use of the following substances in the past two (2) weeks. During the past TWO (2) weeks about how often did you \u2026"
+     }
+   },
+@@ -103,10 +93,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "The questions below ask about your use of the following substances in the past two (2) weeks. During the past TWO (2) weeks about how often did you \u2026",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_3"
+-        ]
+-      }
++      "instructions": "The questions below ask about your use of the following substances in the past two (2) weeks. During the past TWO (2) weeks about how often did you \u2026"
+     }
+   },
+@@ -140,10 +125,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "During the past TWO (2) weeks, about how often did you use any of the following medicines ON YOUR OWN, that is, without a doctor\u2019s prescription or in greater amounts or longer than prescribed?",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_4"
+-        ]
+-      }
++      "instructions": "During the past TWO (2) weeks, about how often did you use any of the following medicines ON YOUR OWN, that is, without a doctor\u2019s prescription or in greater amounts or longer than prescribed?"
+     }
+   },
+@@ -177,10 +157,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "During the past TWO (2) weeks, about how often did you use any of the following medicines ON YOUR OWN, that is, without a doctor\u2019s prescription or in greater amounts or longer than prescribed?",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_5"
+-        ]
+-      }
++      "instructions": "During the past TWO (2) weeks, about how often did you use any of the following medicines ON YOUR OWN, that is, without a doctor\u2019s prescription or in greater amounts or longer than prescribed?"
+     }
+   },
+@@ -214,10 +189,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "During the past TWO (2) weeks, about how often did you use any of the following medicines ON YOUR OWN, that is, without a doctor\u2019s prescription or in greater amounts or longer than prescribed?",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_6"
+-        ]
+-      }
++      "instructions": "During the past TWO (2) weeks, about how often did you use any of the following medicines ON YOUR OWN, that is, without a doctor\u2019s prescription or in greater amounts or longer than prescribed?"
+     }
+   },
+@@ -251,10 +221,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_7"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -288,10 +253,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_8"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -325,10 +285,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_9"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -362,10 +317,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_10"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -399,10 +349,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_11"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -436,10 +381,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_12"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -473,10 +413,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_13"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -510,10 +445,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_14"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -547,10 +477,5 @@
+         "4": "Nearly every day"
+       },
+-      "instructions": "Or drugs like:",
+-      "study_variable_mappings": {
+-        "HDP00253": [
+-          "nida_15"
+-        ]
+-      }
++      "instructions": "Or drugs like:"
+     }
+   },
+@@ -580,8 +505,5 @@
+     "type": "section",
+     "id": "nida-modified-assist",
+-    "parents": [
+-      "HDP00253",
+-      "HDP01288"
+-    ],
++    "parents": [],
+     "crf_id": "nida-modified-assist",
+     "name": "NIDA-Modified ASSIST L2 (11-17)",
+@@ -609,5 +531,6 @@
+     "metadata": {
+       "categories": [
+-        "Core - Pediatric"
++        "All Core",
++        "Pediatrics"
+       ],
+       "urls": [
+@@ -618,5 +541,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4886"
+         },
+         {
+@@ -626,5 +549,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 16 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "4871"
+         },
+         {
+@@ -634,70 +557,8 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "4831"
+         }
+       ],
+-      "study_mappings": {
+-        "HDP01288": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP01288/HDP01288_CTN0093_DataDictionary_clean.vlmd_2025-08-05_matches_confirmed_vlmd_cdesearch_20250905_132630.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ]
+-        },
+-        "HDP00253": {
+-          "_sources": [
+-            [
+-              "../heal-cde-mappings/HDP00253/SPRINT_2020-12-16_2025-07-31_matches_confirmed_vlmd_cdesearch_20250829_103649.xlsx",
+-              "./mappings/heal-data-dictionaries-mappings/heal-cde-mappings.csv"
+-            ]
+-          ],
+-          "NIDAL2AnyAlchlScl": [
+-            "nida_1"
+-          ],
+-          "NIDAL2ExtntAlchlScl": [
+-            "nida_2"
+-          ],
+-          "NIDAL2TobacPrdctScl": [
+-            "nida_3"
+-          ],
+-          "NIDAL2MedPainScl": [
+-            "nida_4"
+-          ],
+-          "NIDAL2MedStimScl": [
+-            "nida_5"
+-          ],
+-          "NIDAL2MedSedtvScl": [
+-            "nida_6"
+-          ],
+-          "NIDAL2DrugSteroidScl": [
+-            "nida_7"
+-          ],
+-          "NIDAL2DrugOthrMedScl": [
+-            "nida_8"
+-          ],
+-          "NIDAL2DrugMrjnaScl": [
+-            "nida_9"
+-          ],
+-          "NIDAL2DrugCocaineScl": [
+-            "nida_10"
+-          ],
+-          "NIDAL2DrugClubDrgScl": [
+-            "nida_11"
+-          ],
+-          "NIDAL2DrugHallcngnScl": [
+-            "nida_12"
+-          ],
+-          "NIDAL2DrugHeroinScl": [
+-            "nida_13"
+-          ],
+-          "NIDAL2DrugInhlntScl": [
+-            "nida_14"
+-          ],
+-          "NIDAL2DrugMethScl": [
+-            "nida_15"
+-          ]
+-        }
+-      }
++      "study_mappings": {}
+     }
+   }

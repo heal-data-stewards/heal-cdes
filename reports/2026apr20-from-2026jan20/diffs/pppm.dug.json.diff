@@ -1,0 +1,112 @@
+--- dug-data-model-2026apr20/pppm.dug.json
++++ dug-data-model-2026jan20/pppm.dug.json
+@@ -20,6 +20,6 @@
+       ],
+       "permissible_values": {
+-        "0": "1 = No",
+-        "1": "Yes"
++        "0": "Not at all",
++        "1": " A little"
+       },
+       "instructions": "Choose one"
+@@ -413,25 +413,4 @@
+   },
+   {
+-    "type": "variable",
+-    "id": "PPPMSF_score",
+-    "name": "PPPM-SF total score",
+-    "description": "Total score for PPPM-short form",
+-    "data_type": "number",
+-    "is_cde": true,
+-    "parents": [
+-      "HEALCDE:pppm"
+-    ],
+-    "metadata": {
+-      "short_description": "PPPM-sf total score",
+-      "crf_name": "Parent's Postoperative Pain Management",
+-      "question_text": "PPPM-sf total score",
+-      "references": "Chamber, C.T., Reid, G.J., McGrath, P.J, & Finley, G.A. (1996). Development and preliminary validation of a postoperative pain measures for parents. Pain, 68, 307-313. |von Baeyer, C. L., Chambers, C. T., & Eakins, D. M. (2011). Development of a 10-item short form of the parents' postoperative pain measure: the PPPM-SF. The journal of pain, 12(3), 401\u2013406. ",
+-      "enum": [
+-        "0 to 0"
+-      ],
+-      "instructions": "Sum of all items on the short form.\nScore 3-10: Clinically significant pain"
+-    }
+-  },
+-  {
+     "type": "section",
+     "id": "pppm",
+@@ -442,6 +421,6 @@
+     "crf_id": "pppm",
+     "name": "Parent's Postoperative Pain Management",
+-    "description": "The Parents Postoperative Pain Management Pain Scale (PPPM) measures behaviors children may exhibit after surgery. Contains 17 CDEs.",
+-    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pppm-crf.docx",
++    "description": "The Parents' Postoperative Pain Management Pain Scale (PPPM) is a 15-item instrument to measure a child's pain at home. Contains 16 CDEs.",
++    "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pppm-crf.docx",
+     "is_crf": true,
+     "variable_list": [
+@@ -461,6 +440,5 @@
+       "PPPM_close",
+       "PPPM_medication",
+-      "PPPM_score",
+-      "PPPMSF_score"
++      "PPPM_score"
+     ],
+     "metadata": {
+@@ -469,12 +447,4 @@
+       ],
+       "urls": [
+-        {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pppm-crf.docx",
+-          "filename": "pppm-crf.docx",
+-          "lang": "en",
+-          "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+-          "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
+-        },
+         {
+           "url": "https://www.nih.gov/sites/default/files/CDEs/2026-01/pppm-crf.docx",
+@@ -483,13 +453,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
+-        },
+-        {
+-          "url": "https://www.nih.gov/sites/default/files/CDEs/2026-03/pppm-cde.xlsx",
+-          "filename": "pppm-cde.xlsx",
+-          "lang": "en",
+-          "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+-          "description": "This is the Excel file that describes the 17 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "7751"
+         },
+         {
+@@ -498,6 +460,6 @@
+           "lang": "en",
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+-          "description": "This is the Excel file that describes the 17 CDEs present in this CRF.",
+-          "drupal_id": null
++          "description": "This is the Excel file that describes the 16 CDEs present in this CRF.",
++          "drupal_id": "7746"
+         },
+         {
+@@ -507,5 +469,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the Spanish download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8416"
+         }
+       ],
+@@ -514,5 +476,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]
+@@ -522,5 +484,5 @@
+           "_sources": [
+             [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
++              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-01-05T130102/Heal_CDE_data.csv",
+               "./mappings/study-crf-mappings/study-crf-mappings.csv"
+             ]

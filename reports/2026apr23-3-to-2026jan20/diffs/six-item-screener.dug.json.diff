@@ -1,0 +1,23 @@
+--- dug-data-model-2026apr23-3/six-item-screener.dug.json
++++ dug-data-model-2026jan20/six-item-screener.dug.json
+@@ -206,5 +206,5 @@
+     "crf_id": "six-item-screener",
+     "name": "The Six-Item Screener",
+-    "description": "The 6-Item Screener is a brief instrument for identifying subjects with cognitive impairment and its diagnostic properties are comparable to the full Mini Mental State Examination (MMSE). Contains 8 CDEs.",
++    "description": "The Six-Item Screener is a brief instrument for identifying subjects with cognitive impairment and its diagnostic properties are comparable to the full Mini Mental State Examination (MMSE). Contains 8 CDEs.",
+     "action": "https://www.nih.gov/sites/default/files/CDEs/2026-01/six-item-screener-crf.docx",
+     "is_crf": true,
+@@ -230,5 +230,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "8871"
+         },
+         {
+@@ -238,5 +238,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 8 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "8976"
+         }
+       ],

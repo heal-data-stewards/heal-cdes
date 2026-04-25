@@ -1,0 +1,38 @@
+--- dug-data-model-2026apr20/sickle-cell-disease-self-efficacy-scale.dug.json
++++ dug-data-model-2026jan20/sickle-cell-disease-self-efficacy-scale.dug.json
+@@ -314,7 +314,5 @@
+     "type": "section",
+     "id": "sickle-cell-disease-self-efficacy-scale",
+-    "parents": [
+-      "HDP01629"
+-    ],
++    "parents": [],
+     "crf_id": "sickle-cell-disease-self-efficacy-scale",
+     "name": "Sickle Cell Disease Self-Efficacy Scale",
+@@ -345,5 +343,5 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+           "description": "This is the English download of the Microsoft Word document containing the questionnaire.",
+-          "drupal_id": null
++          "drupal_id": "9501"
+         },
+         {
+@@ -353,17 +351,8 @@
+           "mime-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+           "description": "This is the Excel file that describes the 10 CDEs present in this CRF.",
+-          "drupal_id": null
++          "drupal_id": "9496"
+         }
+       ],
+-      "study_mappings": {
+-        "HDP01629": {
+-          "_sources": [
+-            [
+-              "mappings/study-crf-mappings/from-heal-cde-team/crf-heal-cde-ids.csv; mappings/study-crf-mappings/from-heal-cde-team/Heal_CDE_2026-04-06T130104/Heal_CDE_data.csv",
+-              "./mappings/study-crf-mappings/study-crf-mappings.csv"
+-            ]
+-          ]
+-        }
+-      }
++      "study_mappings": {}
+     }
+   }
